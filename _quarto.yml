@@ -1,0 +1,75 @@
+project:
+  type: book
+  output-dir: _book
+
+execute:
+  freeze: auto
+  cahe: true
+
+book:
+  title: "Modelado Ordenado con R"
+  reader-mode: true
+
+  page-footer:
+    left: |
+      Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.
+    right: |
+      Este libro fue creado usando <a href="https://quarto.org/">Quarto</a>.
+  cover-image: images/cover.png
+  favicon: images/cover.png
+  site-url: https://www.tmwr.org/
+  repo-url: https://github.com/davidrsch/TMwRes
+  repo-branch: main
+  repo-actions: [edit, issue]
+  chapters:
+    - index.qmd
+
+    - part: "INTRODUCTION"
+      chapters:
+        - 01-software-modeling.qmd
+        - 02-tidyverse.qmd
+        - 03-base-r.qmd
+
+    - part: "MODELING BASICS"
+      chapters:
+        - 04-ames.qmd
+        - 05-data-spending.qmd
+        - 06-fitting-models.qmd
+        - 07-the-model-workflow.qmd
+        - 08-feature-engineering.qmd
+        - 09-judging-model-effectiveness.qmd
+
+    - part: "TOOLS FOR CREATING EFFECTIVE MODELS"
+      chapters:
+        - 10-resampling.qmd
+        - 11-comparing-models.qmd
+        - 12-tuning-parameters.qmd
+        - 13-grid-search.qmd
+        - 14-iterative-search.qmd
+        - 15-workflow-sets.qmd
+        
+    - part: "BEYOND THE BASICS"
+      chapters:
+        - 16-dimensionality-reduction.qmd
+        - 17-encoding-categorical-data.qmd
+        - 18-explaining-models-and-predictions.qmd
+        - 19-when-should-you-trust-predictions.qmd
+        - 20-ensemble-models.qmd
+        - 21-inferential-analysis.qmd
+    
+  appendices:
+    - pre-proc-table.qmd
+    - references.qmd
+
+bibliography: TMwR.bib
+
+format:
+  html:
+    css: [style.css, TMwR.css]
+    code-link: true
+
+    author-meta: "Max Kuhn, y Julia Silge"
+    callout-appearance: simple
+
+editor: visual
+

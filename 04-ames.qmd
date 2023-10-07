@@ -4,9 +4,6 @@ library(tidymodels)
 data(ames)
 tidymodels_prefer()
 ```
-
-# (PART\*) Modeling Basics {-} 
-
 # The Ames Housing Data {#ames}
 
 In this chapter, we'll introduce the Ames housing data set [@ames], which we will use in modeling examples throughout this book. Exploratory data analysis, like what we walk through in this chapter, is an important first step in building a reliable model. The data set contains information on `r format(nrow(ames), big.mark = ",")` properties in Ames, Iowa, including columns related to: 

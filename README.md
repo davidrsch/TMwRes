@@ -2,10 +2,7 @@
 
 [![Build Status](https://github.com/tidymodels/TMwR/workflows/bookdown/badge.svg)](https://github.com/tidymodels/TMwR/actions)
 
-
-
-
-This repository contains the source for [_Tidy Modeling with R_](https://tmwr.org). The purpose of this book is to demonstrate how the [tidyverse](https://www.tidyverse.org/) and [tidymodels](https://www.tidymodels.org/) can be used to produce high quality models.
+This repository contains the source for [*Tidy Modeling with R*](https://tmwr.org). The purpose of this book is to demonstrate how the [tidyverse](https://www.tidyverse.org/) and [tidymodels](https://www.tidymodels.org/) can be used to produce high quality models.
 
 # Reproducing the book or results
 
@@ -15,22 +12,21 @@ First, you'll need to install the required packages. To do this, first install t
 install.packages("remotes")
 ```
 
-Then use this to install what you need to create the book: 
+Then use this to install what you need to create the book:
 
 ``` r
 remotes::install_github("tidymodels/TMwR")
 ```
 
-Although we rigorously try to use the current CRAN versions of all packages, the code above may install some development versions. 
+Although we rigorously try to use the current CRAN versions of all packages, the code above may install some development versions.
 
 The content is created using the `bookdown` package. To compile the book, use:
 
-```r
+``` r
 bookdown::render_book("index.Rmd", "bookdown::gitbook")
 ```
 
-This will create the HTML files in a directory called `_book`. Although we are in the process of publishing a print version of this work with O'Reilly, we do _not_ currently support building to a PDF version.
-
+This will create the HTML files in a directory called `_book`. Although we are in the process of publishing a print version of this work with O'Reilly, we do *not* currently support building to a PDF version.
 
 # Contributing
 

@@ -1,5 +1,3 @@
-# (PART\*) Introduction {-} 
-
 # Software for modeling {#software-modeling}
 
 ```{r software-setup, include = FALSE}

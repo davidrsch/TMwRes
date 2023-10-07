@@ -11,8 +11,8 @@ data("bioChemists", package = "pscl")
 
 # Inferential Analysis {#inferential}
 
-:::rmdnote
-In Section \@ref(model-types), we outlined a taxonomy of models and said that most models can be categorized as descriptive, inferential, and/or predictive. 
+::: rmdnote
+In Section \@ref(model-types), we outlined a taxonomy of models and said that most models can be categorized as descriptive, inferential, and/or predictive.
 :::
 
 Most of the chapters in this book have focused on models from the perspective of the accuracy of predicted values, an important quality of models for all purposes but most relevant for predictive models. Inferential models are usually created not only for their predictions, but also to make inferences or judgments about some component of the model, such as a coefficient value or other parameter. These results are often used to answer some (hopefully) pre-defined questions or hypotheses. In predictive models, predictions on hold-out data are used to validate or characterize the quality of the model. Inferential methods focus on validating the probabilistic or structural assumptions that are made prior to fitting the model.
@@ -21,7 +21,7 @@ For example, in ordinary linear regression, the common assumption is that the re
 
 We will use p-values in this chapter. However, the tidymodels framework tends to promote confidence intervals over p-values as a method for quantifying the evidence for an alternative hypothesis. As previously shown in Section \@ref(tidyposterior), Bayesian methods are often superior to both p-values and confidence intervals in terms of ease of interpretation (but they can be more computationally expensive).
 
-:::rmdwarning
+::: rmdwarning
 There has been a push in recent years to move away from p-values in favor of other methods [@pvalue]. See Volume 73 of [*The American Statistician*](https://www.tandfonline.com/toc/utas20/73/) for more information and discussion.
 :::
 
@@ -31,8 +31,8 @@ In this chapter, we describe how to use `r pkg(tidymodels)` for fitting and asse
 
 To understand how tidymodels packages can be used for inferential modeling, let's focus on an example with count data. We'll use biochemistry publication data from the `r pkg(pscl)` package. These data consist of information on 915 Ph.D. biochemistry graduates and tries to explain factors that impact their academic productivity (measured via number or count of articles published within three years). The predictors include the gender of the graduate, their marital status, the number of children of the graduate that are at least five years old, the prestige of their department, and the number of articles produced by their mentor in the same time period. The data reflect biochemistry doctorates who finished their education between 1956 and 1963. The data are a somewhat biased sample of all of the biochemistry doctorates given during this period (based on completeness of information).
 
-:::rmdnote
-Recall that in Chapter \@ref(trust) we asked the question "Is our model applicable for predicting a specific data point?" It is very important to define what populations an inferential analysis applies to. For these data, the results would likely apply to biochemistry doctorates given around the time frame that the data were collected. Does it also apply to other chemistry doctorate types (e.g., medicinal chemistry, etc)? These are important questions to address (and document) when conducting inferential analyses. 
+::: rmdnote
+Recall that in Chapter \@ref(trust) we asked the question "Is our model applicable for predicting a specific data point?" It is very important to define what populations an inferential analysis applies to. For these data, the results would likely apply to biochemistry doctorates given around the time frame that the data were collected. Does it also apply to other chemistry doctorate types (e.g., medicinal chemistry, etc)? These are important questions to address (and document) when conducting inferential analyses.
 :::
 
 A plot of the data shown in Figure \@ref(fig:counts) indicates that many graduates did not publish any articles in this time and that the outcome follows a right-skewed distribution:
@@ -67,24 +67,27 @@ bioChemists %>%
   summarize(counts = sum(art), n = length(art))
 ```
 
-There were many more publications by men, although there were also more men in the data. The simplest approach to analyzing these data would be to do a two-sample comparison using the `poisson.test()` function in the `r pkg(stats)` package. It requires the counts for one or two groups. 
+There were many more publications by men, although there were also more men in the data. The simplest approach to analyzing these data would be to do a two-sample comparison using the `poisson.test()` function in the `r pkg(stats)` package. It requires the counts for one or two groups.
 
 For our application, the hypotheses to compare the two sexes are:
 
+```{=tex}
 \begin{align}
 H_0&: \lambda_m = \lambda_f \notag \\
 H_a&: \lambda_m \ne \lambda_f \notag
 \end{align}
+```
+where the $\lambda$ values are the rates of publications (over the same time period).
 
-where the $\lambda$ values are the rates of publications (over the same time period). 
+A basic application of the test is:[^21-inferential-analysis-1]
 
-A basic application of the test is:^[The `T` argument allows us to account for the time when the events (publications) were counted, which was three years for both men and women. There are more men than women in these data, but `poisson.test()` has limited functionality so more sophisticated analysis can be used to account for this difference.]
+[^21-inferential-analysis-1]: The `T` argument allows us to account for the time when the events (publications) were counted, which was three years for both men and women. There are more men than women in these data, but `poisson.test()` has limited functionality so more sophisticated analysis can be used to account for this difference.
 
 ```{r inferential-test-basic}
 poisson.test(c(930, 619), T = 3)
 ```
 
-The function reports a p-value as well as a confidence interval for the ratio of the publication rates. The results indicate that the observed difference is greater than the experiential noise and favors $H_a$. 
+The function reports a p-value as well as a confidence interval for the ratio of the publication rates. The results indicate that the observed difference is greater than the experiential noise and favors $H_a$.
 
 One issue with using this function is that the results come back as an `htest` object. While this type of object has a well-defined structure, it can be difficult to consume for subsequent operations such as reporting or visualizations. The most impactful tool that tidymodels offers for inferential models is the `tidy()` functions in the `r pkg(broom)` package. As previously seen, this function makes a well-formed, predictably named tibble from the object. We can `tidy()` the results of our two-sample comparison test:
 
@@ -93,7 +96,7 @@ poisson.test(c(930, 619)) %>%
   tidy()
 ```
 
-:::rmdnote
+::: rmdnote
 Between the [`r pkg(broom)`](https://broom.tidymodels.org/) and [`r pkg(broom.mixed)`](https://CRAN.R-project.org/package=broom.mixed) packages, there are `tidy()` methods for more than 150 models.
 :::
 
@@ -101,7 +104,7 @@ While the Poisson distribution is reasonable, we might also want to assess using
 
 The `r pkg(infer)` package, part of the tidymodels framework, is a powerful and intuitive tool for hypothesis testing [@ModernDive]. Its syntax is concise and designed for nonstatisticians.
 
-First, we `specify()` that we will use the difference in the mean number of articles between the sexes and then `calculate()` the statistic from the data. Recall that the maximum likelihood estimator for the Poisson mean is the sample mean. The hypotheses tested here are the same as the previous test (but are conducted using a different testing procedure).  
+First, we `specify()` that we will use the difference in the mean number of articles between the sexes and then `calculate()` the statistic from the data. Recall that the maximum likelihood estimator for the Poisson mean is the sample mean. The hypotheses tested here are the same as the previous test (but are conducted using a different testing procedure).
 
 With `r pkg(infer)`, we specify the outcome and covariate, then state the statistic of interest:
 
@@ -198,7 +201,7 @@ $$
 
 where $\lambda$ is the expected value of the counts.
 
-Let's fit a simple model that contains all of the predictor columns. The `r pkg(poissonreg)` package, a `r pkg(parsnip)` extension package in tidymodels, will create this model specification:
+Let's fit a simple model that contains all of the predictor columns. The `r pkg(poissonreg)` package, a `r pkg(parsnip)` extension package in tidymodels, will fit this model specification:
 
 ```{r inferential-glm}
 library(poissonreg)
@@ -237,7 +240,7 @@ glm_boot <-
 glm_boot
 ```
 
-:::rmdwarning
+::: rmdwarning
 When we compare these results (in Figure \@ref(fig:glm-intervals)) to the purely parametric results from `glm()`, the bootstrap intervals are somewhat wider. If the data were truly Poisson, these intervals would have more similar widths.
 :::
 
@@ -264,14 +267,15 @@ glm_boot %>%
   scale_color_brewer(palette = "Paired")
 ```
 
-Determining which predictors to include in the model is a difficult problem. One approach is to conduct likelihood ratio tests (LRT) [@McCullaghNelder89] between nested models. Based on the confidence intervals, we have evidence that a simpler model without `phd` may be sufficient. Let's fit a smaller model, then conduct a statistical test: 
+Determining which predictors to include in the model is a difficult problem. One approach is to conduct likelihood ratio tests (LRT) [@McCullaghNelder89] between nested models. Based on the confidence intervals, we have evidence that a simpler model without `phd` may be sufficient. Let's fit a smaller model, then conduct a statistical test:
 
+```{=tex}
 \begin{align}
 H_0&: \beta_{phd} = 0 \notag \\
 H_a&: \beta_{phd} \ne 0 \notag
 \end{align}
-
-This hypothesis was previously tested when we showed the tidied results for `log_lin_fit`. That particular approach used results from a single model fit via a Wald statistic (i.e., the parameter divided by its standard error). For that approach, the p-value was `r tidy(log_lin_fit) %>% filter(term == "phd") %>% pluck("p.value") %>% format.pval()`. We can tidy the results for the LRT to get the p-value: 
+```
+This hypothesis was previously tested when we showed the tidied results for `log_lin_fit`. That particular approach used results from a single model fit via a Wald statistic (i.e., the parameter divided by its standard error). For that approach, the p-value was `r tidy(log_lin_fit) %>% filter(term == "phd") %>% pluck("p.value") %>% format.pval()`. We can tidy the results for the LRT to get the p-value:
 
 ```{r inferential-reduced, warning = FALSE}
 log_lin_reduced <- 
@@ -302,7 +306,6 @@ where
 \log\left(\frac{\pi}{1-\pi}\right) &= \gamma_0 + \gamma_1z_1 + \ldots + \gamma_qz_q \notag 
 \end{align}
 ```
-
 and the $x$ covariates affect the count values while the $z$ covariates influence the probability of a zero. The two sets of predictors do not need to be mutually exclusive.
 
 We'll fit a model with a full set of $z$ covariates:
@@ -326,7 +329,6 @@ H_0&: \gamma_1 = 0, \gamma_2 = 0, \cdots, \gamma_5 = 0 \notag \\
 H_a&: \text{at least one } \gamma \ne 0  \notag
 \end{align}
 ```
-
 Let's try ANOVA again:
 
 ```{r inference-zip-anova, error = TRUE}
@@ -383,7 +385,7 @@ mean(bootstrap_models$zip_aic < bootstrap_models$glm_aic)
 
 It seems definitive from these results that accounting for the excessive number of zero counts is a good idea.
 
-:::rmdnote
+::: rmdnote
 We could have used `fit_resamples()` or a workflow set to conduct these computations. In this section, we used `mutate()` and `map()` to compute the models to demonstrate how one might use tidymodels tools for models that are not supported by one of the `r pkg(parsnip)` packages.
 :::
 

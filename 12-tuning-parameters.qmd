@@ -8,11 +8,7 @@ registerDoMC(cores = parallel::detectCores())
 
 tidymodels_prefer()
 
-## -----------------------------------------------------------------------------
-
 source("ames_snippets.R")
-
-## -----------------------------------------------------------------------------
 
 data(two_class_dat)
 
@@ -23,8 +19,6 @@ training_set <- training(split)
 testing_set  <-  testing(split)
 
 data_grid <- crossing(A = seq(0.4, 4, length = 200), B = seq(.14, 3.9, length = 200))
-
-## -----------------------------------------------------------------------------
 
 load("RData/search_examples.RData")
 ```

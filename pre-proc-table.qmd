@@ -9,8 +9,6 @@ x  <- symbol$times
 cl <- symbol$circle_dotted
 ```
 
-# (APPENDIX) Appendix {-} 
-
 # Recommended Preprocessing {#pre-proc-table}
 
 The type of preprocessing needed depends on the type of model being fit. For example, models that use distance functions or dot products should have all of their predictors on the same scale so that distance is measured appropriately. 
