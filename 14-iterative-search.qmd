@@ -664,7 +664,7 @@ In our implementation, the neighborhood is determined by scaling the current can
 
 To illustrate, we'll use the two main `r pkg(glmnet)` tuning parameters:
 
--   The amount of total regularization (`penalty`). The default range for this parameter is $10^{`r penalty()$range\[\[1\]\]`}$ to $10^{`r penalty()$range[[2]]`}$. It is typical to use a log (base-10) transformation for this parameter.
+-   The amount of total regularization (`penalty`). The default range for this parameter is $10^{`r penalty()$range[[1]]`}$ to $10^{`r penalty()$range[[2]]`}$. It is typical to use a log (base-10) transformation for this parameter.
 
 -   The proportion of the lasso penalty (`mixture`). This is bounded at zero and one with no transformation.
 

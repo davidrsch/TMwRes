@@ -328,7 +328,7 @@ val_set <- validation_set(ames_val_split)
 val_set
 ```
 
-As you'll see in Section \@ref(resampling-performance), the `fit_resamples()` function will be used to compute correct estimates of performance using resampling. The `val_set` object can be used in in this and other functions even though it is a single "resample" of the data. 
+As you'll see in Section \@ref(resampling-performance), the `fit_resamples()` function will be used to compute correct estimates of performance using resampling. The `val_set` object can be used in in this and other functions even though it is a single "resample" of the data.
 
 ### Bootstrapping {#bootstrap}
 
