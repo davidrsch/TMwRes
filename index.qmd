@@ -6,15 +6,15 @@ Welcome to [*Tidy Modeling with R*](https://amzn.to/35Hn96s)! This book is a gui
 
 -   Second, this book will show you how to **develop good methodology and statistical practices**. Whenever possible, our software, documentation, and other materials attempt to prevent common pitfalls.
 
-In Chapter \@ref(software-modeling), we outline a taxonomy for models and highlight what good software for modeling is like. The ideas and syntax of the tidyverse, which we introduce (or review) in Chapter \@ref(tidyverse), are the basis for the tidymodels approach to these challenges of methodology and practice. Chapter \@ref(base-r) provides a quick tour of conventional base R modeling functions and summarizes the unmet needs in that area.
+In [Chapter -@sec-software-modeling], we outline a taxonomy for models and highlight what good software for modeling is like. The ideas and syntax of the tidyverse, which we introduce (or review) in [Chapter -@sec-tidyverse], are the basis for the tidymodels approach to these challenges of methodology and practice. [Chapter -@sec-base-r] provides a quick tour of conventional base R modeling functions and summarizes the unmet needs in that area.
 
-After that, this book is separated into parts, starting with the basics of modeling with tidy data principles. Chapters \@ref(ames) through \@ref(performance) introduces an example data set on house prices and demonstrates how to use the fundamental tidymodels packages: `r pkg(recipes)`, `r pkg(parsnip)`, `r pkg(workflows)`, `r pkg(yardstick)`, and others.
+After that, this book is separated into parts, starting with the basics of modeling with tidy data principles. Chapters -@sec-ames through -@sec-performance introduces an example data set on house prices and demonstrates how to use the fundamental tidymodels packages: `r pkg(recipes)`, `r pkg(parsnip)`, `r pkg(workflows)`, `r pkg(yardstick)`, and others.
 
-The next part of the book moves forward with more details on the process of creating an effective model. Chapters \@ref(resampling) through \@ref(workflow-sets) focus on creating good estimates of performance as well as tuning model hyperparameters.
+The next part of the book moves forward with more details on the process of creating an effective model. Chapters -@sec-resampling through -@sec-workflow-sets focus on creating good estimates of performance as well as tuning model hyperparameters.
 
-Finally, the last section of this book, Chapters \@ref(dimensionality) through \@ref(inferential), covers other important topics for model building. We discuss more advanced feature engineering approaches like dimensionality reduction and encoding high cardinality predictors, as well as how to answer questions about why a model makes certain predictions and when to trust your model predictions.
+Finally, the last section of this book, Chapters -@sec-dimensionality through -@sec-inferential, covers other important topics for model building. We discuss more advanced feature engineering approaches like dimensionality reduction and encoding high cardinality predictors, as well as how to answer questions about why a model makes certain predictions and when to trust your model predictions.
 
-We do not assume that readers have extensive experience in model building and statistics. Some statistical knowledge is required, such as random sampling, variance, correlation, basic linear regression, and other topics that are usually found in a basic undergraduate statistics or data analysis course. We do assume that the reader is at least slightly familiar with dplyr, ggplot2, and the `%>%` "pipe" operator in R, and is interested in applying these tools to modeling. For users who don't yet have this background R knowledge, we recommend books such as [*R for Data Science*](https://r4ds.had.co.nz/) by Wickham and Grolemund (2016). Investigating and analyzing data are an important part of any model process.
+We do not assume that readers have extensive experience in model building and statistics. Some statistical knowledge is required, such as random sampling, variance, correlation, basic linear regression, and other topics that are usually found in a basic undergraduate statistics or data analysis course. We do assume that the reader is at least slightly familiar with dplyr, ggplot2, and the `%>%` and `|>` "pipe" operators in R, and is interested in applying these tools to modeling. For users who don't yet have this background R knowledge, we recommend books such as [*R for Data Science*](https://r4ds.had.co.nz/) by Wickham and Grolemund (2016). Investigating and analyzing data are an important part of any model process.
 
 This book is not intended to be a comprehensive reference on modeling techniques; we suggest other resources to learn more about the statistical methods themselves. For general background on the most common type of model, the linear model, we suggest @fox08. For predictive models, @apm and @fes are good resources. For machine learning methods, @Goodfellow is an excellent (but formal) source of information. In some cases, we do describe the models we use in some detail, but in a way that is less mathematical, and hopefully more intuitive.
 
@@ -28,11 +28,11 @@ contribs_all_json <- gh::gh("/repos/:owner/:repo/contributors",
   .limit = Inf
 )
 contribs_all <- tibble(
-  login = contribs_all_json %>% map_chr("login"),
-  n = contribs_all_json %>% map_int("contributions")
+  login = contribs_all_json |> map_chr("login"),
+  n = contribs_all_json |> map_int("contributions")
 )
 contribs_old <- read_csv("contributors.csv", col_types = list())
-contribs_new <- contribs_all %>% anti_join(contribs_old, by = "login")
+contribs_new <- contribs_all |> anti_join(contribs_old, by = "login")
 # Get info for new contributors
 needed_json <- map(
   contribs_new$login, 
@@ -43,8 +43,8 @@ info_new <- tibble(
   name = map_chr(needed_json, "name", .default = NA),
   blog = map_chr(needed_json, "blog", .default = NA)
 )
-contribs_new <- contribs_new %>% left_join(info_new, by = "login")
-contribs_all <- bind_rows(contribs_old, contribs_new) %>% arrange(login)
+contribs_new <- contribs_new |> left_join(info_new, by = "login")
+contribs_all <- bind_rows(contribs_old, contribs_new) |> arrange(login)
 write_csv(contribs_all, "contributors.csv")
 ```
 
@@ -55,8 +55,8 @@ We would like to thank our RStudio colleagues on the `r pkg(tidymodels)` team (D
 ```{r, results = "asis", echo = FALSE, message = FALSE}
 library(dplyr)
 contributors <- read.csv("contributors.csv", stringsAsFactors = FALSE)
-contributors <- contributors %>% 
-  filter(!login %in% c("topepo", "juliasilge", "dcossyleon")) %>% 
+contributors <- contributors |> 
+  filter(!login %in% c("topepo", "juliasilge", "dcossyleon")) |> 
   mutate(
     login = paste0("\\@", login),
     desc = ifelse(is.na(name), login, paste0(name, " (", login, ")"))
@@ -76,7 +76,7 @@ df <- tibble::tibble(
   package = pkgs$package,
   version = pkgs$ondiskversion,
   source = pkgs$source
-) %>% 
+) |> 
   mutate(
     source = stringr::str_split(source, " "),
     source = purrr::map_chr(source, ~ .x[1]),
