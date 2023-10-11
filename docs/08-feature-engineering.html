@@ -362,9 +362,9 @@ div.csl-indent {
   <li><a href="#using-recipes" id="toc-using-recipes" class="nav-link" data-scroll-target="#using-recipes"><span class="header-section-number">8.2</span> Using Recipes</a></li>
   <li><a href="#how-data-are-used-by-the-recipe" id="toc-how-data-are-used-by-the-recipe" class="nav-link" data-scroll-target="#how-data-are-used-by-the-recipe"><span class="header-section-number">8.3</span> How Data Are Used by the <code>recipe()</code></a></li>
   <li>
-<a href="#example-steps" id="toc-example-steps" class="nav-link" data-scroll-target="#example-steps"><span class="header-section-number">8.4</span> Examples of Recipe Steps</a>
+<a href="#sec-example-steps" id="toc-sec-example-steps" class="nav-link" data-scroll-target="#sec-example-steps"><span class="header-section-number">8.4</span> Examples of Recipe Steps</a>
   <ul class="collapse">
-<li><a href="#dummies" id="toc-dummies" class="nav-link" data-scroll-target="#dummies"><span class="header-section-number">8.4.1</span> Encoding qualitative data in a numeric format</a></li>
+<li><a href="#sec-dummies" id="toc-sec-dummies" class="nav-link" data-scroll-target="#sec-dummies"><span class="header-section-number">8.4.1</span> Encoding qualitative data in a numeric format</a></li>
   <li><a href="#interaction-terms" id="toc-interaction-terms" class="nav-link" data-scroll-target="#interaction-terms"><span class="header-section-number">8.4.2</span> Interaction terms</a></li>
   <li><a href="#spline-functions" id="toc-spline-functions" class="nav-link" data-scroll-target="#spline-functions"><span class="header-section-number">8.4.3</span> Spline functions</a></li>
   <li><a href="#feature-extraction" id="toc-feature-extraction" class="nav-link" data-scroll-target="#feature-extraction"><span class="header-section-number">8.4.4</span> Feature extraction</a></li>
@@ -373,15 +373,15 @@ div.csl-indent {
   <li><a href="#natural-language-processing" id="toc-natural-language-processing" class="nav-link" data-scroll-target="#natural-language-processing"><span class="header-section-number">8.4.7</span> Natural language processing</a></li>
   </ul>
 </li>
-  <li><a href="#skip-equals-true" id="toc-skip-equals-true" class="nav-link" data-scroll-target="#skip-equals-true"><span class="header-section-number">8.5</span> Skipping Steps for New Data</a></li>
+  <li><a href="#sec-skip-equals-true" id="toc-sec-skip-equals-true" class="nav-link" data-scroll-target="#sec-skip-equals-true"><span class="header-section-number">8.5</span> Skipping Steps for New Data</a></li>
   <li><a href="#tidy-a-recipe" id="toc-tidy-a-recipe" class="nav-link" data-scroll-target="#tidy-a-recipe"><span class="header-section-number">8.6</span> Tidy a <code>recipe()</code></a></li>
   <li><a href="#column-roles" id="toc-column-roles" class="nav-link" data-scroll-target="#column-roles"><span class="header-section-number">8.7</span> Column Roles</a></li>
-  <li><a href="#recipes-summary" id="toc-recipes-summary" class="nav-link" data-scroll-target="#recipes-summary"><span class="header-section-number">8.8</span> Chapter Summary</a></li>
+  <li><a href="#sec-recipes-summary" id="toc-sec-recipes-summary" class="nav-link" data-scroll-target="#sec-recipes-summary"><span class="header-section-number">8.8</span> Chapter Summary</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/08-feature-engineering.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="recipes" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Feature Engineering with recipes</span></span></h1>
+<h1 class="title"><span id="sec-recipes" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Feature Engineering with recipes</span></span></h1>
 </div>
 
 
@@ -404,10 +404,10 @@ div.csl-indent {
 </ul>
 <p>Feature engineering and data preprocessing can also involve reformatting that may be required by the model. Some models use geometric distance metrics and, consequently, numeric predictors should be centered and scaled so that they are all in the same units. Otherwise, the distance values would be biased by the scale of each column.</p>
 <div class="rmdnote">
-<p>Different models have different preprocessing requirements and some, such as tree-based models, require very little preprocessing at all. Appendix @ref(pre-proc-table) contains a small table of recommended preprocessing techniques for different models.</p>
+<p>Different models have different preprocessing requirements and some, such as tree-based models, require very little preprocessing at all. <a href="pre-proc-table.html">Appendix&nbsp;<span>A</span></a> contains a small table of recommended preprocessing techniques for different models.</p>
 </div>
 <p>In this chapter, we introduce the <a href="https://recipes.tidymodels.org/"><span class="pkg">recipes</span></a> package that you can use to combine different feature engineering and preprocessing tasks into a single object and then apply these transformations to different data sets. The <span class="pkg">recipes</span> package is, like <span class="pkg">parsnip</span> for models, one of the core tidymodels packages.</p>
-<p>This chapter uses the Ames housing data and the R objects created in the book so far, as summarized in Section @ref(workflows-summary).</p>
+<p>This chapter uses the Ames housing data and the R objects created in the book so far, as summarized in <a href="07-the-model-workflow.html#sec-workflows-summary"><span>Section&nbsp;7.7</span></a>.</p>
 <section id="a-simple-recipe-for-the-ames-housing-data" class="level2" data-number="8.1"><h2 data-number="8.1" class="anchored" data-anchor-id="a-simple-recipe-for-the-ames-housing-data">
 <span class="header-section-number">8.1</span> A Simple <code>recipe()</code> for the Ames Housing Data</h2>
 <p>In this section, we will focus on a small subset of the predictors available in the Ames housing data:</p>
@@ -417,18 +417,18 @@ div.csl-indent {
 <li><p>The year built (<code>Year_Built</code>)</p></li>
 <li><p>The type of building (<code>Bldg_Type</code> with values <code>OneFam</code> (<span class="math inline">\(n = 1,936\)</span>), <code>TwoFmCon</code> (<span class="math inline">\(n = 50\)</span>), <code>Duplex</code> (<span class="math inline">\(n = 88\)</span>), <code>Twnhs</code> (<span class="math inline">\(n = 77\)</span>), and <code>TwnhsE</code> (<span class="math inline">\(n = 191\)</span>))</p></li>
 </ul>
-<p>Suppose that an initial ordinary linear regression model were fit to these data. Recalling that, in Chapter @ref(ames), the sale prices were pre-logged, a standard call to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> might look like:</p>
+<p>Suppose that an initial ordinary linear regression model were fit to these data. Recalling that, in <a href="04-ames.html">Chapter&nbsp;<span>4</span></a>, the sale prices were pre-logged, a standard call to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> might look like:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Gr_Liv_Area</span><span class="op">)</span> <span class="op">+</span> <span class="va">Year_Built</span> <span class="op">+</span> <span class="va">Bldg_Type</span>, data <span class="op">=</span> <span class="va">ames</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>When this function is executed, the data are converted from a data frame to a numeric <em>design matrix</em> (also called a <em>model matrix</em>) and then the least squares method is used to estimate parameters. In Section @ref(formula) we listed the multiple purposes of the R model formula; let’s focus only on the data manipulation aspects for now. What this formula does can be decomposed into a series of steps:</p>
+<p>When this function is executed, the data are converted from a data frame to a numeric <em>design matrix</em> (also called a <em>model matrix</em>) and then the least squares method is used to estimate parameters. In <a href="03-base-r.html#sec-formula"><span>Section&nbsp;3.2</span></a> we listed the multiple purposes of the R model formula; let’s focus only on the data manipulation aspects for now. What this formula does can be decomposed into a series of steps:</p>
 <ol type="1">
 <li><p>Sale price is defined as the outcome while neighborhood, gross living area, the year built, and building type variables are all defined as predictors.</p></li>
 <li><p>A log transformation is applied to the gross living area predictor.</p></li>
 <li><p>The neighborhood and building type columns are converted from a non-numeric format to a numeric format (since least squares requires numeric predictors).</p></li>
 </ol>
-<p>As mentioned in Chapter @ref(base-r), the formula method will apply these data manipulations to any data, including new data, that are passed to the <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> function.</p>
-<p>A recipe is also an object that defines a series of steps for data processing. Unlike the formula method inside a modeling function, the recipe defines the steps via <code>step_*()</code> functions without immediately executing them; it is only a specification of what should be done. Here is a recipe equivalent to the previous formula that builds on the code summary in Section @ref(splitting-summary):</p>
+<p>As mentioned in <a href="03-base-r.html">Chapter&nbsp;<span>3</span></a>, the formula method will apply these data manipulations to any data, including new data, that are passed to the <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> function.</p>
+<p>A recipe is also an object that defines a series of steps for data processing. Unlike the formula method inside a modeling function, the recipe defines the steps via <code>step_*()</code> functions without immediately executing them; it is only a specification of what should be done. Here is a recipe equivalent to the previous formula that builds on the code summary in <a href="05-data-spending.html#sec-splitting-summary"><span>Section&nbsp;5.5</span></a>:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span> <span class="co"># Includes the recipes package</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -455,7 +455,7 @@ div.csl-indent {
 <ol type="1">
 <li><p>The call to <code>recipe()</code> with a formula tells the recipe the <em>roles</em> of the “ingredients” or variables (e.g., predictor, outcome). It only uses the data <code>ames_train</code> to determine the data types for the columns.</p></li>
 <li><p><code>step_log()</code> declares that <code>Gr_Liv_Area</code> should be log transformed.</p></li>
-<li><p><code>step_dummy()</code> specifies which variables should be converted from a qualitative format to a quantitative format, in this case, using dummy or indicator variables. An indicator or dummy variable is a binary numeric variable (a column of ones and zeroes) that encodes qualitative information; we will dig deeper into these kinds of variables in Section @ref(dummies).</p></li>
+<li><p><code>step_dummy()</code> specifies which variables should be converted from a qualitative format to a quantitative format, in this case, using dummy or indicator variables. An indicator or dummy variable is a binary numeric variable (a column of ones and zeroes) that encodes qualitative information; we will dig deeper into these kinds of variables in <a href="#sec-dummies"><span>Section&nbsp;8.4.1</span></a>.</p></li>
 </ol>
 <p>The function <code>all_nominal_predictors()</code> captures the names of any predictor columns that are currently factor or character (i.e., nominal) in nature. This is a <span class="pkg">dplyr</span>-like selector function similar to <code>starts_with()</code> or <code>matches()</code> but that can only be used inside of a recipe.</p>
 <div class="rmdnote">
@@ -469,7 +469,7 @@ div.csl-indent {
 <li><p>All data processing can be captured in a single R object instead of in scripts that are repeated, or even spread across different files.</p></li>
 </ul></section><section id="using-recipes" class="level2" data-number="8.2"><h2 data-number="8.2" class="anchored" data-anchor-id="using-recipes">
 <span class="header-section-number">8.2</span> Using Recipes</h2>
-<p>As we discussed in Chapter @ref(workflows), preprocessing choices and feature engineering should typically be considered part of a modeling workflow, not a separate task. The <span class="pkg">workflows</span> package contains high level functions to handle different types of preprocessors. Our previous workflow (<code>lm_wflow</code>) used a simple set of <span class="pkg">dplyr</span> selectors. To improve on that approach with more complex feature engineering, let’s use the <code>simple_ames</code> recipe to preprocess data for modeling.</p>
+<p>As we discussed in <a href="07-the-model-workflow.html">Chapter&nbsp;<span>7</span></a>, preprocessing choices and feature engineering should typically be considered part of a modeling workflow, not a separate task. The <span class="pkg">workflows</span> package contains high level functions to handle different types of preprocessors. Our previous workflow (<code>lm_wflow</code>) used a simple set of <span class="pkg">dplyr</span> selectors. To improve on that approach with more complex feature engineering, let’s use the <code>simple_ames</code> recipe to preprocess data for modeling.</p>
 <p>This object can be attached to the workflow:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_wflow</span> <span class="op">%&gt;%</span> </span>
@@ -550,7 +550,7 @@ div.csl-indent {
 <span><span class="co">## 5 Neighborhood_Old_Town      -0.0330   0.00838      -3.93 8.66e-  5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdnote">
-<p>Tools for using (and debugging) recipes outside of workflow objects are described in Section @ref(recipe-functions).</p>
+<p>Tools for using (and debugging) recipes outside of workflow objects are described in <span class="quarto-unresolved-ref">?sec-recipe-functions</span>.</p>
 </div>
 </section><section id="how-data-are-used-by-the-recipe" class="level2" data-number="8.3"><h2 data-number="8.3" class="anchored" data-anchor-id="how-data-are-used-by-the-recipe">
 <span class="header-section-number">8.3</span> How Data Are Used by the <code>recipe()</code>
@@ -562,18 +562,18 @@ div.csl-indent {
 <p>All preprocessing and feature engineering steps use <em>only</em> the training data. Otherwise, information leakage can negatively impact the model’s performance when used with new data.</p>
 </div>
 <p>Finally, when using <code>predict(workflow, new_data)</code>, no model or preprocessor parameters like those from recipes are re-estimated using the values in <code>new_data</code>. Take centering and scaling using <code>step_normalize()</code> as an example. Using this step, the means and standard deviations from the appropriate columns are determined from the training set; new samples at prediction time are standardized using these values from training when <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> is invoked.</p>
-</section><section id="example-steps" class="level2" data-number="8.4"><h2 data-number="8.4" class="anchored" data-anchor-id="example-steps">
+</section><section id="sec-example-steps" class="level2" data-number="8.4"><h2 data-number="8.4" class="anchored" data-anchor-id="sec-example-steps">
 <span class="header-section-number">8.4</span> Examples of Recipe Steps</h2>
 <p>Before proceeding, let’s take an extended tour of the capabilities of <span class="pkg">recipes</span> and explore some of the most important <code>step_*()</code> functions. These recipe step functions each specify a specific possible step in a feature engineering process, and different recipe steps can have different effects on columns of data.</p>
-<section id="dummies" class="level3" data-number="8.4.1"><h3 data-number="8.4.1" class="anchored" data-anchor-id="dummies">
+<section id="sec-dummies" class="level3" data-number="8.4.1"><h3 data-number="8.4.1" class="anchored" data-anchor-id="sec-dummies">
 <span class="header-section-number">8.4.1</span> Encoding qualitative data in a numeric format</h3>
 <p>One of the most common feature engineering tasks is transforming nominal or qualitative data (factors or characters) so that they can be encoded or represented numerically. Sometimes we can alter the factor levels of a qualitative column in helpful ways prior to such a transformation. For example, <code>step_unknown()</code> can be used to change missing values to a dedicated factor level. Similarly, if we anticipate that a new factor level may be encountered in future data, <code>step_novel()</code> can allot a new level for this purpose.</p>
-<p>Additionally, <code>step_other()</code> can be used to analyze the frequencies of the factor levels in the training set and convert infrequently occurring values to a catch-all level of “other,” with a threshold that can be specified. A good example is the <code>Neighborhood</code> predictor in our data, shown in Figure @ref(fig:ames-neighborhoods).</p>
+<p>Additionally, <code>step_other()</code> can be used to analyze the frequencies of the factor levels in the training set and convert infrequently occurring values to a catch-all level of “other,” with a threshold that can be specified. A good example is the <code>Neighborhood</code> predictor in our data, shown in <a href="#fig-ames-neighborhoods">Figure&nbsp;<span>8.1</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/ames-neighborhoods-1.png" class="img-fluid figure-img" alt="A bar chart of the frequencies of neighborhoods in the Ames training set. The most homes are in North Ames while the Greens, Green Hills, and Landmark neighborhood have very few instances." width="672"></p>
-<figcaption class="figure-caption">Frequencies of neighborhoods in the Ames training set</figcaption></figure>
+<div id="fig-ames-neighborhoods" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-ames-neighborhoods-1.png" class="img-fluid figure-img" alt="A bar chart of the frequencies of neighborhoods in the Ames training set. The most homes are in North Ames while the Greens, Green Hills, and Landmark neighborhood have very few instances." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;8.1: Frequencies of neighborhoods in the Ames training set</figcaption></figure>
 </div>
 </div>
 </div>
@@ -590,11 +590,12 @@ div.csl-indent {
 <div class="rmdnote">
 <p>Many, but not all, underlying model calculations require predictor values to be encoded as numbers. Notable exceptions include tree-based models, rule-based models, and naive Bayes models.</p>
 </div>
-<p>The most common method for converting a factor predictor to a numeric format is to create dummy or indicator variables. Let’s take the predictor in the Ames data for the building type, which is a factor variable with five levels (see Table @ref(tab:dummy-vars)). For dummy variables, the single <code>Bldg_Type</code> column would be replaced with four numeric columns whose values are either zero or one. These binary variables represent specific factor level values. In R, the convention is to exclude a column for the first factor level (<code>OneFam</code>, in this case). The <code>Bldg_Type</code> column would be replaced with a column called <code>TwoFmCon</code> that is one when the row has that value and zero otherwise. Three other columns are similarly created:</p>
+<p>The most common method for converting a factor predictor to a numeric format is to create dummy or indicator variables. Let’s take the predictor in the Ames data for the building type, which is a factor variable with five levels (see <a href="#tbl-dummy-vars">Table&nbsp;<span>8.1</span></a>). For dummy variables, the single <code>Bldg_Type</code> column would be replaced with four numeric columns whose values are either zero or one. These binary variables represent specific factor level values. In R, the convention is to exclude a column for the first factor level (<code>OneFam</code>, in this case). The <code>Bldg_Type</code> column would be replaced with a column called <code>TwoFmCon</code> that is one when the row has that value and zero otherwise. Three other columns are similarly created:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
+<div id="tbl-dummy-vars" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Illustration of binary encodings (i.e., dummy variables) for a qualitative predictor.</caption>
+<caption>Table&nbsp;8.1: Illustration of binary encodings (i.e., dummy variables) for a qualitative predictor.</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Raw Data</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">TwoFmCon</th>
@@ -641,18 +642,21 @@ div.csl-indent {
 </tbody>
 </table>
 </div>
+
+
+</div>
 </div>
 <p>Why not all five? The most basic reason is simplicity; if you know the value for these four columns, you can determine the last value because these are mutually exclusive categories. More technically, the classical justification is that a number of models, including ordinary linear regression, have numerical issues when there are linear dependencies between columns. If all five building type indicator columns are included, they would add up to the intercept column (if there is one). This would cause an issue, or perhaps an outright error, in the underlying matrix algebra.</p>
 <p>The full set of encodings can be used for some models. This is traditionally called the one-hot encoding and can be achieved using the <code>one_hot</code> argument of <code>step_dummy()</code>.</p>
 <p>One helpful feature of <code>step_dummy()</code> is that there is more control over how the resulting dummy variables are named. In base R, dummy variable names mash the variable name with the level, resulting in names like <code>NeighborhoodVeenker</code>. Recipes, by default, use an underscore as the separator between the name and level (e.g., <code>Neighborhood_Veenker</code>) and there is an option to use custom formatting for the names. The default naming convention in <span class="pkg">recipes</span> makes it easier to capture those new columns in future steps using a selector, such as <code>starts_with("Neighborhood_")</code>.</p>
-<p>Traditional dummy variables require that all of the possible categories be known to create a full set of numeric features. There are other methods for doing this transformation to a numeric format. <em>Feature hashing</em> methods only consider the value of the category to assign it to a predefined pool of dummy variables. <em>Effect</em> or <em>likelihood encodings</em> replace the original data with a single numeric column that measures the <em>effect</em> of those data. Both feature hashing and effect encoding can seamlessly handle situations where a novel factor level is encountered in the data. Chapter @ref(categorical) explores these and other methods for encoding categorical data, beyond straightforward dummy or indicator variables.</p>
+<p>Traditional dummy variables require that all of the possible categories be known to create a full set of numeric features. There are other methods for doing this transformation to a numeric format. <em>Feature hashing</em> methods only consider the value of the category to assign it to a predefined pool of dummy variables. <em>Effect</em> or <em>likelihood encodings</em> replace the original data with a single numeric column that measures the <em>effect</em> of those data. Both feature hashing and effect encoding can seamlessly handle situations where a novel factor level is encountered in the data. <span class="quarto-unresolved-ref">?sec-categorical</span> explores these and other methods for encoding categorical data, beyond straightforward dummy or indicator variables.</p>
 <div class="rmdnote">
 <p>Different recipe steps behave differently when applied to variables in the data. For example, <code>step_log()</code> modifies a column in place without changing the name. Other steps, such as <code>step_dummy()</code>, eliminate the original data column and replace it with one or more columns with different names. The effect of a recipe step depends on the type of feature engineering transformation being done.</p>
 </div>
 </section><section id="interaction-terms" class="level3" data-number="8.4.2"><h3 data-number="8.4.2" class="anchored" data-anchor-id="interaction-terms">
 <span class="header-section-number">8.4.2</span> Interaction terms</h3>
-<p>Interaction effects involve two or more predictors. Such an effect occurs when one predictor has an effect on the outcome that is contingent on one or more other predictors. For example, if you were trying to predict how much traffic there will be during your commute, two potential predictors could be the specific time of day you commute and the weather. However, the relationship between the amount of traffic and bad weather is different for different times of day. In this case, you could add an interaction term between the two predictors to the model along with the original two predictors (which are called the main effects). Numerically, an interaction term between predictors is encoded as their product. Interactions are defined in terms of their effect on the outcome and can be combinations of different types of data (e.g., numeric, categorical, etc). <a href="https://bookdown.org/max/FES/detecting-interaction-effects.html">Chapter 7</a> of <span class="citation" data-cites="fes">Kuhn and Johnson (<a href="#ref-fes" role="doc-biblioref">2020</a>)</span> discusses interactions and how to detect them in greater detail.</p>
-<p>After exploring the Ames training set, we might find that the regression slopes for the gross living area differ for different building types, as shown in Figure @ref(fig:building-type-interactions).</p>
+<p>Interaction effects involve two or more predictors. Such an effect occurs when one predictor has an effect on the outcome that is contingent on one or more other predictors. For example, if you were trying to predict how much traffic there will be during your commute, two potential predictors could be the specific time of day you commute and the weather. However, the relationship between the amount of traffic and bad weather is different for different times of day. In this case, you could add an interaction term between the two predictors to the model along with the original two predictors (which are called the main effects). Numerically, an interaction term between predictors is encoded as their product. Interactions are defined in terms of their effect on the outcome and can be combinations of different types of data (e.g., numeric, categorical, etc). <a href="https://bookdown.org/max/FES/detecting-interaction-effects.html">Chapter 7</a> of <span class="citation" data-cites="fes">Kuhn and Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> discusses interactions and how to detect them in greater detail.</p>
+<p>After exploring the Ames training set, we might find that the regression slopes for the gross living area differ for different building types, as shown in <a href="#fig-building-type-interactions">Figure&nbsp;<span>8.2</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">ames_train</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Gr_Liv_Area</span>, y <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -664,9 +668,9 @@ div.csl-indent {
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/building-type-interactions-1.png" class="img-fluid figure-img" alt="Scatter plots of gross living area (in log-10 units) versus sale price (also in log-10 units) for five different building types. All trends are linear but appear to have different slopes and intercepts for the different building types." width="672"></p>
-<figcaption class="figure-caption">Gross living area (in log-10 units) versus sale price (also in log-10 units) for five different building types</figcaption></figure>
+<div id="fig-building-type-interactions" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-building-type-interactions-1.png" class="img-fluid figure-img" alt="Scatter plots of gross living area (in log-10 units) versus sale price (also in log-10 units) for five different building types. All trends are linear but appear to have different slopes and intercepts for the different building types." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;8.2: Gross living area (in log-10 units) versus sale price (also in log-10 units) for five different building types</figcaption></figure>
 </div>
 </div>
 </div>
@@ -705,7 +709,7 @@ This behavior gives you more control, but it is different from R’s standard mo
 </section><section id="spline-functions" class="level3" data-number="8.4.3"><h3 data-number="8.4.3" class="anchored" data-anchor-id="spline-functions">
 <span class="header-section-number">8.4.3</span> Spline functions</h3>
 <p>When a predictor has a nonlinear relationship with the outcome, some types of predictive models can adaptively approximate this relationship during training. However, simpler is usually better and it is not uncommon to try to use a simple model, such as a linear fit, and add in specific nonlinear features for predictors that may need them, such as longitude and latitude for the Ames housing data. One common method for doing this is to use <em>spline</em> functions to represent the data. Splines replace the existing numeric predictor with a set of columns that allow a model to emulate a flexible, nonlinear relationship. As more spline terms are added to the data, the capacity to nonlinearly represent the relationship increases. Unfortunately, it may also increase the likelihood of picking up on data trends that occur by chance (i.e., overfitting).</p>
-<p>If you have ever used <code>geom_smooth()</code> within a <code>ggplot</code>, you have probably used a spline representation of the data. For example, each panel in Figure @ref(fig:ames-latitude-splines) uses a different number of smooth splines for the latitude predictor:</p>
+<p>If you have ever used <code>geom_smooth()</code> within a <code>ggplot</code>, you have probably used a spline representation of the data. For example, each panel in <a href="#fig-ames-latitude-splines">Figure&nbsp;<span>8.3</span></a> uses a different number of smooth splines for the latitude predictor:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">splines</span><span class="op">)</span></span>
@@ -728,14 +732,14 @@ This behavior gives you more control, but it is different from R’s standard mo
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/ames-latitude-splines-1.png" class="img-fluid figure-img" alt="Scatter plots of sale price versus latitude with trend lines using natural splines with different degrees of freedom. As the degrees of freedom increase, the lines are more responsive to trends in the data but begin to become excessively complex with 100 spline terms." width="672"></p>
-<figcaption class="figure-caption">Sale price versus latitude, with trend lines using natural splines with different degrees of freedom</figcaption></figure>
+<div id="fig-ames-latitude-splines" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-ames-latitude-splines-1.png" class="img-fluid figure-img" alt="Scatter plots of sale price versus latitude with trend lines using natural splines with different degrees of freedom. As the degrees of freedom increase, the lines are more responsive to trends in the data but begin to become excessively complex with 100 spline terms." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;8.3: Sale price versus latitude, with trend lines using natural splines with different degrees of freedom</figcaption></figure>
 </div>
 </div>
 </div>
 <p>The <code><a href="https://rdrr.io/r/splines/ns.html">ns()</a></code> function in the <span class="pkg">splines</span> package generates feature columns using functions called <em>natural splines</em>.</p>
-<p>Some panels in Figure @ref(fig:ames-latitude-splines) clearly fit poorly; two terms <em>underfit</em> the data while 100 terms <em>overfit</em>. The panels with five and twenty terms seem like reasonably smooth fits that catch the main patterns of the data. This indicates that the proper amount of “nonlinear-ness” matters. The number of spline terms could then be considered a <em>tuning parameter</em> for this model. These types of parameters are explored in Chapter @ref(tuning).</p>
+<p>Some panels in <a href="#fig-ames-latitude-splines">Figure&nbsp;<span>8.3</span></a> clearly fit poorly; two terms <em>underfit</em> the data while 100 terms <em>overfit</em>. The panels with five and twenty terms seem like reasonably smooth fits that catch the main patterns of the data. This indicates that the proper amount of “nonlinear-ness” matters. The number of spline terms could then be considered a <em>tuning parameter</em> for this model. These types of parameters are explored in <span class="quarto-unresolved-ref">?sec-tuning</span>.</p>
 <p>In <span class="pkg">recipes</span>, multiple steps can create these types of terms. To add a natural spline representation for this predictor:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">recipe</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="va">Gr_Liv_Area</span> <span class="op">+</span> <span class="va">Year_Built</span> <span class="op">+</span> <span class="va">Bldg_Type</span> <span class="op">+</span> <span class="va">Latitude</span>,</span>
@@ -766,7 +770,7 @@ This behavior gives you more control, but it is different from R’s standard mo
 <p>The <a href="https://themis.tidymodels.org/"><span class="pkg">themis</span></a> package has recipe steps that can be used to address class imbalance via subsampling. For simple downsampling, we would use:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span>  <span class="fu">step_downsample</span><span class="op">(</span><span class="va">outcome_column_name</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="rmdwarning">
-<p>Only the training set should be affected by these techniques. The test set or other holdout samples should be left as-is when processed using the recipe. For this reason, all of the subsampling steps default the <code>skip</code> argument to have a value of <code>TRUE</code> (Section @ref(skip-equals-true)).</p>
+<p>Only the training set should be affected by these techniques. The test set or other holdout samples should be left as-is when processed using the recipe. For this reason, all of the subsampling steps default the <code>skip</code> argument to have a value of <code>TRUE</code> (<a href="#sec-skip-equals-true"><span>Section&nbsp;8.5</span></a>).</p>
 </div>
 <p>Other step functions are row-based as well: <code>step_filter()</code>, <code>step_sample()</code>, <code>step_slice()</code>, and <code>step_arrange()</code>. In almost all uses of these steps, the <code>skip</code> argument should be set to <code>TRUE</code>.</p>
 </section><section id="general-transformations" class="level3" data-number="8.4.6"><h3 data-number="8.4.6" class="anchored" data-anchor-id="general-transformations">
@@ -778,7 +782,7 @@ This behavior gives you more control, but it is different from R’s standard mo
 </section><section id="natural-language-processing" class="level3" data-number="8.4.7"><h3 data-number="8.4.7" class="anchored" data-anchor-id="natural-language-processing">
 <span class="header-section-number">8.4.7</span> Natural language processing</h3>
 <p>Recipes can also handle data that are not in the traditional structure where the columns are features. For example, the <a href="https://textrecipes.tidymodels.org/"><span class="pkg">textrecipes</span></a> package can apply natural language processing methods to the data. The input column is typically a string of text, and different steps can be used to tokenize the data (e.g., split the text into separate words), filter out tokens, and create new features appropriate for modeling.</p>
-</section></section><section id="skip-equals-true" class="level2" data-number="8.5"><h2 data-number="8.5" class="anchored" data-anchor-id="skip-equals-true">
+</section></section><section id="sec-skip-equals-true" class="level2" data-number="8.5"><h2 data-number="8.5" class="anchored" data-anchor-id="sec-skip-equals-true">
 <span class="header-section-number">8.5</span> Skipping Steps for New Data</h2>
 <p>The sale price data are already log-transformed in the <code>ames</code> data frame. Why not use:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span> <span class="fu">step_log</span><span class="op">(</span><span class="va">Sale_Price</span>, base <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -792,7 +796,7 @@ This behavior gives you more control, but it is different from R’s standard mo
 </section><section id="tidy-a-recipe" class="level2" data-number="8.6"><h2 data-number="8.6" class="anchored" data-anchor-id="tidy-a-recipe">
 <span class="header-section-number">8.6</span> Tidy a <code>recipe()</code>
 </h2>
-<p>In Section @ref(tidiness-modeling), we introduced the <code>tidy()</code> verb for statistical objects. There is also a <code>tidy()</code> method for recipes, as well as individual recipe steps. Before proceeding, let’s create an extended recipe for the Ames data using some of the new steps we’ve discussed in this chapter:</p>
+<p>In <a href="03-base-r.html#sec-tidiness-modeling"><span>Section&nbsp;3.3</span></a>, we introduced the <code>tidy()</code> verb for statistical objects. There is also a <code>tidy()</code> method for recipes, as well as individual recipe steps. Before proceeding, let’s create an extended recipe for the Ames data using some of the new steps we’ve discussed in this chapter:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_rec</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="va">Gr_Liv_Area</span> <span class="op">+</span> <span class="va">Year_Built</span> <span class="op">+</span> <span class="va">Bldg_Type</span> <span class="op">+</span> </span>
@@ -877,12 +881,12 @@ This behavior gives you more control, but it is different from R’s standard mo
 <p>To solve this, the <code>add_role()</code>, <code>remove_role()</code>, and <code>update_role()</code> functions can be helpful. For example, for the house price data, the role of the street address column could be modified using:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_rec</span> <span class="op">%&gt;%</span> <span class="fu">update_role</span><span class="op">(</span><span class="va">address</span>, new_role <span class="op">=</span> <span class="st">"street address"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>After this change, the <code>address</code> column in the dataframe will no longer be a predictor but instead will be a <code>"street address"</code> according to the recipe. Any character string can be used as a role. Also, columns can have multiple roles (additional roles are added via <code>add_role()</code>) so that they can be selected under more than one context.</p>
-<p>This can be helpful when the data are <em>resampled</em>. It helps to keep the columns that are not involved with the model fit in the same data frame (rather than in an external vector). Resampling, described in Chapter @ref(resampling), creates alternate versions of the data mostly by row subsampling. If the street address were in another column, additional subsampling would be required and might lead to more complex code and a higher likelihood of errors.</p>
+<p>This can be helpful when the data are <em>resampled</em>. It helps to keep the columns that are not involved with the model fit in the same data frame (rather than in an external vector). Resampling, described in <span class="quarto-unresolved-ref">?sec-resampling</span>, creates alternate versions of the data mostly by row subsampling. If the street address were in another column, additional subsampling would be required and might lead to more complex code and a higher likelihood of errors.</p>
 <p>Finally, all step functions have a <code>role</code> field that can assign roles to the results of the step. In many cases, columns affected by a step retain their existing role. For example, the <code>step_log()</code> calls to our <code>ames_rec</code> object affected the <code>Gr_Liv_Area</code> column. For that step, the default behavior is to keep the existing role for this column since no new column is created. As a counter-example, the step to produce splines defaults new columns to have a role of <code>"predictor"</code> since that is usually how spline columns are used in a model. Most steps have sensible defaults but, since the defaults can be different, be sure to check the documentation page to understand which role(s) will be assigned.</p>
-</section><section id="recipes-summary" class="level2" data-number="8.8"><h2 data-number="8.8" class="anchored" data-anchor-id="recipes-summary">
+</section><section id="sec-recipes-summary" class="level2" data-number="8.8"><h2 data-number="8.8" class="anchored" data-anchor-id="sec-recipes-summary">
 <span class="header-section-number">8.8</span> Chapter Summary</h2>
 <p>In this chapter, you learned about using <span class="pkg">recipes</span> for flexible feature engineering and data preprocessing, from creating dummy variables to handling class imbalance and more. Feature engineering is an important part of the modeling process where information leakage can easily occur and good practices must be adopted. Between the <span class="pkg">recipes</span> package and other packages that extend recipes, there are over 100 available steps. All possible recipe steps are enumerated at <a href="https://www.tidymodels.org/find/"><code>tidymodels.org/find</code></a>. The <span class="pkg">recipes</span> framework provides a rich data manipulation environment for preprocessing and transforming data prior to modeling. Additionally, <a href="https://www.tidymodels.org/learn/develop/recipes/"><code>tidymodels.org/learn/develop/recipes/</code></a> shows how custom steps can be created.</p>
-<p>Our work here has used recipes solely inside of a workflow object. For modeling, that is the recommended use because feature engineering should be estimated together with a model. However, for visualization and other activities, a workflow may not be appropriate; more recipe-specific functions may be required. Chapter @ref(dimensionality) discusses lower-level APIs for fitting, using, and troubleshooting recipes.</p>
+<p>Our work here has used recipes solely inside of a workflow object. For modeling, that is the recommended use because feature engineering should be estimated together with a model. However, for visualization and other activities, a workflow may not be appropriate; more recipe-specific functions may be required. <span class="quarto-unresolved-ref">?sec-dimensionality</span> discusses lower-level APIs for fitting, using, and troubleshooting recipes.</p>
 <p>The code that we will use in later chapters is:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
@@ -914,7 +918,7 @@ This behavior gives you more control, but it is different from R’s standard mo
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-fes" class="csl-entry" role="listitem">
 Kuhn, M, and K Johnson. 2020. <em>Feature Engineering and Selection: A Practical Approach for Predictive Models</em>. CRC Press.
 </div>

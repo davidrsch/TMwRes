@@ -338,24 +338,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#begin-model-end" id="toc-begin-model-end" class="nav-link active" data-scroll-target="#begin-model-end"><span class="header-section-number">7.1</span> Where Does the Model Begin and End?</a></li>
+<li><a href="#sec-begin-model-end" id="toc-sec-begin-model-end" class="nav-link active" data-scroll-target="#sec-begin-model-end"><span class="header-section-number">7.1</span> Where Does the Model Begin and End?</a></li>
   <li><a href="#workflow-basics" id="toc-workflow-basics" class="nav-link" data-scroll-target="#workflow-basics"><span class="header-section-number">7.2</span> Workflow Basics</a></li>
   <li><a href="#adding-raw-variables-to-the-workflow" id="toc-adding-raw-variables-to-the-workflow" class="nav-link" data-scroll-target="#adding-raw-variables-to-the-workflow"><span class="header-section-number">7.3</span> Adding Raw Variables to the <code>workflow()</code></a></li>
   <li>
-<a href="#workflow-encoding" id="toc-workflow-encoding" class="nav-link" data-scroll-target="#workflow-encoding"><span class="header-section-number">7.4</span> How Does a <code>workflow()</code> Use the Formula?</a>
+<a href="#how-does-a-workflow-use-the-formula-sec-workflow-encoding" id="toc-how-does-a-workflow-use-the-formula-sec-workflow-encoding" class="nav-link" data-scroll-target="#how-does-a-workflow-use-the-formula-sec-workflow-encoding"><span class="header-section-number">7.4</span> How Does a <code>workflow()</code> Use the Formula? {sec-#workflow-encoding}</a>
   <ul class="collapse">
 <li><a href="#tree-based-models" id="toc-tree-based-models" class="nav-link" data-scroll-target="#tree-based-models">Tree-based models</a></li>
-  <li><a href="#special-model-formulas" id="toc-special-model-formulas" class="nav-link" data-scroll-target="#special-model-formulas"><span class="header-section-number">7.4.1</span> Special formulas and inline functions</a></li>
+  <li><a href="#sec-special-model-formulas" id="toc-sec-special-model-formulas" class="nav-link" data-scroll-target="#sec-special-model-formulas"><span class="header-section-number">7.4.1</span> Special formulas and inline functions</a></li>
   </ul>
 </li>
-  <li><a href="#workflow-sets-intro" id="toc-workflow-sets-intro" class="nav-link" data-scroll-target="#workflow-sets-intro"><span class="header-section-number">7.5</span> Creating Multiple Workflows at Once</a></li>
+  <li><a href="#sec-workflow-sets-intro" id="toc-sec-workflow-sets-intro" class="nav-link" data-scroll-target="#sec-workflow-sets-intro"><span class="header-section-number">7.5</span> Creating Multiple Workflows at Once</a></li>
   <li><a href="#evaluating-the-test-set" id="toc-evaluating-the-test-set" class="nav-link" data-scroll-target="#evaluating-the-test-set"><span class="header-section-number">7.6</span> Evaluating the Test Set</a></li>
-  <li><a href="#workflows-summary" id="toc-workflows-summary" class="nav-link" data-scroll-target="#workflows-summary"><span class="header-section-number">7.7</span> Chapter Summary</a></li>
+  <li><a href="#sec-workflows-summary" id="toc-sec-workflows-summary" class="nav-link" data-scroll-target="#sec-workflows-summary"><span class="header-section-number">7.7</span> Chapter Summary</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/07-the-model-workflow.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="workflows" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A Model Workflow</span></span></h1>
+<h1 class="title"><span id="sec-workflows" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A Model Workflow</span></span></h1>
 </div>
 
 
@@ -368,8 +368,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><p>In the previous chapter, we discussed the <span class="pkg">parsnip</span> package, which can be used to define and fit the model. This chapter introduces a new concept called a <em>model workflow</em>. The purpose of this concept (and the corresponding tidymodels <code>workflow()</code> object) is to encapsulate the major pieces of the modeling process (discussed in Section @ref(model-phases)). The workflow is important in two ways. First, using a workflow concept encourages good methodology since it is a single point of entry to the estimation components of a data analysis. Second, it enables the user to better organize projects. These two points are discussed in the following sections.</p>
-<section id="begin-model-end" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="begin-model-end">
+</header><p>In the previous chapter, we discussed the <span class="pkg">parsnip</span> package, which can be used to define and fit the model. This chapter introduces a new concept called a <em>model workflow</em>. The purpose of this concept (and the corresponding tidymodels <code>workflow()</code> object) is to encapsulate the major pieces of the modeling process (discussed in <a href="01-software-modeling.html#sec-model-phases"><span>Section&nbsp;1.5</span></a>). The workflow is important in two ways. First, using a workflow concept encourages good methodology since it is a single point of entry to the estimation components of a data analysis. Second, it enables the user to better organize projects. These two points are discussed in the following sections.</p>
+<section id="sec-begin-model-end" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="sec-begin-model-end">
 <span class="header-section-number">7.1</span> Where Does the Model Begin and End?</h2>
 <p>So far, when we have used the term “the model,” we have meant a structural equation that relates some predictors to one or more outcomes. Let’s consider again linear regression as an example. The outcome data are denoted as <span class="math inline">\(y_i\)</span>, where there are <span class="math inline">\(i = 1 \ldots n\)</span> samples in the training set. Suppose that there are <span class="math inline">\(p\)</span> predictors <span class="math inline">\(x_{i1}, \ldots, x_{ip}\)</span> that are used in the model. Linear regression produces a model equation of</p>
 <p><span class="math display">\[ \hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1x_{i1} + \ldots + \hat{\beta}_px_{ip} \]</span></p>
@@ -388,24 +388,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="rmdnote">
 <p>In other software, such as Python or Spark, similar collections of steps are called <em>pipelines</em>. In tidymodels, the term “pipeline” already connotes a sequence of operations chained together with a pipe operator (such as <code>%&gt;%</code> from <span class="pkg">magrittr</span> or the newer native <code>|&gt;</code>). Rather than using ambiguous terminology in this context, we call the sequence of computational operations related to modeling <em>workflows</em>.</p>
 </div>
-<p>Binding together the analytical components of data analysis is important for another reason. Future chapters will demonstrate how to accurately measure performance, as well as how to optimize structural parameters (i.e., model tuning). To correctly quantify model performance on the training set, Chapter @ref(resampling) advocates using resampling methods. To do this properly, no data-driven parts of the analysis should be excluded from validation. To this end, the workflow must include all significant estimation steps.</p>
-<p>To illustrate, consider principal component analysis (PCA) signal extraction. We’ll talk about this more in Section @ref(example-steps) as well as Chapter @ref(dimensionality); PCA is a way to replace correlated predictors with new artificial features that are uncorrelated and capture most of the information in the original set. The new features could be used as the predictors, and least squares regression could be used to estimate the model parameters.</p>
-<p>There are two ways of thinking about the model workflow. Figure @ref(fig:bad-workflow) illustrates the <em>incorrect</em> method: to think of the PCA preprocessing step, as <em>not being part of the modeling workflow</em>.</p>
+<p>Binding together the analytical components of data analysis is important for another reason. Future chapters will demonstrate how to accurately measure performance, as well as how to optimize structural parameters (i.e., model tuning). To correctly quantify model performance on the training set, <span class="quarto-unresolved-ref">?sec-resampling</span> advocates using resampling methods. To do this properly, no data-driven parts of the analysis should be excluded from validation. To this end, the workflow must include all significant estimation steps.</p>
+<p>To illustrate, consider principal component analysis (PCA) signal extraction. We’ll talk about this more in <a href="08-feature-engineering.html#sec-example-steps"><span>Section&nbsp;8.4</span></a> as well as <span class="quarto-unresolved-ref">?sec-dimensionality</span>; PCA is a way to replace correlated predictors with new artificial features that are uncorrelated and capture most of the information in the original set. The new features could be used as the predictors, and least squares regression could be used to estimate the model parameters.</p>
+<p>There are two ways of thinking about the model workflow. <a href="#fig-bad-workflow">Figure&nbsp;<span>7.1</span></a> illustrates the <em>incorrect</em> method: to think of the PCA preprocessing step, as <em>not being part of the modeling workflow</em>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-bad-workflow" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/bad-workflow.svg" class="img-fluid figure-img" style="width:80.0%" alt="An incorrect mental model of where model estimation occurs in the data analysis process. The data and predictor set are substrates for an initial preprocessing step using PCA. These data are passed to the model fitting algorithm to produce a fitted model. The figure indicates that the model workflow only includes the model fitting process. This implies that the model fit is the only place where estimation occurs."></p>
-<figcaption class="figure-caption">Incorrect mental model of where model estimation occurs in the data analysis process</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;7.1: Incorrect mental model of where model estimation occurs in the data analysis process</figcaption></figure>
 </div>
 </div>
 </div>
 <p>The fallacy here is that, although PCA does significant computations to produce the components, its operations are assumed to have no uncertainty associated with them. The PCA components are treated as <em>known</em> and, if not included in the model workflow, the effect of PCA could not be adequately measured.</p>
-<p>Figure @ref(fig:good-workflow) shows an <em>appropriate</em> approach.</p>
+<p><a href="#fig-good-workflow">Figure&nbsp;<span>7.2</span></a> shows an <em>appropriate</em> approach.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-good-workflow" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/proper-workflow.svg" class="img-fluid figure-img" style="width:80.0%" alt="A correct mental model of where model estimation occurs in the data analysis process. The data and predictor set are substrates for an initial preprocessing step using PCA. These data are passed to the model fitting algorithm to produce a fitted model. The figure indicates that the model workflow includes the model fitting process and the PCA step. This implies that both operations should be considered estimation steps."></p>
-<figcaption class="figure-caption">Correct mental model of where model estimation occurs in the data analysis process</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;7.2: Correct mental model of where model estimation occurs in the data analysis process</figcaption></figure>
 </div>
 </div>
 </div>
@@ -457,7 +457,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## </span></span>
 <span><span class="co">## Computational engine: lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Workflows have a <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> method that can be used to create the model. Using the objects created in Section @ref(models-summary):</p>
+<p>Workflows have a <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> method that can be used to create the model. Using the objects created in <a href="06-fitting-models.html#sec-models-summary"><span>Section&nbsp;6.6</span></a>:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_fit</span> <span class="op">&lt;-</span> <span class="fu">fit</span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_train</span><span class="op">)</span></span>
 <span><span class="va">lm_fit</span></span>
@@ -487,7 +487,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## 2  5.21</span></span>
 <span><span class="co">## 3  5.28</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> method follows all of the same rules and naming conventions that we described for the <span class="pkg">parsnip</span> package in Section @ref(parsnip-predictions).</p>
+<p>The <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> method follows all of the same rules and naming conventions that we described for the <span class="pkg">parsnip</span> package in <a href="06-fitting-models.html#sec-parsnip-predictions"><span>Section&nbsp;6.3</span></a>.</p>
 <p>Both the model and preprocessor can be removed or updated:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_fit</span> <span class="op">%&gt;%</span> <span class="fu">update_formula</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span><span class="op">)</span></span>
@@ -555,11 +555,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## (Intercept)    Longitude     Latitude  </span></span>
 <span><span class="co">##     -302.97        -2.07         2.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>If you would like the underlying modeling method to do what it would normally do with the data, <code>add_variables()</code> can be a helpful interface. As we will see in Section @ref(special-model-formulas), it also facilitates more complex modeling specifications. However, as we mention in the next section, models such as <code>glmnet</code> and <code>xgboost</code> expect the user to make indicator variables from factor predictors. In these cases, a recipe or formula interface will typically be a better choice.</p>
+<p>If you would like the underlying modeling method to do what it would normally do with the data, <code>add_variables()</code> can be a helpful interface. As we will see in <a href="#sec-special-model-formulas"><span>Section&nbsp;7.4.1</span></a>, it also facilitates more complex modeling specifications. However, as we mention in the next section, models such as <code>glmnet</code> and <code>xgboost</code> expect the user to make indicator variables from factor predictors. In these cases, a recipe or formula interface will typically be a better choice.</p>
 <p>In the next chapter, we will look at a more powerful preprocessor (called a <em>recipe</em>) that can also be added to a workflow.</p>
-</section><section id="workflow-encoding" class="level2" data-number="7.4"><h2 data-number="7.4" class="anchored" data-anchor-id="workflow-encoding">
-<span class="header-section-number">7.4</span> How Does a <code>workflow()</code> Use the Formula?</h2>
-<p>Recall from Section @ref(formula) that the formula method in R has multiple purposes (we will discuss this further in Chapter @ref(recipes)). One of these is to properly encode the original data into an analysis-ready format. This can involve executing inline transformations (e.g., <code>log(x)</code>), creating dummy variable columns, creating interactions or other column expansions, and so on. However, many statistical methods require different types of encodings:</p>
+</section><section id="how-does-a-workflow-use-the-formula-sec-workflow-encoding" class="level2" data-number="7.4"><h2 data-number="7.4" class="anchored" data-anchor-id="how-does-a-workflow-use-the-formula-sec-workflow-encoding">
+<span class="header-section-number">7.4</span> How Does a <code>workflow()</code> Use the Formula? {sec-#workflow-encoding}</h2>
+<p>Recall from <a href="03-base-r.html#sec-formula"><span>Section&nbsp;3.2</span></a> that the formula method in R has multiple purposes (we will discuss this further in <a href="08-feature-engineering.html">Chapter&nbsp;<span>8</span></a>). One of these is to properly encode the original data into an analysis-ready format. This can involve executing inline transformations (e.g., <code>log(x)</code>), creating dummy variable columns, creating interactions or other column expansions, and so on. However, many statistical methods require different types of encodings:</p>
 <ul>
 <li><p>Most packages for tree-based models use the formula interface but <em>do not</em> encode the categorical predictors as dummy variables.</p></li>
 <li><p>Packages can use special inline functions that tell the model function how to treat the predictor in the analysis. For example, in survival analysis models, a formula term such as <code>strata(site)</code> would indicate that the column <code>site</code> is a stratification variable. This means it should not be treated as a regular predictor and does not have a corresponding location parameter estimate in the model.</p></li>
@@ -570,7 +570,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>When we fit a tree to the data, the <span class="pkg">parsnip</span> package understands what the modeling function would do. For example, if a random forest model is fit using the <span class="pkg">ranger</span> or <span class="pkg">randomForest</span> packages, the workflow knows predictors columns that are factors should be left as is.</p>
 <p>As a counterexample, a boosted tree created with the <span class="pkg">xgboost</span> package requires the user to create dummy variables from factor predictors (since <code><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html">xgboost::xgb.train()</a></code> will not). This requirement is embedded into the model specification object and a workflow using <span class="pkg">xgboost</span> will create the indicator columns for this engine. Also note that a different engine for boosted trees, C5.0, does not require dummy variables so none are made by the workflow.</p>
 <p>This determination is made for each model and engine combination.</p>
-</section><section id="special-model-formulas" class="level3" data-number="7.4.1"><h3 data-number="7.4.1" class="anchored" data-anchor-id="special-model-formulas">
+</section><section id="sec-special-model-formulas" class="level3" data-number="7.4.1"><h3 data-number="7.4.1" class="anchored" data-anchor-id="sec-special-model-formulas">
 <span class="header-section-number">7.4.1</span> Special formulas and inline functions</h3>
 <p>A number of multilevel models have standardized on a formula specification devised in the <span class="pkg">lme4</span> package. For example, to fit a regression model that has random effects for subjects, we would use the following formula:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/">lme4</a></span><span class="op">)</span></span>
@@ -674,7 +674,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## n= 26</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Notice how in both of these calls the model-specific formula was used.</p>
-</section></section><section id="workflow-sets-intro" class="level2" data-number="7.5"><h2 data-number="7.5" class="anchored" data-anchor-id="workflow-sets-intro">
+</section></section><section id="sec-workflow-sets-intro" class="level2" data-number="7.5"><h2 data-number="7.5" class="anchored" data-anchor-id="sec-workflow-sets-intro">
 <span class="header-section-number">7.5</span> Creating Multiple Workflows at Once</h2>
 <p>In some situations, the data require numerous attempts to find an appropriate model. For example:</p>
 <ul>
@@ -721,7 +721,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## </span></span>
 <span><span class="co">## Computational engine: lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Workflow sets are mostly designed to work with resampling, which is discussed in Chapter @ref(resampling). The columns <code>option</code> and <code>result</code> must be populated with specific types of objects that result from resampling. We will demonstrate this in more detail in Chapters @ref(compare) and @ref(workflow-sets).</p>
+<p>Workflow sets are mostly designed to work with resampling, which is discussed in <span class="quarto-unresolved-ref">?sec-resampling</span>. The columns <code>option</code> and <code>result</code> must be populated with specific types of objects that result from resampling. We will demonstrate this in more detail in Chapters <span class="quarto-unresolved-ref">?sec-compare</span> and <span class="quarto-unresolved-ref">?sec-workflow-sets</span>.</p>
 <p>In the meantime, let’s create model fits for each formula and save them in a new column called <code>fit</code>. We’ll use basic <span class="pkg">dplyr</span> and <span class="pkg">purrr</span> operations:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">location_models</span> <span class="op">&lt;-</span></span>
@@ -752,9 +752,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## (Intercept)    Longitude  </span></span>
 <span><span class="co">##     -184.40        -2.02</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We use a <span class="pkg">purrr</span> function here to map through our models, but there is an easier, better approach to fit workflow sets that will be introduced in Section @ref(workflow-set).</p>
+<p>We use a <span class="pkg">purrr</span> function here to map through our models, but there is an easier, better approach to fit workflow sets that will be introduced in <span class="quarto-unresolved-ref">?sec-workflow-set</span>.</p>
 <div class="rmdnote">
-<p>In general, there’s a lot more to workflow sets! While we’ve covered the basics here, the nuances and advantages of workflow sets won’t be illustrated until Chapter @ref(workflow-sets).</p>
+<p>In general, there’s a lot more to workflow sets! While we’ve covered the basics here, the nuances and advantages of workflow sets won’t be illustrated until <span class="quarto-unresolved-ref">?sec-workflow-sets</span>.</p>
 </div>
 </section><section id="evaluating-the-test-set" class="level2" data-number="7.6"><h2 data-number="7.6" class="anchored" data-anchor-id="evaluating-the-test-set">
 <span class="header-section-number">7.6</span> Evaluating the Test Set</h2>
@@ -782,11 +782,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We’ll see more about <code>last_fit()</code> in action and how to use it again in Section @ref(bean-models).</p>
+<p>We’ll see more about <code>last_fit()</code> in action and how to use it again in <span class="quarto-unresolved-ref">?sec-bean-models</span>.</p>
 <div class="rmdnote">
 <p>When using validation sets, <code>last_fit()</code> has an argument called <code>add_validation_set</code> to specify if we should train the final model solely on the training set (the default) or the combination of the training and validation sets.</p>
 </div>
-</section><section id="workflows-summary" class="level2" data-number="7.7"><h2 data-number="7.7" class="anchored" data-anchor-id="workflows-summary">
+</section><section id="sec-workflows-summary" class="level2" data-number="7.7"><h2 data-number="7.7" class="anchored" data-anchor-id="sec-workflows-summary">
 <span class="header-section-number">7.7</span> Chapter Summary</h2>
 <p>In this chapter, you learned that the modeling process encompasses more than just estimating the parameters of an algorithm that connects predictors to an outcome. This process also includes preprocessing steps and operations taken after a model is fit. We introduced a concept called a <em>model workflow</em> that can capture the important components of the modeling process. Multiple workflows can also be created inside of a <em>workflow set</em>. The <code>last_fit()</code> function is convenient for fitting a final model to the training set and evaluating with the test set.</p>
 <p>For the Ames data, the related code that we’ll see used again is:</p>

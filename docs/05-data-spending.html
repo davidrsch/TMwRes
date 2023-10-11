@@ -357,16 +357,16 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#splitting-methods" id="toc-splitting-methods" class="nav-link active" data-scroll-target="#splitting-methods"><span class="header-section-number">5.1</span> Common Methods for Splitting Data</a></li>
+<li><a href="#sec-splitting-methods" id="toc-sec-splitting-methods" class="nav-link active" data-scroll-target="#sec-splitting-methods"><span class="header-section-number">5.1</span> Common Methods for Splitting Data</a></li>
   <li><a href="#what-about-a-validation-set" id="toc-what-about-a-validation-set" class="nav-link" data-scroll-target="#what-about-a-validation-set"><span class="header-section-number">5.2</span> What About a Validation Set?</a></li>
   <li><a href="#multilevel-data" id="toc-multilevel-data" class="nav-link" data-scroll-target="#multilevel-data"><span class="header-section-number">5.3</span> Multilevel Data</a></li>
   <li><a href="#other-considerations-for-a-data-budget" id="toc-other-considerations-for-a-data-budget" class="nav-link" data-scroll-target="#other-considerations-for-a-data-budget"><span class="header-section-number">5.4</span> Other Considerations for a Data Budget</a></li>
-  <li><a href="#splitting-summary" id="toc-splitting-summary" class="nav-link" data-scroll-target="#splitting-summary"><span class="header-section-number">5.5</span> Chapter Summary</a></li>
+  <li><a href="#sec-splitting-summary" id="toc-sec-splitting-summary" class="nav-link" data-scroll-target="#sec-splitting-summary"><span class="header-section-number">5.5</span> Chapter Summary</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/05-data-spending.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="splitting" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spending our Data</span></span></h1>
+<h1 class="title"><span id="sec-splitting" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spending our Data</span></span></h1>
 </div>
 
 
@@ -385,14 +385,14 @@ div.csl-indent {
 </div>
 <p>When there are copious amounts of data available, a smart strategy is to allocate specific subsets of data for different tasks, as opposed to allocating the largest possible amount (or even all) to the model parameter estimation only. For example, one possible strategy (when both data and predictors are abundant) is to spend a specific subset of data to determine which predictors are informative, before considering parameter estimation at all. If the initial pool of data available is not huge, there will be some overlap in how and when our data is “spent” or allocated, and a solid methodology for data spending is important.</p>
 <p>This chapter demonstrates the basics of <em>splitting</em> (i.e., creating a data budget) for our initial pool of samples for different purposes.</p>
-<section id="splitting-methods" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="splitting-methods">
+<section id="sec-splitting-methods" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="sec-splitting-methods">
 <span class="header-section-number">5.1</span> Common Methods for Splitting Data</h2>
 <p>The primary approach for empirical model validation is to split the existing pool of data into two distinct sets, the training set and the test set. One portion of the data is used to develop and optimize the model. This <em>training set</em> is usually the majority of the data. These data are a sandbox for model building where different models can be fit, feature engineering strategies are investigated, and so on. As modeling practitioners, we spend the vast majority of the modeling process using the training set as the substrate to develop the model.</p>
 <p>The other portion of the data is placed into the <em>test set</em>. This is held in reserve until one or two models are chosen as the methods most likely to succeed. The test set is then used as the final arbiter to determine the efficacy of the model. It is critical to look at the test set only once; otherwise, it becomes part of the modeling process.</p>
 <div class="rmdnote">
 <p>How should we conduct this split of the data? The answer depends on the context.</p>
 </div>
-<p>Suppose we allocate 80% of the data to the training set and the remaining 20% for testing. The most common method is to use simple random sampling. The <a href="https://rsample.tidymodels.org/"><span class="pkg">rsample</span></a> package has tools for making data splits such as this; the function <code>initial_split()</code> was created for this purpose. It takes the data frame as an argument as well as the proportion to be placed into training. Using the data frame produced by the code snippet from the summary in Section @ref(ames-summary) that prepared the Ames data set:</p>
+<p>Suppose we allocate 80% of the data to the training set and the remaining 20% for testing. The most common method is to use simple random sampling. The <a href="https://rsample.tidymodels.org/"><span class="pkg">rsample</span></a> package has tools for making data splits such as this; the function <code>initial_split()</code> was created for this purpose. It takes the data frame as an argument as well as the proportion to be placed into training. Using the data frame produced by the code snippet from the summary in <a href="04-ames.html#sec-ames-summary"><span>Section&nbsp;4.2</span></a> that prepared the Ames data set:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -417,16 +417,16 @@ div.csl-indent {
 <span><span class="co">## [1] 2344   74</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These objects are data frames with the same columns as the original data but only the appropriate rows for each set.</p>
-<p>Simple random sampling is appropriate in many cases but there are exceptions. When there is a dramatic <em>class imbalance</em> in classification problems, one class occurs much less frequently than another. Using a simple random sample may haphazardly allocate these infrequent samples disproportionately into the training or test set. To avoid this, <em>stratified sampling</em> can be used. The training/test split is conducted separately within each class and then these subsamples are combined into the overall training and test set. For regression problems, the outcome data can be artificially binned into quartiles and then stratified sampling can be conducted four separate times. This is an effective method for keeping the distributions of the outcome similar between the training and test set. The distribution of the sale price outcome for the Ames housing data is shown in Figure @ref(fig:ames-sale-price).</p>
+<p>Simple random sampling is appropriate in many cases but there are exceptions. When there is a dramatic <em>class imbalance</em> in classification problems, one class occurs much less frequently than another. Using a simple random sample may haphazardly allocate these infrequent samples disproportionately into the training or test set. To avoid this, <em>stratified sampling</em> can be used. The training/test split is conducted separately within each class and then these subsamples are combined into the overall training and test set. For regression problems, the outcome data can be artificially binned into quartiles and then stratified sampling can be conducted four separate times. This is an effective method for keeping the distributions of the outcome similar between the training and test set. The distribution of the sale price outcome for the Ames housing data is shown in <a href="#fig-ames-sale-price">Figure&nbsp;<span>5.1</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/ames-sale-price-1.png" class="img-fluid figure-img" alt="The distribution of the sale price (in log units) for the Ames housing data. The vertical lines indicate the quartiles of the data." width="672"></p>
-<figcaption class="figure-caption">The distribution of the sale price (in log units) for the Ames housing data. The vertical lines indicate the quartiles of the data</figcaption></figure>
+<div id="fig-ames-sale-price" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-ames-sale-price-1.png" class="img-fluid figure-img" alt="The distribution of the sale price (in log units) for the Ames housing data. The vertical lines indicate the quartiles of the data." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;5.1: The distribution of the sale price (in log units) for the Ames housing data. The vertical lines indicate the quartiles of the data</figcaption></figure>
 </div>
 </div>
 </div>
-<p>As discussed in Chapter @ref(ames), the sale price distribution is right-skewed, with proportionally more inexpensive houses than expensive houses on either side of the center of the distribution. The worry here with simple splitting is that the more expensive houses would not be well represented in the training set; this would increase the risk that our model would be ineffective at predicting the price for such properties. The dotted vertical lines in Figure @ref(fig:ames-sale-price) indicate the four quartiles for these data. A stratified random sample would conduct the 80/20 split within each of these data subsets and then pool the results. In <span class="pkg">rsample</span>, this is achieved using the <code>strata</code> argument:</p>
+<p>As discussed in <a href="04-ames.html">Chapter&nbsp;<span>4</span></a>, the sale price distribution is right-skewed, with proportionally more inexpensive houses than expensive houses on either side of the center of the distribution. The worry here with simple splitting is that the more expensive houses would not be well represented in the training set; this would increase the risk that our model would be ineffective at predicting the price for such properties. The dotted vertical lines in <a href="#fig-ames-sale-price">Figure&nbsp;<span>5.1</span></a> indicate the four quartiles for these data. A stratified random sample would conduct the 80/20 split within each of these data subsets and then pool the results. In <span class="pkg">rsample</span>, this is achieved using the <code>strata</code> argument:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">502</span><span class="op">)</span></span>
 <span><span class="va">ames_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">ames</span>, prop <span class="op">=</span> <span class="fl">0.80</span>, strata <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span></span>
@@ -451,7 +451,7 @@ div.csl-indent {
 <div class="rmdnote">
 <p>Whether validation sets are a subset of the training set or a third allocation in the initial split of the data largely comes down to semantics.</p>
 </div>
-<p>Validation sets are discussed more in Section @ref(validation) as a special case of <em>resampling</em> methods that are used on the training set. If you are going to use a validation set, you can start with a different splitting function<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
+<p>Validation sets are discussed more in <span class="quarto-unresolved-ref">?sec-validation</span> as a special case of <em>resampling</em> methods that are used on the training set. If you are going to use a validation set, you can start with a different splitting function<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">52</span><span class="op">)</span></span>
 <span><span class="co"># To put 60% into training, 20% in validation, and 20% in testing:</span></span>
@@ -467,16 +467,16 @@ div.csl-indent {
 <span><span class="va">ames_test</span> <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">ames_val_split</span><span class="op">)</span></span>
 <span><span class="va">ames_val</span> <span class="op">&lt;-</span> <span class="fu">validation</span><span class="op">(</span><span class="va">ames_val_split</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Section @ref(validation) will demonstrate how to use the <code>ames_val_split</code> object for resampling and model optimization.</p>
+<p><span class="quarto-unresolved-ref">?sec-validation</span> will demonstrate how to use the <code>ames_val_split</code> object for resampling and model optimization.</p>
 </section><section id="multilevel-data" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="multilevel-data">
 <span class="header-section-number">5.3</span> Multilevel Data</h2>
 <p>With the Ames housing data, a property is considered to be the <em>independent experimental unit</em>. It is safe to assume that, statistically, the data from a property are independent of other properties. For other applications, that is not always the case:</p>
 <ul>
 <li><p>For longitudinal data, for example, the same independent experimental unit can be measured over multiple time points. An example would be a human subject in a medical trial.</p></li>
 <li><p>A batch of manufactured product might also be considered the independent experimental unit. In repeated measures designs, replicate data points from a batch are collected at multiple times.</p></li>
-<li><p><span class="citation" data-cites="spicer2018">Johnson et al. (<a href="#ref-spicer2018" role="doc-biblioref">2018</a>)</span> report an experiment where different trees were sampled across the top and bottom portions of a stem. Here, the tree is the experimental unit and the data hierarchy is sample within stem position within tree.</p></li>
+<li><p><span class="citation" data-cites="spicer2018">Johnson et al. (<a href="references.html#ref-spicer2018" role="doc-biblioref">2018</a>)</span> report an experiment where different trees were sampled across the top and bottom portions of a stem. Here, the tree is the experimental unit and the data hierarchy is sample within stem position within tree.</p></li>
 </ul>
-<p>Chapter 9 of <span class="citation" data-cites="fes">Kuhn and Johnson (<a href="#ref-fes" role="doc-biblioref">2020</a>)</span> contains other examples.</p>
+<p>Chapter 9 of <span class="citation" data-cites="fes">Kuhn and Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> contains other examples.</p>
 <p>In these situations, the data set will have multiple rows per experimental unit. Simple resampling across rows would lead to some data within an experimental unit being in the training set and others in the test set. Data splitting should occur at the independent experimental unit level of the data. For example, to produce an 80/20 split of the Ames housing data set, 80% of the properties should be allocated for the training set.</p>
 </section><section id="other-considerations-for-a-data-budget" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="other-considerations-for-a-data-budget">
 <span class="header-section-number">5.4</span> Other Considerations for a Data Budget</h2>
@@ -486,9 +486,9 @@ div.csl-indent {
 </div>
 <p>For example, in a machine learning competition, the test set data might be provided without the true outcome values so that the model can be scored and ranked. One potential method for improving the score might be to fit the model using the training set points that are most similar to the test set values. While the test set isn’t directly used to fit the model, it still has a heavy influence. In general, this technique is highly problematic since it reduces the <em>generalization error</em> of the model to optimize performance on a specific data set. There are more subtle ways that the test set data can be used during training. Keeping the training data in a separate data frame from the test set is one small check to make sure that information leakage does not occur by accident.</p>
 <p>Second, techniques to subsample the training set can mitigate specific issues (e.g., class imbalances). This is a valid and common technique that deliberately results in the training set data diverging from the population from which the data were drawn. It is critical that the test set continues to mirror what the model would encounter in the wild. In other words, the test set should always resemble new data that will be given to the model.</p>
-<p>Next, at the beginning of this chapter, we warned about using the same data for different tasks. Chapter @ref(resampling) will discuss solid, data-driven methodologies for data usage that will reduce the risks related to bias, overfitting, and other issues. Many of these methods apply the data-splitting tools introduced in this chapter.</p>
+<p>Next, at the beginning of this chapter, we warned about using the same data for different tasks. <span class="quarto-unresolved-ref">?sec-resampling</span> will discuss solid, data-driven methodologies for data usage that will reduce the risks related to bias, overfitting, and other issues. Many of these methods apply the data-splitting tools introduced in this chapter.</p>
 <p>Finally, the considerations in this chapter apply to developing and choosing a reliable model, the main topic of this book. When training a final chosen model for production, after ascertaining the expected performance on new data, practitioners often use all available data for better parameter estimation.</p>
-</section><section id="splitting-summary" class="level2" data-number="5.5"><h2 data-number="5.5" class="anchored" data-anchor-id="splitting-summary">
+</section><section id="sec-splitting-summary" class="level2" data-number="5.5"><h2 data-number="5.5" class="anchored" data-anchor-id="sec-splitting-summary">
 <span class="header-section-number">5.5</span> Chapter Summary</h2>
 <p>Data splitting is the fundamental strategy for empirical validation of models. Even in the era of unrestrained data collection, a typical modeling project has a limited amount of appropriate data, and wise spending of a project’s data is necessary. In this chapter, we discussed several strategies for partitioning the data into distinct groups for modeling and evaluation.</p>
 <p>At this checkpoint, the important code snippets for preparing and splitting are:</p>
@@ -504,7 +504,7 @@ div.csl-indent {
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-spicer2018" class="csl-entry" role="listitem">
 Johnson, D, P Eckart, N Alsamadisi, H Noble, C Martin, and R Spicer. 2018. <span>“Polar Auxin Transport Is Implicated in Vessel Differentiation and Spatial Patterning During Secondary Growth in Populus.”</span> <em>American Journal of Botany</em> 105 (2): 186–96.
 </div>
@@ -514,7 +514,7 @@ Kuhn, M, and K Johnson. 2020. <em>Feature Engineering and Selection: A Practical
 </div>
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
-<li id="fn1"><p>This is discussed in much greater detail in Section @ref(overfitting-bad).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>This is discussed in much greater detail in <span class="quarto-unresolved-ref">?sec-overfitting-bad</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>This interface is available as of rsample version 1.2.0 (circa September 2023).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {

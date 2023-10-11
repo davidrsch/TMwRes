@@ -406,22 +406,36 @@ div.csl-indent {
 </div>
 <section id="exploring-features-of-homes-in-ames" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="exploring-features-of-homes-in-ames">
 <span class="header-section-number">4.1</span> Exploring Features of Homes in Ames</h2>
-<p>Let’s start our exploratory data analysis by focusing on the outcome we want to predict: the last sale price of the house (in USD). We can create a histogram to see the distribution of sale prices in <span class="quarto-unresolved-ref">?fig-ames-sale-price-hist</span>.</p>
+<p>Let’s start our exploratory data analysis by focusing on the outcome we want to predict: the last sale price of the house (in USD). We can create a histogram to see the distribution of sale prices in <a href="#fig-ames-sale-price-hist">Figure&nbsp;<span>4.1</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/tidymodels/man/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="va">ames</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">50</span>, col<span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><code>{r  #| label: fig-ames-sale-price-hist #| ref.label: "ames-sale-price-code" #| out.width: '100%' #| fig.width: 8 #| fig.height: 3 #| echo: FALSE #| fig.cap: "Sale prices of houses in Ames, Iowa" #| fig.alt: "A histogram of the sale prices of houses in Ames, Iowa. The distribution has a long right tail."</code></p>
-<p>This plot shows us that the data are right-skewed; there are more inexpensive houses than expensive ones. The median sale price was $160,000, and the most expensive house was $755,000. When modeling this outcome, a strong argument can be made that the price should be log-transformed. The advantages of this type of transformation are that no houses would be predicted with negative sale prices and that errors in predicting expensive houses will not have an undue influence on the model. Also, from a statistical perspective, a logarithmic transform may also stabilize the variance in a way that makes inference more legitimate. We can use similar steps to now visualize the transformed data, shown in <span class="quarto-unresolved-ref">?fig-ames-log-sale-price-hist</span>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ames-sale-price-hist" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-ames-sale-price-hist-1.png" class="img-fluid figure-img" style="width:100.0%" alt="A histogram of the sale prices of houses in Ames, Iowa. The distribution has a long right tail."></p>
+<figcaption class="figure-caption">Figure&nbsp;4.1: Sale prices of houses in Ames, Iowa</figcaption></figure>
+</div>
+</div>
+</div>
+<p>This plot shows us that the data are right-skewed; there are more inexpensive houses than expensive ones. The median sale price was $160,000, and the most expensive house was $755,000. When modeling this outcome, a strong argument can be made that the price should be log-transformed. The advantages of this type of transformation are that no houses would be predicted with negative sale prices and that errors in predicting expensive houses will not have an undue influence on the model. Also, from a statistical perspective, a logarithmic transform may also stabilize the variance in a way that makes inference more legitimate. We can use similar steps to now visualize the transformed data, shown in <a href="#fig-ames-log-sale-price-hist">Figure&nbsp;<span>4.2</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">ames</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">50</span>, col<span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_x_log10</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><code>{r  #| label: fig-ames-log-sale-price-hist #| ref.label: "ames-log-sale-price-code" #| out.width: '100%' #| fig.width: 8 #| fig.height: 3 #| echo: FALSE #| fig.cap: "Sale prices of houses in Ames, Iowa after a log (base 10) transformation", #| fig.alt: "A histogram of the sale prices of houses in Ames, Iowa after a log (base 10) transformation. The distribution, while not perfectly symmetric, exhibits far less skewness."</code></p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ames-log-sale-price-hist" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-ames-log-sale-price-hist-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption class="figure-caption">Figure&nbsp;4.2: Sale prices of houses in Ames, Iowa after a log (base 10) transformation</figcaption></figure>
+</div>
+</div>
+</div>
 <p>While not perfect, this will likely result in better models than using the untransformed data, for the reasons just outlined.</p>
 <div class="rmdwarning">
 <p>The disadvantages of transforming the outcome mostly relate to interpretation of model results.</p>
@@ -429,59 +443,59 @@ div.csl-indent {
 <p>The units of the model coefficients might be more difficult to interpret, as will measures of performance. For example, the root mean squared error (RMSE) is a common performance metric used in regression models. It uses the difference between the observed and predicted values in its calculations. If the sale price is on the log scale, these differences (i.e., the residuals) are also on the log scale. It can be difficult to understand the quality of a model whose RMSE is 0.15 on such a log scale.</p>
 <p>Despite these drawbacks, the models used in this book use the log transformation for this outcome. <em>From this point on</em>, the outcome column is prelogged in the <code>ames</code> data frame:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="va">ames</span> <span class="op"><a href="https://rdrr.io/pkg/magrittr/man/pipe.html">%&gt;%</a></span> <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="va">ames</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Another important aspect of these data for our modeling is their geographic locations. This spatial information is contained in the data in two ways: a qualitative <code>Neighborhood</code> label as well as quantitative longitude and latitude data. To visualize the spatial information, let’s use both together to plot the data on a map in <a href="#fig-ames-map">Figure&nbsp;<span>4.1</span></a>.</p>
+<p>Another important aspect of these data for our modeling is their geographic locations. This spatial information is contained in the data in two ways: a qualitative <code>Neighborhood</code> label as well as quantitative longitude and latitude data. To visualize the spatial information, let’s use both together to plot the data on a map in <a href="#fig-ames-map">Figure&nbsp;<span>4.3</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-ames-map" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/ames.png" class="img-fluid figure-img" style="width:100.0%" alt="A scatter plot of house locations in Ames superimposed over a street map. There is a significant area in the center of the map where no homes were sold."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.1: Neighborhoods in Ames, IA</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;4.3: Neighborhoods in Ames, IA</figcaption></figure>
 </div>
 </div>
 </div>
-<p>We can see a few noticeable patterns. First, there is a void of data points in the center of Ames. This corresponds to the campus of Iowa State University where there are no residential houses. Second, while there are a number of adjacent neighborhoods, others are geographically isolated. For example, as <a href="#fig-ames-timberland">Figure&nbsp;<span>4.2</span></a> shows, Timberland is located apart from almost all other neighborhoods.</p>
+<p>We can see a few noticeable patterns. First, there is a void of data points in the center of Ames. This corresponds to the campus of Iowa State University where there are no residential houses. Second, while there are a number of adjacent neighborhoods, others are geographically isolated. For example, as <a href="#fig-ames-timberland">Figure&nbsp;<span>4.4</span></a> shows, Timberland is located apart from almost all other neighborhoods.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-ames-timberland" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/timberland.png" class="img-fluid figure-img" style="width:80.0%" alt="A scatter plot of locations of homes in Timberland, located in the southern part of Ames."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.2: Locations of homes in Timberland</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;4.4: Locations of homes in Timberland</figcaption></figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-ames-mitchell">Figure&nbsp;<span>4.3</span></a> visualizes how the Meadow Village neighborhood in southwest Ames is like an island of properties inside the sea of properties that make up the Mitchell neighborhood.</p>
+<p><a href="#fig-ames-mitchell">Figure&nbsp;<span>4.5</span></a> visualizes how the Meadow Village neighborhood in southwest Ames is like an island of properties inside the sea of properties that make up the Mitchell neighborhood.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-ames-mitchell" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/mitchell.png" class="img-fluid figure-img" style="width:60.0%" alt="A scatter plot of locations of homes in Meadow Village and Mitchell. The small number of Meadow Village properties are enclosed inside the the ones labeled as being in Mitchell."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.3: Locations of homes in Meadow Village and Mitchell</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;4.5: Locations of homes in Meadow Village and Mitchell</figcaption></figure>
 </div>
 </div>
 </div>
-<p>A detailed inspection of the map also shows that the neighborhood labels are not completely reliable. For example, <a href="#fig-ames-northridge">Figure&nbsp;<span>4.4</span></a> shows some properties labeled as being in Northridge are surrounded by homes in the adjacent Somerset neighborhood.</p>
+<p>A detailed inspection of the map also shows that the neighborhood labels are not completely reliable. For example, <a href="#fig-ames-northridge">Figure&nbsp;<span>4.6</span></a> shows some properties labeled as being in Northridge are surrounded by homes in the adjacent Somerset neighborhood.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-ames-northridge" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/northridge.png" class="img-fluid figure-img" style="width:90.0%" alt="A scatter plot of locations of homes in Somerset and Northridge. There are a few homes in Somerset mixed in the periphery of Northridge (and vice versa)."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.4: Locations of homes in Somerset and Northridge</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;4.6: Locations of homes in Somerset and Northridge</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Also, there are ten isolated homes labeled as being in Crawford that, as you can see in <a href="#fig-ames-crawford">Figure&nbsp;<span>4.5</span></a>, are not close to the majority of the other homes in that neighborhood.</p>
+<p>Also, there are ten isolated homes labeled as being in Crawford that, as you can see in <a href="#fig-ames-crawford">Figure&nbsp;<span>4.7</span></a>, are not close to the majority of the other homes in that neighborhood.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-ames-crawford" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/crawford.png" class="img-fluid figure-img" style="width:80.0%" alt="A scatter plot of locations of homes in Crawford. There is a large cluster of homes to the west of a small, separate cluster of properties also labeled as Crawford."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.5: Locations of homes in Crawford</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;4.7: Locations of homes in Crawford</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Also notable is the “Iowa Department of Transportation (DOT) and Rail Road” neighborhood adjacent to the main road on the east side of Ames, shown in <a href="#fig-ames-dot-rr">Figure&nbsp;<span>4.6</span></a>. There are several clusters of homes within this neighborhood as well as some longitudinal outliers; the two homes farthest east are isolated from the other locations.</p>
+<p>Also notable is the “Iowa Department of Transportation (DOT) and Rail Road” neighborhood adjacent to the main road on the east side of Ames, shown in <a href="#fig-ames-dot-rr">Figure&nbsp;<span>4.8</span></a>. There are several clusters of homes within this neighborhood as well as some longitudinal outliers; the two homes farthest east are isolated from the other locations.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-ames-dot-rr" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/dot_rr.png" class="img-fluid figure-img" style="width:100.0%" alt="A scatter plot of locations of homes labeled as 'Iowa Department of Transportation (DOT) and Rail Road'. The longitude distribution is right-skewed with a few outlying properties."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.6: Homes labeled as Iowa Department of Transportation (DOT) and Rail Road</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;4.8: Homes labeled as Iowa Department of Transportation (DOT) and Rail Road</figcaption></figure>
 </div>
 </div>
 </div>
@@ -499,7 +513,7 @@ div.csl-indent {
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
-<span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="va">ames</span> <span class="op"><a href="https://rdrr.io/pkg/magrittr/man/pipe.html">%&gt;%</a></span> <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="va">ames</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

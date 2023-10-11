@@ -361,12 +361,12 @@ div.csl-indent {
   <li><a href="#regression-metrics" id="toc-regression-metrics" class="nav-link" data-scroll-target="#regression-metrics"><span class="header-section-number">9.2</span> Regression Metrics</a></li>
   <li><a href="#binary-classification-metrics" id="toc-binary-classification-metrics" class="nav-link" data-scroll-target="#binary-classification-metrics"><span class="header-section-number">9.3</span> Binary Classification Metrics</a></li>
   <li><a href="#multiclass-classification-metrics" id="toc-multiclass-classification-metrics" class="nav-link" data-scroll-target="#multiclass-classification-metrics"><span class="header-section-number">9.4</span> Multiclass Classification Metrics</a></li>
-  <li><a href="#performance-summary" id="toc-performance-summary" class="nav-link" data-scroll-target="#performance-summary"><span class="header-section-number">9.5</span> Chapter Summary</a></li>
+  <li><a href="#sec-performance-summary" id="toc-sec-performance-summary" class="nav-link" data-scroll-target="#sec-performance-summary"><span class="header-section-number">9.5</span> Chapter Summary</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/09-judging-model-effectiveness.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="performance" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Judging Model Effectiveness</span></span></h1>
+<h1 class="title"><span id="sec-performance" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Judging Model Effectiveness</span></span></h1>
 </div>
 
 
@@ -381,14 +381,14 @@ div.csl-indent {
 
 </header><p>Once we have a model, we need to know how well it works. A quantitative approach for estimating effectiveness allows us to understand the model, to compare different models, or to tweak the model to improve performance. Our focus in tidymodels is on empirical validation; this usually means using data that were not used to create the model as the substrate to measure effectiveness.</p>
 <div class="rmdwarning">
-<p>The best approach to empirical validation involves using <em>resampling</em> methods that will be introduced in Chapter @ref(resampling). In this chapter, we will motivate the need for empirical validation by using the test set. Keep in mind that the test set can only be used once, as explained in Section @ref(splitting-methods).</p>
+<p>The best approach to empirical validation involves using <em>resampling</em> methods that will be introduced in <span class="quarto-unresolved-ref">?sec-resampling</span>. In this chapter, we will motivate the need for empirical validation by using the test set. Keep in mind that the test set can only be used once, as explained in <a href="05-data-spending.html#sec-splitting-methods"><span>Section&nbsp;5.1</span></a>.</p>
 </div>
-<p>When judging model effectiveness, your decision about which metrics to examine can be critical. In later chapters, certain model parameters will be empirically optimized and a primary performance metric will be used to choose the best sub-model. Choosing the wrong metric can easily result in unintended consequences. For example, two common metrics for regression models are the root mean squared error (RMSE) and the coefficient of determination (a.k.a. <span class="math inline">\(R^2\)</span>). The former measures <em>accuracy</em> while the latter measures <em>correlation</em>. These are not necessarily the same thing. Figure @ref(fig:performance-reg-metrics) demonstrates the difference between the two.</p>
+<p>When judging model effectiveness, your decision about which metrics to examine can be critical. In later chapters, certain model parameters will be empirically optimized and a primary performance metric will be used to choose the best sub-model. Choosing the wrong metric can easily result in unintended consequences. For example, two common metrics for regression models are the root mean squared error (RMSE) and the coefficient of determination (a.k.a. <span class="math inline">\(R^2\)</span>). The former measures <em>accuracy</em> while the latter measures <em>correlation</em>. These are not necessarily the same thing. <a href="#fig-performance-reg-metrics">Figure&nbsp;<span>9.1</span></a> demonstrates the difference between the two.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/performance-reg-metrics-1.png" class="img-fluid figure-img" alt="Scatter plots of numeric observed versus predicted values for models that are optimized using the RMSE and the coefficient of determination. The former results in results that are close to the 45 degree line of identity while the latter shows results with a tight linear correlation but falls well off of the line of identity." width="672"></p>
-<figcaption class="figure-caption">Observed versus predicted values for models that are optimized using the RMSE compared to the coefficient of determination</figcaption></figure>
+<div id="fig-performance-reg-metrics" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-performance-reg-metrics-1.png" class="img-fluid figure-img" alt="Scatter plots of numeric observed versus predicted values for models that are optimized using the RMSE and the coefficient of determination. The former results in results that are close to the 45 degree line of identity while the latter shows results with a tight linear correlation but falls well off of the line of identity." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;9.1: Observed versus predicted values for models that are optimized using the RMSE compared to the coefficient of determination</figcaption></figure>
 </div>
 </div>
 </div>
@@ -397,25 +397,25 @@ div.csl-indent {
 <section id="performance-metrics-and-inference" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="performance-metrics-and-inference">
 <span class="header-section-number">9.1</span> Performance Metrics and Inference</h2>
 <p>The effectiveness of any given model depends on how the model will be used. An inferential model is used primarily to understand relationships, and typically emphasizes the choice (and validity) of probabilistic distributions and other generative qualities that define the model. For a model used primarily for prediction, by contrast, predictive strength is of primary importance and other concerns about underlying statistical qualities may be less important. Predictive strength is usually determined by how close our predictions come to the observed data, i.e., fidelity of the model predictions to the actual results. This chapter focuses on functions that can be used to measure predictive strength. However, our advice for those developing inferential models is to use these techniques even when the model will not be used with the primary goal of prediction.</p>
-<p>A longstanding issue with the practice of inferential statistics is that, with a focus purely on inference, it is difficult to assess the credibility of a model. For example, consider the Alzheimer’s disease data from <span class="citation" data-cites="CraigSchapiro">Craig–Schapiro et al. (<a href="#ref-CraigSchapiro" role="doc-biblioref">2011</a>)</span> when 333 patients were studied to determine the factors that influence cognitive impairment. An analysis might take the known risk factors and build a logistic regression model where the outcome is binary (impaired/non-impaired). Let’s consider predictors for age, sex, and the Apolipoprotein E genotype. The latter is a categorical variable with the six possible combinations of the three main variants of this gene. Apolipoprotein E is known to have an association with dementia <span class="citation" data-cites="Kim:2009p4370">(<a href="#ref-Kim:2009p4370" role="doc-biblioref">Jungsu, Basak, and Holtzman 2009</a>)</span>.</p>
-<p>A superficial, but not uncommon, approach to this analysis would be to fit a large model with main effects and interactions, then use statistical tests to find the minimal set of model terms that are statistically significant at some pre-defined level. If a full model with the three factors and their two- and three-way interactions were used, an initial phase would be to test the interactions using sequential likelihood ratio tests <span class="citation" data-cites="HosmerLemeshow">(<a href="#ref-HosmerLemeshow" role="doc-biblioref">Hosmer and Lemeshow 2000</a>)</span>. Let’s step through this kind of approach for the example Alzheimer’s disease data:</p>
+<p>A longstanding issue with the practice of inferential statistics is that, with a focus purely on inference, it is difficult to assess the credibility of a model. For example, consider the Alzheimer’s disease data from <span class="citation" data-cites="CraigSchapiro">Craig–Schapiro et al. (<a href="references.html#ref-CraigSchapiro" role="doc-biblioref">2011</a>)</span> when 333 patients were studied to determine the factors that influence cognitive impairment. An analysis might take the known risk factors and build a logistic regression model where the outcome is binary (impaired/non-impaired). Let’s consider predictors for age, sex, and the Apolipoprotein E genotype. The latter is a categorical variable with the six possible combinations of the three main variants of this gene. Apolipoprotein E is known to have an association with dementia <span class="citation" data-cites="Kim:2009p4370">(<a href="references.html#ref-Kim:2009p4370" role="doc-biblioref">Jungsu, Basak, and Holtzman 2009</a>)</span>.</p>
+<p>A superficial, but not uncommon, approach to this analysis would be to fit a large model with main effects and interactions, then use statistical tests to find the minimal set of model terms that are statistically significant at some pre-defined level. If a full model with the three factors and their two- and three-way interactions were used, an initial phase would be to test the interactions using sequential likelihood ratio tests <span class="citation" data-cites="HosmerLemeshow">(<a href="references.html#ref-HosmerLemeshow" role="doc-biblioref">Hosmer and Lemeshow 2000</a>)</span>. Let’s step through this kind of approach for the example Alzheimer’s disease data:</p>
 <ul>
 <li><p>When comparing the model with all two-way interactions to one with the additional three-way interaction, the likelihood ratio tests produces a p-value of 0.888. This implies that there is no evidence that the four additional model terms associated with the three-way interaction explain enough of the variation in the data to keep them in the model.</p></li>
 <li><p>Next, the two-way interactions are similarly evaluated against the model with no interactions. The p-value here is 0.0382. This is somewhat borderline, but, given the small sample size, it would be prudent to conclude that there is evidence that some of the 10 possible two-way interactions are important to the model.</p></li>
 <li><p>From here, we would build some explanation of the results. The interactions would be particularly important to discuss since they may spark interesting physiological or neurological hypotheses to be explored further.</p></li>
 </ul>
 <p>While shallow, this analysis strategy is common in practice as well as in the literature. This is especially true if the practitioner has limited formal training in data analysis.</p>
-<p>One missing piece of information in this approach is how closely this model fits the actual data. Using resampling methods, discussed in Chapter @ref(resampling), we can estimate the accuracy of this model to be about 73%. Accuracy is often a poor measure of model performance; we use it here because it is commonly understood. If the model has 73% fidelity to the data, should we trust conclusions it produces? We might think so until we realize that the baseline rate of nonimpaired patients in the data is 72.7%. This means that, despite our statistical analysis, the two-factor model appears to be only 0.3% better than a simple heuristic that always predicts patients to be unimpaired, regardless of the observed data.</p>
+<p>One missing piece of information in this approach is how closely this model fits the actual data. Using resampling methods, discussed in <span class="quarto-unresolved-ref">?sec-resampling</span>, we can estimate the accuracy of this model to be about 73%. Accuracy is often a poor measure of model performance; we use it here because it is commonly understood. If the model has 73% fidelity to the data, should we trust conclusions it produces? We might think so until we realize that the baseline rate of nonimpaired patients in the data is 72.7%. This means that, despite our statistical analysis, the two-factor model appears to be only 0.3% better than a simple heuristic that always predicts patients to be unimpaired, regardless of the observed data.</p>
 <div class="rmdnote">
 <p>The point of this analysis is to demonstrate the idea that optimization of statistical characteristics of the model does not imply that the model fits the data well. Even for purely inferential models, some measure of fidelity to the data should accompany the inferential results. Using this, the consumers of the analyses can calibrate their expectations of the results.</p>
 </div>
 <p>In the remainder of this chapter, we will discuss general approaches for evaluating models via empirical validation. These approaches are grouped by the nature of the outcome data: purely numeric, binary classes, and three or more class levels.</p>
 </section><section id="regression-metrics" class="level2" data-number="9.2"><h2 data-number="9.2" class="anchored" data-anchor-id="regression-metrics">
 <span class="header-section-number">9.2</span> Regression Metrics</h2>
-<p>Recall from Section @ref(parsnip-predictions) that tidymodels prediction functions produce tibbles with columns for the predicted values. These columns have consistent names, and the functions in the <span class="pkg">yardstick</span> package that produce performance metrics have consistent interfaces. The functions are data frame-based, as opposed to vector-based, with the general syntax of:</p>
+<p>Recall from <a href="06-fitting-models.html#sec-parsnip-predictions"><span>Section&nbsp;6.3</span></a> that tidymodels prediction functions produce tibbles with columns for the predicted values. These columns have consistent names, and the functions in the <span class="pkg">yardstick</span> package that produce performance metrics have consistent interfaces. The functions are data frame-based, as opposed to vector-based, with the general syntax of:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(data, truth, ...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>where <code>data</code> is a data frame or tibble and <code>truth</code> is the column with the observed outcome values. The ellipses or other arguments are used to specify the column(s) containing the predictions.</p>
-<p>To illustrate, let’s take the model from Section @ref(recipes-summary). This model <code>lm_wflow_fit</code> combines a linear regression model with a predictor set supplemented with an interaction and spline functions for longitude and latitude. It was created from a training set (named <code>ames_train</code>). Although we do not advise using the test set at this juncture of the modeling process, it will be used here to illustrate functionality and syntax. The data frame <code>ames_test</code> consists of 588 properties. To start, let’s produce predictions:</p>
+<p>To illustrate, let’s take the model from <a href="08-feature-engineering.html#sec-recipes-summary"><span>Section&nbsp;8.8</span></a>. This model <code>lm_wflow_fit</code> combines a linear regression model with a predictor set supplemented with an interaction and spline functions for longitude and latitude. It was created from a training set (named <code>ames_train</code>). Although we do not advise using the test set at this juncture of the modeling process, it will be used here to illustrate functionality and syntax. The data frame <code>ames_test</code> consists of 588 properties. To start, let’s produce predictions:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_test_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_fit</span>, new_data <span class="op">=</span> <span class="va">ames_test</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ames_test_res</span></span>
@@ -446,7 +446,7 @@ div.csl-indent {
 <span><span class="co">## # ℹ 582 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We see that these values mostly look close, but we don’t yet have a quantitative understanding of how the model is doing because we haven’t computed any performance metrics. Note that both the predicted and observed outcomes are in log-10 units. It is best practice to analyze the predictions on the transformed scale (if one were used) even if the predictions are reported using the original units.</p>
-<p>Let’s plot the data in Figure @ref(fig:ames-performance-plot) before computing metrics:</p>
+<p>Let’s plot the data in <a href="#fig-ames-performance-plot">Figure&nbsp;<span>9.2</span></a> before computing metrics:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">ames_test_res</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sale_Price</span>, y <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="co"># Create a diagonal line:</span></span>
@@ -458,9 +458,9 @@ div.csl-indent {
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/ames-performance-plot-1.png" class="img-fluid figure-img" alt="Scatter plots of numeric observed versus predicted values for an Ames regression model. Both axes use log-10 units. The model shows good concordance with some poorly fitting points at high and low prices." width="672"></p>
-<figcaption class="figure-caption">Observed versus predicted values for an Ames regression model, with log-10 units on both axes</figcaption></figure>
+<div id="fig-ames-performance-plot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-ames-performance-plot-1.png" class="img-fluid figure-img" alt="Scatter plots of numeric observed versus predicted values for an Ames regression model. Both axes use log-10 units. The model shows good concordance with some poorly fitting points at high and low prices." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;9.2: Observed versus predicted values for an Ames regression model, with log-10 units on both axes</figcaption></figure>
 </div>
 </div>
 </div>
@@ -582,15 +582,15 @@ div.csl-indent {
 <span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 roc_auc binary         0.939</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code>two_class_curve</code> object can be used in a <code>ggplot</code> call to visualize the curve, as shown in Figure @ref(fig:example-roc-curve). There is an <code>autoplot()</code> method that will take care of the details:</p>
+<p>The <code>two_class_curve</code> object can be used in a <code>ggplot</code> call to visualize the curve, as shown in <a href="#fig-example-roc-curve">Figure&nbsp;<span>9.3</span></a>. There is an <code>autoplot()</code> method that will take care of the details:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">autoplot</span><span class="op">(</span><span class="va">two_class_curve</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/example-roc-curve-1.png" class="img-fluid figure-img" alt="An example ROC curve. The x-axis is one minus specificity and the y-axis is sensitivity. The curve bows towards the upper left-hand side of the plot area." width="672"></p>
-<figcaption class="figure-caption">Example ROC curve</figcaption></figure>
+<div id="fig-example-roc-curve" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-example-roc-curve-1.png" class="img-fluid figure-img" alt="An example ROC curve. The x-axis is one minus specificity and the y-axis is sensitivity. The curve bows towards the upper left-hand side of the plot area." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;9.3: Example ROC curve</figcaption></figure>
 </div>
 </div>
 </div>
@@ -613,7 +613,7 @@ div.csl-indent {
 <span><span class="co">## 6 VF    VF    0.951 0.0462 0.00272 0.00000384 Fold01  </span></span>
 <span><span class="co">## # ℹ 3,461 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>As before, there are factors for the observed and predicted outcomes along with four other columns of predicted probabilities for each class. (These data also include a <code>Resample</code> column. These <code>hpc_cv</code> results are for out-of-sample predictions associated with 10-fold cross-validation. For the time being, this column will be ignored and we’ll discuss resampling in depth in Chapter @ref(resampling).)</p>
+<p>As before, there are factors for the observed and predicted outcomes along with four other columns of predicted probabilities for each class. (These data also include a <code>Resample</code> column. These <code>hpc_cv</code> results are for out-of-sample predictions associated with 10-fold cross-validation. For the time being, this column will be ignored and we’ll discuss resampling in depth in <span class="quarto-unresolved-ref">?sec-resampling</span>.)</p>
 <p>The functions for metrics that use the discrete class predictions are identical to their binary counterparts:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">accuracy</span><span class="op">(</span><span class="va">hpc_cv</span>, <span class="va">obs</span>, <span class="va">pred</span><span class="op">)</span></span>
@@ -636,7 +636,7 @@ div.csl-indent {
 <li><p>Macro-weighted averaging does the same but the average is weighted by the number of samples in each class.</p></li>
 <li><p>Micro-averaging computes the contribution for each class, aggregates them, then computes a single metric from the aggregates.</p></li>
 </ul>
-<p>See <span class="citation" data-cites="wu2017unified">Wu and Zhou (<a href="#ref-wu2017unified" role="doc-biblioref">2017</a>)</span> and <span class="citation" data-cites="OpitzBurst">Opitz and Burst (<a href="#ref-OpitzBurst" role="doc-biblioref">2019</a>)</span> for more on extending classification metrics to outcomes with more than two classes.</p>
+<p>See <span class="citation" data-cites="wu2017unified">Wu and Zhou (<a href="references.html#ref-wu2017unified" role="doc-biblioref">2017</a>)</span> and <span class="citation" data-cites="OpitzBurst">Opitz and Burst (<a href="references.html#ref-OpitzBurst" role="doc-biblioref">2019</a>)</span> for more on extending classification metrics to outcomes with more than two classes.</p>
 <p>Using sensitivity as an example, the usual two-class calculation is the ratio of the number of correctly predicted events divided by the number of true events. The manual calculations for these averaging methods are:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">class_totals</span> <span class="op">&lt;-</span> </span>
@@ -700,7 +700,7 @@ div.csl-indent {
 <span><span class="co">##   &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 sensitivity micro          0.709</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>When dealing with probability estimates, there are some metrics with multiclass analogs. For example, <span class="citation" data-cites="HandTill">Hand and Till (<a href="#ref-HandTill" role="doc-biblioref">2001</a>)</span> determined a multiclass technique for ROC curves. In this case, <em>all</em> of the class probability columns must be given to the function:</p>
+<p>When dealing with probability estimates, there are some metrics with multiclass analogs. For example, <span class="citation" data-cites="HandTill">Hand and Till (<a href="references.html#ref-HandTill" role="doc-biblioref">2001</a>)</span> determined a multiclass technique for ROC curves. In this case, <em>all</em> of the class probability columns must be given to the function:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">roc_auc</span><span class="op">(</span><span class="va">hpc_cv</span>, <span class="va">obs</span>, <span class="va">VF</span>, <span class="cn">F</span>, <span class="va">M</span>, <span class="va">L</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 3</span></span>
@@ -732,7 +732,7 @@ div.csl-indent {
 <span><span class="co">## 6 Fold06   accuracy multiclass     0.697</span></span>
 <span><span class="co">## # ℹ 4 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The groupings also translate to the <code>autoplot()</code> methods, with results shown in Figure @ref(fig:grouped-roc-curves).</p>
+<p>The groupings also translate to the <code>autoplot()</code> methods, with results shown in <a href="#fig-grouped-roc-curves">Figure&nbsp;<span>9.4</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Four 1-vs-all ROC curves for each fold</span></span>
 <span><span class="va">hpc_cv</span> <span class="op">%&gt;%</span> </span>
@@ -742,19 +742,19 @@ div.csl-indent {
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/grouped-roc-curves-1.png" class="img-fluid figure-img" alt="Resampled ROC curves for each of the four outcome classes. There are four panels for classes VF, F, M, and L. Each panel contains ten ROC curves for each of the resampled data sets." width="672"></p>
-<figcaption class="figure-caption">Resampled ROC curves for each of the four outcome classes</figcaption></figure>
+<div id="fig-grouped-roc-curves" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-grouped-roc-curves-1.png" class="img-fluid figure-img" alt="Resampled ROC curves for each of the four outcome classes. There are four panels for classes VF, F, M, and L. Each panel contains ten ROC curves for each of the resampled data sets." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;9.4: Resampled ROC curves for each of the four outcome classes</figcaption></figure>
 </div>
 </div>
 </div>
 <p>This visualization shows us that the different groups all perform about the same, but that the <code>VF</code> class is predicted better than the <code>F</code> or <code>M</code> classes, since the <code>VF</code> ROC curves are more in the top-left corner. This example uses resamples as the groups, but any grouping in your data can be used. This <code>autoplot()</code> method can be a quick visualization method for model effectiveness across outcome classes and/or groups.</p>
-</section><section id="performance-summary" class="level2" data-number="9.5"><h2 data-number="9.5" class="anchored" data-anchor-id="performance-summary">
+</section><section id="sec-performance-summary" class="level2" data-number="9.5"><h2 data-number="9.5" class="anchored" data-anchor-id="sec-performance-summary">
 <span class="header-section-number">9.5</span> Chapter Summary</h2>
 <p>Different metrics measure different aspects of a model fit, e.g., RMSE measures accuracy while the <span class="math inline">\(R^2\)</span> measures correlation. Measuring model performance is important even when a given model will not be used primarily for prediction; predictive power is also important for inferential or descriptive models. Functions from the <span class="pkg">yardstick</span> package measure the effectiveness of a model using data. The primary tidymodels interface uses tidyverse principles and data frames (as opposed to having vector arguments). Different metrics are appropriate for regression and classification metrics and, within these, there are sometimes different ways to estimate the statistics, such as for multiclass outcomes.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-CraigSchapiro" class="csl-entry" role="listitem">
 Craig–Schapiro, R, M Kuhn, C Xiong, E Pickering, J Liu, T Misko, R Perrin, et al. 2011. <span>“Multiplexed Immunoassay Panel Identifies Novel <span>CSF</span> Biomarkers for <span class="nocase">Alzheimer’s</span> Disease Diagnosis and Prognosis.”</span> <em>PLoS ONE</em> 6 (4): e18850.
 </div>

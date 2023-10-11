@@ -53,8 +53,8 @@ ggplot(ames, aes(x = Sale_Price)) +
   geom_histogram(bins = 50, col= "white")
 ```
 
-```{r 
-#| label: fig-ames-sale-price-hist
+```{r}
+#| label: fig-ames-sale-price-hist 
 #| ref.label: "ames-sale-price-code"
 #| out.width: '100%'
 #| fig.width: 8
@@ -72,15 +72,14 @@ ggplot(ames, aes(x = Sale_Price)) +
   scale_x_log10()
 ```
 
-```{r 
+```{r}
 #| label: fig-ames-log-sale-price-hist
 #| ref.label: "ames-log-sale-price-code"
 #| out.width: '100%'
 #| fig.width: 8
 #| fig.height: 3
 #| echo: FALSE
-#| fig.cap: "Sale prices of houses in Ames, Iowa after a log (base 10) transformation",
-#| fig.alt: "A histogram of the sale prices of houses in Ames, Iowa after a log (base 10) transformation. The distribution, while not perfectly symmetric, exhibits far less skewness."
+#| fig.cap: "Sale prices of houses in Ames, Iowa after a log (base 10) transformation" #| fig.alt: "A histogram of the sale prices of houses in Ames, Iowa after a log (base 10) transformation. The distribution, while not perfectly symmetric, exhibits far less skewness."
 ```
 
 While not perfect, this will likely result in better models than using the untransformed data, for the reasons just outlined.
@@ -99,7 +98,7 @@ ames <- ames %>% mutate(Sale_Price = log10(Sale_Price))
 
 Another important aspect of these data for our modeling is their geographic locations. This spatial information is contained in the data in two ways: a qualitative `Neighborhood` label as well as quantitative longitude and latitude data. To visualize the spatial information, let's use both together to plot the data on a map in @fig-ames-map.
 
-```{r} 
+```{r}
 #| label: fig-ames-map
 #| out.width: "100%" 
 #| echo: FALSE
@@ -113,7 +112,7 @@ knitr::include_graphics("premade/ames.png")
 
 We can see a few noticeable patterns. First, there is a void of data points in the center of Ames. This corresponds to the campus of Iowa State University where there are no residential houses. Second, while there are a number of adjacent neighborhoods, others are geographically isolated. For example, as @fig-ames-timberland shows, Timberland is located apart from almost all other neighborhoods.
 
-```{r} 
+```{r}
 #| label: fig-ames-timberland
 #| out.width: "80%"
 #| echo: FALSE 
@@ -181,7 +180,7 @@ Also notable is the "Iowa Department of Transportation (DOT) and Rail Road" neig
 knitr::include_graphics("premade/dot_rr.png")
 ```
 
-As described in [Chapter -@sec-software-modeling], it is critical to conduct exploratory data analysis prior to beginning any modeling. These housing data have characteristics that present interesting challenges about how the data should be processed and modeled. We describe many of these in later chapters. Some basic questions that could be examined during this exploratory stage include:
+As described in [Chapter @sec-software-modeling], it is critical to conduct exploratory data analysis prior to beginning any modeling. These housing data have characteristics that present interesting challenges about how the data should be processed and modeled. We describe many of these in later chapters. Some basic questions that could be examined during this exploratory stage include:
 
 -   Is there anything odd or noticeable about the distributions of the individual predictors? Is there much skewness or any pathological distributions?
 

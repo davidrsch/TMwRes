@@ -360,15 +360,15 @@ div.csl-indent {
   <ul>
 <li><a href="#create-a-model" id="toc-create-a-model" class="nav-link active" data-scroll-target="#create-a-model"><span class="header-section-number">6.1</span> Create a Model</a></li>
   <li><a href="#use-the-model-results" id="toc-use-the-model-results" class="nav-link" data-scroll-target="#use-the-model-results"><span class="header-section-number">6.2</span> Use the Model Results</a></li>
-  <li><a href="#parsnip-predictions" id="toc-parsnip-predictions" class="nav-link" data-scroll-target="#parsnip-predictions"><span class="header-section-number">6.3</span> Make Predictions</a></li>
+  <li><a href="#sec-parsnip-predictions" id="toc-sec-parsnip-predictions" class="nav-link" data-scroll-target="#sec-parsnip-predictions"><span class="header-section-number">6.3</span> Make Predictions</a></li>
   <li><a href="#parsnip-extension-packages" id="toc-parsnip-extension-packages" class="nav-link" data-scroll-target="#parsnip-extension-packages"><span class="header-section-number">6.4</span> parsnip-Extension Packages</a></li>
-  <li><a href="#parsnip-addin" id="toc-parsnip-addin" class="nav-link" data-scroll-target="#parsnip-addin"><span class="header-section-number">6.5</span> Creating Model Specifications</a></li>
-  <li><a href="#models-summary" id="toc-models-summary" class="nav-link" data-scroll-target="#models-summary"><span class="header-section-number">6.6</span> Chapter Summary</a></li>
+  <li><a href="#sec-parsnip-addin" id="toc-sec-parsnip-addin" class="nav-link" data-scroll-target="#sec-parsnip-addin"><span class="header-section-number">6.5</span> Creating Model Specifications</a></li>
+  <li><a href="#sec-models-summary" id="toc-sec-models-summary" class="nav-link" data-scroll-target="#sec-models-summary"><span class="header-section-number">6.6</span> Chapter Summary</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/06-fitting-models.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="models" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fitting Models with parsnip</span></span></h1>
+<h1 class="title"><span id="sec-models" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fitting Models with parsnip</span></span></h1>
 </div>
 
 
@@ -399,15 +399,15 @@ div.csl-indent {
 <p>To estimate with regularization, the second case, a Bayesian model can be fit using the <span class="pkg">rstanarm</span> package:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">stan_glm</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, family <span class="op">=</span> <span class="st">"gaussian"</span>, <span class="va">...</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In this case, the other options passed via <code>...</code> would include arguments for the prior distributions of the parameters as well as specifics about the numerical aspects of the model. As with <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, only the formula interface is available.</p>
-<p>A popular non-Bayesian approach to regularized regression is the <span class="pkg">glmnet</span> model <span class="citation" data-cites="glmnet">(<a href="#ref-glmnet" role="doc-biblioref">Friedman, Hastie, and Tibshirani 2010</a>)</span>. Its syntax is:</p>
+<p>A popular non-Bayesian approach to regularized regression is the <span class="pkg">glmnet</span> model <span class="citation" data-cites="glmnet">(<a href="references.html#ref-glmnet" role="doc-biblioref">Friedman, Hastie, and Tibshirani 2010</a>)</span>. Its syntax is:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">glmnet</span><span class="op">(</span>x <span class="op">=</span> <span class="va">matrix</span>, y <span class="op">=</span> <span class="va">vector</span>, family <span class="op">=</span> <span class="st">"gaussian"</span>, <span class="va">...</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In this case, the predictor data must already be formatted into a numeric matrix; there is only an <code>x</code>/<code>y</code> method and no formula method.</p>
 <p>Note that these interfaces are heterogeneous in either how the data are passed to the model function or in terms of their arguments. The first issue is that, to fit models across different packages, the data must be formatted in different ways. <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> and <code>stan_glm()</code> only have formula interfaces while <code>glmnet()</code> does not. For other types of models, the interfaces may be even more disparate. For a person trying to do data analysis, these differences require the memorization of each package’s syntax and can be very frustrating.</p>
 <p>For tidymodels, the approach to specifying a model is intended to be more unified:</p>
 <ol type="1">
-<li><p><em>Specify the <em>type</em> of model based on its mathematical structure</em> (e.g., linear regression, random forest, KNN, etc).</p></li>
-<li><p><em>Specify the <em>engine</em> for fitting the model.</em> Most often this reflects the software package that should be used, like Stan or <span class="pkg">glmnet</span>. These are models in their own right, and <span class="pkg">parsnip</span> provides consistent interfaces by using these as engines for modeling.</p></li>
-<li><p><em>When required, declare the <em>mode</em> of the model.</em> The mode reflects the type of prediction outcome. For numeric outcomes, the mode is regression; for qualitative outcomes, it is classification.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> If a model algorithm can only address one type of prediction outcome, such as linear regression, the mode is already set.</p></li>
+<li><p><em>Specify the type</em> of model based on its mathematical structure (e.g., linear regression, random forest, KNN, etc).</p></li>
+<li><p><em>Specify the engine</em> for fitting the model. Most often this reflects the software package that should be used, like Stan or <span class="pkg">glmnet</span>. These are models in their own right, and <span class="pkg">parsnip</span> provides consistent interfaces by using these as engines for modeling.</p></li>
+<li><p><em>When required, declare the mode</em> of the model. The mode reflects the type of prediction outcome. For numeric outcomes, the mode is regression; for qualitative outcomes, it is classification.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> If a model algorithm can only address one type of prediction outcome, such as linear regression, the mode is already set.</p></li>
 </ol>
 <p>These specifications are built without referencing the data. For example, for the three cases we outlined:</p>
 <div class="cell" data-layout-align="center">
@@ -504,11 +504,12 @@ div.csl-indent {
 <span><span class="co">## (Intercept)    Longitude     Latitude  </span></span>
 <span><span class="co">##     -302.97        -2.07         2.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Not only does <span class="pkg">parsnip</span> enable a consistent model interface for different packages, it also provides consistency in the model arguments. It is common for different functions that fit the same model to have different argument names. Random forest model functions are a good example. Three commonly used arguments are the number of trees in the ensemble, the number of predictors to randomly sample with each split within a tree, and the number of data points required to make a split. For three different R packages implementing this algorithm, those arguments are shown in Table @ref(tab:rand-forest-args).</p>
+<p>Not only does <span class="pkg">parsnip</span> enable a consistent model interface for different packages, it also provides consistency in the model arguments. It is common for different functions that fit the same model to have different argument names. Random forest model functions are a good example. Three commonly used arguments are the number of trees in the ensemble, the number of predictors to randomly sample with each split within a tree, and the number of data points required to make a split. For three different R packages implementing this algorithm, those arguments are shown in <a href="#tbl-rand-forest-args">Table&nbsp;<span>6.1</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
+<div id="tbl-rand-forest-args" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Example argument names for different random forest functions.</caption>
+<caption>Table&nbsp;6.1: Example argument names for different random forest functions.</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Argument Type</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">ranger</th>
@@ -537,12 +538,16 @@ div.csl-indent {
 </tbody>
 </table>
 </div>
+
+
 </div>
-<p>In an effort to make argument specification less painful, <span class="pkg">parsnip</span> uses common argument names within and between packages. Table @ref(tab:parsnip-args) shows, for random forests, what <span class="pkg">parsnip</span> models use.</p>
+</div>
+<p>In an effort to make argument specification less painful, <span class="pkg">parsnip</span> uses common argument names within and between packages. <a href="#tbl-parsnip-args">Table&nbsp;<span>6.2</span></a> shows, for random forests, what <span class="pkg">parsnip</span> models use.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
+<div id="tbl-parsnip-args" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Random forest argument names used by parsnip.</caption>
+<caption>Table&nbsp;6.2: Random forest argument names used by parsnip.</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Argument Type</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">parsnip</th>
@@ -562,6 +567,9 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
+</div>
+
+
 </div>
 </div>
 <p>Admittedly, this is one more set of arguments to memorize. However, when other types of models have the same argument types, these names still apply. For example, boosted tree ensembles also create a large number of tree-based models, so <code>trees</code> is also used there, as is <code>min_n</code>, and so on.</p>
@@ -631,7 +639,7 @@ div.csl-indent {
 <span><span class="co">## Latitude         -1.424  -0.00060  0.03254</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdwarning">
-<p>Never pass the <code>fit</code> element of a <span class="pkg">parsnip</span> model to a model prediction function, i.e., use <code>predict(lm_form_fit)</code> but <em>do not</em> use <code>predict(lm_form_fit$fit)</code>. If the data were preprocessed in any way, incorrect predictions will be generated (sometimes, without errors). The underlying model’s prediction function has no idea if any transformations have been made to the data prior to running the model. See Section @ref(parsnip-predictions) for more on making predictions.</p>
+<p>Never pass the <code>fit</code> element of a <span class="pkg">parsnip</span> model to a model prediction function, i.e., use <code>predict(lm_form_fit)</code> but <em>do not</em> use <code>predict(lm_form_fit$fit)</code>. If the data were preprocessed in any way, incorrect predictions will be generated (sometimes, without errors). The underlying model’s prediction function has no idea if any transformations have been made to the data prior to running the model. See <a href="#sec-parsnip-predictions"><span>Section&nbsp;6.3</span></a> for more on making predictions.</p>
 </div>
 <p>One issue with some existing methods in base R is that the results are stored in a manner that may not be the most useful. For example, the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> method for <code>lm</code> objects can be used to print the results of the model fit, including a table with parameter values, their uncertainty estimates, and p-values. These particular results can also be saved:</p>
 <div class="cell" data-layout-align="center">
@@ -664,7 +672,7 @@ div.csl-indent {
 <span><span class="co">## 3 Latitude        2.71     0.180      15.0 9.29e-49</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The column names are standardized across models and do not contain any additional data (such as the type of statistical test). The data previously contained in the row names are now in a column called <code>term</code>. One important principle in the tidymodels ecosystem is that a function should return values that are <em>predictable, consistent,</em> and <em>unsurprising</em>.</p>
-</section><section id="parsnip-predictions" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="parsnip-predictions">
+</section><section id="sec-parsnip-predictions" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="sec-parsnip-predictions">
 <span class="header-section-number">6.3</span> Make Predictions</h2>
 <p>Another area where <span class="pkg">parsnip</span> diverges from conventional R modeling functions is the format of values returned from <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>. For predictions, <span class="pkg">parsnip</span> always conforms to the following rules:</p>
 <ol type="1">
@@ -705,11 +713,12 @@ div.csl-indent {
 <span><span class="co">## 4       5.28  5.27        4.96        5.59</span></span>
 <span><span class="co">## 5       5.28  5.28        4.97        5.60</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The motivation for the first rule comes from some R packages producing dissimilar data types from prediction functions. For example, the <span class="pkg">ranger</span> package is an excellent tool for computing random forest models. However, instead of returning a data frame or vector as output, it returns a specialized object that has multiple values embedded within it (including the predicted values). This is just one more step for the data analyst to work around in their scripts. As another example, the native <span class="pkg">glmnet</span> model can return at least four different output types for predictions, depending on the model specifics and characteristics of the data. These are shown in Table @ref(tab:predict-types).</p>
+<p>The motivation for the first rule comes from some R packages producing dissimilar data types from prediction functions. For example, the <span class="pkg">ranger</span> package is an excellent tool for computing random forest models. However, instead of returning a data frame or vector as output, it returns a specialized object that has multiple values embedded within it (including the predicted values). This is just one more step for the data analyst to work around in their scripts. As another example, the native <span class="pkg">glmnet</span> model can return at least four different output types for predictions, depending on the model specifics and characteristics of the data. These are shown in <a href="#tbl-predict-types">Table&nbsp;<span>6.3</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
+<div id="tbl-predict-types" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Different return values for glmnet prediction types.</caption>
+<caption>Table&nbsp;6.3: Different return values for glmnet prediction types.</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Type of Prediction</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Returns a:</th>
@@ -734,13 +743,17 @@ div.csl-indent {
 </tbody>
 </table>
 </div>
+
+
+</div>
 </div>
 <p>Additionally, the column names of the results contain coded values that map to a vector called <code>lambda</code> within the glmnet model object. This excellent statistical method can be discouraging to use in practice because of all of the special cases an analyst might encounter that require additional code to be useful.</p>
-<p>For the second tidymodels prediction rule, the predictable column names for different types of predictions are shown in Table @ref(tab:predictable-column-names).</p>
+<p>For the second tidymodels prediction rule, the predictable column names for different types of predictions are shown in <a href="#tbl-predictable-column-names">Table&nbsp;<span>6.4</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
+<div id="tbl-predictable-column-names" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>The tidymodels mapping of prediction types and column names.</caption>
+<caption>Table&nbsp;6.4: The tidymodels mapping of prediction types and column names.</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">type value</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">column name(s)</th>
@@ -768,6 +781,9 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
+</div>
+
+
 </div>
 </div>
 <p>The third rule regarding the number of rows in the output is critical. For example, if any rows of the new data contain missing values, the output will be padded with missing results for those rows. A main advantage of standardizing the model interface and prediction types in <span class="pkg">parsnip</span> is that, when different models are used, the syntax is identical. Suppose that we used a decision tree to model the Ames data. Outside of the model specification, there are no significant differences in the code pipeline:</p>
@@ -797,7 +813,7 @@ div.csl-indent {
 </section><section id="parsnip-extension-packages" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="parsnip-extension-packages">
 <span class="header-section-number">6.4</span> parsnip-Extension Packages</h2>
 <p>The <span class="pkg">parsnip</span> package itself contains interfaces to a number of models. However, for ease of package installation and maintenance, there are other tidymodels packages that have <span class="pkg">parsnip</span> model definitions for other sets of models. The <span class="pkg">discrim</span> package has model definitions for the set of classification techniques called discriminant analysis methods (such as linear or quadratic discriminant analysis). In this way, the package dependencies required for installing <span class="pkg">parsnip</span> are reduced. A list of all of the models that can be used with <span class="pkg">parsnip</span> (across different packages that are on CRAN) can be found at <a href="https://www.tidymodels.org/find/" class="uri">https://www.tidymodels.org/find/</a>.</p>
-</section><section id="parsnip-addin" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="parsnip-addin">
+</section><section id="sec-parsnip-addin" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="sec-parsnip-addin">
 <span class="header-section-number">6.5</span> Creating Model Specifications</h2>
 <p>It may become tedious to write many model specifications, or to remember how to write the code to generate them. The <span class="pkg">parsnip</span> package includes an RStudio addin<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> that can help. Either choosing this addin from the <em>Addins</em> toolbar menu or running the code:</p>
 <div class="cell" data-layout-align="center">
@@ -805,7 +821,7 @@ div.csl-indent {
 </div>
 <p>will open a window in the Viewer panel of the RStudio IDE with a list of possible models for each model mode. These can be written to the source code panel.</p>
 <p>The model list includes models from <span class="pkg">parsnip</span> and <span class="pkg">parsnip</span>-extension packages that are on CRAN.</p>
-</section><section id="models-summary" class="level2" data-number="6.6"><h2 data-number="6.6" class="anchored" data-anchor-id="models-summary">
+</section><section id="sec-models-summary" class="level2" data-number="6.6"><h2 data-number="6.6" class="anchored" data-anchor-id="sec-models-summary">
 <span class="header-section-number">6.6</span> Chapter Summary</h2>
 <p>This chapter introduced the <span class="pkg">parsnip</span> package, which provides a common interface for models across R packages using a standard syntax. The interface and resulting objects have a predictable structure.</p>
 <p>The code for modeling the Ames data that we will use moving forward is:</p>
@@ -823,7 +839,7 @@ div.csl-indent {
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-glmnet" class="csl-entry" role="listitem">
 Friedman, J, T Hastie, and R Tibshirani. 2010. <span>“Regularization Paths for Generalized Linear Models via Coordinate Descent.”</span> <em>Journal of Statistical Software</em> 33 (1): 1.
 </div>
@@ -831,7 +847,7 @@ Friedman, J, T Hastie, and R Tibshirani. 2010. <span>“Regularization Paths for
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
 <li id="fn1"><p>Note that <span class="pkg">parsnip</span> constrains the outcome column of a classification model to be encoded as a <em>factor</em>; using binary numeric values will result in an error.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>What are the differences between <code>fit()</code> and <code>fit_xy()</code>? The <code>fit_xy()</code> function always passes the data as is to the underlying model function. It will not create dummy/indicator variables before doing so. When <code>fit()</code> is used with a model specification, this almost always means that dummy variables will be created from qualitative predictors. If the underlying function requires a matrix (like glmnet), it will make the matrix. However, if the underlying function uses a formula, <code>fit()</code> just passes the formula to that function. We estimate that 99% of modeling functions using formulas make dummy variables. The other 1% include tree-based methods that do not require purely numeric predictors. See Section @ref(workflow-encoding) for more about using formulas in tidymodels.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>What are the differences between <code>fit()</code> and <code>fit_xy()</code>? The <code>fit_xy()</code> function always passes the data as is to the underlying model function. It will not create dummy/indicator variables before doing so. When <code>fit()</code> is used with a model specification, this almost always means that dummy variables will be created from qualitative predictors. If the underlying function requires a matrix (like glmnet), it will make the matrix. However, if the underlying function uses a formula, <code>fit()</code> just passes the formula to that function. We estimate that 99% of modeling functions using formulas make dummy variables. The other 1% include tree-based methods that do not require purely numeric predictors. See <span class="quarto-unresolved-ref">?sec-workflow-encoding</span> for more about using formulas in tidymodels.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p><a href="https://rstudio.github.io/rstudioaddins/" class="uri">https://rstudio.github.io/rstudioaddins/</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
