@@ -49,7 +49,7 @@ The software is based on the R programming language [@baseR]. R has been designe
 
 R is open source and free. It is a powerful programming language that can be used for many different purposes but specializes in data analysis, modeling, visualization, and machine learning. R is easily extensible; it has a vast ecosystem of packages, mostly user-contributed modules that focus on a specific theme, such as modeling, visualization, and so on.
 
-One collection of packages is called the *tidyverse* [@tidyverse]. The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures. Several of these design philosophies are directly informed by the aspects of software for modeling described in this chapter. If you've never used the tidyverse packages, Chapter -@sec-tidyverse contains a review of basic concepts. Within the tidyverse, the subset of packages specifically focused on modeling are referred to as the *tidymodels* packages. This book is a practical guide for conducting modeling using the tidyverse and tidymodels packages. It shows how to use a set of packages, each with its own specific purpose, together to create high-quality models.
+One collection of packages is called the *tidyverse* [@tidyverse]. The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures. Several of these design philosophies are directly informed by the aspects of software for modeling described in this chapter. If you've never used the tidyverse packages, [Chapter @sec-tidyverse] contains a review of basic concepts. Within the tidyverse, the subset of packages specifically focused on modeling are referred to as the *tidymodels* packages. This book is a practical guide for conducting modeling using the tidyverse and tidymodels packages. It shows how to use a set of packages, each with its own specific purpose, together to create high-quality models.
 
 ## Types of Models {#sec-model-types}
 
@@ -180,7 +180,7 @@ Within supervised models, there are two main sub-categories:
 
 -   *Classification* predicts an outcome that is an ordered or unordered set of qualitative values.
 
-These are imperfect definitions and do not account for all possible model types. In [Chapter -@sec-models], we refer to this characteristic of supervised techniques as the *model mode*.
+These are imperfect definitions and do not account for all possible model types. In [Chapter @sec-models], we refer to this characteristic of supervised techniques as the *model mode*.
 
 Different variables can have different *roles*, especially in a supervised modeling analysis. Outcomes (otherwise known as the labels, endpoints, or dependent variables) are the value being predicted in supervised models. The independent variables, which are the substrate for making predictions of the outcome, are also referred to as predictors, features, or covariates (depending on the context). The terms *outcomes* and *predictors* are used most frequently in this book.
 
@@ -198,9 +198,9 @@ First, there is the chronically underestimated process of *cleaning the data*. N
 
 Data cleaning can also overlap with the second phase of *understanding the data*, often referred to as exploratory data analysis (EDA). EDA brings to light how the different variables are related to one another, their distributions, typical ranges, and other attributes. A good question to ask at this phase is, "How did I come by *these* data?" This question can help you understand how the data at hand have been sampled or filtered and if these operations were appropriate. For example, when merging database tables, a join may go awry that could accidentally eliminate one or more subpopulations. Another good idea is to ask if the data are relevant. For example, to predict whether patients have Alzheimer's disease, it would be unwise to have a data set containing subjects with the disease and a random sample of healthy adults from the general population. Given the progressive nature of the disease, the model may simply predict who are the oldest patients.
 
-Finally, before starting a data analysis process, there should be clear expectations of the model's goal and how performance (and success) will be judged. At least one *performance metric* should be identified with realistic goals of what can be achieved. Common statistical metrics, discussed in more detail in [Chapter -@sec-performance], are classification accuracy, true and false positive rates, root mean squared error, and so on. The relative benefits and drawbacks of these metrics should be weighed. It is also important that the metric be germane; alignment with the broader data analysis goals is critical.
+Finally, before starting a data analysis process, there should be clear expectations of the model's goal and how performance (and success) will be judged. At least one *performance metric* should be identified with realistic goals of what can be achieved. Common statistical metrics, discussed in more detail in [Chapter @sec-performance], are classification accuracy, true and false positive rates, root mean squared error, and so on. The relative benefits and drawbacks of these metrics should be weighed. It is also important that the metric be germane; alignment with the broader data analysis goals is critical.
 
-The process of investigating the data may not be simple. @wickham2016 contains an excellent illustration of the general data analysis process, reproduced in Figure @fig-software-data-science-model. Data ingestion and cleaning/tidying are shown as the initial steps. When the analytical steps for understanding commence, they are a heuristic process; we cannot pre-determine how long they may take. The cycle of transformation, modeling, and visualization often requires multiple iterations.
+The process of investigating the data may not be simple. @wickham2016 contains an excellent illustration of the general data analysis process, reproduced in @fig-software-data-science-model. Data ingestion and cleaning/tidying are shown as the initial steps. When the analytical steps for understanding commence, they are a heuristic process; we cannot pre-determine how long they may take. The cycle of transformation, modeling, and visualization often requires multiple iterations.
 
 ```{r}
 #| label: fig-software-data-science-model
@@ -212,15 +212,15 @@ The process of investigating the data may not be simple. @wickham2016 contains a
 knitr::include_graphics("premade/data-science-model.svg")
 ```
 
-This iterative process is especially true for modeling. Figure @fig-software-modeling-process emulates the typical path to determining an appropriate model. The general phases are:
+This iterative process is especially true for modeling. @fig-software-modeling-process emulates the typical path to determining an appropriate model. The general phases are:
 
 -   *Exploratory data analysis (EDA):* Initially there is a back and forth between numerical analysis and data visualization (represented in @fig-software-data-science-model) where different discoveries lead to more questions and data analysis side-quests to gain more understanding.
 
--   *Feature engineering:* The understanding gained from EDA results in the creation of specific model terms that make it easier to accurately model the observed data. This can include complex methodologies (e.g., PCA) or simpler features (using the ratio of two predictors). [Chapter -@sec-recipes] focuses entirely on this important step.
+-   *Feature engineering:* The understanding gained from EDA results in the creation of specific model terms that make it easier to accurately model the observed data. This can include complex methodologies (e.g., PCA) or simpler features (using the ratio of two predictors). [Chapter @sec-recipes] focuses entirely on this important step.
 
--   *Model tuning and selection (large circles with alternating segments):* A variety of models are generated and their performance is compared. Some models require parameter tuning in which some structural parameters must be specified or optimized. The alternating segments within the circles signify the repeated data splitting used during resampling (see [Chapter -@sec-resampling]).
+-   *Model tuning and selection (large circles with alternating segments):* A variety of models are generated and their performance is compared. Some models require parameter tuning in which some structural parameters must be specified or optimized. The alternating segments within the circles signify the repeated data splitting used during resampling (see [Chapter @sec-resampling]).
 
--   *Model evaluation:* During this phase of model development, we assess the model's performance metrics, examine residual plots, and conduct other EDA-like analyses to understand how well the models work. In some cases, formal between-model comparisons ([Chapter -@sec-compare]) help you understand whether any differences in models are within the experimental noise.
+-   *Model evaluation:* During this phase of model development, we assess the model's performance metrics, examine residual plots, and conduct other EDA-like analyses to understand how well the models work. In some cases, formal between-model comparisons ([Chapter @sec-compare]) help you understand whether any differences in models are within the experimental noise.
 
 ```{r}
 #| label: fig-software-modeling-process

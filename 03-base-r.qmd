@@ -115,7 +115,7 @@ interaction_fit
 
 This output is a little hard to read. For the species indicator variables, R mashes the variable name (`species`) together with the factor level (`O. niveus`) with no delimiter.
 
-Before going into any inferential results for this model, the fit should be assessed using diagnostic plots. We can use the `plot()` method for `lm` objects. This method produces a set of four plots for the object, each showing different aspects of the fit, as shown in Figure @fig-interaction-plots.
+Before going into any inferential results for this model, the fit should be assessed using diagnostic plots. We can use the `plot()` method for `lm` objects. This method produces a set of four plots for the object, each showing different aspects of the fit, as shown in @fig-interaction-plots.
 
 ```{r base-r-interaction-plots, eval = FALSE}
 # Place two plots next to one another:
@@ -208,7 +208,7 @@ For the most part, practitioners' understanding of what the formula does is domi
 Our focus, when seeing this, is that there are two predictors and the model should contain their main effects and the two-way interactions. However, this formula also implies that, since `species` is a factor, it should also create indicator variable columns for this predictor (see [Section -@sec-dummies]) and multiply those columns by the `temp` column to create the interactions. This transformation represents our second bullet point on encoding; the formula also defines how each column is encoded and can create additional columns that are not in the original data.
 
 ::: rmdwarning
-This is an important point that will come up multiple times in this text, especially when we discuss more complex feature engineering in [Chapter -@sec-recipes] and beyond. The formula in R has some limitations, and our approaches to overcoming them contend with all three aspects.
+This is an important point that will come up multiple times in this text, especially when we discuss more complex feature engineering in [Chapter @sec-recipes] and beyond. The formula in R has some limitations, and our approaches to overcoming them contend with all three aspects.
 :::
 
 ## Why Tidiness Is Important for Modeling {#sec-tidiness-modeling}
@@ -378,7 +378,7 @@ List columns can be very powerful in modeling projects. List columns provide con
 
 ## The tidymodels Metapackage
 
-The tidyverse ([Chapter -@sec-tidyverse]) is designed as a set of modular R packages, each with a fairly narrow scope. The tidymodels framework follows a similar design. For example, the `r pkg(rsample)` package focuses on data splitting and resampling. Although resampling methods are critical to other activities of modeling (e.g., measuring performance), they reside in a single package, and performance metrics are contained in a different, separate package, `r pkg(yardstick)`. There are many benefits to adopting this philosophy of modular packages, from less bloated model deployment to smoother package maintenance.
+The tidyverse ([Chapter @sec-tidyverse]) is designed as a set of modular R packages, each with a fairly narrow scope. The tidymodels framework follows a similar design. For example, the `r pkg(rsample)` package focuses on data splitting and resampling. Although resampling methods are critical to other activities of modeling (e.g., measuring performance), they reside in a single package, and performance metrics are contained in a different, separate package, `r pkg(yardstick)`. There are many benefits to adopting this philosophy of modular packages, from less bloated model deployment to smoother package maintenance.
 
 ```{r base-r-detach, warning = FALSE, message = FALSE, echo = FALSE}
 pkgs <- paste0("package:", 
