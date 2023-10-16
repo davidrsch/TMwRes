@@ -357,14 +357,14 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#equivocal-zones" id="toc-equivocal-zones" class="nav-link active" data-scroll-target="#equivocal-zones"><span class="header-section-number">19.1</span> Equivocal Results</a></li>
-  <li><a href="#applicability-domains" id="toc-applicability-domains" class="nav-link" data-scroll-target="#applicability-domains"><span class="header-section-number">19.2</span> Determining Model Applicability</a></li>
-  <li><a href="#trust-summary" id="toc-trust-summary" class="nav-link" data-scroll-target="#trust-summary"><span class="header-section-number">19.3</span> Chapter Summary</a></li>
+<li><a href="#sec-equivocal-zones" id="toc-sec-equivocal-zones" class="nav-link active" data-scroll-target="#sec-equivocal-zones"><span class="header-section-number">19.1</span> Equivocal Results</a></li>
+  <li><a href="#sec-applicability-domains" id="toc-sec-applicability-domains" class="nav-link" data-scroll-target="#sec-applicability-domains"><span class="header-section-number">19.2</span> Determining Model Applicability</a></li>
+  <li><a href="#sec-trust-summary" id="toc-sec-trust-summary" class="nav-link" data-scroll-target="#sec-trust-summary"><span class="header-section-number">19.3</span> Chapter Summary</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/19-when-should-you-trust-predictions.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="trust" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">When Should You Trust Your Predictions?</span></span></h1>
+<h1 class="title"><span id="sec-trust" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">When Should You Trust Your Predictions?</span></span></h1>
 </div>
 
 
@@ -385,7 +385,7 @@ div.csl-indent {
 <li>
 <em>Applicability</em> uses the predictors to measure the amount of extrapolation (if any) for new samples.</li>
 </ul>
-<section id="equivocal-zones" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="equivocal-zones">
+<section id="sec-equivocal-zones" class="level2" data-number="19.1"><h2 data-number="19.1" class="anchored" data-anchor-id="sec-equivocal-zones">
 <span class="header-section-number">19.1</span> Equivocal Results</h2>
 <div class="rmdwarning">
 <p>In some cases, the amount of uncertainty associated with a prediction is too high to be trusted.</p>
@@ -396,7 +396,7 @@ div.csl-indent {
 \mathrm{logit}(p) = -1 - 2x - \frac{x^2}{5} + 2y^2
 \]</span></p>
 <p>The two predictors follow a bivariate normal distribution with a correlation of 0.70. We’ll create a training set of 200 samples and a test set of 50:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-simulation_ee5d721cfbd9161aca29d9fc35c93454">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -425,7 +425,7 @@ div.csl-indent {
 <span><span class="va">testing_set</span>  <span class="op">&lt;-</span> <span class="fu">simulate_two_classes</span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We estimate a logistic regression model using Bayesian methods (using the default Gaussian prior distributions for the parameters):</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-bayes-glm_8186d98afd8fd22f1e723b5bb62d91f6">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">two_class_mod</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">logistic_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"stan"</span>, seed <span class="op">=</span> <span class="fl">1902</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
@@ -451,7 +451,7 @@ div.csl-indent {
 <span><span class="co">## * For info on the priors used see ?prior_summary.stanreg</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The fitted class boundary is overlaid onto the test set in Figure @ref(fig:glm-boundaries). The data points closest to the class boundary are the most uncertain. If their values changed slightly, their predicted class might change. One simple method for disqualifying some results is to call them “equivocal” if the values are within some range around 50% (or the appropriate probability cutoff for a certain situation). Depending on the problem the model is being applied to, this might indicate we should collect another measurement or we require more information before a trustworthy prediction is possible.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/glm-boundaries_62026860f3a7a37916989ebf56fd74e9">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figures/glm-boundaries-1.png" class="img-fluid figure-img" style="width:70.0%" alt="Simulated two-class data set with a logistic regression fit and decision boundary. The scatter plot of the two classes shows fairly correlated data. The decision boundary is a parabola in the x axis that does a good job of separating the classes."></p>
@@ -461,7 +461,7 @@ div.csl-indent {
 </div>
 <p>We could base the width of the band around the cutoff on how performance improves when the uncertain results are removed. However, we should also estimate the reportable rate (the expected proportion of usable results). For example, it would not be useful in real-world situations to have perfect performance but release predictions on only 2% of the samples passed to the model.</p>
 <p>Let’s use the test set to determine the balance between improving performance and having enough reportable results. The predictions are created using:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-bayes-glm-pred_c37831eeb2156d2a9f83b2ced398d5ac">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">test_pred</span> <span class="op">&lt;-</span> <span class="fu">augment</span><span class="op">(</span><span class="va">two_class_mod</span>, <span class="va">testing_set</span><span class="op">)</span></span>
 <span><span class="va">test_pred</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 6 × 6</span></span>
@@ -475,7 +475,7 @@ div.csl-indent {
 <span><span class="co">## 6 class_2           0.0317          0.968  2.59   1.36  class_2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>With tidymodels, the <span class="pkg">probably</span> package contains functions for equivocal zones. For cases with two classes, the <code><a href="https://probably.tidymodels.org/reference/make_class_pred.html">make_two_class_pred()</a></code> function creates a factor-like column that has the predicted classes with an equivocal zone:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-make-eq_32e95660efa1a6d8aa00f9abb028d3a5">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/probably/">probably</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">lvls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">training_set</span><span class="op">$</span><span class="va">class</span><span class="op">)</span></span>
@@ -497,7 +497,7 @@ div.csl-indent {
 <p>The notation <code>[EQ]</code> in this example is not a factor level but an attribute of that column.</p>
 </div>
 <p>Since the factor levels are the same as the original data, confusion matrices and other statistics can be computed without error. When using standard functions from the <span class="pkg">yardstick</span> package, the equivocal results are converted to <code>NA</code> and are not used in the calculations that use the hard class predictions. Notice the differences in these confusion matrices:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-conf-mat_51b57054d2a8fbc134cc7d8ee5afbceb">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># All data</span></span>
 <span><span class="va">test_pred</span> <span class="op">%&gt;%</span> <span class="fu">conf_mat</span><span class="op">(</span><span class="va">class</span>, <span class="va">.pred_class</span><span class="op">)</span></span>
 <span><span class="co">##           Truth</span></span>
@@ -514,7 +514,7 @@ div.csl-indent {
 </div>
 <p>An <code><a href="https://probably.tidymodels.org/reference/locate-equivocal.html">is_equivocal()</a></code> function is also available for filtering these rows from the data.</p>
 <p>Does the equivocal zone help improve accuracy? Let’s look at different buffer sizes, as shown in Figure @ref(fig:equivocal-zone-results):</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-eq-calcs_c1a1388fb15da2e83c71a8eb682db31b">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># A function to change the buffer then compute performance.</span></span>
 <span><span class="va">eq_zone_results</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">buffer</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">test_pred</span> <span class="op">&lt;-</span> </span>
@@ -533,7 +533,7 @@ div.csl-indent {
 <span>  <span class="fu">geom_step</span><span class="op">(</span>linewidth <span class="op">=</span> <span class="fl">1.2</span>, alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, lty <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/equivocal-zone-results_a2d6a32cba65ab01ede7ed9500087348">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figures/equivocal-zone-results-1.png" class="img-fluid figure-img" style="width:80.0%" alt="The effect of equivocal zones on model performance. There is a slight increase in accuracy at the expense of a falling reportable rate."></p>
@@ -544,7 +544,7 @@ div.csl-indent {
 <p>Figure @ref(fig:equivocal-zone-results) shows us that accuracy improves by a few percentage points but at the cost of nearly 10% of predictions being unusable! The value of such a compromise depends on how the model predictions will be used.</p>
 <p>This analysis focused on using the predicted class probability to disqualify points, since this is a fundamental measure of uncertainty in classification models. A slightly better approach would be to use the standard error of the class probability. Since we used a Bayesian model, the probability estimates we found are actually the mean of the posterior predictive distribution. In other words, the Bayesian model gives us a distribution for the class probability. Measuring the standard deviation of this distribution gives us a <em>standard error of prediction</em> of the probability. In most cases, this value is directly related to the mean class probability. You might recall that, for a Bernoulli random variable with probability <span class="math inline">\(p\)</span>, the variance is <span class="math inline">\(p(1-p)\)</span>. Because of this relationship, the standard error is largest when the probability is 50%. Instead of assigning an equivocal result using the class probability, we could instead use a cutoff on the standard error of prediction.</p>
 <p>One important aspect of the standard error of prediction is that it takes into account more than just the class probability. In cases where there is significant extrapolation or aberrant predictor values, the standard error might increase. The benefit of using the standard error of prediction is that it might also flag predictions that are problematic (as opposed to simply uncertain). One reason we used the Bayesian model is that it naturally estimates the standard error of prediction; not many models can calculate this. For our test set, using <code>type = "pred_int"</code> will produce upper and lower limits and the <code>std_error</code> adds a column for that quantity. For 80% intervals:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-pred-int_a1a565aa5e1e76ade39778dbb5351a72">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">test_pred</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">test_pred</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">bind_cols</span><span class="op">(</span></span>
@@ -552,7 +552,7 @@ div.csl-indent {
 <span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For our example where the model and data are well behaved, Figure @ref(fig:std-errors) shows the standard error of prediction across the space:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/std-errors_f829189870c8d0332fd8541e84e74331">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figures/std-errors-1.png" class="img-fluid figure-img" style="width:70.0%" alt="The effect of the standard error of prediction overlaid with the test set data. The region of large variation is very similar to the class boundary space. Additionally, there is a large amount of variation to the west of the inflection point of the boundary curve."></p>
@@ -561,11 +561,11 @@ div.csl-indent {
 </div>
 </div>
 <p>Using the standard error as a measure to preclude samples from being predicted can also be applied to models with numeric outcomes. However, as shown in the next section, this may not always work.</p>
-</section><section id="applicability-domains" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="applicability-domains">
+</section><section id="sec-applicability-domains" class="level2" data-number="19.2"><h2 data-number="19.2" class="anchored" data-anchor-id="sec-applicability-domains">
 <span class="header-section-number">19.2</span> Determining Model Applicability</h2>
 <p>Equivocal zones try to measure the reliability of a prediction based on the model outputs. It may be that model statistics, such as the standard error of prediction, cannot measure the impact of extrapolation, and so we need another way to assess whether to trust a prediction and answer, “Is our model applicable for predicting a specific data point?” Let’s take the Chicago train data used extensively in <a href="https://bookdown.org/max/FES/chicago-intro.html">Kuhn and Johnson (2019)</a> and first shown in Section @ref(examples-of-tidyverse-syntax). The goal is to predict the number of customers entering the Clark and Lake train station each day.</p>
 <p>The data set in the <span class="pkg">modeldata</span> package (a tidymodels package with example data sets) has daily values between enero 22, 2001 and agosto 28, 2016. Let’s create a small test set using the last two weeks of the data:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-chicago-data_ac127cc7c0d54ef420e3d594101def17">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">## loads both `Chicago` data set as well as `stations`</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">Chicago</span><span class="op">)</span></span>
 <span></span>
@@ -578,7 +578,7 @@ div.csl-indent {
 </div>
 <p>The main predictors are lagged ridership data at different train stations, including Clark and Lake, as well as the date. The ridership predictors are highly correlated with one another. In the following recipe, the date column is expanded into several new features, and the ridership predictors are represented using partial least squares (PLS) components. PLS <span class="citation" data-cites="Geladi:1986">(<a href="references.html#ref-Geladi:1986" role="doc-biblioref">Geladi and Kowalski 1986</a>)</span>, as we discussed in Section @ref(partial-least-squares), is a supervised version of principal component analysis where the new features have been decorrelated but are predictive of the outcome data.</p>
 <p>Using the preprocessed data, we fit a standard linear model:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-chicago-model_5071f33297857a3969ee5136b30bc8e4">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">base_recipe</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">ridership</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">Chicago_train</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="co"># Create date features</span></span>
@@ -604,7 +604,7 @@ div.csl-indent {
 <span><span class="va">lm_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">lm_wflow</span>, data <span class="op">=</span> <span class="va">Chicago_train</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>How well do the data fit on the test set? We can <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> for the test set to find both predictions and prediction intervals:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-chicago-test-res_0c8e62f2f8f84814b626de1d051dcd08">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res_test</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_fit</span>, <span class="va">Chicago_test</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">bind_cols</span><span class="op">(</span></span>
@@ -630,7 +630,7 @@ div.csl-indent {
 <span><span class="co">## 1 rmse    standard       0.865</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These are fairly good results. Figure @ref(fig:chicago-2016) visualizes the predictions along with 95% prediction intervals.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/chicago-2016_b9be073f67eaab1c10e9c9960a7a58d9">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figures/chicago-2016-1.png" class="img-fluid figure-img" style="width:80.0%" alt="Two weeks of 2016 predictions for the Chicago data along with 95% prediction intervals. The model fit the data fairly well with reasonable error estimates."></p>
@@ -639,7 +639,7 @@ div.csl-indent {
 </div>
 </div>
 <p>Given the scale of the ridership numbers, these results look particularly good for such a simple model. If this model were deployed, how well would it have done a few years later in June 2020? The model successfully makes a prediction, as a predictive model almost always will when given input data:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-chicago-2020-res_04eb708eb58f018e2ac3fd0f4041915c">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res_2020</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_fit</span>, <span class="va">Chicago_2020</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">bind_cols</span><span class="op">(</span></span>
@@ -660,7 +660,7 @@ div.csl-indent {
 <span><span class="co">## # ℹ 8 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The prediction intervals are about the same width, even though these data are well beyond the time period of the original training set. However, given the global pandemic in 2020, the performance on these data are abysmal:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-chicago-2020-stats_0a1451f989a8b64d50058745558d4968">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res_2020</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">date</span>, <span class="va">ridership</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">".pred"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 14 × 5</span></span>
 <span><span class="co">##   date       ridership .pred .pred_lower .pred_upper</span></span>
@@ -679,7 +679,7 @@ div.csl-indent {
 <span><span class="co">## 1 rmse    standard        17.2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You can see this terrible model performance visually in Figure @ref(fig:chicago-2020).</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/chicago-2020_0c6299402a2ea98d666a861f4a081699">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figures/chicago-2020-1.png" class="img-fluid figure-img" style="width:80.0%" alt="Two weeks of 2016 predictions for the Chicago data along with 95% prediction intervals. The model fit the data fairly well with reasonable error estimates."></p>
@@ -697,7 +697,7 @@ div.csl-indent {
 </div>
 <p>One method that works well uses principal component analysis (PCA) on the numeric predictor values. We’ll illustrate the process by using only two of the predictors that correspond to ridership at different stations (California and Austin stations). The training set are shown in panel (a) in Figure @ref(fig:pca-reference-dist). The ridership data for these stations are highly correlated, and the two distributions shown in the scatter plot correspond to ridership on the weekends and week days.</p>
 <p>The first step is to conduct PCA on the training data. The PCA scores for the training set are shown in panel (b) in Figure @ref(fig:pca-reference-dist). Next, using these results, we measure the distance of each training set point to the center of the PCA data (panel (c) of Figure @ref(fig:pca-reference-dist)). We can then use this <em>reference distribution</em> (panel (d) of Figure @ref(fig:pca-reference-dist)) to estimate how far a data point is from the mainstream of the training data.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/pca-reference-dist_dec11d40750e1991e736947fd4ee6a03">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figures/pca-reference-dist-1.png" class="img-fluid figure-img" style="width:100.0%" alt="The PCA reference distribution based on the training set. The majority of the distances to the center of the PCA distribution are below a value of three."></p>
@@ -712,7 +712,7 @@ div.csl-indent {
 <p>A percentile of 90% means that most of the training set data are closer to the data center than the new sample.</p>
 </div>
 <p>The plot in Figure @ref(fig:two-new-points) overlays a testing set sample (triangle and dashed line) and a 2020 sample (circle and solid line) with the PCA distances from the training set.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/two-new-points_51e3efecac40b6fc22438f2655a258e2">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figures/two-new-points-1.png" class="img-fluid figure-img" style="width:100.0%" alt="The reference distribution with two new points: one using the test set and one from the 2020 data. The test set point is snugly within the data mainstream while the 2020 point is outside of the reference distribution."></p>
@@ -723,7 +723,7 @@ div.csl-indent {
 <p>The test set point has a distance of 1.28. It is in the 51.8% percentile of the training set distribution, indicating that it is snugly within the mainstream of the training set.</p>
 <p>The 2020 sample is farther from the center than any of the training set samples (with a percentile of 100%). This indicates the sample is very extreme and that its corresponding prediction would be a severe extrapolation (and probably should not be reported).</p>
 <p>The <span class="pkg">applicable</span> package can develop an applicability domain model using PCA. We’ll use the 20 lagged station ridership predictors as inputs into the PCA analysis. There is an additional argument called <code>threshold</code> that determines how many components are used in the distance calculation. For our example, we’ll use a large value that indicates we should use enough components to account for 99% of the variation in the ridership predictors:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-apd-pca_5c60c97d690a7487a981c9bc6449a3a5">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/applicable">applicable</a></span><span class="op">)</span></span>
 <span><span class="va">pca_stat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://applicable.tidymodels.org/reference/apd_pca.html">apd_pca</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">Chicago_train</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="fu">one_of</span><span class="op">(</span><span class="va">stations</span><span class="op">)</span><span class="op">)</span>, </span>
 <span>                    threshold <span class="op">=</span> <span class="fl">0.99</span><span class="op">)</span></span>
@@ -736,10 +736,10 @@ div.csl-indent {
 <span><span class="co">##    total variation in the predictors.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method plots the reference distribution. It has an optional argument for which data to plot. We’ll add a value of <code>distance</code> to plot only the training set distance distribution. This code generates the plot in Figure @ref(fig:ap-autoplot):</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-ref-dist_b4a6991a3f34eed816a4041f20bd3efa">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">pca_stat</span>, <span class="va">distance</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"distance"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/ap-autoplot_7ac60a750281d1978435ac3d79c6800e">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="figures/ap-autoplot-1.png" class="img-fluid figure-img" style="width:70.0%" alt="The results of using the `autoplot()` method on an applicable object."></p>
@@ -749,7 +749,7 @@ div.csl-indent {
 </div>
 <p>The x-axis shows the values of the distance and the y-axis displays the distribution’s percentiles. For example, half of the training set samples had distances less than 3.7.</p>
 <p>To compute the percentiles for new data, the <code><a href="https://applicable.tidymodels.org/reference/score.html">score()</a></code> function works in the same way as <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-apd-test-scores_5dd344236d88b5bf1cf40ee9ca04e56a">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://applicable.tidymodels.org/reference/score.html">score</a></span><span class="op">(</span><span class="va">pca_stat</span>, <span class="va">Chicago_test</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"distance"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 14 × 2</span></span>
 <span><span class="co">##   distance distance_pctl</span></span>
@@ -763,7 +763,7 @@ div.csl-indent {
 <span><span class="co">## # ℹ 8 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These seem fairly reasonable. For the 2020 data:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="19-when-should-you-trust-predictions_cache/html/trust-apd-2020-scores_075bf1616a47eae031617cd145601ce9">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://applicable.tidymodels.org/reference/score.html">score</a></span><span class="op">(</span><span class="va">pca_stat</span>, <span class="va">Chicago_2020</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"distance"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 14 × 2</span></span>
 <span><span class="co">##   distance distance_pctl</span></span>
@@ -780,7 +780,7 @@ div.csl-indent {
 <div class="rmdnote">
 <p>One important aspect of this analysis concerns which predictors are used to develop the applicability domain model. In our analysis, we used the raw predictor columns. However, in building the model, PLS score features were used in their place. Which of these should <code><a href="https://applicable.tidymodels.org/reference/apd_pca.html">apd_pca()</a></code> use? The <code><a href="https://applicable.tidymodels.org/reference/apd_pca.html">apd_pca()</a></code> function can also take a recipe as the input (instead of a formula) so that the distances reflect the PLS scores instead of the individual predictor columns. You can evaluate both methods to understand which one gives more relevant results.</p>
 </div>
-</section><section id="trust-summary" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="trust-summary">
+</section><section id="sec-trust-summary" class="level2" data-number="19.3"><h2 data-number="19.3" class="anchored" data-anchor-id="sec-trust-summary">
 <span class="header-section-number">19.3</span> Chapter Summary</h2>
 <p>This chapter showed two methods for evaluating whether predictions should be reported to the consumers of models. Equivocal zones deal with outcomes/predictions and can be helpful when the amount of uncertainty in a prediction is too large.</p>
 <p>Applicability domain models deal with features/predictors and quantify the amount of extrapolation (if any) that occurs when making a prediction. This chapter showed a basic method using principal component analysis, although there are many other ways to measure applicability. The <span class="pkg">applicable</span> package also contains specialized methods for data sets where all of the predictors are binary. This method computes similarity scores between training set data points to define the reference distribution.</p>

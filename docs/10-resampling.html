@@ -358,28 +358,28 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#resampling-resubstition" id="toc-resampling-resubstition" class="nav-link active" data-scroll-target="#resampling-resubstition"><span class="header-section-number">10.1</span> The Resubstitution Approach</a></li>
+<li><a href="#sec-resampling-resubstition" id="toc-sec-resampling-resubstition" class="nav-link active" data-scroll-target="#sec-resampling-resubstition"><span class="header-section-number">10.1</span> The Resubstitution Approach</a></li>
   <li>
 <a href="#resampling-methods" id="toc-resampling-methods" class="nav-link" data-scroll-target="#resampling-methods"><span class="header-section-number">10.2</span> Resampling Methods</a>
   <ul class="collapse">
-<li><a href="#cv" id="toc-cv" class="nav-link" data-scroll-target="#cv"><span class="header-section-number">10.2.1</span> Cross-validation</a></li>
+<li><a href="#sec-cv" id="toc-sec-cv" class="nav-link" data-scroll-target="#sec-cv"><span class="header-section-number">10.2.1</span> Cross-validation</a></li>
   <li><a href="#repeated-cross-validation" id="toc-repeated-cross-validation" class="nav-link" data-scroll-target="#repeated-cross-validation">Repeated cross-validation</a></li>
   <li><a href="#leave-one-out-cross-validation" id="toc-leave-one-out-cross-validation" class="nav-link" data-scroll-target="#leave-one-out-cross-validation">Leave-one-out cross-validation</a></li>
   <li><a href="#monte-carlo-cross-validation" id="toc-monte-carlo-cross-validation" class="nav-link" data-scroll-target="#monte-carlo-cross-validation">Monte Carlo cross-validation</a></li>
-  <li><a href="#validation" id="toc-validation" class="nav-link" data-scroll-target="#validation"><span class="header-section-number">10.2.2</span> Validation sets</a></li>
-  <li><a href="#bootstrap" id="toc-bootstrap" class="nav-link" data-scroll-target="#bootstrap"><span class="header-section-number">10.2.3</span> Bootstrapping</a></li>
-  <li><a href="#rolling" id="toc-rolling" class="nav-link" data-scroll-target="#rolling"><span class="header-section-number">10.2.4</span> Rolling forecasting origin resampling</a></li>
+  <li><a href="#sec-validation" id="toc-sec-validation" class="nav-link" data-scroll-target="#sec-validation"><span class="header-section-number">10.2.2</span> Validation sets</a></li>
+  <li><a href="#sec-bootstrap" id="toc-sec-bootstrap" class="nav-link" data-scroll-target="#sec-bootstrap"><span class="header-section-number">10.2.3</span> Bootstrapping</a></li>
+  <li><a href="#sec-rolling" id="toc-sec-rolling" class="nav-link" data-scroll-target="#sec-rolling"><span class="header-section-number">10.2.4</span> Rolling forecasting origin resampling</a></li>
   </ul>
 </li>
-  <li><a href="#resampling-performance" id="toc-resampling-performance" class="nav-link" data-scroll-target="#resampling-performance"><span class="header-section-number">10.3</span> Estimating Performance</a></li>
-  <li><a href="#parallel" id="toc-parallel" class="nav-link" data-scroll-target="#parallel"><span class="header-section-number">10.4</span> Parallel Processing</a></li>
-  <li><a href="#extract" id="toc-extract" class="nav-link" data-scroll-target="#extract"><span class="header-section-number">10.5</span> Saving the Resampled Objects</a></li>
-  <li><a href="#resampling-summary" id="toc-resampling-summary" class="nav-link" data-scroll-target="#resampling-summary"><span class="header-section-number">10.6</span> Chapter Summary</a></li>
+  <li><a href="#sec-resampling-performance" id="toc-sec-resampling-performance" class="nav-link" data-scroll-target="#sec-resampling-performance"><span class="header-section-number">10.3</span> Estimating Performance</a></li>
+  <li><a href="#sec-parallel" id="toc-sec-parallel" class="nav-link" data-scroll-target="#sec-parallel"><span class="header-section-number">10.4</span> Parallel Processing</a></li>
+  <li><a href="#sec-extract" id="toc-sec-extract" class="nav-link" data-scroll-target="#sec-extract"><span class="header-section-number">10.5</span> Saving the Resampled Objects</a></li>
+  <li><a href="#sec-resampling-summary" id="toc-sec-resampling-summary" class="nav-link" data-scroll-target="#sec-resampling-summary"><span class="header-section-number">10.6</span> Chapter Summary</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/10-resampling.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="resampling" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Resampling for Evaluating Performance</span></span></h1>
+<h1 class="title"><span id="sec-resampling" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Resampling for Evaluating Performance</span></span></h1>
 </div>
 
 
@@ -392,17 +392,17 @@ div.csl-indent {
   </div>
   
 
-</header><p>We have already covered several pieces that must be put together to evaluate the performance of a model. Chapter @ref(performance) described statistics for measuring model performance. Chapter @ref(splitting) introduced the idea of data spending, and we recommended the test set for obtaining an unbiased estimate of performance. However, we usually need to understand the performance of a model or even multiple models <em>before using the test set</em>.</p>
+</header><p>We have already covered several pieces that must be put together to evaluate the performance of a model. <a href="#sec-performance">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-performance</span></a> described statistics for measuring model performance. <a href="#sec-splitting">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-splitting</span></a> introduced the idea of data spending, and we recommended the test set for obtaining an unbiased estimate of performance. However, we usually need to understand the performance of a model or even multiple models <em>before using the test set</em>.</p>
 <div class="rmdwarning">
 <p>Typically we can’t decide on which final model to use with the test set before first assessing model performance. There is a gap between our need to measure performance reliably and the data splits (training and testing) we have available.</p>
 </div>
 <p>In this chapter, we describe an approach called resampling that can fill this gap. Resampling estimates of performance can generalize to new data in a similar way as estimates from a test set. The next chapter complements this one by demonstrating statistical methods that compare resampling results.</p>
 <p>In order to fully appreciate the value of resampling, let’s first take a look the resubstitution approach, which can often fail.</p>
-<section id="resampling-resubstition" class="level2" data-number="10.1"><h2 data-number="10.1" class="anchored" data-anchor-id="resampling-resubstition">
+<section id="sec-resampling-resubstition" class="level2" data-number="10.1"><h2 data-number="10.1" class="anchored" data-anchor-id="sec-resampling-resubstition">
 <span class="header-section-number">10.1</span> The Resubstitution Approach</h2>
-<p>When we measure performance on the same data that we used for training (as opposed to new data or testing data), we say we have <em>resubstituted</em> the data. Let’s again use the Ames housing data to demonstrate these concepts. Section @ref(recipes-summary) summarizes the current state of our Ames analysis. It includes a recipe object named <code>ames_rec</code>, a linear model, and a workflow using that recipe and model called <code>lm_wflow</code>. This workflow was fit on the training set, resulting in <code>lm_fit</code>.</p>
+<p>When we measure performance on the same data that we used for training (as opposed to new data or testing data), we say we have <em>resubstituted</em> the data. Let’s again use the Ames housing data to demonstrate these concepts. <a href="#sec-recipes-summary"><span class="quarto-unresolved-ref">sec-recipes-summary</span></a> summarizes the current state of our Ames analysis. It includes a recipe object named <code>ames_rec</code>, a linear model, and a workflow using that recipe and model called <code>lm_wflow</code>. This workflow was fit on the training set, resulting in <code>lm_fit</code>.</p>
 <p>For a comparison to this linear model, we can also fit a different type of model. <em>Random forests</em> are a tree ensemble method that operates by creating a large number of decision trees from slightly different versions of the training set <span class="citation" data-cites="breiman2001random">(<a href="#ref-breiman2001random" role="doc-biblioref">Breiman 2001</a>)</span>. This collection of trees makes up the ensemble. When predicting a new sample, each ensemble member makes a separate prediction. These are averaged to create the final ensemble prediction for the new data point.</p>
-<p>Random forest models are very powerful, and they can emulate the underlying data patterns very closely. While this model can be computationally intensive, it is very low maintenance; very little preprocessing is required (as documented in Appendix @ref(pre-proc-table)).</p>
+<p>Random forest models are very powerful, and they can emulate the underlying data patterns very closely. While this model can be computationally intensive, it is very low maintenance; very little preprocessing is required (as documented in <a href="#sec-pre-proc-table">Appendix&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-pre-proc-table</span></a>).</p>
 <p>Using the same predictor set as the linear model (without the extra preprocessing steps), we can fit a random forest model to the training set via the <code>"ranger"</code> engine (which uses the <span class="pkg">ranger</span> R package for computation). This model requires no preprocessing, so a simple formula can be used:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rf_model</span> <span class="op">&lt;-</span> </span>
@@ -469,11 +469,12 @@ div.csl-indent {
 <p>In this context, <em>bias</em> is the difference between the true pattern or relationships in data and the types of patterns that the model can emulate. Many black-box machine learning models have low bias, meaning they can reproduce complex relationships. Other models (such as linear/logistic regression, discriminant analysis, and others) are not as adaptable and are considered <em>high bias</em> models.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 </div>
 <p>For a low bias model, the high degree of predictive capacity can sometimes result in the model nearly memorizing the training set data. As an obvious example, consider a 1-nearest neighbor model. It will always provide perfect predictions for the training set no matter how well it truly works for other data sets. Random forest models are similar; repredicting the training set will always result in an artificially optimistic estimate of performance.</p>
-<p>For both models, Table @ref(tab:rmse-results) summarizes the RMSE estimate for the training and test sets:</p>
+<p>For both models, <a href="#tbl-rmse-results">Table&nbsp;<span class="quarto-unresolved-ref">tbl-rmse-results</span></a> summarizes the RMSE estimate for the training and test sets:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
+<div id="tbl-rmse-results" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Performance statistics for training and test sets.</caption>
+<caption>Table&nbsp;10.1: Performance statistics for training and test sets.</caption>
 <colgroup>
 <col style="width: 33%">
 <col style="width: 33%">
@@ -506,6 +507,9 @@ RMSE Estimates
 </tbody>
 </table>
 </div>
+
+
+</div>
 </div>
 <p>Notice that the linear regression model is consistent between training and testing, because of its limited complexity.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <div class="rmdwarning">
@@ -514,16 +518,16 @@ RMSE Estimates
 <p>If the test set should not be used immediately, and repredicting the training set is a bad idea, what should be done? Resampling methods, such as cross-validation or validation sets, are the solution.</p>
 </section><section id="resampling-methods" class="level2" data-number="10.2"><h2 data-number="10.2" class="anchored" data-anchor-id="resampling-methods">
 <span class="header-section-number">10.2</span> Resampling Methods</h2>
-<p>Resampling methods are empirical simulation systems that emulate the process of using some data for modeling and different data for evaluation. Most resampling methods are iterative, meaning that this process is repeated multiple times. The diagram in Figure @ref(fig:resampling-scheme) illustrates how resampling methods generally operate.</p>
+<p>Resampling methods are empirical simulation systems that emulate the process of using some data for modeling and different data for evaluation. Most resampling methods are iterative, meaning that this process is repeated multiple times. The diagram in <a href="#fig-resampling-scheme">Figure&nbsp;<span class="quarto-unresolved-ref">fig-resampling-scheme</span></a> illustrates how resampling methods generally operate.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-resampling-scheme" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/resampling.svg" class="img-fluid figure-img" style="width:85.0%" alt="A diagram of the data splitting scheme from the initial data split to resampling. The first level is the training/testing set partition. The second level of splitting takes the training set and splits it into multiple 'analysis' and 'assessment' sets (which are analogous to training and test)."></p>
-<figcaption class="figure-caption">Data splitting scheme from the initial data split to resampling</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;10.1: Data splitting scheme from the initial data split to resampling</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Resampling is conducted only on the training set, as you see in Figure @ref(fig:resampling-scheme). The test set is not involved. For each iteration of resampling, the data are partitioned into two subsamples:</p>
+<p>Resampling is conducted only on the training set, as you see in <a href="#fig-resampling-scheme">Figure&nbsp;<span class="quarto-unresolved-ref">fig-resampling-scheme</span></a>. The test set is not involved. For each iteration of resampling, the data are partitioned into two subsamples:</p>
 <ul>
 <li><p>The model is fit with the <em>analysis set</em>.</p></li>
 <li><p>The model is evaluated with the <em>assessment set</em>.</p></li>
@@ -531,24 +535,24 @@ RMSE Estimates
 <p>These two subsamples are somewhat analogous to training and test sets. Our language of <em>analysis</em> and <em>assessment</em> avoids confusion with the initial split of the data. These data sets are mutually exclusive. The partitioning scheme used to create the analysis and assessment sets is usually the defining characteristic of the method.</p>
 <p>Suppose 20 iterations of resampling are conducted. This means that 20 separate models are fit on the analysis sets, and the corresponding assessment sets produce 20 sets of performance statistics. The final estimate of performance for a model is the average of the 20 replicates of the statistics. This average has very good generalization properties and is far better than the resubstitution estimates.</p>
 <p>The next section defines several commonly used resampling methods and discusses their pros and cons.</p>
-<section id="cv" class="level3" data-number="10.2.1"><h3 data-number="10.2.1" class="anchored" data-anchor-id="cv">
+<section id="sec-cv" class="level3" data-number="10.2.1"><h3 data-number="10.2.1" class="anchored" data-anchor-id="sec-cv">
 <span class="header-section-number">10.2.1</span> Cross-validation</h3>
-<p>Cross-validation is a well established resampling method. While there are a number of variations, the most common cross-validation method is <em>V</em>-fold cross-validation. The data are randomly partitioned into <em>V</em> sets of roughly equal size (called the folds). For illustration, <em>V</em> = 3 is shown in Figure @ref(fig:cross-validation-allocation) for a data set of 30 training set points with random fold allocations. The number inside the symbols is the sample number.</p>
+<p>Cross-validation is a well established resampling method. While there are a number of variations, the most common cross-validation method is <em>V</em>-fold cross-validation. The data are randomly partitioned into <em>V</em> sets of roughly equal size (called the folds). For illustration, <em>V</em> = 3 is shown in <a href="#fig-cross-validation-allocation">Figure&nbsp;<span class="quarto-unresolved-ref">fig-cross-validation-allocation</span></a> for a data set of 30 training set points with random fold allocations. The number inside the symbols is the sample number.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-cross-validation-allocation" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/three-CV.svg" class="img-fluid figure-img" style="width:50.0%" alt="A diagram of how V-fold cross-validation randomly assigns data to folds (where V equals three). A set of thirty data points are assigned to three groups of roughly the same size."></p>
-<figcaption class="figure-caption">V-fold cross-validation randomly assigns data to folds</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;10.2: V-fold cross-validation randomly assigns data to folds</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The color of the symbols in Figure @ref(fig:cross-validation-allocation) represents their randomly assigned folds. Stratified sampling is also an option for assigning folds (previously discussed in Section @ref(splitting-methods)).</p>
-<p>For three-fold cross-validation, the three iterations of resampling are illustrated in Figure @ref(fig:cross-validation). For each iteration, one fold is held out for assessment statistics and the remaining folds are substrate for the model. This process continues for each fold so that three models produce three sets of performance statistics.</p>
+<p>The color of the symbols in <a href="#fig-cross-validation-allocation">Figure&nbsp;<span class="quarto-unresolved-ref">fig-cross-validation-allocation</span></a> represents their randomly assigned folds. Stratified sampling is also an option for assigning folds (previously discussed in <a href="#sec-splitting-methods"><span class="quarto-unresolved-ref">sec-splitting-methods</span></a>).</p>
+<p>For three-fold cross-validation, the three iterations of resampling are illustrated in <a href="#fig-cross-validation">Figure&nbsp;<span class="quarto-unresolved-ref">fig-cross-validation</span></a>. For each iteration, one fold is held out for assessment statistics and the remaining folds are substrate for the model. This process continues for each fold so that three models produce three sets of performance statistics.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-cross-validation" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/three-CV-iter.svg" class="img-fluid figure-img" style="width:70.0%" alt="A diagram of V-fold cross-validation data usage (where V equals three). For each of the three groups, the data for the fold are held out for performance while the other two are used for modeling."></p>
-<figcaption class="figure-caption">V-fold cross-validation data usage</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;10.3: V-fold cross-validation data usage</figcaption></figure>
 </div>
 </div>
 </div>
@@ -582,17 +586,17 @@ RMSE Estimates
 <span><span class="va">ames_folds</span><span class="op">$</span><span class="va">splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">%&gt;%</span> <span class="fu">analysis</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] 2107   74</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <span class="pkg">tidymodels</span> packages, such as <a href="https://tune.tidymodels.org/"><span class="pkg">tune</span></a>, contain high-level user interfaces so that functions like <code>analysis()</code> are not generally needed for day-to-day work. Section @ref(resampling-performance) demonstrates a function to fit a model over these resamples.</p>
+<p>The <span class="pkg">tidymodels</span> packages, such as <a href="https://tune.tidymodels.org/"><span class="pkg">tune</span></a>, contain high-level user interfaces so that functions like <code>analysis()</code> are not generally needed for day-to-day work. <a href="#sec-resampling-performance"><span class="quarto-unresolved-ref">sec-resampling-performance</span></a> demonstrates a function to fit a model over these resamples.</p>
 <p>There are a variety of cross-validation variations; we’ll go through the most important ones.</p>
 </section><section id="repeated-cross-validation" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="repeated-cross-validation">Repeated cross-validation</h3>
 <p>The most important variation on cross-validation is repeated <em>V</em>-fold cross-validation. Depending on data size or other characteristics, the resampling estimate produced by <em>V</em>-fold cross-validation may be excessively noisy.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> As with many statistical problems, one way to reduce noise is to gather more data. For cross-validation, this means averaging more than <em>V</em> statistics.</p>
 <p>To create <em>R</em> repeats of <em>V</em>-fold cross-validation, the same fold generation process is done <em>R</em> times to generate <em>R</em> collections of <em>V</em> partitions. Now, instead of averaging <em>V</em> statistics, <span class="math inline">\(V \times R\)</span> statistics produce the final resampling estimate. Due to the Central Limit Theorem, the summary statistics from each model tend toward a normal distribution, as long as we have a lot of data relative to <span class="math inline">\(V \times R\)</span>.</p>
-<p>Consider the Ames data. On average, 10-fold cross-validation uses assessment sets that contain roughly 234 properties. If RMSE is the statistic of choice, we can denote that estimate’s standard deviation as <span class="math inline">\(\sigma\)</span>. With simple 10-fold cross-validation, the standard error of the mean RMSE is <span class="math inline">\(\sigma/\sqrt{10}\)</span>. If this is too noisy, repeats reduce the standard error to <span class="math inline">\(\sigma/\sqrt{10R}\)</span>. For 10-fold cross-validation with <span class="math inline">\(R\)</span> replicates, the plot in Figure @ref(fig:variance-reduction) shows how quickly the standard error<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> decreases with replicates.</p>
+<p>Consider the Ames data. On average, 10-fold cross-validation uses assessment sets that contain roughly 234 properties. If RMSE is the statistic of choice, we can denote that estimate’s standard deviation as <span class="math inline">\(\sigma\)</span>. With simple 10-fold cross-validation, the standard error of the mean RMSE is <span class="math inline">\(\sigma/\sqrt{10}\)</span>. If this is too noisy, repeats reduce the standard error to <span class="math inline">\(\sigma/\sqrt{10R}\)</span>. For 10-fold cross-validation with <span class="math inline">\(R\)</span> replicates, the plot in <a href="#fig-variance-reduction">Figure&nbsp;<span class="quarto-unresolved-ref">fig-variance-reduction</span></a> shows how quickly the standard error<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> decreases with replicates.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/variance-reduction-1.png" class="img-fluid figure-img" alt="The relationship between the relative variance in performance estimates versus the number of cross-validation repeats. As the repeats increase, the variance is reduced in a harmonically decreasing pattern with diminishing returns for large number of replicates." width="672"></p>
-<figcaption class="figure-caption">Relationship between the relative variance in performance estimates versus the number of cross-validation repeats</figcaption></figure>
+<div id="fig-variance-reduction" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-variance-reduction-1.png" class="img-fluid figure-img" alt="The relationship between the relative variance in performance estimates versus the number of cross-validation repeats. As the repeats increase, the variance is reduced in a harmonically decreasing pattern with diminishing returns for large number of replicates." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.4: Relationship between the relative variance in performance estimates versus the number of cross-validation repeats</figcaption></figure>
 </div>
 </div>
 </div>
@@ -631,28 +635,28 @@ RMSE Estimates
 <span><span class="co">## 6 &lt;split [2107/235]&gt; Resample06</span></span>
 <span><span class="co">## # ℹ 14 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section><section id="validation" class="level3" data-number="10.2.2"><h3 data-number="10.2.2" class="anchored" data-anchor-id="validation">
+</section><section id="sec-validation" class="level3" data-number="10.2.2"><h3 data-number="10.2.2" class="anchored" data-anchor-id="sec-validation">
 <span class="header-section-number">10.2.2</span> Validation sets</h3>
-<p>In Section @ref(what-about-a-validation-set), we briefly discussed the use of a validation set, a single partition that is set aside to estimate performance separate from the test set. When using a validation set, the initial available data set is split into a training set, a validation set, and a test set (see Figure @ref(fig:three-way-split)).</p>
+<p>In <a href="#sec-what-about-a-validation-set"><span class="quarto-unresolved-ref">sec-what-about-a-validation-set</span></a>, we briefly discussed the use of a validation set, a single partition that is set aside to estimate performance separate from the test set. When using a validation set, the initial available data set is split into a training set, a validation set, and a test set (see <a href="#fig-three-way-split">Figure&nbsp;<span class="quarto-unresolved-ref">fig-three-way-split</span></a>).</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-three-way-split" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/validation.svg" class="img-fluid figure-img" style="width:50.0%" alt="A three-way initial split into training, testing, and validation sets."></p>
-<figcaption class="figure-caption">A three-way initial split into training, testing, and validation sets</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;10.5: A three-way initial split into training, testing, and validation sets</figcaption></figure>
 </div>
 </div>
 </div>
 <p>Validation sets are often used when the original pool of data is very large. In this case, a single large partition may be adequate to characterize model performance without having to do multiple resampling iterations.</p>
-<p>With the <span class="pkg">rsample</span> package, a validation set is like any other resampling object; this type is different only in that it has a single iteration.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> Figure @ref(fig:validation-split) shows this scheme.</p>
+<p>With the <span class="pkg">rsample</span> package, a validation set is like any other resampling object; this type is different only in that it has a single iteration.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> <a href="#fig-validation-split">Figure&nbsp;<span class="quarto-unresolved-ref">fig-validation-split</span></a> shows this scheme.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-validation-split" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/validation-alt.svg" class="img-fluid figure-img" style="width:45.0%" alt="A two-way initial split into training and testing with an additional validation set split on the training set."></p>
-<figcaption class="figure-caption">A two-way initial split into training and testing with an additional validation set split on the training set</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;10.6: A two-way initial split into training and testing with an additional validation set split on the training set</figcaption></figure>
 </div>
 </div>
 </div>
-<p>To build on the code from Section @ref(what-about-a-validation-set), the function <code>validation_set()</code> can take the results of <code>initial_validation_split()</code> and convert it to an rset object that is similar to the ones produced by functions such as <code>vfold_cv()</code>:</p>
+<p>To build on the code from <a href="#sec-what-about-a-validation-set"><span class="quarto-unresolved-ref">sec-what-about-a-validation-set</span></a>, the function <code>validation_set()</code> can take the results of <code>initial_validation_split()</code> and convert it to an rset object that is similar to the ones produced by functions such as <code>vfold_cv()</code>:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Previously:</span></span>
 <span></span>
@@ -671,17 +675,17 @@ RMSE Estimates
 <span><span class="co">##   &lt;list&gt;             &lt;chr&gt;     </span></span>
 <span><span class="co">## 1 &lt;split [1758/586]&gt; validation</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>As you’ll see in Section @ref(resampling-performance), the <code>fit_resamples()</code> function will be used to compute correct estimates of performance using resampling. The <code>val_set</code> object can be used in in this and other functions even though it is a single “resample” of the data.</p>
-</section><section id="bootstrap" class="level3" data-number="10.2.3"><h3 data-number="10.2.3" class="anchored" data-anchor-id="bootstrap">
+<p>As you’ll see in <a href="#sec-resampling-performance"><span class="quarto-unresolved-ref">sec-resampling-performance</span></a>, the <code>fit_resamples()</code> function will be used to compute correct estimates of performance using resampling. The <code>val_set</code> object can be used in in this and other functions even though it is a single “resample” of the data.</p>
+</section><section id="sec-bootstrap" class="level3" data-number="10.2.3"><h3 data-number="10.2.3" class="anchored" data-anchor-id="sec-bootstrap">
 <span class="header-section-number">10.2.3</span> Bootstrapping</h3>
 <p>Bootstrap resampling was originally invented as a method for approximating the sampling distribution of statistics whose theoretical properties are intractable <span class="citation" data-cites="davison1997bootstrap">(<a href="#ref-davison1997bootstrap" role="doc-biblioref">Davison and Hinkley 1997</a>)</span>. Using it to estimate model performance is a secondary application of the method.</p>
 <p>A bootstrap sample of the training set is a sample that is the same size as the training set but is drawn <em>with replacement</em>. This means that some training set data points are selected multiple times for the analysis set. Each data point has a 63.2% chance of inclusion in the training set at least once. The assessment set contains all of the training set samples that were not selected for the analysis set (on average, with 36.8% of the training set). When bootstrapping, the assessment set is often called the <em>out-of-bag</em> sample.</p>
-<p>For a training set of 30 samples, a schematic of three bootstrap samples is shown in Figure@ref(fig:bootstrapping).</p>
+<p>For a training set of 30 samples, a schematic of three bootstrap samples is shown in <a href="#fig-bootstrapping">Figure&nbsp;<span class="quarto-unresolved-ref">fig-bootstrapping</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-bootstrapping" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/bootstraps.svg" class="img-fluid figure-img" style="width:80.0%" alt="A diagram of bootstrapping data usage. For each bootstrap resample, the analysis set is the same size as the training set (due to sampling with replacement) and the assessment set consists of samples not in the analysis set."></p>
-<figcaption class="figure-caption">Bootstrapping data usage</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;10.7: Bootstrapping data usage</figcaption></figure>
 </div>
 </div>
 </div>
@@ -701,16 +705,16 @@ RMSE Estimates
 </div>
 <p>Bootstrap samples produce performance estimates that have very low variance (unlike cross-validation) but have significant pessimistic bias. This means that, if the true accuracy of a model is 90%, the bootstrap would tend to estimate the value to be less than 90%. The amount of bias cannot be empirically determined with sufficient accuracy. Additionally, the amount of bias changes over the scale of the performance metric. For example, the bias is likely to be different when the accuracy is 90% versus when it is 70%.</p>
 <p>The bootstrap is also used inside of many models. For example, the random forest model mentioned earlier contained 1,000 individual decision trees. Each tree was the product of a different bootstrap sample of the training set.</p>
-</section><section id="rolling" class="level3" data-number="10.2.4"><h3 data-number="10.2.4" class="anchored" data-anchor-id="rolling">
+</section><section id="sec-rolling" class="level3" data-number="10.2.4"><h3 data-number="10.2.4" class="anchored" data-anchor-id="sec-rolling">
 <span class="header-section-number">10.2.4</span> Rolling forecasting origin resampling</h3>
 <p>When the data have a strong time component, a resampling method should support modeling to estimate seasonal and other temporal trends within the data. A technique that randomly samples values from the training set can disrupt the model’s ability to estimate these patterns.</p>
 <p>Rolling forecast origin resampling <span class="citation" data-cites="hyndman2018forecasting">(<a href="#ref-hyndman2018forecasting" role="doc-biblioref">Hyndman and Athanasopoulos 2018</a>)</span> provides a method that emulates how time series data is often partitioned in practice, estimating the model with historical data and evaluating it with the most recent data. For this type of resampling, the size of the initial analysis and assessment sets are specified. The first iteration of resampling uses these sizes, starting from the beginning of the series. The second iteration uses the same data sizes but shifts over by a set number of samples.</p>
-<p>To illustrate, a training set of fifteen samples was resampled with an analysis size of eight samples and an assessment set size of three. The second iteration discards the first training set sample and both data sets shift forward by one. This configuration results in five resamples, as shown in Figure@ref(fig:rolling).</p>
+<p>To illustrate, a training set of fifteen samples was resampled with an analysis size of eight samples and an assessment set size of three. The second iteration discards the first training set sample and both data sets shift forward by one. This configuration results in five resamples, as shown in <a href="#fig-rolling">Figure&nbsp;<span class="quarto-unresolved-ref">fig-rolling</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-rolling" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/rolling.svg" class="img-fluid figure-img" style="width:65.0%" alt="The data usage for rolling forecasting origin resampling. For each split, earlier data are used for modeling and a few subsequent instances are used to measure performance."></p>
-<figcaption class="figure-caption">Data usage for rolling forecasting origin resampling</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;10.8: Data usage for rolling forecasting origin resampling</figcaption></figure>
 </div>
 </div>
 </div>
@@ -750,7 +754,7 @@ RMSE Estimates
 <span><span class="co">## 5   301   330</span></span>
 <span><span class="co">## 6   331   360</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section></section><section id="resampling-performance" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="resampling-performance">
+</section></section><section id="sec-resampling-performance" class="level2" data-number="10.3"><h2 data-number="10.3" class="anchored" data-anchor-id="sec-resampling-performance">
 <span class="header-section-number">10.3</span> Estimating Performance</h2>
 <p>Any of the resampling methods discussed in this chapter can be used to evaluate the modeling process (including preprocessing, model fitting, etc). These methods are effective because different groups of data are used to train the model and assess the model. To reiterate, the process to use resampling is:</p>
 <ol type="1">
@@ -813,7 +817,7 @@ RMSE Estimates
 <span><span class="co">## 2 rsq     standard   0.831     10 0.0108  Preprocessor1_Model1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These are the resampling estimates averaged over the individual replicates. To get the metrics for each resample, use the option <code>summarize = FALSE</code>.</p>
-<p>Notice how much more realistic the performance estimates are than the resubstitution estimates from Section @ref(resampling-resubstition)!</p>
+<p>Notice how much more realistic the performance estimates are than the resubstitution estimates from <a href="#sec-resampling-resubstition"><span class="quarto-unresolved-ref">sec-resampling-resubstition</span></a>!</p>
 <p>To obtain the assessment set predictions:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">assess_res</span> <span class="op">&lt;-</span> <span class="fu">collect_predictions</span><span class="op">(</span><span class="va">rf_res</span><span class="op">)</span></span>
@@ -829,11 +833,11 @@ RMSE Estimates
 <span><span class="co">## 6 Fold01  5.13    63       5.11 Preprocessor1_Model1</span></span>
 <span><span class="co">## # ℹ 2,336 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The prediction column names follow the conventions discussed for <span class="pkg">parsnip</span> models in Chapter @ref(models), for consistency and ease of use. The observed outcome column always uses the original column name from the source data. The <code>.row</code> column is an integer that matches the row of the original training set so that these results can be properly arranged and joined with the original data.</p>
+<p>The prediction column names follow the conventions discussed for <span class="pkg">parsnip</span> models in <a href="#sec-models">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-models</span></a>, for consistency and ease of use. The observed outcome column always uses the original column name from the source data. The <code>.row</code> column is an integer that matches the row of the original training set so that these results can be properly arranged and joined with the original data.</p>
 <div class="rmdnote">
 <p>For some resampling methods, such as the bootstrap or repeated cross-validation, there will be multiple predictions per row of the original training set. To obtain summarized values (averages of the replicate predictions) use <code>collect_predictions(object, summarize = TRUE)</code>.</p>
 </div>
-<p>Since this analysis used 10-fold cross-validation, there is one unique prediction for each training set sample. These data can generate helpful plots of the model to understand where it potentially failed. For example, Figure @ref(fig:ames-resampled-performance) compares the observed and held-out predicted values (analogous to Figure @ref(fig:ames-performance-plot)):</p>
+<p>Since this analysis used 10-fold cross-validation, there is one unique prediction for each training set sample. These data can generate helpful plots of the model to understand where it potentially failed. For example, <a href="#fig-ames-resampled-performance">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-resampled-performance</span></a> compares the observed and held-out predicted values (analogous to <a href="#fig-ames-performance-plot">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-performance-plot</span></a>):</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">assess_res</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sale_Price</span>, y <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -844,9 +848,9 @@ RMSE Estimates
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/ames-resampled-performance-1.png" class="img-fluid figure-img" alt="Scatter plots of out-of-sample observed versus predicted values for an Ames regression model. Both axes using log-10 units. The model shows good concordance with two outlying data points that are significantly over-predicted." width="480"></p>
-<figcaption class="figure-caption">Out-of-sample observed versus predicted values for an Ames regression model, using log-10 units on both axes</figcaption></figure>
+<div id="fig-ames-resampled-performance" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-ames-resampled-performance-1.png" class="img-fluid figure-img" alt="Scatter plots of out-of-sample observed versus predicted values for an Ames regression model. Both axes using log-10 units. The model shows good concordance with two outlying data points that are significantly over-predicted." width="480"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.9: Out-of-sample observed versus predicted values for an Ames regression model, using log-10 units on both axes</figcaption></figure>
 </div>
 </div>
 </div>
@@ -898,7 +902,7 @@ RMSE Estimates
 <div class="rmdnote">
 <p>In these analyses, the resampling results are very close to the test set results. The two types of estimates tend to be well correlated. However, this could be from random chance. A seed value of <code>55</code> fixed the random numbers before creating the resamples. Try changing this value and re-running the analyses to investigate whether the resampled estimates match the test set results as well.</p>
 </div>
-</section><section id="parallel" class="level2" data-number="10.4"><h2 data-number="10.4" class="anchored" data-anchor-id="parallel">
+</section><section id="sec-parallel" class="level2" data-number="10.4"><h2 data-number="10.4" class="anchored" data-anchor-id="sec-parallel">
 <span class="header-section-number">10.4</span> Parallel Processing</h2>
 <p>The models created during resampling are independent of one another. Computations of this kind are sometimes called <em>embarrassingly parallel</em>; each model could be fit simultaneously without issues.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> The <span class="pkg">tune</span> package uses the <a href="https://CRAN.R-project.org/package=foreach"><span class="pkg">foreach</span></a> package to facilitate parallel computations. These computations could be split across processors on the same computer or across different computers, depending on the chosen technology.</p>
 <p>For computations conducted on a single computer, the number of possible worker processes is determined by the <span class="pkg">parallel</span> package:</p>
@@ -944,11 +948,11 @@ RMSE Estimates
 </div>
 <p>Parallel processing with the <span class="pkg">tune</span> package tends to provide linear speed-ups for the first few cores. This means that, with two cores, the computations are twice as fast. Depending on the data and model type, the linear speed-up deteriorates after four to five cores. Using more cores will still reduce the time it takes to complete the task; there are just diminishing returns for the additional cores.</p>
 <p>Let’s wrap up with one final note about parallelism. For each of these technologies, the memory requirements multiply for each additional core used. For example, if the current data set is 2 GB in memory and three cores are used, the total memory requirement is 8 GB (2 for each worker process plus the original). Using too many cores might cause the computations (and the computer) to slow considerably.</p>
-</section><section id="extract" class="level2" data-number="10.5"><h2 data-number="10.5" class="anchored" data-anchor-id="extract">
+</section><section id="sec-extract" class="level2" data-number="10.5"><h2 data-number="10.5" class="anchored" data-anchor-id="sec-extract">
 <span class="header-section-number">10.5</span> Saving the Resampled Objects</h2>
 <p>The models created during resampling are not retained. These models are trained for the purpose of evaluating performance, and we typically do not need them after we have computed performance statistics. If a particular modeling approach does turn out to be the best option for our data set, then the best choice is to fit again to the whole training set so the model parameters can be estimated with more data.</p>
 <p>While these models created during resampling are not preserved, there is a method for keeping them or some of their components. The <code>extract</code> option of <code>control_resamples()</code> specifies a function that takes a single argument; we’ll use <code>x</code>. When executed, <code>x</code> results in a fitted workflow object, regardless of whether you provided <code>fit_resamples()</code> with a workflow. Recall that the <span class="pkg">workflows</span> package has functions that can pull the different components of the objects (e.g., the model, recipe, etc.).</p>
-<p>Let’s fit a linear regression model using the recipe we developed in Chapter @ref(recipes):</p>
+<p>Let’s fit a linear regression model using the recipe we developed in <a href="#sec-recipes">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-recipes</span></a>:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_rec</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="va">Gr_Liv_Area</span> <span class="op">+</span> <span class="va">Year_Built</span> <span class="op">+</span> <span class="va">Bldg_Type</span> <span class="op">+</span> </span>
@@ -1052,8 +1056,8 @@ RMSE Estimates
 <span><span class="co">## 6 Year_Built  0.00180  0.000150      12.0 3.35e-32</span></span>
 <span><span class="co">## # ℹ 4 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Chapters @ref(grid-search) and @ref(iterative-search) discuss a suite of functions for tuning models. Their interfaces are similar to <code>fit_resamples()</code> and many of the features described here apply to those functions.</p>
-</section><section id="resampling-summary" class="level2" data-number="10.6"><h2 data-number="10.6" class="anchored" data-anchor-id="resampling-summary">
+<p>Chapters <a href="#sec-grid-search"><span class="quarto-unresolved-ref ref-noprefix">sec-grid-search</span></a> and <a href="#sec-iterative-search"><span class="quarto-unresolved-ref ref-noprefix">sec-iterative-search</span></a> discuss a suite of functions for tuning models. Their interfaces are similar to <code>fit_resamples()</code> and many of the features described here apply to those functions.</p>
+</section><section id="sec-resampling-summary" class="level2" data-number="10.6"><h2 data-number="10.6" class="anchored" data-anchor-id="sec-resampling-summary">
 <span class="header-section-number">10.6</span> Chapter Summary</h2>
 <p>This chapter describes one of the fundamental tools of data analysis, the ability to measure the performance and variation in model results. Resampling enables us to determine how well the model works without using the test set.</p>
 <p>An important function from the <span class="pkg">tune</span> package, called <code>fit_resamples()</code>, was introduced. The interface for this function is also used in future chapters that describe model tuning tools.</p>

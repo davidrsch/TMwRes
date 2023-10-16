@@ -3,11 +3,9 @@
 .RData
 .Ruserdata
 .DS_Store
-_book
 _main.*
 libs
 figures
-_bookdown_files
 figures/introduction-cricket-plot-1.svg
 figures/introduction-descr-examples-1.pdf
 figures/introduction-interaction-plots-1.svg
@@ -19,5 +17,7 @@ figures/tidyverse-interaction-plots-1.svg
 extras/iowa_highway.shx
 extras/iowa_highway.shp
 files_for_print*
-
+/*_cache/
 /.quarto/
+/_freeze/
+/*_files/

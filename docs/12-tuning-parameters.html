@@ -358,17 +358,17 @@ div.csl-indent {
    
   <ul>
 <li><a href="#model-parameters" id="toc-model-parameters" class="nav-link active" data-scroll-target="#model-parameters"><span class="header-section-number">12.1</span> Model Parameters</a></li>
-  <li><a href="#tuning-parameter-examples" id="toc-tuning-parameter-examples" class="nav-link" data-scroll-target="#tuning-parameter-examples"><span class="header-section-number">12.2</span> Tuning Parameters for Different Types of Models</a></li>
-  <li><a href="#what-to-optimize" id="toc-what-to-optimize" class="nav-link" data-scroll-target="#what-to-optimize"><span class="header-section-number">12.3</span> What do we Optimize?</a></li>
-  <li><a href="#overfitting-bad" id="toc-overfitting-bad" class="nav-link" data-scroll-target="#overfitting-bad"><span class="header-section-number">12.4</span> The consequences of poor parameter estimates</a></li>
+  <li><a href="#sec-tuning-parameter-examples" id="toc-sec-tuning-parameter-examples" class="nav-link" data-scroll-target="#sec-tuning-parameter-examples"><span class="header-section-number">12.2</span> Tuning Parameters for Different Types of Models</a></li>
+  <li><a href="#sec-what-to-optimize" id="toc-sec-what-to-optimize" class="nav-link" data-scroll-target="#sec-what-to-optimize"><span class="header-section-number">12.3</span> What do we Optimize?</a></li>
+  <li><a href="#sec-overfitting-bad" id="toc-sec-overfitting-bad" class="nav-link" data-scroll-target="#sec-overfitting-bad"><span class="header-section-number">12.4</span> The consequences of poor parameter estimates</a></li>
   <li><a href="#two-general-strategies-for-optimization" id="toc-two-general-strategies-for-optimization" class="nav-link" data-scroll-target="#two-general-strategies-for-optimization"><span class="header-section-number">12.5</span> Two general strategies for optimization</a></li>
-  <li><a href="#tuning-params-tidymodels" id="toc-tuning-params-tidymodels" class="nav-link" data-scroll-target="#tuning-params-tidymodels"><span class="header-section-number">12.6</span> Tuning Parameters in tidymodels</a></li>
+  <li><a href="#sec-tuning-params-tidymodels" id="toc-sec-tuning-params-tidymodels" class="nav-link" data-scroll-target="#sec-tuning-params-tidymodels"><span class="header-section-number">12.6</span> Tuning Parameters in tidymodels</a></li>
   <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">12.7</span> Chapter Summary</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/12-tuning-parameters.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="tuning" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Model Tuning and the Dangers of Overfitting</span></span></h1>
+<h1 class="title"><span id="sec-tuning" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Model Tuning and the Dangers of Overfitting</span></span></h1>
 </div>
 
 
@@ -381,7 +381,7 @@ div.csl-indent {
   </div>
   
 
-</header><p>In order to use a model for prediction, the parameters for that model must be estimated. Some of these parameters can be estimated directly from the training data, but other parameters, called <em>tuning parameters</em> or <em>hyperparameters</em>, must be specified ahead of time and can’t be directly found from training data. These are unknown structural or other kind of values that have significant impact on the model but cannot be directly estimated from the data. This chapter will provide examples of tuning parameters and show how we use tidymodels functions to create and handle tuning parameters. We’ll also demonstrate how poor choices of these values lead to overfitting and introduce several tactics for finding optimal tuning parameters values. Chapters @ref(grid-search) and @ref(iterative-search) go into more detail on specific optimization methods for tuning.</p>
+</header><p>In order to use a model for prediction, the parameters for that model must be estimated. Some of these parameters can be estimated directly from the training data, but other parameters, called <em>tuning parameters</em> or <em>hyperparameters</em>, must be specified ahead of time and can’t be directly found from training data. These are unknown structural or other kind of values that have significant impact on the model but cannot be directly estimated from the data. This chapter will provide examples of tuning parameters and show how we use tidymodels functions to create and handle tuning parameters. We’ll also demonstrate how poor choices of these values lead to overfitting and introduce several tactics for finding optimal tuning parameters values. Chapters <a href="#sec-grid-search"><span class="quarto-unresolved-ref ref-noprefix">sec-grid-search</span></a> and <a href="#sec-iterative-search"><span class="quarto-unresolved-ref ref-noprefix">sec-iterative-search</span></a> go into more detail on specific optimization methods for tuning.</p>
 <section id="model-parameters" class="level2" data-number="12.1"><h2 data-number="12.1" class="anchored" data-anchor-id="model-parameters">
 <span class="header-section-number">12.1</span> Model Parameters</h2>
 <p>In ordinary linear regression, there are two parameters <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> of the model:</p>
@@ -398,7 +398,7 @@ div.csl-indent {
 <p><span class="math display">\[\hat y = \frac{1}{K}\sum_{\ell = 1}^K x_\ell^*\]</span></p>
 <p>where <span class="math inline">\(K\)</span> is the number of neighbors and the <span class="math inline">\(x_\ell^*\)</span> are the <span class="math inline">\(K\)</span> closest values to <span class="math inline">\(x_0\)</span> in the training set. The model itself is not defined by a model equation; the previous prediction equation instead defines it. This characteristic, along with the possible intractability of the distance measure, makes it impossible to create a set of equations that can be solved for <span class="math inline">\(K\)</span> (iteratively or otherwise). The number of neighbors has a profound impact on the model; it governs the flexibility of the class boundary. For small values of <span class="math inline">\(K\)</span>, the boundary is very elaborate while for large values, it might be quite smooth.</p>
 <p>The number of nearest neighbors is a good example of a tuning parameter or hyperparameter that cannot be directly estimated from the data.</p>
-</section><section id="tuning-parameter-examples" class="level2" data-number="12.2"><h2 data-number="12.2" class="anchored" data-anchor-id="tuning-parameter-examples">
+</section><section id="sec-tuning-parameter-examples" class="level2" data-number="12.2"><h2 data-number="12.2" class="anchored" data-anchor-id="sec-tuning-parameter-examples">
 <span class="header-section-number">12.2</span> Tuning Parameters for Different Types of Models</h2>
 <p>There are many examples of tuning parameters or hyperparameters in different statistical and machine learning models:</p>
 <ul>
@@ -413,26 +413,26 @@ div.csl-indent {
 </ul>
 <p>Some classical statistical models also have structural parameters:</p>
 <ul>
-<li><p>In binary regression, the logit link is commonly used (i.e., logistic regression). Other link functions, such as the probit and complementary log-log, are also available <span class="citation" data-cites="Dobson99">(<a href="#ref-Dobson99" role="doc-biblioref">Dobson 1999</a>)</span>. This example is described in more detail in the Section @ref(what-to-optimize).</p></li>
+<li><p>In binary regression, the logit link is commonly used (i.e., logistic regression). Other link functions, such as the probit and complementary log-log, are also available <span class="citation" data-cites="Dobson99">(<a href="#ref-Dobson99" role="doc-biblioref">Dobson 1999</a>)</span>. This example is described in more detail in the <a href="#sec-what-to-optimize"><span class="quarto-unresolved-ref">sec-what-to-optimize</span></a>.</p></li>
 <li><p>Non-Bayesian longitudinal and repeated measures models require a specification for the covariance or correlation structure of the data. Options include compound symmetric (a.k.a. exchangeable), autoregressive, Toeplitz, and others <span class="citation" data-cites="littell2000modelling">(<a href="#ref-littell2000modelling" role="doc-biblioref">Littell, Pendergast, and Natarajan 2000</a>)</span>.</p></li>
 </ul>
-<p>A counterexample where it is inappropriate to tune a parameter is the prior distribution required for Bayesian analysis. The prior encapsulates the analyst’s belief about the distribution of a quantity before evidence or data are taken into account. For example, in Section @ref(tidyposterior), we used a Bayesian ANOVA model, and we were unclear about what the prior should be for the regression parameters (beyond being a symmetric distribution). We chose a t-distribution with one degree of freedom for the prior since it has heavier tails; this reflects our added uncertainty. Our prior beliefs should not be subject to optimization. Tuning parameters are typically optimized for performance whereas priors should not be tweaked to get “the right results.”</p>
+<p>A counterexample where it is inappropriate to tune a parameter is the prior distribution required for Bayesian analysis. The prior encapsulates the analyst’s belief about the distribution of a quantity before evidence or data are taken into account. For example, in <a href="#sec-tidyposterior"><span class="quarto-unresolved-ref">sec-tidyposterior</span></a>, we used a Bayesian ANOVA model, and we were unclear about what the prior should be for the regression parameters (beyond being a symmetric distribution). We chose a t-distribution with one degree of freedom for the prior since it has heavier tails; this reflects our added uncertainty. Our prior beliefs should not be subject to optimization. Tuning parameters are typically optimized for performance whereas priors should not be tweaked to get “the right results.”</p>
 <div class="rmdwarning">
 <p>Another (perhaps more debatable) counterexample of a parameter that does <em>not</em> need to be tuned is the number of trees in a random forest or bagging model. This value should instead be chosen to be large enough to ensure numerical stability in the results; tuning it cannot improve performance as long as the value is large enough to produce reliable results. For random forests, this value is typically in the thousands while the number of trees needed for bagging is around 50 to 100.</p>
 </div>
-</section><section id="what-to-optimize" class="level2" data-number="12.3"><h2 data-number="12.3" class="anchored" data-anchor-id="what-to-optimize">
+</section><section id="sec-what-to-optimize" class="level2" data-number="12.3"><h2 data-number="12.3" class="anchored" data-anchor-id="sec-what-to-optimize">
 <span class="header-section-number">12.3</span> What do we Optimize?</h2>
 <p>How should we evaluate models when we optimize tuning parameters? It depends on the model and the purpose of the model.</p>
 <p>For cases where the statistical properties of the tuning parameter are tractable, common statistical properties can be used as the objective function. For example, in the case of binary logistic regression, the link function can be chosen by maximizing the likelihood or information criteria. However, these statistical properties may not align with the results achieved using accuracy-oriented properties. As an example, <span class="citation" data-cites="FriedmanGFA">Friedman (<a href="#ref-FriedmanGFA" role="doc-biblioref">2001</a>)</span> optimized the number of trees in a boosted tree ensemble and found different results when maximizing the likelihood and accuracy:</p>
 <blockquote class="blockquote">
 <p>degrading the likelihood by overfitting actually improves misclassification error rate. Although perhaps counterintuitive, this is not a contradiction; likelihood and error rate measure different aspects of fit quality.</p>
 </blockquote>
-<p>To demonstrate, consider the classification data shown in Figure @ref(fig:two-class-dat) with two predictors, two classes, and a training set of 593 data points.</p>
-<div class="cell" data-layout-align="center">
+<p>To demonstrate, consider the classification data shown in <a href="#fig-two-class-dat">Figure&nbsp;<span class="quarto-unresolved-ref">fig-two-class-dat</span></a> with two predictors, two classes, and a training set of 593 data points.</p>
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/fig-two-class-dat_3dc6cae8570af9cd9958c5e2de70e3e8">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/two-class-dat-1.png" class="img-fluid figure-img" alt="An example two-class classification data set with two predictors. The two predictors have a moderate correlation and there is some locations of separation between the classes." width="672"></p>
-<figcaption class="figure-caption">An example two-class classification data set with two predictors</figcaption></figure>
+<div id="fig-two-class-dat" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-two-class-dat-1.png" class="img-fluid figure-img" alt="An example two-class classification data set with two predictors. The two predictors have a moderate correlation and there is some locations of separation between the classes." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;12.1: An example two-class classification data set with two predictors</figcaption></figure>
 </div>
 </div>
 </div>
@@ -442,9 +442,9 @@ div.csl-indent {
 <p><span class="math display">\[\Phi^{-1}(\pi) = \beta_0 + \beta_1x_1 + \ldots + \beta_px_p\]</span></p>
 <p>where <span class="math inline">\(\Phi\)</span> is the cumulative standard normal function, as well as the <em>complementary log-log</em> model:</p>
 <p><span class="math display">\[\log(-\log(1-\pi)) = \beta_0 + \beta_1x_1 + \ldots + \beta_px_p\]</span></p>
-<p>Each of these models results in linear class boundaries. Which one should we use? Since, for these data, the number of model parameters does not vary, the statistical approach is to compute the (log) likelihood for each model and determine the model with the largest value. Traditionally, the likelihood is computed using the same data that were used to estimate the parameters, not using approaches like data splitting or resampling from Chapters @ref(splitting) and @ref(resampling).</p>
+<p>Each of these models results in linear class boundaries. Which one should we use? Since, for these data, the number of model parameters does not vary, the statistical approach is to compute the (log) likelihood for each model and determine the model with the largest value. Traditionally, the likelihood is computed using the same data that were used to estimate the parameters, not using approaches like data splitting or resampling from Chapters <a href="#sec-splitting"><span class="quarto-unresolved-ref ref-noprefix">sec-splitting</span></a> and <a href="#sec-resampling"><span class="quarto-unresolved-ref ref-noprefix">sec-resampling</span></a>.</p>
 <p>For a data frame <code>training_set</code>, let’s create a function to compute the different models and extract the likelihood statistics for the training set (using <code><a href="https://generics.r-lib.org/reference/glance.html">broom::glance()</a></code>):</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-likelihood_a2c62d6f4188554549f0c0ddc9ec2b51">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -471,8 +471,8 @@ div.csl-indent {
 <span><span class="co">## 3  -270. c-log-log</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>According to these results, the logistic model has the best statistical properties.</p>
-<p>From the scale of the log-likelihood values, it is difficult to understand if these differences are important or negligible. One way of improving this analysis is to resample the statistics and separate the modeling data from the data used for performance estimation. With this small data set, repeated 10-fold cross-validation is a good choice for resampling. In the <span class="pkg">yardstick</span> package, the <code>mn_log_loss()</code> function is used to estimate the negative log-likelihood, with our results shown in Figure @ref(fig:resampled-log-lhood).</p>
-<div class="cell" data-layout-align="center">
+<p>From the scale of the log-likelihood values, it is difficult to understand if these differences are important or negligible. One way of improving this analysis is to resample the statistics and separate the modeling data from the data used for performance estimation. With this small data set, repeated 10-fold cross-validation is a good choice for resampling. In the <span class="pkg">yardstick</span> package, the <code>mn_log_loss()</code> function is used to estimate the negative log-likelihood, with our results shown in <a href="#fig-resampled-log-lhood">Figure&nbsp;<span class="quarto-unresolved-ref">fig-resampled-log-lhood</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-resampled-log-lhood_b9ba22bbf7ba1e9ba1dd8dc9a6b905f4">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1201</span><span class="op">)</span></span>
 <span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="fu">vfold_cv</span><span class="op">(</span><span class="va">training_set</span>, repeats <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span></span>
@@ -510,15 +510,15 @@ div.csl-indent {
 <span>                width <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"log-likelihood"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/fig-resampled-log-lhood_f6c209ebfe5ef7c9b5fdd1a8f9d60afc">
 <pre><code>## → A | warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 ## There were issues with some computations   A: x1
 ## There were issues with some computations   A: x1
 ## </code></pre>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/resampled-log-lhood-1.png" class="img-fluid figure-img" alt="Means and approximate 90% confidence intervals for the resampled binomial log-likelihood with three different link functions. The logit link has the largest value, followed by the probit link. The complementary log log link has far lower values." width="672"></p>
-<figcaption class="figure-caption">Means and approximate 90% confidence intervals for the resampled binomial log-likelihood with three different link functions</figcaption></figure>
+<div id="fig-resampled-log-lhood" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-resampled-log-lhood-1.png" class="img-fluid figure-img" alt="Means and approximate 90% confidence intervals for the resampled binomial log-likelihood with three different link functions. The logit link has the largest value, followed by the probit link. The complementary log log link has far lower values." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;12.2: Means and approximate 90% confidence intervals for the resampled binomial log-likelihood with three different link functions</figcaption></figure>
 </div>
 </div>
 </div>
@@ -526,21 +526,21 @@ div.csl-indent {
 <p>The scale of these values is different than the previous values since they are computed on a smaller data set; the value produced by <code><a href="https://generics.r-lib.org/reference/glance.html">broom::glance()</a></code> is a sum while <code><a href="https://yardstick.tidymodels.org/reference/mn_log_loss.html">yardstick::mn_log_loss()</a></code> is an average.</p>
 </div>
 <p>These results exhibit evidence that the choice of the link function matters somewhat. Although there is an overlap in the confidence intervals, the logistic model has the best results.</p>
-<p>What about a different metric? We also calculated the area under the ROC curve for each resample. These results, which reflect the discriminative ability of the models across numerous probability thresholds, show a lack of difference in Figure @ref(fig:resampled-roc).</p>
-<div class="cell" data-layout-align="center">
+<p>What about a different metric? We also calculated the area under the ROC curve for each resample. These results, which reflect the discriminative ability of the models across numerous probability thresholds, show a lack of difference in <a href="#fig-resampled-roc">Figure&nbsp;<span class="quarto-unresolved-ref">fig-resampled-roc</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/fig-resampled-roc_7a2c3f4fd911d8fb73bde59a27678e48">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/resampled-roc-1.png" class="img-fluid figure-img" alt="Means and approximate 90% confidence intervals for the resampled area under the ROC curve with three different link functions. The logit link has the largest value, followed by the probit link. The confidence intervals show a large amount of overlap between the two methods." width="672"></p>
-<figcaption class="figure-caption">Means and approximate 90% confidence intervals for the resampled area under the ROC curve with three different link functions</figcaption></figure>
+<div id="fig-resampled-roc" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-resampled-roc-1.png" class="img-fluid figure-img" alt="Means and approximate 90% confidence intervals for the resampled area under the ROC curve with three different link functions. The logit link has the largest value, followed by the probit link. The confidence intervals show a large amount of overlap between the two methods." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;12.3: Means and approximate 90% confidence intervals for the resampled area under the ROC curve with three different link functions</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Given the overlap of the intervals, as well as the scale of the x-axis, any of these options could be used. We see this again when the class boundaries for the three models are overlaid on the test set of 198 data points in Figure @ref(fig:three-link-fits).</p>
-<div class="cell" data-layout-align="center">
+<p>Given the overlap of the intervals, as well as the scale of the x-axis, any of these options could be used. We see this again when the class boundaries for the three models are overlaid on the test set of 198 data points in <a href="#fig-three-link-fits">Figure&nbsp;<span class="quarto-unresolved-ref">fig-three-link-fits</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/fig-three-link-fits_cd46fa7a0363447f024f10cf1aeabcb8">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/three-link-fits-1.png" class="img-fluid figure-img" alt="The linear class boundary fits for three link functions. The lines have very similar slopes with the complementary log log having a slightly different intercept than the other two links." width="672"></p>
-<figcaption class="figure-caption">The linear class boundary fits for three link functions</figcaption></figure>
+<div id="fig-three-link-fits" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-three-link-fits-1.png" class="img-fluid figure-img" alt="The linear class boundary fits for three link functions. The lines have very similar slopes with the complementary log log having a slightly different intercept than the other two links." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;12.4: The linear class boundary fits for three link functions</figcaption></figure>
 </div>
 </div>
 </div>
@@ -551,20 +551,20 @@ div.csl-indent {
 <blockquote class="blockquote">
 <p>The unreasonable effectiveness of metric optimization in current AI approaches is a fundamental challenge to the field, and yields an inherent contradiction: solely optimizing metrics leads to far from optimal outcomes.</p>
 </blockquote>
-</section><section id="overfitting-bad" class="level2" data-number="12.4"><h2 data-number="12.4" class="anchored" data-anchor-id="overfitting-bad">
+</section><section id="sec-overfitting-bad" class="level2" data-number="12.4"><h2 data-number="12.4" class="anchored" data-anchor-id="sec-overfitting-bad">
 <span class="header-section-number">12.4</span> The consequences of poor parameter estimates</h2>
-<p>Many tuning parameters modulate the amount of model complexity. More complexity often implies more malleability in the patterns that a model can emulate. For example, as shown in Section @ref(spline-functions), adding degrees of freedom in a spline function increases the intricacy of the prediction equation. While this is an advantage when the underlying motifs in the data are complex, it can also lead to overinterpretation of chance patterns that would not reproduce in new data. <em>Overfitting</em> is the situation where a model adapts too much to the training data; it performs well for the data used to build the model but poorly for new data.</p>
+<p>Many tuning parameters modulate the amount of model complexity. More complexity often implies more malleability in the patterns that a model can emulate. For example, as shown in <a href="#sec-spline-functions"><span class="quarto-unresolved-ref">sec-spline-functions</span></a>, adding degrees of freedom in a spline function increases the intricacy of the prediction equation. While this is an advantage when the underlying motifs in the data are complex, it can also lead to overinterpretation of chance patterns that would not reproduce in new data. <em>Overfitting</em> is the situation where a model adapts too much to the training data; it performs well for the data used to build the model but poorly for new data.</p>
 <div class="rmdwarning">
 <p>Since tuning model parameters can increase model complexity, poor choices can lead to overfitting.</p>
 </div>
-<p>Recall the single layer neural network model described in Section @ref(tuning-parameter-examples). With a single hidden unit and sigmoidal activation functions, a neural network for classification is, for all intents and purposes, just logistic regression. However, as the number of hidden units increases, so does the complexity of the model. In fact, when the network model uses sigmoidal activation units, <span class="citation" data-cites="cybenko1989approximation">Cybenko (<a href="#ref-cybenko1989approximation" role="doc-biblioref">1989</a>)</span> showed that the model is a universal function approximator as long as there are enough hidden units.</p>
+<p>Recall the single layer neural network model described in <a href="#sec-tuning-parameter-examples"><span class="quarto-unresolved-ref">sec-tuning-parameter-examples</span></a>. With a single hidden unit and sigmoidal activation functions, a neural network for classification is, for all intents and purposes, just logistic regression. However, as the number of hidden units increases, so does the complexity of the model. In fact, when the network model uses sigmoidal activation units, <span class="citation" data-cites="cybenko1989approximation">Cybenko (<a href="#ref-cybenko1989approximation" role="doc-biblioref">1989</a>)</span> showed that the model is a universal function approximator as long as there are enough hidden units.</p>
 <p>We fit neural network classification models to the same two-class data from the previous section, varying the number of hidden units. Using the area under the ROC curve as a performance metric, the effectiveness of the model on the training set increases as more hidden units are added. The network model thoroughly and meticulously learns the training set. If the model judges itself on the training set ROC value, it prefers many hidden units so that it can nearly eliminate errors.</p>
-<p>Chapters @ref(splitting) and @ref(resampling) demonstrated that simply repredicting the training set is a poor approach to model evaluation. Here, the neural network very quickly begins to overinterpret patterns that it sees in the training set. Compare these three example class boundaries (developed with the training set) overlaid on training and test sets in Figure @ref(fig:two-class-boundaries).</p>
-<div class="cell" data-layout-align="center">
+<p>Chapters <a href="#sec-splitting"><span class="quarto-unresolved-ref ref-noprefix">sec-splitting</span></a> and <a href="#sec-resampling"><span class="quarto-unresolved-ref ref-noprefix">sec-resampling</span></a> demonstrated that simply repredicting the training set is a poor approach to model evaluation. Here, the neural network very quickly begins to overinterpret patterns that it sees in the training set. Compare these three example class boundaries (developed with the training set) overlaid on training and test sets in <a href="#fig-two-class-boundaries">Figure&nbsp;<span class="quarto-unresolved-ref">fig-two-class-boundaries</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/fig-two-class-boundaries_32c2cc7f921b6590c8e93aab7494b398">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/two-class-boundaries-1.png" class="img-fluid figure-img" alt="Class boundaries for three models with increasing numbers of hidden units. The boundaries are fit on the training set and shown for the training and test sets. After a single hidden unit, the boundaries become wildly complex. The test set plots show that the more complex models do not conform to the data that was not used to fit the model." width="672"></p>
-<figcaption class="figure-caption">Class boundaries for three models with increasing numbers of hidden units. The boundaries are fit on the training set and shown for the training and test sets.</figcaption></figure>
+<div id="fig-two-class-boundaries" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-two-class-boundaries-1.png" class="img-fluid figure-img" alt="Class boundaries for three models with increasing numbers of hidden units. The boundaries are fit on the training set and shown for the training and test sets. After a single hidden unit, the boundaries become wildly complex. The test set plots show that the more complex models do not conform to the data that was not used to fit the model." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;12.5: Class boundaries for three models with increasing numbers of hidden units. The boundaries are fit on the training set and shown for the training and test sets.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -577,56 +577,56 @@ div.csl-indent {
 </section><section id="two-general-strategies-for-optimization" class="level2" data-number="12.5"><h2 data-number="12.5" class="anchored" data-anchor-id="two-general-strategies-for-optimization">
 <span class="header-section-number">12.5</span> Two general strategies for optimization</h2>
 <p>Tuning parameter optimization usually falls into one of two categories: grid search and iterative search.</p>
-<p><em>Grid search</em> is when we predefine a set of parameter values to evaluate. The main choices involved in grid search are how to make the grid and how many parameter combinations to evaluate. Grid search is often judged as inefficient since the number of grid points required to cover the parameter space can become unmanageable with the curse of dimensionality. There is truth to this concern, but it is most true when the process is not optimized. This is discussed more in Chapter @ref(grid-search).</p>
-<p><em>Iterative search</em> or sequential search is when we sequentially discover new parameter combinations based on previous results. Almost any nonlinear optimization method is appropriate, although some are more efficient than others. In some cases, an initial set of results for one or more parameter combinations is required to start the optimization process. Iterative search is discussed more in Chapter @ref(iterative-search).</p>
-<p>Figure @ref(fig:tuning-strategies) shows two panels that demonstrate these two approaches for a situation with two tuning parameters that range between zero and one. In each, a set of contours shows the true (simulated) relationship between the parameters and the outcome. The optimal results are in the upper-right-hand corners.</p>
-<div class="cell" data-layout-align="center">
+<p><em>Grid search</em> is when we predefine a set of parameter values to evaluate. The main choices involved in grid search are how to make the grid and how many parameter combinations to evaluate. Grid search is often judged as inefficient since the number of grid points required to cover the parameter space can become unmanageable with the curse of dimensionality. There is truth to this concern, but it is most true when the process is not optimized. This is discussed more in <a href="#sec-grid-search">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-grid-search</span></a>.</p>
+<p><em>Iterative search</em> or sequential search is when we sequentially discover new parameter combinations based on previous results. Almost any nonlinear optimization method is appropriate, although some are more efficient than others. In some cases, an initial set of results for one or more parameter combinations is required to start the optimization process. Iterative search is discussed more in <a href="#sec-iterative-search">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-iterative-search</span></a>.</p>
+<p><a href="#fig-tuning-strategies">Figure&nbsp;<span class="quarto-unresolved-ref">fig-tuning-strategies</span></a> shows two panels that demonstrate these two approaches for a situation with two tuning parameters that range between zero and one. In each, a set of contours shows the true (simulated) relationship between the parameters and the outcome. The optimal results are in the upper-right-hand corners.</p>
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/fig-tuning-strategies_e11c9949ae7198c2e3e4dffce9686a79">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/tuning-strategies-1.png" class="img-fluid figure-img" alt="Examples of pre-defined grid tuning and an iterative search method. The lines represent contours of some performance metric that is best in the upper-right-hand side of the plot. The grid search shows points that cover the space well and has one point near the optimum. The iterative search method has many more points and meanders to the optimum where many points zero in on the best value." width="672"></p>
-<figcaption class="figure-caption">Examples of pre-defined grid tuning and an iterative search method. The lines represent contours of a performance metric; it is best in the upper-right-hand side of the plot.</figcaption></figure>
+<div id="fig-tuning-strategies" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="figures/fig-tuning-strategies-1.png" class="img-fluid figure-img" alt="Examples of pre-defined grid tuning and an iterative search method. The lines represent contours of some performance metric that is best in the upper-right-hand side of the plot. The grid search shows points that cover the space well and has one point near the optimum. The iterative search method has many more points and meanders to the optimum where many points zero in on the best value." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;12.6: Examples of pre-defined grid tuning and an iterative search method. The lines represent contours of a performance metric; it is best in the upper-right-hand side of the plot.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The left-hand panel of Figure @ref(fig:tuning-strategies) shows a type of grid called a space-filling design. This is a type of experimental design devised for covering the parameter space such that tuning parameter combinations are not close to one another. The results for this design do not place any points exactly at the truly optimal location. However, one point is in the general vicinity and would probably have performance metric results that are within the noise of the most optimal value.</p>
-<p>The right-hand panel of Figure @ref(fig:tuning-strategies) illustrates the results of a global search method: the Nelder-Mead simplex method <span class="citation" data-cites="Olsson:1975p3609">(<a href="#ref-Olsson:1975p3609" role="doc-biblioref">Olsson and Nelson 1975</a>)</span>. The starting point is in the lower-left part of the parameter space. The search meanders across the space until it reaches the optimum location, where it strives to come as close as possible to the numerically best value. This particular search method, while effective, is not known for its efficiency; it requires many function evaluations, especially near the optimal values. Chapter @ref(iterative-search) discusses more efficient search algorithms.</p>
+<p>The left-hand panel of <a href="#fig-tuning-strategies">Figure&nbsp;<span class="quarto-unresolved-ref">fig-tuning-strategies</span></a> shows a type of grid called a space-filling design. This is a type of experimental design devised for covering the parameter space such that tuning parameter combinations are not close to one another. The results for this design do not place any points exactly at the truly optimal location. However, one point is in the general vicinity and would probably have performance metric results that are within the noise of the most optimal value.</p>
+<p>The right-hand panel of <a href="#fig-tuning-strategies">Figure&nbsp;<span class="quarto-unresolved-ref">fig-tuning-strategies</span></a> illustrates the results of a global search method: the Nelder-Mead simplex method <span class="citation" data-cites="Olsson:1975p3609">(<a href="#ref-Olsson:1975p3609" role="doc-biblioref">Olsson and Nelson 1975</a>)</span>. The starting point is in the lower-left part of the parameter space. The search meanders across the space until it reaches the optimum location, where it strives to come as close as possible to the numerically best value. This particular search method, while effective, is not known for its efficiency; it requires many function evaluations, especially near the optimal values. <a href="#sec-iterative-search">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-iterative-search</span></a> discusses more efficient search algorithms.</p>
 <div class="rmdnote">
 <p>Hybrid strategies are also an option and can work well. After an initial grid search, a sequential optimization can start from the best grid combination.</p>
 </div>
 <p>Examples of these strategies are discussed in detail in the next two chapters. Before moving on, let’s learn how to work with tuning parameter objects in tidymodels, using the <span class="pkg">dials</span> package.</p>
-</section><section id="tuning-params-tidymodels" class="level2" data-number="12.6"><h2 data-number="12.6" class="anchored" data-anchor-id="tuning-params-tidymodels">
+</section><section id="sec-tuning-params-tidymodels" class="level2" data-number="12.6"><h2 data-number="12.6" class="anchored" data-anchor-id="sec-tuning-params-tidymodels">
 <span class="header-section-number">12.6</span> Tuning Parameters in tidymodels</h2>
 <p>We’ve already dealt with quite a number of arguments that correspond to tuning parameters for recipe and model specifications in previous chapters. It is possible to tune:</p>
 <ul>
-<li><p>the threshold for combining neighborhoods into an “other” category (with argument name <code>threshold</code>) discussed in Section @ref(dummies)</p></li>
-<li><p>the number of degrees of freedom in a natural spline (<code>deg_free</code>, Section @ref(spline-functions))</p></li>
-<li><p>the number of data points required to execute a split in a tree-based model (<code>min_n</code>, Section @ref(create-a-model))</p></li>
-<li><p>the amount of regularization in penalized models (<code>penalty</code>, Section @ref(create-a-model))</p></li>
+<li><p>the threshold for combining neighborhoods into an “other” category (with argument name <code>threshold</code>) discussed in <a href="#sec-dummies"><span class="quarto-unresolved-ref">sec-dummies</span></a></p></li>
+<li><p>the number of degrees of freedom in a natural spline (<code>deg_free</code>, <a href="#sec-spline-functions"><span class="quarto-unresolved-ref">sec-spline-functions</span></a>)</p></li>
+<li><p>the number of data points required to execute a split in a tree-based model (<code>min_n</code>, <a href="#sec-create-a-model"><span class="quarto-unresolved-ref">sec-create-a-model</span></a>)</p></li>
+<li><p>the amount of regularization in penalized models (<code>penalty</code>, <a href="#sec-create-a-model"><span class="quarto-unresolved-ref">sec-create-a-model</span></a>)</p></li>
 </ul>
 <p>For <span class="pkg">parsnip</span> model specifications, there are two kinds of parameter arguments. <em>Main arguments</em> are those that are most often optimized for performance and are available in multiple engines. The main tuning parameters are top-level arguments to the model specification function. For example, the <code>rand_forest()</code> function has main arguments <code>trees</code>, <code>min_n</code>, and <code>mtry</code> since these are most frequently specified or optimized.</p>
 <p>A secondary set of tuning parameters are <em>engine specific</em>. These are either infrequently optimized or are specific only to certain engines. Again using random forests as an example, the <span class="pkg">ranger</span> package contains some arguments that are not used by other packages. One example is gain penalization, which regularizes the predictor selection in the tree induction process. This parameter can help modulate the trade-off between the number of predictors used in the ensemble and performance <span class="citation" data-cites="wundervald2020generalizing">(<a href="#ref-wundervald2020generalizing" role="doc-biblioref">Wundervald, Parnell, and Domijan 2020</a>)</span>. The name of this argument in <code>ranger()</code> is <code>regularization.factor</code>. To specify a value via a <span class="pkg">parsnip</span> model specification, it is added as a supplemental argument to <code>set_engine()</code>:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-args_e7dec5c1727fd7b5bf829d03300247b0">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rand_forest</span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">2000</span>, min_n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">%&gt;%</span>                   <span class="co"># &lt;- main arguments</span></span>
 <span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span>, regularization.factor <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>         <span class="co"># &lt;- engine-specific</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdwarning">
 <p>The main arguments use a harmonized naming system to remove inconsistencies across engines while engine-specific arguments do not.</p>
 </div>
-<p>How can we signal to tidymodels functions which arguments should be optimized? Parameters are marked for tuning by assigning them a value of <code>tune()</code>. For the single layer neural network used in Section @ref(overfitting-bad), the number of hidden units is designated for tuning using:</p>
-<div class="cell" data-layout-align="center">
+<p>How can we signal to tidymodels functions which arguments should be optimized? Parameters are marked for tuning by assigning them a value of <code>tune()</code>. For the single layer neural network used in <a href="#sec-overfitting-bad"><span class="quarto-unresolved-ref">sec-overfitting-bad</span></a>, the number of hidden units is designated for tuning using:</p>
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-mlp-units_80a4df1c98a39ef5c23023af463a85fe">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">neural_net_spec</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">mlp</span><span class="op">(</span>hidden_units <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>tune()</code> function doesn’t execute any particular parameter value; it only returns an expression:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-tune-exprs_8baaf204113a3c41856e714855eb528c">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">tune</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## tune()</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Embedding this <code>tune()</code> value in an argument will tag the parameter for optimization. The model tuning functions shown in the next two chapters parse the model specification and/or recipe to discover the tagged parameters. These functions can automatically configure and process these parameters since they understand their characteristics (e.g., the range of possible values, etc.).</p>
 <p>To enumerate the tuning parameters for an object, use the <code>extract_parameter_set_dials()</code> function:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-mlp-units-param_70ac7d25be89155fc2ca9ee77faf3583">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">extract_parameter_set_dials</span><span class="op">(</span><span class="va">neural_net_spec</span><span class="op">)</span></span>
 <span><span class="co">## Collection of 1 parameters for tuning</span></span>
 <span><span class="co">## </span></span>
@@ -634,8 +634,8 @@ div.csl-indent {
 <span><span class="co">##  hidden_units hidden_units nparam[+]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The results show a value of <code>nparam[+]</code>, indicating that the number of hidden units is a numeric parameter.</p>
-<p>There is an optional identification argument that associates a name with the parameters. This can come in handy when the same kind of parameter is being tuned in different places. For example, with the Ames housing data from Section @ref(resampling-summary), the recipe encoded both longitude and latitude with spline functions. If we want to tune the two spline functions to potentially have different levels of smoothness, we call <code>step_ns()</code> twice, once for each predictor. To make the parameters identifiable, the identification argument can take any character string:</p>
-<div class="cell" data-layout-align="center">
+<p>There is an optional identification argument that associates a name with the parameters. This can come in handy when the same kind of parameter is being tuned in different places. For example, with the Ames housing data from <a href="#sec-resampling-summary"><span class="quarto-unresolved-ref">sec-resampling-summary</span></a>, the recipe encoded both longitude and latitude with spline functions. If we want to tune the two spline functions to potentially have different levels of smoothness, we call <code>step_ns()</code> twice, once for each predictor. To make the parameters identifiable, the identification argument can take any character string:</p>
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-id_eaa80d3fd683a530c76dca96f5c6ff56">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_rec</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="va">Gr_Liv_Area</span> <span class="op">+</span> <span class="va">Year_Built</span> <span class="op">+</span> <span class="va">Bldg_Type</span> <span class="op">+</span> </span>
 <span>           <span class="va">Latitude</span> <span class="op">+</span> <span class="va">Longitude</span>, data <span class="op">=</span> <span class="va">ames_train</span><span class="op">)</span>  <span class="op">%&gt;%</span></span>
@@ -657,7 +657,7 @@ div.csl-indent {
 </div>
 <p>Note that the <code>identifier</code> and <code>type</code> columns are not the same for both of the spline parameters.</p>
 <p>When a recipe and model specification are combined using a workflow, both sets of parameters are shown:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-mlp-rec_ba1630c87f7cac0fd93ee53c45b23a21">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">wflow_param</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">add_recipe</span><span class="op">(</span><span class="va">ames_rec</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
@@ -676,7 +676,7 @@ div.csl-indent {
 <p>Neural networks are exquisitely capable of emulating nonlinear patterns. Adding spline terms to this type of model is unnecessary; we combined this model and recipe for illustration only.</p>
 </div>
 <p>Each tuning parameter argument has a corresponding function in the <span class="pkg">dials</span> package. In the vast majority of the cases, the function has the same name as the parameter argument:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-dials-unit_330198a7e8e902272d5b9150d7141e42">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">hidden_units</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## # Hidden Units (quantitative)</span></span>
 <span><span class="co">## Range: [1, 10]</span></span>
@@ -685,20 +685,20 @@ div.csl-indent {
 <span><span class="co">## Range: [0, 1]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>deg_free</code> parameter is a counterexample; the notion of degrees of freedom comes up in a variety of different contexts. When used with splines, there is a specialized <span class="pkg">dials</span> function called <code>spline_degree()</code> that is, by default, invoked for splines:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-spline-df_653489d28b439fbe7994983b9e898937">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">spline_degree</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## Spline Degrees of Freedom (quantitative)</span></span>
 <span><span class="co">## Range: [1, 10]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <span class="pkg">dials</span> package also has a convenience function for extracting a particular parameter object:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-extract_f857b10b568f4e23eb85a763470ed2cf">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># identify the parameter using the id value:</span></span>
 <span><span class="va">wflow_param</span> <span class="op">%&gt;%</span> <span class="fu">extract_parameter_dials</span><span class="op">(</span><span class="st">"threshold"</span><span class="op">)</span></span>
 <span><span class="co">## Threshold (quantitative)</span></span>
 <span><span class="co">## Range: [0, 0.1]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Inside the parameter set, the range of the parameters can also be updated in place:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-update_449a91c7d2873ba837894c49e53170c0">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">extract_parameter_set_dials</span><span class="op">(</span><span class="va">ames_rec</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/update.html">update</a></span><span class="op">(</span>threshold <span class="op">=</span> <span class="fu">threshold</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">1.0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Collection of 3 parameters for tuning</span></span>
@@ -713,7 +713,7 @@ div.csl-indent {
 <p>Some tuning parameters depend on the dimensions of the data. For example, the number of nearest neighbors must be between one and the number of rows in the data.</p>
 </div>
 <p>In some cases, it is easy to have reasonable defaults for the range of possible values. In other cases, the parameter range is critical and cannot be assumed. The primary tuning parameter for random forest models is the number of predictor columns that are randomly sampled for each split in the tree, usually denoted as <code>mtry()</code>. Without knowing the number of predictors, this parameter range cannot be preconfigured and requires finalization.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-rf_bd60cbdf7b88098101a734f5d00f6b3f">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rf_spec</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">rand_forest</span><span class="op">(</span>mtry <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span>, regularization.factor <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="st">"regularization"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -733,7 +733,7 @@ div.csl-indent {
 <span><span class="co">## See `?dials::finalize` or `?dials::update.parameters` for more information.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Complete parameter objects have <code>[+]</code> in their summary; a value of <code>[?]</code> indicates that at least one end of the possible range is missing. There are two methods for handling this. The first is to use <code><a href="https://rdrr.io/r/stats/update.html">update()</a></code>, to add a range based on what you know about the data dimensions:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-rfupdate_dfa6ed22ad9bfc76ed3f1a9b0cf57a57">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rf_param</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/update.html">update</a></span><span class="op">(</span>mtry <span class="op">=</span> <span class="fu">mtry</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">70</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Collection of 2 parameters for tuning</span></span>
@@ -743,7 +743,7 @@ div.csl-indent {
 <span><span class="co">##  regularization regularization.factor nparam[+]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>However, this approach might not work if a recipe is attached to a workflow that uses steps that either add or subtract columns. If those steps are not slated for tuning, the <code>finalize()</code> function can execute the recipe once to obtain the dimensions:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-finalize_f6ae029c465ec6f562572d56e4a09b8c">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pca_rec</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames_train</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="co"># Select the square-footage predictors and extract their PCA components:</span></span>
@@ -770,7 +770,7 @@ div.csl-indent {
 </div>
 <p>When the recipe is prepared, the <code>finalize()</code> function learns to set the upper range of <code>mtry</code> to 74 predictors.</p>
 <p>Additionally, the results of <code>extract_parameter_set_dials()</code> will include engine-specific parameters (if any). They are discovered in the same way as the main arguments and included in the parameter set. The <span class="pkg">dials</span> package contains parameter functions for all potentially tunable engine-specific parameters:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-engine-param-set_efb03a25c2b7bb3a49ff66ec6728ed59">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rf_param</span></span>
 <span><span class="co">## Collection of 2 parameters for tuning</span></span>
 <span><span class="co">## </span></span>
@@ -787,14 +787,14 @@ div.csl-indent {
 <span><span class="co">## Range: [0, 1]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finally, some tuning parameters are best associated with transformations. A good example of this is the penalty parameter associated with many regularized regression models. This parameter is nonnegative and it is common to vary its values in log units. The primary <span class="pkg">dials</span> parameter object indicates that a transformation is used by default:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-penalty_5ef74c28d4b8d466b640ae77fff3f45d">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">penalty</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## Amount of Regularization (quantitative)</span></span>
 <span><span class="co">## Transformer: log-10 [1e-100, Inf]</span></span>
 <span><span class="co">## Range (transformed scale): [-10, 0]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This is important to know, especially when altering the range. New range values must be in the transformed units:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-penalty-set_9cce9fed575a46aa5bc868b1ac499e91">
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># correct method to have penalty values between 0.1 and 1.0</span></span>
 <span><span class="fu">penalty</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">value_sample</span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
@@ -806,7 +806,7 @@ div.csl-indent {
 <span><span class="co">##    1.26    2.21    3.68    4.26    5.89   10.00</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The scale can be changed if desired with the <code>trans</code> argument. You can use natural units but the same range:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="12-tuning-parameters_cache/html/tuning-penalty-natural_3e3301c319dfedaf45f00adfa3369733">
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">penalty</span><span class="op">(</span>trans <span class="op">=</span> <span class="cn">NULL</span>, range <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Amount of Regularization (quantitative)</span></span>
 <span><span class="co">## Range: [1e-10, 1]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

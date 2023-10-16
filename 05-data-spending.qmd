@@ -103,7 +103,7 @@ Are there situations when random sampling is not the best choice? One case is wh
 The proportion of data that should be allocated for splitting is highly dependent on the context of the problem at hand. Too little data in the training set hampers the model's ability to find appropriate parameter estimates. Conversely, too little data in the test set lowers the quality of the performance estimates. Parts of the statistics community eschew test sets in general because they believe all of the data should be used for parameter estimation. While there is merit to this argument, it is good modeling practice to have an unbiased set of observations as the final arbiter of model quality. A test set should be avoided only when the data are pathologically small.
 :::
 
-## What About a Validation Set?
+## What About a Validation Set? {#sec-what-about-a-validation-set}
 
 When describing the goals of data splitting, we singled out the test set as the data that should be used to properly evaluate of model performance on the final model(s). This begs the question: "How can we tell what is best if we don't measure performance until the test set?"
 

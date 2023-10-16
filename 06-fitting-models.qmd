@@ -16,7 +16,7 @@ The `r pkg(parsnip)` package, one of the R packages that are part of the `r pkg(
 
 Specifically, we will focus on how to `fit()` and `predict()` directly with a `r pkg(parsnip)` object, which may be a good fit for some straightforward modeling problems. The next chapter illustrates a better approach for many modeling tasks by combining models and preprocessors together into something called a `workflow` object.
 
-## Create a Model
+## Create a Model {#sec-create-a-model}
 
 Once the data have been encoded in a format ready for a modeling algorithm, such as a numeric matrix, they can be used in the model building process.
 

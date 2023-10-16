@@ -4,7 +4,6 @@ project:
 
 execute:
   freeze: auto
-  cahe: true
 
 book:
   title: "Modelado Ordenado con R"
@@ -67,7 +66,7 @@ format:
   html:
     css: [style.css, TMwR.css]
     code-link: true
-
+    cache: true
     author-meta: "Max Kuhn, y Julia Silge"
     callout-appearance: simple
 

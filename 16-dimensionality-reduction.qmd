@@ -15,7 +15,7 @@ registerDoMC(cores = parallel::detectCores())
 tidymodels_prefer()
 ```
 
-# Dimensionality Reduction {#dimensionality}
+# Dimensionality Reduction {#sec-dimensionality}
 
 Dimensionality reduction transforms a data set from a high-dimensional space into a low-dimensional space, and can be a good choice when you suspect there are "too many" variables. An excess of variables, usually predictors, can be a problem because it is difficult to understand or visualize data in higher dimensions.
 
@@ -38,10 +38,10 @@ This chapter has two goals:
 
 -   Demonstrate how to use recipes to create a small set of features that capture the main aspects of the original predictor set.
 
--   Describe how recipes can be used on their own (as opposed to being used in a workflow object, as in Section \@ref(using-recipes)).
+-   Describe how recipes can be used on their own (as opposed to being used in a workflow object, as in @sec-using-recipes).
 :::
 
-The latter is helpful when testing or debugging a recipe. However, as described in Section \@ref(using-recipes), the best way to use a recipe for modeling is from within a workflow object.
+The latter is helpful when testing or debugging a recipe. However, as described in @sec-using-recipes, the best way to use a recipe for modeling is from within a workflow object.
 
 In addition to the `r pkg(tidymodels)` package, this chapter uses the following packages: `r pkg(baguette)`, `r pkg(beans)`, `r pkg(bestNormalize)`, `r pkg(corrplot)`, `r pkg(discrim)`, `r pkg(embed)`, `r pkg(ggforce)`, `r pkg(klaR)`, `r pkg(learntidymodels)`,[^16-dimensionality-reduction-1] `r pkg(mixOmics)`,[^16-dimensionality-reduction-2] and `r pkg(uwot)`.
 
@@ -49,7 +49,7 @@ In addition to the `r pkg(tidymodels)` package, this chapter uses the following 
 
 [^16-dimensionality-reduction-2]: The `r pkg(mixOmics)` package is not available on CRAN, but instead on Bioconductor: <https://doi.org/doi:10.18129/B9.bioc.mixOmics>
 
-## A Picture Is Worth a Thousand... Beans {#beans}
+## A Picture Is Worth a Thousand... Beans {#sec-beans}
 
 Let's walk through how to use dimensionality reduction with `r pkg(recipes)` for an example data set. @beans published a data set of visual characteristics of dried beans and described methods for determining the varieties of dried beans in an image. While the dimensionality of these data is not very large compared to many real-world modeling problems, it does provide a nice working example to demonstrate how to reduce the number of features. From their manuscript:
 
@@ -69,13 +69,15 @@ There are numerous methods for quantifying shapes of objects [@Mingqiang08]. Man
 
 -   There are also different measures of how *elongated* or oblong an object is. For example, the *eccentricity* statistic is the ratio of the major and minor axes. There are also related estimates for roundness and convexity.
 
-Notice the eccentricity for the different shapes in Figure \@ref(fig:eccentricity).
+Notice the eccentricity for the different shapes in @fig-eccentricity.
 
-```{r eccentricity}
-#| echo = FALSE, 
-#| out.width="95%",
-#| fig.cap = "Some example shapes and their eccentricity statistics",
-#| fig.alt = "Some example shapes and their eccentricity statistics. Circles and squares have the smallest eccentricity values while X shapes and lightning bolts have the largest. Also, the eccentricity is the same when shapes are rotated."
+```{r}
+#| label: fig-eccentricity
+#| echo: FALSE
+#| out.width: "95%"
+#| fig.cap: "Some example shapes and their eccentricity statistics"
+#| fig.alt: "Some example shapes and their eccentricity statistics. Circles and squares have the smallest eccentricity values while X shapes and lightning bolts have the largest. Also, the eccentricity is the same when shapes are rotated."
+
 knitr::include_graphics("premade/morphology.svg")
 ```
 
@@ -159,7 +161,7 @@ Remember that when invoking the `recipe()` function, the steps are not estimated
 
 This recipe will be extended with additional steps for the dimensionality reduction analyses. Before doing so, let's go over how a recipe can be used outside of a workflow.
 
-## Recipes in the Wild {#recipe-functions}
+## Recipes in the Wild {#sec-recipe-functions}
 
 As mentioned in Section \@ref(using-recipes), a workflow containing a recipe uses `fit()` to estimate the recipe and model, then `predict()` to process the data and make model predictions. There are analogous functions in the `r pkg(recipes)` package that can be used for the same purpose:
 
@@ -178,7 +180,7 @@ Figure \@ref(fig:recipe-process) summarizes this. Let's look at each of these fu
 knitr::include_graphics("premade/recipes-process.svg")
 ```
 
-### Preparing a recipe {#prep}
+### Preparing a recipe {#sec-prep}
 
 Let's estimate `bean_rec` using the training set data, with `prep(bean_rec)`:
 
@@ -215,7 +217,7 @@ show_variables <-
   prep(log_changes = TRUE)
 ```
 
-### Baking the recipe {#bake}
+### Baking the recipe {#sec-bake}
 
 ::: rmdnote
 Using `bake()` with a recipe is much like using `predict()` with a model; the operations estimated from the training set are applied to any data, like testing data or new data at prediction time.
@@ -443,7 +445,7 @@ The supervised method shown in Figure \@ref(fig:bean-umap-supervised) looks prom
 
 UMAP is a powerful method to reduce the feature space. However, it can be very sensitive to tuning parameters (e.g., the number of neighbors and so on). For this reason, it would help to experiment with a few of the parameters to assess how robust the results are for these data.
 
-## Modeling {#bean-models}
+## Modeling {#sec-bean-models}
 
 Both the PLS and UMAP methods are worth investigating in conjunction with different models. Let's explore a variety of different models with these dimensionality reduction techniques (along with no transformation at all): a single layer neural network, bagged trees, flexible discriminant analysis (FDA), naive Bayes, and regularized discriminant analysis (RDA).
 
@@ -578,6 +580,6 @@ Pretty good! We'll use this model in the next chapter to demonstrate variable im
 save(rda_wflow_fit, bean_train, file = "RData/rda_fit.RData", version = 2, compress = "xz")
 ```
 
-## Chapter Summary {#dimensionality-summary}
+## Chapter Summary {#sec-dimensionality-summary}
 
 Dimensionality reduction can be a helpful method for exploratory data analysis as well as modeling. The `r pkg(recipes)` and `r pkg(embed)` packages contain steps for a variety of different methods and `r pkg(workflowsets)` facilitates choosing an appropriate method for a data set. This chapter also discussed how recipes can be used on their own, either for debugging problems with a recipe or directly for exploratory data analysis and data visualization.

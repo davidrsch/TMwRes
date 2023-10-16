@@ -2,23 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.tmwr.org/index.html</loc>
-    <lastmod>2023-10-11T22:15:03.571Z</lastmod>
+    <lastmod>2023-10-16T12:46:10.231Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/14-iterative-search.html</loc>
-    <lastmod>2023-10-07T22:44:22.672Z</lastmod>
+    <lastmod>2023-10-16T00:43:52.604Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/18-explaining-models-and-predictions.html</loc>
-    <lastmod>2023-10-08T19:56:30.327Z</lastmod>
+    <lastmod>2023-10-16T00:43:53.211Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/19-when-should-you-trust-predictions.html</loc>
-    <lastmod>2023-10-08T19:56:30.458Z</lastmod>
+    <lastmod>2023-10-16T00:43:53.433Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/20-ensemble-models.html</loc>
-    <lastmod>2023-10-08T19:56:30.518Z</lastmod>
+    <lastmod>2023-10-16T00:43:53.511Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/21-inferential-analysis.html</loc>
@@ -34,38 +34,66 @@
   </url>
   <url>
     <loc>https://www.tmwr.org/01-software-modeling.html</loc>
-    <lastmod>2023-10-11T21:42:40.441Z</lastmod>
+    <lastmod>2023-10-15T09:29:30.765Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/02-tidyverse.html</loc>
-    <lastmod>2023-10-11T21:48:11.302Z</lastmod>
+    <lastmod>2023-10-15T09:30:13.976Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/03-base-r.html</loc>
-    <lastmod>2023-10-11T21:48:47.817Z</lastmod>
+    <lastmod>2023-10-15T09:31:02.666Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/04-ames.html</loc>
-    <lastmod>2023-10-11T22:00:53.207Z</lastmod>
+    <lastmod>2023-10-15T09:31:53.665Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/05-data-spending.html</loc>
-    <lastmod>2023-10-11T22:04:49.651Z</lastmod>
+    <lastmod>2023-10-15T09:32:15.090Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/06-fitting-models.html</loc>
-    <lastmod>2023-10-11T22:05:15.338Z</lastmod>
+    <lastmod>2023-10-15T09:42:19.287Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/07-the-model-workflow.html</loc>
-    <lastmod>2023-10-11T22:08:42.287Z</lastmod>
+    <lastmod>2023-10-15T09:43:18.574Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/08-feature-engineering.html</loc>
-    <lastmod>2023-10-11T22:15:31.136Z</lastmod>
+    <lastmod>2023-10-15T09:43:43.768Z</lastmod>
   </url>
   <url>
     <loc>https://www.tmwr.org/09-judging-model-effectiveness.html</loc>
-    <lastmod>2023-10-11T22:13:22.666Z</lastmod>
+    <lastmod>2023-10-15T09:44:17.776Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.tmwr.org/10-resampling.html</loc>
+    <lastmod>2023-10-15T09:45:10.571Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.tmwr.org/11-comparing-models.html</loc>
+    <lastmod>2023-10-15T09:45:51.575Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.tmwr.org/12-tuning-parameters.html</loc>
+    <lastmod>2023-10-15T09:46:11.213Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.tmwr.org/15-workflow-sets.html</loc>
+    <lastmod>2023-10-16T12:50:21.484Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.tmwr.org/13-grid-search.html</loc>
+    <lastmod>2023-10-15T09:46:50.229Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.tmwr.org/16-dimensionality-reduction.html</loc>
+    <lastmod>2023-10-16T00:43:52.949Z</lastmod>
+  </url>
+  <url>
+    <loc>https://www.tmwr.org/17-encoding-categorical-data.html</loc>
+    <lastmod>2023-10-16T00:43:53.078Z</lastmod>
   </url>
 </urlset>

@@ -384,11 +384,11 @@ div.csl-indent {
   </div>
   
 
-</header><p>What is the tidyverse, and where does the tidymodels framework fit in? The tidyverse is a collection of R packages for data analysis that are developed with common ideas and norms. From <span class="citation" data-cites="tidyverse">Wickham et al. (<a href="references.html#ref-tidyverse" role="doc-biblioref">2019</a>)</span>:</p>
+</header><p>What is the tidyverse, and where does the tidymodels framework fit in? The tidyverse is a collection of R packages for data analysis that are developed with common ideas and norms. From <span class="citation" data-cites="tidyverse">Wickham et al. (<a href="#ref-tidyverse" role="doc-biblioref">2019</a>)</span>:</p>
 <blockquote class="blockquote">
 <p>“At a high level, the tidyverse is a language for solving data science challenges with R code. Its primary goal is to facilitate a conversation between a human and a computer about data. Less abstractly, the tidyverse is a collection of R packages that share a high-level design philosophy and low-level grammar and data structures, so that learning one package makes it easier to learn the next.”</p>
 </blockquote>
-<p>In this chapter, we briefly discuss important principles of the tidyverse design philosophy and how they apply in the context of modeling software that is easy to use properly and supports good statistical practice, like we outlined in <a href="01-software-modeling.html">Chapter&nbsp;<span>1</span></a>. The next chapter covers modeling conventions from the core R language. Together, you can use these discussions to understand the relationships between the tidyverse, tidymodels, and the core or base R language. Both tidymodels and the tidyverse build on the R language, and tidymodels applies tidyverse principles to building models.</p>
+<p>In this chapter, we briefly discuss important principles of the tidyverse design philosophy and how they apply in the context of modeling software that is easy to use properly and supports good statistical practice, like we outlined in <a href="#sec-software-modeling">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-software-modeling</span></a>. The next chapter covers modeling conventions from the core R language. Together, you can use these discussions to understand the relationships between the tidyverse, tidymodels, and the core or base R language. Both tidymodels and the tidyverse build on the R language, and tidymodels applies tidyverse principles to building models.</p>
 <section id="tidyverse-principles" class="level2" data-number="2.1"><h2 data-number="2.1" class="anchored" data-anchor-id="tidyverse-principles">
 <span class="header-section-number">2.1</span> Tidyverse Principles</h2>
 <p>The full set of strategies and tactics for writing R code in the tidyverse style can be found at the website <a href="https://design.tidyverse.org" class="uri">https://design.tidyverse.org</a>. Here we can briefly describe several of the general tidyverse design principles, their motivation, and how we think about modeling as an application of these principles.</p>
@@ -415,7 +415,7 @@ div.csl-indent {
 <span class="header-section-number">2.1.2</span> Reuse existing data structures</h3>
 <p>Whenever possible, functions should avoid returning a novel data structure. If the results are conducive to an existing data structure, it should be used. This reduces the cognitive load when using software; no additional syntax or methods are required.</p>
 <p>The data frame is the preferred data structure in tidyverse and tidymodels packages, because its structure is a good fit for such a broad swath of data science tasks. Specifically, the tidyverse and tidymodels favor the tibble, a modern reimagining of R’s data frame that we describe in the next section on example tidyverse syntax.</p>
-<p>As an example, the <span class="pkg">rsample</span> package can be used to create <em>resamples</em> of a data set, such as cross-validation or the bootstrap (described in <span class="quarto-unresolved-ref">?sec-resampling</span>). The resampling functions return a tibble with a column called <code>splits</code> of objects that define the resampled data sets. Three bootstrap samples of a data set might look like:</p>
+<p>As an example, the <span class="pkg">rsample</span> package can be used to create <em>resamples</em> of a data set, such as cross-validation or the bootstrap (described in <a href="#sec-resampling">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-resampling</span></a>). The resampling functions return a tibble with a column called <code>splits</code> of objects that define the resampled data sets. Three bootstrap samples of a data set might look like:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">boot_samp</span> <span class="op">&lt;-</span> <span class="fu">rsample</span><span class="fu">::</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/bootstraps.html">bootstraps</a></span><span class="op">(</span><span class="va">mtcars</span>, times <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">boot_samp</span></span>
@@ -617,7 +617,7 @@ div.csl-indent {
 <p>This chapter introduced the tidyverse, with a focus on applications for modeling and how tidyverse design principles inform the tidymodels framework. Think of the tidymodels framework as applying tidyverse principles to the domain of building models. We described differences in conventions between the tidyverse and base R, and introduced two important components of the tidyverse system, tibbles and the pipe operator <code>%&gt;%</code>. Data cleaning and processing can feel mundane at times, but these tasks are important for modeling in the real world; we illustrated how to use tibbles, the pipe, and tidyverse functions in an example data import and processing exercise.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-tidyverse" class="csl-entry" role="listitem">
 Wickham, H, M Averick, J Bryan, W Chang, L McGowan, R François, G Grolemund, et al. 2019. <span>“Welcome to the <span>Tidyverse</span>.”</span> <em>Journal of Open Source Software</em> 4 (43).
 </div>
@@ -631,7 +631,7 @@ Wickham, H, and G Grolemund. 2016. <em><span class="sans-serif">R</span> for Dat
 <li id="fn2"><p>Not all algorithms can take advantage of sparse representations of data. In such cases, a sparse matrix must be converted to a more conventional format before proceeding.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>In R 4.1.0, a native pipe operator <code>|&gt;</code> was introduced as well. In this book, we use the <span class="pkg">magrittr</span> pipe since users on older versions of R will not have the new native pipe.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>Examples of function side effects could include changing global data or printing a value.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>Chapter 10 of <span class="citation" data-cites="wickham2016">Wickham and Grolemund (<a href="references.html#ref-wickham2016" role="doc-biblioref">2016</a>)</span> has more details on tibbles.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Chapter 10 of <span class="citation" data-cites="wickham2016">Wickham and Grolemund (<a href="#ref-wickham2016" role="doc-biblioref">2016</a>)</span> has more details on tibbles.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
