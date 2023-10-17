@@ -365,7 +365,7 @@ div.csl-indent {
   <li><a href="#design-for-the-pipe-and-functional-programming" id="toc-design-for-the-pipe-and-functional-programming" class="nav-link" data-scroll-target="#design-for-the-pipe-and-functional-programming"><span class="header-section-number">2.1.3</span> Design for the pipe and functional programming</a></li>
   </ul>
 </li>
-  <li><a href="#examples-of-tidyverse-syntax" id="toc-examples-of-tidyverse-syntax" class="nav-link" data-scroll-target="#examples-of-tidyverse-syntax"><span class="header-section-number">2.2</span> Examples of Tidyverse Syntax</a></li>
+  <li><a href="#sec-examples-of-tidyverse-syntax" id="toc-sec-examples-of-tidyverse-syntax" class="nav-link" data-scroll-target="#sec-examples-of-tidyverse-syntax"><span class="header-section-number">2.2</span> Examples of Tidyverse Syntax</a></li>
   <li><a href="#chapter-summary" id="toc-chapter-summary" class="nav-link" data-scroll-target="#chapter-summary"><span class="header-section-number">2.3</span> Chapter Summary</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/02-tidyverse.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -397,11 +397,11 @@ div.csl-indent {
 <p>The tidyverse focuses on designing R packages and functions that can be easily understood and used by a broad range of people. Both historically and today, a substantial percentage of R users are not people who create software or tools but instead people who create analyses or models. As such, R users do not typically have (or need) computer science backgrounds, and many are not interested in writing their own R packages.</p>
 <p>For this reason, it is critical that R code be easy to work with to accomplish your goals. Documentation, training, accessibility, and other factors play an important part in achieving this. However, if the syntax itself is difficult for people to easily comprehend, documentation is a poor solution. The software itself must be intuitive.</p>
 <p>To contrast the tidyverse approach with more traditional R semantics, consider sorting a data frame. Data frames can represent different types of data in each column, and multiple values in each row. Using only the core language, we can sort a data frame using one or more columns by reordering the rows via R’s subscripting rules in conjunction with <code><a href="https://rdrr.io/r/base/order.html">order()</a></code>; you cannot successfully use a function you might be tempted to try in such a situation because of its name, <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code>. To sort the <code>mtcars</code> data by two of its columns, the call might look like:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-base-sort_7fa5ff13f5144c2c5a6216c814a07fe1">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mtcars</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">gear</span>, <span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span><span class="op">)</span>, <span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>While very computationally efficient, it would be difficult to argue that this is an intuitive user interface. In <span class="pkg">dplyr</span> by contrast, the tidyverse function <code><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange()</a></code> takes a set of variable names as input arguments directly:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-dplyr-sort_949f39b8e7fd87f162da6f486d00bd1a">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span>.data <span class="op">=</span> <span class="va">mtcars</span>, <span class="va">gear</span>, <span class="va">mpg</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -416,16 +416,16 @@ div.csl-indent {
 <p>Whenever possible, functions should avoid returning a novel data structure. If the results are conducive to an existing data structure, it should be used. This reduces the cognitive load when using software; no additional syntax or methods are required.</p>
 <p>The data frame is the preferred data structure in tidyverse and tidymodels packages, because its structure is a good fit for such a broad swath of data science tasks. Specifically, the tidyverse and tidymodels favor the tibble, a modern reimagining of R’s data frame that we describe in the next section on example tidyverse syntax.</p>
 <p>As an example, the <span class="pkg">rsample</span> package can be used to create <em>resamples</em> of a data set, such as cross-validation or the bootstrap (described in <a href="#sec-resampling">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-resampling</span></a>). The resampling functions return a tibble with a column called <code>splits</code> of objects that define the resampled data sets. Three bootstrap samples of a data set might look like:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-resample_6ab48992732281781226c1d972e9d5fc">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">boot_samp</span> <span class="op">&lt;-</span> <span class="fu">rsample</span><span class="fu">::</span><span class="fu"><a href="https://rsample.tidymodels.org/reference/bootstraps.html">bootstraps</a></span><span class="op">(</span><span class="va">mtcars</span>, times <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="va">boot_samp</span></span>
 <span><span class="co">## # Bootstrap sampling </span></span>
 <span><span class="co">## # A tibble: 3 × 2</span></span>
 <span><span class="co">##   splits          id        </span></span>
 <span><span class="co">##   &lt;list&gt;          &lt;chr&gt;     </span></span>
-<span><span class="co">## 1 &lt;split [32/10]&gt; Bootstrap1</span></span>
-<span><span class="co">## 2 &lt;split [32/10]&gt; Bootstrap2</span></span>
-<span><span class="co">## 3 &lt;split [32/7]&gt;  Bootstrap3</span></span>
+<span><span class="co">## 1 &lt;split [32/13]&gt; Bootstrap1</span></span>
+<span><span class="co">## 2 &lt;split [32/13]&gt; Bootstrap2</span></span>
+<span><span class="co">## 3 &lt;split [32/10]&gt; Bootstrap3</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">boot_samp</span><span class="op">)</span></span>
 <span><span class="co">## [1] "bootstraps" "rset"       "tbl_df"     "tbl"        "data.frame"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -443,7 +443,7 @@ div.csl-indent {
 </section><section id="design-for-the-pipe-and-functional-programming" class="level3" data-number="2.1.3"><h3 data-number="2.1.3" class="anchored" data-anchor-id="design-for-the-pipe-and-functional-programming">
 <span class="header-section-number">2.1.3</span> Design for the pipe and functional programming</h3>
 <p>The <span class="pkg">magrittr</span> pipe operator (<code>%&gt;%</code>) is a tool for chaining together a sequence of R functions.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> To demonstrate, consider the following commands that sort a data frame and then retain the first 10 rows:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-no-pipe_decaeec66d9dc0b03dd159c9d4f9a678">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">small_mtcars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">gear</span><span class="op">)</span></span>
 <span><span class="va">small_mtcars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="va">small_mtcars</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
 <span></span>
@@ -451,7 +451,7 @@ div.csl-indent {
 <span><span class="va">small_mtcars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">gear</span><span class="op">)</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The pipe operator substitutes the value of the left-hand side of the operator as the first argument to the right-hand side, so we can implement the same result as before with:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-pipe_c96f731a05c96e0f9b77733e285f5146">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">small_mtcars</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">mtcars</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/arrange.html">arrange</a></span><span class="op">(</span><span class="va">gear</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
@@ -459,7 +459,7 @@ div.csl-indent {
 </div>
 <p>The piped version of this sequence is more readable; this readability increases as more operations are added to a sequence. This approach to programming works in this example because all of the functions we used return the same data structure (a data frame) that is then the first argument to the next function. This is by design. When possible, create functions that can be incorporated into a pipeline of operations.</p>
 <p>If you have used <span class="pkg">ggplot2</span>, this is not unlike the layering of plot components into a <code>ggplot</code> object with the <code>+</code> operator. To make a scatter plot with a regression line, the initial <code><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot()</a></code> call is augmented with two additional operations:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-ggplot-chain_fe1af1c3efd86b260fe608da730a2598">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">wt</span>, y <span class="op">=</span> <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -468,7 +468,7 @@ div.csl-indent {
 <p>While similar to the <span class="pkg">dplyr</span> pipeline, note that the first argument to this pipeline is a data set (<code>mtcars</code>) and that each function call returns a <code>ggplot</code> object. Not all pipelines need to keep the returned values (plot objects) the same as the initial value (a data frame). Using the pipe operator with <span class="pkg">dplyr</span> operations has acclimated many R users to expect to return a data frame when pipelines are used; as shown with <span class="pkg">ggplot2</span>, this does not need to be the case. Pipelines are incredibly useful in modeling workflows but modeling pipelines can return, instead of a data frame, objects such as model components.</p>
 <p>R has excellent tools for creating, changing, and operating on functions, making it a great language for functional programming. This approach can replace iterative loops in many situations, such as when a function returns a value without other side effects.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 <p>Let’s look at an example. Suppose you are interested in the logarithm of the ratio of the fuel efficiency to the car weight. To those new to R and/or coming from other programming languages, a loop might seem like a good option:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-loop_c7777f1673f5ae3dc19a7906a6933571">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span></span>
 <span><span class="va">ratios</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="cn">NA_real_</span>, <span class="va">n</span><span class="op">)</span></span>
 <span><span class="kw">for</span> <span class="op">(</span><span class="va">car</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="va">n</span><span class="op">)</span> <span class="op">{</span></span>
@@ -478,11 +478,11 @@ div.csl-indent {
 <span><span class="co">## [1] 2.081 1.988 2.285 1.896 1.693 1.655</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Those with more experience in R may know that there is a much simpler and faster vectorized version that can be computed by:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-vectorized_f88c295de561c8dd3c93b2ff478dcdb0">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ratios</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span><span class="op">/</span><span class="va">mtcars</span><span class="op">$</span><span class="va">wt</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>However, in many real-world cases, the element-wise operation of interest is too complex for a vectorized solution. In such a case, a good approach is to write a function to do the computations. When we design for functional programming, it is important that the output depends only on the inputs and that the function has no side effects. Violations of these ideas in the following function are shown with comments:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-non-functional_a0da57bb6d47f72f53019f2efa412d60">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">compute_log_ratio</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">wt</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">log_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/options.html">getOption</a></span><span class="op">(</span><span class="st">"log_base"</span>, default <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="co"># gets external data</span></span>
 <span>  <span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">/</span><span class="va">wt</span>, base <span class="op">=</span> <span class="va">log_base</span><span class="op">)</span></span>
@@ -492,13 +492,13 @@ div.csl-indent {
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>A better version would be:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-better-function_5983a1acd8d57cb5f8c2d535e8574683">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">compute_log_ratio</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">mpg</span>, <span class="va">wt</span>, <span class="va">log_base</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">mpg</span><span class="op">/</span><span class="va">wt</span>, base <span class="op">=</span> <span class="va">log_base</span><span class="op">)</span></span>
 <span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <span class="pkg">purrr</span> package contains tools for functional programming. Let’s focus on the <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code> family of functions, which operates on vectors and always returns the same type of output. The most basic function, <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code>, always returns a list and uses the basic syntax of <code>map(vector, function)</code>. For example, to take the square root of our data, we could:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/map-basic_cd7ee629658a25a773e700f32cd905ff">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">map</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, <span class="fl">3</span><span class="op">)</span>, <span class="va">sqrt</span><span class="op">)</span></span>
 <span><span class="co">## [[1]]</span></span>
 <span><span class="co">## [1] 4.583</span></span>
@@ -510,18 +510,18 @@ div.csl-indent {
 <span><span class="co">## [1] 4.775</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>There are specialized variants of <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code> that return values when we know or expect that the function will generate one of the basic vector types. For example, since the square root returns a double-precision number:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/map-dbl_1cfdf9e97990424b4b000295c1397ad6">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">map_dbl</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, <span class="fl">3</span><span class="op">)</span>, <span class="va">sqrt</span><span class="op">)</span></span>
 <span><span class="co">## [1] 4.583 4.583 4.775</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>There are also mapping functions that operate across multiple vectors:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/map2_99597e6701316059d0990d146b52835d">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">log_ratios</span> <span class="op">&lt;-</span> <span class="fu">map2_dbl</span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, <span class="va">mtcars</span><span class="op">$</span><span class="va">wt</span>, <span class="va">compute_log_ratio</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">log_ratios</span><span class="op">)</span></span>
 <span><span class="co">## [1] 2.081 1.988 2.285 1.896 1.693 1.655</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code> functions also allow for temporary, anonymous functions defined using the tilde character. The argument values are <code>.x</code> and <code>.y</code> for <code><a href="https://purrr.tidyverse.org/reference/map2.html">map2()</a></code>:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/map2-inline_79fa587270c06b0f12e3c2214e7acb82">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">map2_dbl</span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, <span class="va">mtcars</span><span class="op">$</span><span class="va">wt</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">.x</span><span class="op">/</span><span class="va">.y</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] 2.081 1.988 2.285 1.896 1.693 1.655</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -530,10 +530,10 @@ div.csl-indent {
 <div class="rmdnote">
 <p>For functional programming in tidy modeling, functions should be defined so that functions like <code><a href="https://purrr.tidyverse.org/reference/map.html">map()</a></code> can be used for iterative computations.</p>
 </div>
-</section></section><section id="examples-of-tidyverse-syntax" class="level2" data-number="2.2"><h2 data-number="2.2" class="anchored" data-anchor-id="examples-of-tidyverse-syntax">
+</section></section><section id="sec-examples-of-tidyverse-syntax" class="level2" data-number="2.2"><h2 data-number="2.2" class="anchored" data-anchor-id="sec-examples-of-tidyverse-syntax">
 <span class="header-section-number">2.2</span> Examples of Tidyverse Syntax</h2>
 <p>Let’s begin our discussion of tidyverse syntax by exploring more deeply what a tibble is, and how tibbles work. Tibbles have slightly different rules than basic data frames in R. For example, tibbles naturally work with column names that are not syntactically valid variable names:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-names_d220b50e224135c42646b934baa40376">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Wants valid names:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>`variable 1` <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, two <span class="op">=</span> <span class="fl">3</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span>
 <span><span class="co">##   variable.1 two</span></span>
@@ -556,7 +556,7 @@ div.csl-indent {
 <span><span class="co">## 2            2     4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Standard data frames enable <em>partial matching</em> of arguments so that code using only a portion of the column names still works. Tibbles prevent this from happening since it can lead to accidental errors.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-partial_500c47312b8b40498ffb73da937da738">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span><span class="op">$</span><span class="va">tw</span></span>
 <span><span class="co">## [1] 3 4</span></span>
 <span></span>
@@ -565,7 +565,7 @@ div.csl-indent {
 <span><span class="co">## NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Tibbles also prevent one of the most common R errors: dropping dimensions. If a standard data frame subsets the columns down to a single column, the object is converted to a vector. Tibbles never do this:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-drop_285951db76cee9687f5fd28a5526c498">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span><span class="op">[</span>, <span class="st">"two"</span><span class="op">]</span></span>
 <span><span class="co">## [1] 3 4</span></span>
 <span></span>
@@ -593,7 +593,7 @@ div.csl-indent {
 <li><p>Use the maximum number of rides for each station and day combination. This mitigates the issue of a small number of days that have more than one record of ridership numbers at certain stations. We group the ridership data by station and day, and then summarize within each of the 1999 unique combinations with the maximum statistic.</p></li>
 </ol>
 <p>The tidyverse code for these steps is:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="02-tidyverse_cache/html/tidyverse-import_3ec0926a2f592530dc19147486a3f352">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span></span>
 <span></span>

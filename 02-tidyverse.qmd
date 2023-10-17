@@ -188,7 +188,7 @@ These examples have been trivial but, in later sections, will be applied to more
 For functional programming in tidy modeling, functions should be defined so that functions like `map()` can be used for iterative computations.
 :::
 
-## Examples of Tidyverse Syntax
+## Examples of Tidyverse Syntax {#sec-examples-of-tidyverse-syntax}
 
 Let's begin our discussion of tidyverse syntax by exploring more deeply what a tibble is, and how tibbles work. Tibbles have slightly different rules than basic data frames in R. For example, tibbles naturally work with column names that are not syntactically valid variable names:
 
