@@ -357,7 +357,7 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li><a href="#exploring-features-of-homes-in-ames" id="toc-exploring-features-of-homes-in-ames" class="nav-link active" data-scroll-target="#exploring-features-of-homes-in-ames"><span class="header-section-number">4.1</span> Exploring Features of Homes in Ames</a></li>
+<li><a href="#sec-exploring-features-of-homes-in-ames" id="toc-sec-exploring-features-of-homes-in-ames" class="nav-link active" data-scroll-target="#sec-exploring-features-of-homes-in-ames"><span class="header-section-number">4.1</span> Exploring Features of Homes in Ames</a></li>
   <li><a href="#sec-ames-summary" id="toc-sec-ames-summary" class="nav-link" data-scroll-target="#sec-ames-summary"><span class="header-section-number">4.2</span> Chapter Summary</a></li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/04-ames.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -394,7 +394,7 @@ div.csl-indent {
 <li><p>We removed a set of quality descriptors for each house since they are more like outcomes than predictors.</p></li>
 </ul>
 <p>To load the data:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-load_2b2fc8be319ffabe53e2e90106027d4f">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modeldata.tidymodels.org">modeldata</a></span><span class="op">)</span> <span class="co"># This is also loaded by the tidymodels package</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
 <span></span>
@@ -404,17 +404,17 @@ div.csl-indent {
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
 <span><span class="co">## [1] 2930   74</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="exploring-features-of-homes-in-ames" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="exploring-features-of-homes-in-ames">
+<section id="sec-exploring-features-of-homes-in-ames" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="sec-exploring-features-of-homes-in-ames">
 <span class="header-section-number">4.1</span> Exploring Features of Homes in Ames</h2>
 <p>Let’s start our exploratory data analysis by focusing on the outcome we want to predict: the last sale price of the house (in USD). We can create a histogram to see the distribution of sale prices in <a href="#fig-ames-sale-price-hist">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-sale-price-hist</span></a>.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-sale-price-code_6ebc9e6ab72d90526c9799f2c7637e43">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="va">ames</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">50</span>, col<span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-sale-price-hist_75936e22e90bd335f42c8bc3b2e48818">
 <div class="cell-output-display">
 <div id="fig-ames-sale-price-hist" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figures/fig-ames-sale-price-hist-1.png" class="img-fluid figure-img" style="width:100.0%" alt="A histogram of the sale prices of houses in Ames, Iowa. The distribution has a long right tail."></p>
@@ -423,12 +423,12 @@ div.csl-indent {
 </div>
 </div>
 <p>This plot shows us that the data are right-skewed; there are more inexpensive houses than expensive ones. The median sale price was $160,000, and the most expensive house was $755,000. When modeling this outcome, a strong argument can be made that the price should be log-transformed. The advantages of this type of transformation are that no houses would be predicted with negative sale prices and that errors in predicting expensive houses will not have an undue influence on the model. Also, from a statistical perspective, a logarithmic transform may also stabilize the variance in a way that makes inference more legitimate. We can use similar steps to now visualize the transformed data, shown in <a href="#fig-ames-log-sale-price-hist">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-log-sale-price-hist</span></a>.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-log-sale-price-code_b739bceaf32f9dc0db698f70714cc9e5">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">ames</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">50</span>, col<span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">scale_x_log10</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-log-sale-price-hist_78154f44ab2f9e627ae0bccbd33f8c8d">
 <div class="cell-output-display">
 <div id="fig-ames-log-sale-price-hist" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="figures/fig-ames-log-sale-price-hist-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
@@ -442,11 +442,11 @@ div.csl-indent {
 </div>
 <p>The units of the model coefficients might be more difficult to interpret, as will measures of performance. For example, the root mean squared error (RMSE) is a common performance metric used in regression models. It uses the difference between the observed and predicted values in its calculations. If the sale price is on the log scale, these differences (i.e., the residuals) are also on the log scale. It can be difficult to understand the quality of a model whose RMSE is 0.15 on such a log scale.</p>
 <p>Despite these drawbacks, the models used in this book use the log transformation for this outcome. <em>From this point on</em>, the outcome column is prelogged in the <code>ames</code> data frame:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-log_1d1715c323cd060195d44f25460ad202">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="va">ames</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Another important aspect of these data for our modeling is their geographic locations. This spatial information is contained in the data in two ways: a qualitative <code>Neighborhood</code> label as well as quantitative longitude and latitude data. To visualize the spatial information, let’s use both together to plot the data on a map in <a href="#fig-ames-map">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-map</span></a>.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-map_a0d86c90c58b982613a0b533b75f3654">
 <div class="cell-output-display">
 <div id="fig-ames-map" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/ames.png" class="img-fluid figure-img" style="width:100.0%" alt="A scatter plot of house locations in Ames superimposed over a street map. There is a significant area in the center of the map where no homes were sold."></p>
@@ -455,7 +455,7 @@ div.csl-indent {
 </div>
 </div>
 <p>We can see a few noticeable patterns. First, there is a void of data points in the center of Ames. This corresponds to the campus of Iowa State University where there are no residential houses. Second, while there are a number of adjacent neighborhoods, others are geographically isolated. For example, as <a href="#fig-ames-timberland">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-timberland</span></a> shows, Timberland is located apart from almost all other neighborhoods.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-timberland_22b87d77fe1345e1cd157d847265a76f">
 <div class="cell-output-display">
 <div id="fig-ames-timberland" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/timberland.png" class="img-fluid figure-img" style="width:80.0%" alt="A scatter plot of locations of homes in Timberland, located in the southern part of Ames."></p>
@@ -464,7 +464,7 @@ div.csl-indent {
 </div>
 </div>
 <p><a href="#fig-ames-mitchell">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-mitchell</span></a> visualizes how the Meadow Village neighborhood in southwest Ames is like an island of properties inside the sea of properties that make up the Mitchell neighborhood.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-mitchell_843a73769da6836d7a81f98e577960d5">
 <div class="cell-output-display">
 <div id="fig-ames-mitchell" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/mitchell.png" class="img-fluid figure-img" style="width:60.0%" alt="A scatter plot of locations of homes in Meadow Village and Mitchell. The small number of Meadow Village properties are enclosed inside the the ones labeled as being in Mitchell."></p>
@@ -473,7 +473,7 @@ div.csl-indent {
 </div>
 </div>
 <p>A detailed inspection of the map also shows that the neighborhood labels are not completely reliable. For example, <a href="#fig-ames-northridge">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-northridge</span></a> shows some properties labeled as being in Northridge are surrounded by homes in the adjacent Somerset neighborhood.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-northridge_0f88d72a9f16e77185832d91ec2fd20c">
 <div class="cell-output-display">
 <div id="fig-ames-northridge" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/northridge.png" class="img-fluid figure-img" style="width:90.0%" alt="A scatter plot of locations of homes in Somerset and Northridge. There are a few homes in Somerset mixed in the periphery of Northridge (and vice versa)."></p>
@@ -482,7 +482,7 @@ div.csl-indent {
 </div>
 </div>
 <p>Also, there are ten isolated homes labeled as being in Crawford that, as you can see in <a href="#fig-ames-crawford">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-crawford</span></a>, are not close to the majority of the other homes in that neighborhood.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-crawford_30107ba761664dc7b40270b35c52c432">
 <div class="cell-output-display">
 <div id="fig-ames-crawford" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/crawford.png" class="img-fluid figure-img" style="width:80.0%" alt="A scatter plot of locations of homes in Crawford. There is a large cluster of homes to the west of a small, separate cluster of properties also labeled as Crawford."></p>
@@ -491,7 +491,7 @@ div.csl-indent {
 </div>
 </div>
 <p>Also notable is the “Iowa Department of Transportation (DOT) and Rail Road” neighborhood adjacent to the main road on the east side of Ames, shown in <a href="#fig-ames-dot-rr">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-dot-rr</span></a>. There are several clusters of homes within this neighborhood as well as some longitudinal outliers; the two homes farthest east are isolated from the other locations.</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-dot-rr_da99dfa3237163b910caf69f40756fcb">
 <div class="cell-output-display">
 <div id="fig-ames-dot-rr" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/dot_rr.png" class="img-fluid figure-img" style="width:100.0%" alt="A scatter plot of locations of homes labeled as 'Iowa Department of Transportation (DOT) and Rail Road'. The longitude distribution is right-skewed with a few outlying properties."></p>
@@ -510,7 +510,7 @@ div.csl-indent {
 <span class="header-section-number">4.2</span> Chapter Summary</h2>
 <p>This chapter introduced the Ames housing data set and investigated some of its characteristics. This data set will be used in later chapters to demonstrate tidymodels syntax. Exploratory data analysis like this is an essential component of any modeling project; EDA uncovers information that contributes to better modeling practice.</p>
 <p>The important code for preparing the Ames data set that we will carry forward into subsequent chapters is:</p>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-summary_fae2014750282d98c4659076d979f46c">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
 <span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="va">ames</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

@@ -41,7 +41,7 @@ data(ames, package = "modeldata")
 dim(ames)
 ```
 
-## Exploring Features of Homes in Ames
+## Exploring Features of Homes in Ames {#sec-exploring-features-of-homes-in-ames}
 
 Let's start our exploratory data analysis by focusing on the outcome we want to predict: the last sale price of the house (in USD). We can create a histogram to see the distribution of sale prices in @fig-ames-sale-price-hist.
 

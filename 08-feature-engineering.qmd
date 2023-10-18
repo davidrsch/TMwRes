@@ -109,7 +109,7 @@ What is the advantage to using a recipe, over a formula or raw predictors? There
 
 -   All data processing can be captured in a single R object instead of in scripts that are repeated, or even spread across different files.
 
-## Using Recipes
+## Using Recipes {#sec-using-recipes}
 
 As we discussed in [Chapter @sec-workflows], preprocessing choices and feature engineering should typically be considered part of a modeling workflow, not a separate task. The `r pkg(workflows)` package contains high level functions to handle different types of preprocessors. Our previous workflow (`lm_wflow`) used a simple set of `r pkg(dplyr)` selectors. To improve on that approach with more complex feature engineering, let's use the `simple_ames` recipe to preprocess data for modeling.
 
