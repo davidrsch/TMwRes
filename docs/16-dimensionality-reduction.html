@@ -409,10 +409,10 @@ div.csl-indent {
 <p>This chapter has two goals:</p>
 <ul>
 <li><p>Demonstrate how to use recipes to create a small set of features that capture the main aspects of the original predictor set.</p></li>
-<li><p>Describe how recipes can be used on their own (as opposed to being used in a workflow object, as in Section @ref(using-recipes)).</p></li>
+<li><p>Describe how recipes can be used on their own (as opposed to being used in a workflow object, as in <a href="08-feature-engineering.html#sec-using-recipes"><span>Section&nbsp;8.2</span></a>).</p></li>
 </ul>
 </div>
-<p>The latter is helpful when testing or debugging a recipe. However, as described in Section @ref(using-recipes), the best way to use a recipe for modeling is from within a workflow object.</p>
+<p>The latter is helpful when testing or debugging a recipe. However, as described in <a href="08-feature-engineering.html#sec-using-recipes"><span>Section&nbsp;8.2</span></a>, the best way to use a recipe for modeling is from within a workflow object.</p>
 <p>In addition to the <span class="pkg">tidymodels</span> package, this chapter uses the following packages: <span class="pkg">baguette</span>, <span class="pkg">beans</span>, <span class="pkg">bestNormalize</span>, <span class="pkg">corrplot</span>, <span class="pkg">discrim</span>, <span class="pkg">embed</span>, <span class="pkg">ggforce</span>, <span class="pkg">klaR</span>, <span class="pkg">learntidymodels</span>,<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="pkg">mixOmics</span>,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and <span class="pkg">uwot</span>.</p>
 </section><section id="sec-beans" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="sec-beans">
 <span class="header-section-number">16.2</span> A Picture Is Worth a Thousand… Beans</h2>
@@ -429,12 +429,12 @@ div.csl-indent {
 <li><p>We can measure the <em>compactness</em> of an object using the ratio of the object’s area to the area of a circle with the same perimeter. For example, the symbols “•” and “×” have very different compactness.</p></li>
 <li><p>There are also different measures of how <em>elongated</em> or oblong an object is. For example, the <em>eccentricity</em> statistic is the ratio of the major and minor axes. There are also related estimates for roundness and convexity.</p></li>
 </ul>
-<p>Notice the eccentricity for the different shapes in Figure @ref(fig:eccentricity).</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/eccentricity_db852ee1fbea698dbacf52d5edb594eb">
+<p>Notice the eccentricity for the different shapes in <a href="#fig-eccentricity">Figure&nbsp;<span>16.1</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-eccentricity_66163a0b912cbee38f26084bc9c8fd0d">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-eccentricity" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/morphology.svg" class="img-fluid figure-img" style="width:95.0%" alt="Some example shapes and their eccentricity statistics. Circles and squares have the smallest eccentricity values while X shapes and lightning bolts have the largest. Also, the eccentricity is the same when shapes are rotated."></p>
-<figcaption class="figure-caption">Some example shapes and their eccentricity statistics</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;16.1: Some example shapes and their eccentricity statistics</figcaption></figure>
 </div>
 </div>
 </div>
@@ -473,7 +473,7 @@ div.csl-indent {
 <span><span class="co">## &lt;10206/1702/11908&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>To visually assess how well different methods perform, we can estimate the methods on the training set (n = 10,206 beans) and display the results using the validation set (n = 1,702).</p>
-<p>Before beginning any dimensionality reduction, we can spend some time investigating our data. Since we know that many of these shape features are probably measuring similar concepts, let’s take a look at the correlation structure of the data in Figure @ref(fig:beans-corr-plot) using this code.</p>
+<p>Before beginning any dimensionality reduction, we can spend some time investigating our data. Since we know that many of these shape features are probably measuring similar concepts, let’s take a look at the correlation structure of the data in <a href="#fig-beans-corr-plot">Figure&nbsp;<span>16.2</span></a> using this code.</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-corr-plot_03bd6f789a93b78cbbfd275c6e51c95a">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/taiyun/corrplot">corrplot</a></span><span class="op">)</span></span>
 <span><span class="va">tmwr_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html">colorRampPalette</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#91CBD765"</span>, <span class="st">"#CA225E"</span><span class="op">)</span><span class="op">)</span></span>
@@ -482,11 +482,11 @@ div.csl-indent {
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html">corrplot</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu">tmwr_cols</span><span class="op">(</span><span class="fl">200</span><span class="op">)</span>, tl.col <span class="op">=</span> <span class="st">"black"</span>, method <span class="op">=</span> <span class="st">"ellipse"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/beans-corr-plot_b0b4f948b22754b913a3efae0e0cfa53">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-beans-corr-plot_c9e08b19a35f0f5b76779da1cbd1ef87">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/beans-corr-plot-1.png" class="img-fluid figure-img" style="width:70.0%" alt="A correlation matrix of the predictors with variables ordered via clustering. There are two to three clusters that have high within cluster correlations."></p>
-<figcaption class="figure-caption">Correlation matrix of the predictors with variables ordered via clustering</figcaption></figure>
+<div id="fig-beans-corr-plot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-beans-corr-plot-1.png" class="img-fluid figure-img" style="width:70.0%" alt="A correlation matrix of the predictors with variables ordered via clustering. There are two to three clusters that have high within cluster correlations."></p>
+<figcaption class="figure-caption">Figure&nbsp;16.2: Correlation matrix of the predictors with variables ordered via clustering</figcaption></figure>
 </div>
 </div>
 </div>
@@ -509,19 +509,19 @@ div.csl-indent {
 <p>This recipe will be extended with additional steps for the dimensionality reduction analyses. Before doing so, let’s go over how a recipe can be used outside of a workflow.</p>
 </section><section id="sec-recipe-functions" class="level2" data-number="16.4"><h2 data-number="16.4" class="anchored" data-anchor-id="sec-recipe-functions">
 <span class="header-section-number">16.4</span> Recipes in the Wild</h2>
-<p>As mentioned in Section @ref(using-recipes), a workflow containing a recipe uses <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> to estimate the recipe and model, then <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> to process the data and make model predictions. There are analogous functions in the <span class="pkg">recipes</span> package that can be used for the same purpose:</p>
+<p>As mentioned in <a href="08-feature-engineering.html#sec-using-recipes"><span>Section&nbsp;8.2</span></a>, a workflow containing a recipe uses <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> to estimate the recipe and model, then <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> to process the data and make model predictions. There are analogous functions in the <span class="pkg">recipes</span> package that can be used for the same purpose:</p>
 <ul>
 <li>
 <code>prep(recipe, training)</code> fits the recipe to the training set.</li>
 <li>
 <code>bake(recipe, new_data)</code> applies the recipe operations to <code>new_data</code>.</li>
 </ul>
-<p>Figure @ref(fig:recipe-process) summarizes this. Let’s look at each of these functions in more detail.</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/recipe-process_d81d891d67fa20bbd4ff9d8c999e1d9c">
+<p><a href="#fig-recipe-process">Figure&nbsp;<span>16.3</span></a> summarizes this. Let’s look at each of these functions in more detail.</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-recipe-process_ee887b8862887d13d17115ba839407bf">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div id="fig-recipe-process" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="premade/recipes-process.svg" class="img-fluid figure-img" style="width:80.0%" alt="A summary of the recipe-related functions."></p>
-<figcaption class="figure-caption">Summary of recipe-related functions</figcaption></figure>
+<figcaption class="figure-caption">Figure&nbsp;16.3: Summary of recipe-related functions</figcaption></figure>
 </div>
 </div>
 </div>
@@ -589,7 +589,7 @@ div.csl-indent {
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-bake_6cfc9542c1b7ab2f231462916c505e58">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_val_processed</span> <span class="op">&lt;-</span> <span class="fu">bake</span><span class="op">(</span><span class="va">bean_rec_trained</span>, new_data <span class="op">=</span> <span class="va">bean_validation</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Figure @ref(fig:bean-area) shows histograms of the <code>area</code> predictor before and after the recipe was prepared.</p>
+<p><a href="#fig-bean-area">Figure&nbsp;<span>16.4</span></a> shows histograms of the <code>area</code> predictor before and after the recipe was prepared.</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-bake-off_f901789d7fab775ebc9461075c191b18">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span></span>
 <span><span class="va">p1</span> <span class="op">&lt;-</span> </span>
@@ -606,11 +606,11 @@ div.csl-indent {
 <span></span>
 <span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/bean-area_2027a3c69b0ff83b0aa93b9f1d6729fc">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-area_354e619be26c52aa5827b1399aff846e">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/bean-area-1.png" class="img-fluid figure-img" alt="The `area` predictor before and after preprocessing. The before panel shows a right-skewed, slightly bimodal distribution. The after panel has a distribution that is fairly bell shaped." width="672"></p>
-<figcaption class="figure-caption">The <code>area</code> predictor before and after preprocessing</figcaption></figure>
+<div id="fig-bean-area" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-area-1.png" class="img-fluid figure-img" alt="The `area` predictor before and after preprocessing. The before panel shows a right-skewed, slightly bimodal distribution. The after panel has a distribution that is fairly bell shaped." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;16.4: The <code>area</code> predictor before and after preprocessing</figcaption></figure>
 </div>
 </div>
 </div>
@@ -649,18 +649,18 @@ div.csl-indent {
 <p>A series of several feature extraction methodologies are explored here. An overview of most can be found in <a href="https://bookdown.org/max/FES/numeric-many-to-many.html#linear-projection-methods">Section 6.3.1</a> of <span class="citation" data-cites="fes">Kuhn and Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> and the references therein. The UMAP method is described in <span class="citation" data-cites="mcinnes2020umap">McInnes, Healy, and Melville (<a href="references.html#ref-mcinnes2020umap" role="doc-biblioref">2020</a>)</span>.</p>
 <section id="principal-component-analysis" class="level3" data-number="16.5.1"><h3 data-number="16.5.1" class="anchored" data-anchor-id="principal-component-analysis">
 <span class="header-section-number">16.5.1</span> Principal component analysis</h3>
-<p>We’ve mentioned PCA several times already in this book, and it’s time to go into more detail. PCA is an unsupervised method that uses linear combinations of the predictors to define new features. These features attempt to account for as much variation as possible in the original data. We add <code><a href="https://recipes.tidymodels.org/reference/step_pca.html">step_pca()</a></code> to the original recipe and use our function to visualize the results on the validation set in Figure @ref(fig:bean-pca) using:</p>
+<p>We’ve mentioned PCA several times already in this book, and it’s time to go into more detail. PCA is an unsupervised method that uses linear combinations of the predictors to define new features. These features attempt to account for as much variation as possible in the original data. We add <code><a href="https://recipes.tidymodels.org/reference/step_pca.html">step_pca()</a></code> to the original recipe and use our function to visualize the results on the validation set in <a href="#fig-bean-pca">Figure&nbsp;<span>16.5</span></a> using:</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-pca_cd2948e1ce9ce116f384bc071d986a64">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_rec_trained</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">step_pca</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span>, num_comp <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">plot_validation_results</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Principal Component Analysis"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/bean-pca_3bf13fde26f841a9ac54840ef86e4095">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-pca_997fd31a174416f24899d1169e690651">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/bean-pca-1.png" class="img-fluid figure-img" alt="Principal component scores for the bean validation set, colored by class. The classes separate when the first two components are plotted against one another." width="672"></p>
-<figcaption class="figure-caption">Principal component scores for the bean validation set, colored by class</figcaption></figure>
+<div id="fig-bean-pca" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-pca-1.png" class="img-fluid figure-img" alt="Principal component scores for the bean validation set, colored by class. The classes separate when the first two components are plotted against one another." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;16.5: Principal component scores for the bean validation set, colored by class</figcaption></figure>
 </div>
 </div>
 </div>
@@ -675,34 +675,34 @@ div.csl-indent {
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Paired"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Principal Component Analysis"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This produces Figure @ref(fig:pca-loadings).</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/pca-loadings_0e593f1a8c59954ed2a6750d4f2efbc6">
+<p>This produces <a href="#fig-pca-loadings">Figure&nbsp;<span>16.6</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-pca-loadings_b39dc893a6fcf95923d175b0604bb6c2">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/pca-loadings-1.png" class="img-fluid figure-img" alt="Predictor loadings for the PCA transformation. For the first component, the major axis length, second shape factor, convex area, and area have the largest effect. " width="672"></p>
-<figcaption class="figure-caption">Predictor loadings for the PCA transformation</figcaption></figure>
+<div id="fig-pca-loadings" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-pca-loadings-1.png" class="img-fluid figure-img" alt="Predictor loadings for the PCA transformation. For the first component, the major axis length, second shape factor, convex area, and area have the largest effect. " width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;16.6: Predictor loadings for the PCA transformation</figcaption></figure>
 </div>
 </div>
 </div>
 <p>The top loadings are mostly related to the cluster of correlated predictors shown in the top-left portion of the previous correlation plot: perimeter, area, major axis length, and convex area. These are all related to bean size. Shape factor 2, from <span class="citation" data-cites="symons1988211">Symons and Fulcher (<a href="references.html#ref-symons1988211" role="doc-biblioref">1988</a>)</span>, is the area over the cube of the major axis length and is therefore also related to bean size. Measures of elongation appear to dominate the second PCA component.</p>
 </section><section id="partial-least-squares" class="level3" data-number="16.5.2"><h3 data-number="16.5.2" class="anchored" data-anchor-id="partial-least-squares">
 <span class="header-section-number">16.5.2</span> Partial least squares</h3>
-<p>PLS, which we introduced in Section @ref(submodel-trick), is a supervised version of PCA. It tries to find components that simultaneously maximize the variation in the predictors while also maximizing the relationship between those components and the outcome. Figure @ref(fig:bean-pls) shows the results of this slightly modified version of the PCA code:</p>
+<p>PLS, which we introduced in <a href="13-grid-search.html#sec-submodel-trick"><span>Section&nbsp;13.5.1</span></a>, is a supervised version of PCA. It tries to find components that simultaneously maximize the variation in the predictors while also maximizing the relationship between those components and the outcome. <a href="#fig-bean-pls">Figure&nbsp;<span>16.7</span></a> shows the results of this slightly modified version of the PCA code:</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-pls_5c8e7ba64143853caf46124737fa81a0">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_rec_trained</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">step_pls</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span>, outcome <span class="op">=</span> <span class="st">"class"</span>, num_comp <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">plot_validation_results</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Partial Least Squares"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/bean-pls_87796dbcaf1c5d4e3554e3004cf0f722">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-pls_223da58198a0d95b1009c47a19d124b4">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/bean-pls-1.png" class="img-fluid figure-img" alt="PLS component scores for the bean validation set, colored by class. The first two PLS components are nearly identical to the first two PCA components." width="672"></p>
-<figcaption class="figure-caption">PLS component scores for the bean validation set, colored by class</figcaption></figure>
+<div id="fig-bean-pls" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-pls-1.png" class="img-fluid figure-img" alt="PLS component scores for the bean validation set, colored by class. The first two PLS components are nearly identical to the first two PCA components." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;16.7: PLS component scores for the bean validation set, colored by class</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The first two PLS components plotted in Figure @ref(fig:bean-pls) are nearly identical to the first two PCA components! We find this result because those PCA components are so effective at separating the varieties of beans. The remaining components are different. Figure @ref(fig:pls-loadings) visualizes the loadings, the top features for each component.</p>
+<p>The first two PLS components plotted in <a href="#fig-bean-pls">Figure&nbsp;<span>16.7</span></a> are nearly identical to the first two PCA components! We find this result because those PCA components are so effective at separating the varieties of beans. The remaining components are different. <a href="#fig-pls-loadings">Figure&nbsp;<span>16.8</span></a> visualizes the loadings, the top features for each component.</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-pls-loadings_bc23c55db3287da6f69ae52c88849781">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_rec_trained</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">step_pls</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span>, outcome <span class="op">=</span> <span class="st">"class"</span>, num_comp <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
@@ -711,29 +711,29 @@ div.csl-indent {
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Paired"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Partial Least Squares"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/pls-loadings_6bd6ac6931b543904a2f7eca350534f2">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-pls-loadings_fbfdcc6eccba8fb184a1c8dbeaf466f1">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/pls-loadings-1.png" class="img-fluid figure-img" alt="Predictor loadings for the PLS transformation. For the first component, the major axis length, second shape factor, the equivalent diameter, convex area, and area have the largest effect. " width="672"></p>
-<figcaption class="figure-caption">Predictor loadings for the PLS transformation</figcaption></figure>
+<div id="fig-pls-loadings" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-pls-loadings-1.png" class="img-fluid figure-img" alt="Predictor loadings for the PLS transformation. For the first component, the major axis length, second shape factor, the equivalent diameter, convex area, and area have the largest effect. " width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;16.8: Predictor loadings for the PLS transformation</figcaption></figure>
 </div>
 </div>
 </div>
 <p>Solidity (i.e., the density of the bean) drives the third PLS component, along with roundness. Solidity may be capturing bean features related to “bumpiness” of the bean surface since it can measure irregularity of the bean boundaries.</p>
 </section><section id="independent-component-analysis" class="level3" data-number="16.5.3"><h3 data-number="16.5.3" class="anchored" data-anchor-id="independent-component-analysis">
 <span class="header-section-number">16.5.3</span> Independent component analysis</h3>
-<p>ICA is slightly different than PCA in that it finds components that are as statistically independent from one another as possible (as opposed to being uncorrelated). It can be thought of as maximizing the “non-Gaussianity” of the ICA components, or separating information instead of compressing information like PCA. Let’s use <code><a href="https://recipes.tidymodels.org/reference/step_ica.html">step_ica()</a></code> to produce Figure @ref(fig:bean-ica):</p>
+<p>ICA is slightly different than PCA in that it finds components that are as statistically independent from one another as possible (as opposed to being uncorrelated). It can be thought of as maximizing the “non-Gaussianity” of the ICA components, or separating information instead of compressing information like PCA. Let’s use <code><a href="https://recipes.tidymodels.org/reference/step_ica.html">step_ica()</a></code> to produce <a href="#fig-bean-ica">Figure&nbsp;<span>16.9</span></a>:</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-ica_ad1407ff4dd5af67bc0bb2f37d5fb582">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_rec_trained</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">step_ica</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span>, num_comp <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">plot_validation_results</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Independent Component Analysis"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/bean-ica_d0d8d1b3cabb8a5fbb26466240dbef5c">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-ica_3ec911d996284da61d4dcfbde7bd730d">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/bean-ica-1.png" class="img-fluid figure-img" alt="ICA component scores for the bean validation set, colored by class. There is significant overlap in the first two ICA components." width="672"></p>
-<figcaption class="figure-caption">ICA component scores for the bean validation set, colored by class</figcaption></figure>
+<div id="fig-bean-ica" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-ica-1.png" class="img-fluid figure-img" alt="ICA component scores for the bean validation set, colored by class. There is significant overlap in the first two ICA components." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;16.9: ICA component scores for the bean validation set, colored by class</figcaption></figure>
 </div>
 </div>
 </div>
@@ -742,7 +742,7 @@ div.csl-indent {
 <span class="header-section-number">16.5.4</span> Uniform manifold approximation and projection</h3>
 <p>UMAP is similar to the popular t-SNE method for nonlinear dimension reduction. In the original high-dimensional space, UMAP uses a distance-based nearest neighbor method to find local areas of the data where the data points are more likely to be related. The relationship between data points is saved as a directed graph model where most points are not connected.</p>
 <p>From there, UMAP translates points in the graph to the reduced dimensional space. To do this, the algorithm has an optimization process that uses cross-entropy to map data points to the smaller set of features so that the graph is well approximated.</p>
-<p>To create the mapping, the <span class="pkg">embed</span> package contains a step function for this method, visualized in Figure @ref(fig:bean-umap).</p>
+<p>To create the mapping, the <span class="pkg">embed</span> package contains a step function for this method, visualized in <a href="#fig-bean-umap">Figure&nbsp;<span>16.10</span></a>.</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-umap_d053e7636586c7fa6361dfd59acd87e7">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://embed.tidymodels.org">embed</a></span><span class="op">)</span></span>
 <span><span class="va">bean_rec_trained</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -750,11 +750,11 @@ div.csl-indent {
 <span>  <span class="fu">plot_validation_results</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"UMAP"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/bean-umap_8be83b1ce9d98eef229d9dadb03a0ced">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-umap_ae79a6e4646e27331ffb7e7547f1814f">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/bean-umap-1.png" class="img-fluid figure-img" alt="UMAP component scores for the bean validation set, colored by class. There is a very high degree of separation between clusters, but several of the clusters contain more than one class." width="672"></p>
-<figcaption class="figure-caption">UMAP component scores for the bean validation set, colored by class</figcaption></figure>
+<div id="fig-bean-umap" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-umap-1.png" class="img-fluid figure-img" alt="UMAP component scores for the bean validation set, colored by class. There is a very high degree of separation between clusters, but several of the clusters contain more than one class." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;16.10: UMAP component scores for the bean validation set, colored by class</figcaption></figure>
 </div>
 </div>
 </div>
@@ -766,15 +766,15 @@ div.csl-indent {
 <span>  <span class="fu">plot_validation_results</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"UMAP (supervised)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/bean-umap-supervised_136e0d6c263fb73ebb86c157106cbd81">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-umap-supervised_0417da6238444dafdffa24dfb590cfed">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/bean-umap-supervised-1.png" class="img-fluid figure-img" alt="Supervised UMAP component scores for the bean validation set, colored by class. There is again a very high degree of separation between clusters, and there are now fewer instances of one cluster containing multiple classes." width="672"></p>
-<figcaption class="figure-caption">Supervised UMAP component scores for the bean validation set, colored by class</figcaption></figure>
+<div id="fig-bean-umap-supervised" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-umap-supervised-1.png" class="img-fluid figure-img" alt="Supervised UMAP component scores for the bean validation set, colored by class. There is again a very high degree of separation between clusters, and there are now fewer instances of one cluster containing multiple classes." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;16.11: Supervised UMAP component scores for the bean validation set, colored by class</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The supervised method shown in Figure @ref(fig:bean-umap-supervised) looks promising for modeling the data.</p>
+<p>The supervised method shown in <a href="#fig-bean-umap-supervised">Figure&nbsp;<span>16.11</span></a> looks promising for modeling the data.</p>
 <p>UMAP is a powerful method to reduce the feature space. However, it can be very sensitive to tuning parameters (e.g., the number of neighbors and so on). For this reason, it would help to experiment with a few of the parameters to assess how robust the results are for these data.</p>
 </section></section><section id="sec-bean-models" class="level2" data-number="16.6"><h2 data-number="16.6" class="anchored" data-anchor-id="sec-bean-models">
 <span class="header-section-number">16.6</span> Modeling</h2>
@@ -867,11 +867,11 @@ div.csl-indent {
 <span><span class="co">## 5     5 0.994 naive_Bayes         basic</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Figure @ref(fig:dimensionality-rankings) illustrates this ranking.</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-rankings_5ba85d9130aebfec107b314f3d39ef74">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-dimensionality-rankings_dde9131161f05ed4cdf47d2b34d8ca76">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/dimensionality-rankings-1.png" class="img-fluid figure-img" alt="Area under the ROC curve from the validation set. The three best model configurations use PLS together with regularized discriminant analysis, a multi-layer perceptron, and a naive Bayes model." width="672"></p>
-<figcaption class="figure-caption">Area under the ROC curve from the validation set</figcaption></figure>
+<div id="fig-dimensionality-rankings" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-dimensionality-rankings-1.png" class="img-fluid figure-img" alt="Area under the ROC curve from the validation set. The three best model configurations use PLS together with regularized discriminant analysis, a multi-layer perceptron, and a naive Bayes model." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;16.12: Area under the ROC curve from the validation set</figcaption></figure>
 </div>
 </div>
 </div>
