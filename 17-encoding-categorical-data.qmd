@@ -11,11 +11,16 @@ neighborhood_counts <- count(ames_train, Neighborhood)
 
 # Encoding Categorical Data {#sec-categorical}
 
-For statistical modeling in R, the preferred representation for categorical or nominal data is a *factor*, which is a variable that can take on a limited number of different values; internally, factors are stored as a vector of integer values together with a set of text labels.[^17-encoding-categorical-data-1] In Section \@ref(dummies) we introduced feature engineering approaches to encode or transform qualitative or nominal data into a representation better suited for most model algorithms. We discussed how to transform a categorical variable, such as the `Bldg_Type` in our Ames housing data (with levels `r knitr::combine_words(glue::backtick(levels(ames_train$Bldg_Type)))`), to a set of dummy or indicator variables like those shown in Table \@ref(tab:encoding-dummies).
+For statistical modeling in R, the preferred representation for categorical or nominal data is a *factor*, which is a variable that can take on a limited number of different values; internally, factors are stored as a vector of integer values together with a set of text labels.[^17-encoding-categorical-data-1] In @sec-dummies we introduced feature engineering approaches to encode or transform qualitative or nominal data into a representation better suited for most model algorithms. We discussed how to transform a categorical variable, such as the `Bldg_Type` in our Ames housing data (with levels `r knitr::combine_words(glue::backtick(levels(ames_train$Bldg_Type)))`), to a set of dummy or indicator variables like those shown in @tbl-encoding-dummies.
 
 [^17-encoding-categorical-data-1]: This is in contrast to statistical modeling in Python, where categorical variables are often directly represented by integers alone, such as `0, 1, 2` representing red, blue, and green.
 
-```{r encoding-dummies, echo = FALSE, results = 'asis'}
+```{r}
+#| label: tbl-encoding-dummies
+#| echo: FALSE
+#| results: 'asis'
+#| tbl-cap: "Dummy or indicator variable encodings for the building type predictor in the Ames training set."
+
 show_rows <- 
   ames_train %>% 
   mutate(.row = row_number()) %>% 
@@ -30,15 +35,14 @@ recipe(~Bldg_Type, data = ames_train) %>%
   bake(ames_train) %>% 
   slice(show_rows) %>% 
   arrange(`Raw Data`) %>% 
-  kable(caption = "Dummy or indicator variable encodings for the building type predictor in the Ames training set.",
-        label = "encoding-dummies") %>% 
+  kable() %>% 
   kable_styling(full_width = FALSE)
 ```
 
 Many model implementations require such a transformation to a numeric representation for categorical data.
 
 ::: rmdnote
-Appendix \@ref(pre-proc-table) presents a table of recommended preprocessing techniques for different models; notice how many of the models in the table require a numeric encoding for all predictors.
+[Appendix @sec-pre-proc-table] presents a table of recommended preprocessing techniques for different models; notice how many of the models in the table require a numeric encoding for all predictors.
 :::
 
 However, for some realistic data sets, straightforward dummy variables are not a good fit. This often happens because there are *too many* categories or there are *new* categories at prediction time. In this chapter, we discuss more sophisticated options for encoding categorical predictors that address these issues. These options are available as tidymodels recipe steps in the [`r pkg(embed)`](https://embed.tidymodels.org/) and [`r pkg(textrecipes)`](https://textrecipes.tidymodels.org/) packages.
@@ -55,9 +59,14 @@ We advise starting with untransformed categorical variables when a model allows 
 
 ## Encoding Ordinal Predictors
 
-Sometimes qualitative columns can be *ordered*, such as "low," "medium," and "high". In base R, the default encoding strategy is to make new numeric columns that are polynomial expansions of the data. For columns that have five ordinal values, like the example shown in Table \@ref(tab:encoding-ordered-table), the factor column is replaced with columns for linear, quadratic, cubic, and quartic terms:
+Sometimes qualitative columns can be *ordered*, such as "low," "medium," and "high". In base R, the default encoding strategy is to make new numeric columns that are polynomial expansions of the data. For columns that have five ordinal values, like the example shown in @tbl-encoding-ordered-table, the factor column is replaced with columns for linear, quadratic, cubic, and quartic terms:
 
-```{r encoding-ordered-table, echo = FALSE, results = 'asis'}
+```{r}
+#| label: tbl-encoding-ordered-table
+#| echo: FALSE
+#| results: 'asis'
+#| tbl-cap: "Polynominal expansions for encoding an ordered variable."
+
 ord_vals <- c("none", "a little", "some", "a bunch", "copious amounts")
 ord_data <- tibble::tibble(`Raw Data` = ordered(ord_vals, levels = ord_vals))
 ord_contrasts <- 
@@ -68,8 +77,7 @@ ord_contrasts <-
   setNames(c("Linear", "Quadratic", "Cubic", "Quartic"))
 
 bind_cols(ord_data, ord_contrasts) %>% 
-  kable(caption = "Polynominal expansions for encoding an ordered variable.",
-        label = "encoding-ordered-table") %>% 
+  kable() %>% 
   kable_styling(full_width = FALSE)
 ```
 
@@ -77,11 +85,13 @@ While this is not unreasonable, it is not an approach that people tend to find u
 
 ## Using the Outcome for Encoding Predictors
 
-There are multiple options for encodings more complex than dummy or indicator variables. One method called *effect* or *likelihood encodings* replaces the original categorical variables with a single numeric column that measures the effect of those data [@MicciBarreca2001; @Zumel2019]. For example, for the neighborhood predictor in the Ames housing data, we can compute the mean or median sale price for each neighborhood (as shown in Figure \@ref(fig:encoding-mean-price)) and substitute these means for the original data values:
+There are multiple options for encodings more complex than dummy or indicator variables. One method called *effect* or *likelihood encodings* replaces the original categorical variables with a single numeric column that measures the effect of those data [@MicciBarreca2001; @Zumel2019]. For example, for the neighborhood predictor in the Ames housing data, we can compute the mean or median sale price for each neighborhood (as shown in @fig-encoding-mean-price) and substitute these means for the original data values:
 
-```{r encoding-mean-price}
-#| fig.cap = "Mean home price for neighborhoods in the Ames training set, which can be used as an effect encoding for this categorical variable",
-#| fig.alt = "A chart with points and error bars for the mean home price for neighborhoods in the Ames training set. The most expensive neighborhoods are Northridge and Stone Brook, while the least expensive are Iowa DOT and Railroad and Meadow Village."
+```{r}
+#| label: fig-encoding-mean-price
+#| fig.cap: "Mean home price for neighborhoods in the Ames training set, which can be used as an effect encoding for this categorical variable"
+#| fig.alt: "A chart with points and error bars for the mean home price for neighborhoods in the Ames training set. The most expensive neighborhoods are Northridge and Stone Brook, while the least expensive are Iowa DOT and Railroad and Meadow Village."
+
 ames_train %>%
   group_by(Neighborhood) %>%
   summarize(mean = mean(Sale_Price),
@@ -109,7 +119,7 @@ ames_glm <-
 ames_glm
 ```
 
-As detailed in Section \@ref(recipe-functions), we can `prep()` our recipe to fit or estimate parameters for the preprocessing transformations using training data. We can then `tidy()` this prepared recipe to see the results:
+As detailed in @sec-recipe-functions, we can `prep()` our recipe to fit or estimate parameters for the preprocessing transformations using training data. We can then `tidy()` this prepared recipe to see the results:
 
 ```{r}
 glm_estimates <-
@@ -129,7 +139,7 @@ glm_estimates %>%
 ```
 
 ::: rmdwarn
-Effect encodings can be powerful but should be used with care. The effects should be computed from the training set, after data splitting. This type of supervised preprocessing should be rigorously resampled to avoid overfitting (see Chapter \@ref(resampling)).
+Effect encodings can be powerful but should be used with care. The effects should be computed from the training set, after data splitting. This type of supervised preprocessing should be rigorously resampled to avoid overfitting (see [Chapter @sec-resampling]).
 :::
 
 When you create an effect encoding for your categorical variable, you are effectively layering a mini-model inside your actual model. The possibility of overfitting with effect encodings is a representative example for why feature engineering *must* be considered part of the model process, as described in Chapter \@ref(workflows), and why feature engineering must be estimated together with model parameters inside resampling.
@@ -172,11 +182,14 @@ mixed_estimates %>%
 You can use a fully Bayesian hierarchical model for the effects in the same way with `step_lencode_bayes()`.
 :::
 
-Let's visually compare the effects using partial pooling vs. no pooling in Figure \@ref(fig:encoding-compare-pooling):
+Let's visually compare the effects using partial pooling vs. no pooling in @fig-encoding-compare-pooling:
 
-```{r encoding-compare-pooling, message=FALSE}
-#| fig.cap = "Comparing the effect encodings for neighborhood estimated without pooling to those with partial pooling",
-#| fig.alt = "A scatter chart comparing the effect encodings for neighborhood estimated without pooling to those with partial pooling. Almost all neighborhoods are very close to the slope = 1 line, but the neighborhoods with the fewest homes are further away."
+```{r}
+#| label: fig-encoding-compare-pooling
+#| message: FALSE
+#| fig.cap: "Comparing the effect encodings for neighborhood estimated without pooling to those with partial pooling"
+#| fig.alt: "A scatter chart comparing the effect encodings for neighborhood estimated without pooling to those with partial pooling. Almost all neighborhoods are very close to the slope = 1 line, but the neighborhoods with the fewest homes are further away."
+
 glm_estimates %>%
   rename(`no pooling` = value) %>%
   left_join(
@@ -194,11 +207,11 @@ glm_estimates %>%
   coord_fixed()
 ```
 
-Notice in Figure \@ref(fig:encoding-compare-pooling) that most estimates for neighborhood effects are about the same when we compare pooling to no pooling. However, the neighborhoods with the fewest homes in them have been pulled (either up or down) toward the mean effect. When we use pooling, we shrink the effect estimates toward the mean because we don't have as much evidence about the price in those neighborhoods.
+Notice in @fig-encoding-compare-pooling that most estimates for neighborhood effects are about the same when we compare pooling to no pooling. However, the neighborhoods with the fewest homes in them have been pulled (either up or down) toward the mean effect. When we use pooling, we shrink the effect estimates toward the mean because we don't have as much evidence about the price in those neighborhoods.
 
 ## Feature Hashing
 
-Traditional dummy variables as described in Section \@ref(dummies) require that all of the possible categories be known to create a full set of numeric features. *Feature hashing* methods [@weinberger2009feature] also create dummy variables, but only consider the value of the category to assign it to a predefined pool of dummy variables. Let's look at the `Neighborhood` values in Ames again and use the `rlang::hash()` function to understand more:
+Traditional dummy variables as described in @sec-dummies require that all of the possible categories be known to create a full set of numeric features. *Feature hashing* methods [@weinberger2009feature] also create dummy variables, but only consider the value of the category to assign it to a predefined pool of dummy variables. Let's look at the `Neighborhood` values in Ames again and use the `rlang::hash()` function to understand more:
 
 ```{r}
 library(rlang)
@@ -250,9 +263,13 @@ ames_hash <-
 ames_hash
 ```
 
-Feature hashing is fast and efficient but has a few downsides. For example, different category values often map to the same hash value. This is called a *collision* or *aliasing*. How often did this happen with our neighborhoods in Ames? Table \@ref(tab:encoding-hash) presents the distribution of number of neighborhoods per hash value.
+Feature hashing is fast and efficient but has a few downsides. For example, different category values often map to the same hash value. This is called a *collision* or *aliasing*. How often did this happen with our neighborhoods in Ames? @tbl-encoding-hash presents the distribution of number of neighborhoods per hash value.
 
-```{r encoding-hash, echo=FALSE}
+```{r}
+#| label: tbl-encoding-hash
+#| echo: FALSE
+#| tbl-cap: "The number of hash features at each number of neighborhoods."
+
 hash_table <-
   prep(ames_hash) %>% 
   bake(new_data = NULL, starts_with("dummyhash_Neighborhood_")) %>%
@@ -265,9 +282,7 @@ hash_table <-
 
 hash_table %>%
   kable(col.names = c("Number of neighborhoods within a hash feature", 
-                      "Number of occurrences"),
-        caption = "The number of hash features at each number of neighborhoods.",
-        label = "encoding-hash") %>%
+                      "Number of occurrences")) %>%
   kable_styling(full_width = FALSE)
 ```
 

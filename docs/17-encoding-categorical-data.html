@@ -386,11 +386,12 @@ div.csl-indent {
   </div>
   
 
-</header><p>For statistical modeling in R, the preferred representation for categorical or nominal data is a <em>factor</em>, which is a variable that can take on a limited number of different values; internally, factors are stored as a vector of integer values together with a set of text labels.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> In Section @ref(dummies) we introduced feature engineering approaches to encode or transform qualitative or nominal data into a representation better suited for most model algorithms. We discussed how to transform a categorical variable, such as the <code>Bldg_Type</code> in our Ames housing data (with levels <code>OneFam</code>, <code>TwoFmCon</code>, <code>Duplex</code>, <code>Twnhs</code>, and <code>TwnhsE</code>), to a set of dummy or indicator variables like those shown in Table @ref(tab:encoding-dummies).</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/encoding-dummies_6fb9ecac20d262b57ee6a082470158cd">
+</header><p>For statistical modeling in R, the preferred representation for categorical or nominal data is a <em>factor</em>, which is a variable that can take on a limited number of different values; internally, factors are stored as a vector of integer values together with a set of text labels.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> In <a href="08-feature-engineering.html#sec-dummies"><span>Section&nbsp;8.4.1</span></a> we introduced feature engineering approaches to encode or transform qualitative or nominal data into a representation better suited for most model algorithms. We discussed how to transform a categorical variable, such as the <code>Bldg_Type</code> in our Ames housing data (with levels <code>OneFam</code>, <code>TwoFmCon</code>, <code>Duplex</code>, <code>Twnhs</code>, and <code>TwnhsE</code>), to a set of dummy or indicator variables like those shown in <a href="#tbl-encoding-dummies">Table&nbsp;<span>17.1</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/tbl-encoding-dummies_44fffa16e97e776a292063c5b912ed4c">
 <div class="cell-output-display">
+<div id="tbl-encoding-dummies" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Dummy or indicator variable encodings for the building type predictor in the Ames training set.</caption>
+<caption>Table&nbsp;17.1: Dummy or indicator variable encodings for the building type predictor in the Ames training set.</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Raw Data</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">TwoFmCon</th>
@@ -437,10 +438,13 @@ div.csl-indent {
 </tbody>
 </table>
 </div>
+
+
+</div>
 </div>
 <p>Many model implementations require such a transformation to a numeric representation for categorical data.</p>
 <div class="rmdnote">
-<p>Appendix @ref(pre-proc-table) presents a table of recommended preprocessing techniques for different models; notice how many of the models in the table require a numeric encoding for all predictors.</p>
+<p><a href="pre-proc-table.html">Appendix&nbsp;<span>A</span></a> presents a table of recommended preprocessing techniques for different models; notice how many of the models in the table require a numeric encoding for all predictors.</p>
 </div>
 <p>However, for some realistic data sets, straightforward dummy variables are not a good fit. This often happens because there are <em>too many</em> categories or there are <em>new</em> categories at prediction time. In this chapter, we discuss more sophisticated options for encoding categorical predictors that address these issues. These options are available as tidymodels recipe steps in the <a href="https://embed.tidymodels.org/"><span class="pkg">embed</span></a> and <a href="https://textrecipes.tidymodels.org/"><span class="pkg">textrecipes</span></a> packages.</p>
 <section id="is-an-encoding-necessary" class="level2" data-number="17.1"><h2 data-number="17.1" class="anchored" data-anchor-id="is-an-encoding-necessary">
@@ -452,11 +456,12 @@ div.csl-indent {
 </div>
 </section><section id="encoding-ordinal-predictors" class="level2" data-number="17.2"><h2 data-number="17.2" class="anchored" data-anchor-id="encoding-ordinal-predictors">
 <span class="header-section-number">17.2</span> Encoding Ordinal Predictors</h2>
-<p>Sometimes qualitative columns can be <em>ordered</em>, such as “low,” “medium,” and “high”. In base R, the default encoding strategy is to make new numeric columns that are polynomial expansions of the data. For columns that have five ordinal values, like the example shown in Table @ref(tab:encoding-ordered-table), the factor column is replaced with columns for linear, quadratic, cubic, and quartic terms:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/encoding-ordered-table_6b0045a367f7ceac4e8ea416a14b05ef">
+<p>Sometimes qualitative columns can be <em>ordered</em>, such as “low,” “medium,” and “high”. In base R, the default encoding strategy is to make new numeric columns that are polynomial expansions of the data. For columns that have five ordinal values, like the example shown in <a href="#tbl-encoding-ordered-table">Table&nbsp;<span>17.2</span></a>, the factor column is replaced with columns for linear, quadratic, cubic, and quartic terms:</p>
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/tbl-encoding-ordered-table_57527f7c1634ee82c30f7303ee30bb4e">
 <div class="cell-output-display">
+<div id="tbl-encoding-ordered-table" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Polynominal expansions for encoding an ordered variable.</caption>
+<caption>Table&nbsp;17.2: Polynominal expansions for encoding an ordered variable.</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Raw Data</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Linear</th>
@@ -503,12 +508,15 @@ div.csl-indent {
 </tbody>
 </table>
 </div>
+
+
+</div>
 </div>
 <p>While this is not unreasonable, it is not an approach that people tend to find useful. For example, an 11-degree polynomial is probably not the most effective way of encoding an ordinal factor for the months of the year. Instead, consider trying recipe steps related to ordered factors, such as <code><a href="https://recipes.tidymodels.org/reference/step_unorder.html">step_unorder()</a></code>, to convert to regular factors, and <code><a href="https://recipes.tidymodels.org/reference/step_ordinalscore.html">step_ordinalscore()</a></code>, which maps specific numeric values to each factor level.</p>
 </section><section id="using-the-outcome-for-encoding-predictors" class="level2" data-number="17.3"><h2 data-number="17.3" class="anchored" data-anchor-id="using-the-outcome-for-encoding-predictors">
 <span class="header-section-number">17.3</span> Using the Outcome for Encoding Predictors</h2>
-<p>There are multiple options for encodings more complex than dummy or indicator variables. One method called <em>effect</em> or <em>likelihood encodings</em> replaces the original categorical variables with a single numeric column that measures the effect of those data <span class="citation" data-cites="MicciBarreca2001 Zumel2019">(<a href="references.html#ref-MicciBarreca2001" role="doc-biblioref">Micci-Barreca 2001</a>; <a href="references.html#ref-Zumel2019" role="doc-biblioref">Zumel and Mount 2019</a>)</span>. For example, for the neighborhood predictor in the Ames housing data, we can compute the mean or median sale price for each neighborhood (as shown in Figure @ref(fig:encoding-mean-price)) and substitute these means for the original data values:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/encoding-mean-price_6756ba0d93af1592720176b70752fd4d">
+<p>There are multiple options for encodings more complex than dummy or indicator variables. One method called <em>effect</em> or <em>likelihood encodings</em> replaces the original categorical variables with a single numeric column that measures the effect of those data <span class="citation" data-cites="MicciBarreca2001 Zumel2019">(<a href="references.html#ref-MicciBarreca2001" role="doc-biblioref">Micci-Barreca 2001</a>; <a href="references.html#ref-Zumel2019" role="doc-biblioref">Zumel and Mount 2019</a>)</span>. For example, for the neighborhood predictor in the Ames housing data, we can compute the mean or median sale price for each neighborhood (as shown in <a href="#fig-encoding-mean-price">Figure&nbsp;<span>17.1</span></a>) and substitute these means for the original data values:</p>
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/fig-encoding-mean-price_7d0ed3f9c28313cfce22dd956ef38f9f">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_train</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">Neighborhood</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">summarize</span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span>,</span>
@@ -518,14 +526,14 @@ div.csl-indent {
 <span>  <span class="fu">geom_errorbar</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">mean</span> <span class="op">-</span> <span class="fl">1.64</span> <span class="op">*</span> <span class="va">std_err</span>, xmax <span class="op">=</span> <span class="va">mean</span> <span class="op">+</span> <span class="fl">1.64</span> <span class="op">*</span> <span class="va">std_err</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"Price (mean, log scale)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="17-encoding-categorical-data_files/figure-html/encoding-mean-price-1.png" class="img-fluid figure-img" alt="A chart with points and error bars for the mean home price for neighborhoods in the Ames training set. The most expensive neighborhoods are Northridge and Stone Brook, while the least expensive are Iowa DOT and Railroad and Meadow Village." width="672"></p>
-<figcaption class="figure-caption">Mean home price for neighborhoods in the Ames training set, which can be used as an effect encoding for this categorical variable</figcaption></figure>
+<div id="fig-encoding-mean-price" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="17-encoding-categorical-data_files/figure-html/fig-encoding-mean-price-1.png" class="img-fluid figure-img" alt="A chart with points and error bars for the mean home price for neighborhoods in the Ames training set. The most expensive neighborhoods are Northridge and Stone Brook, while the least expensive are Iowa DOT and Railroad and Meadow Village." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;17.1: Mean home price for neighborhoods in the Ames training set, which can be used as an effect encoding for this categorical variable</figcaption></figure>
 </div>
 </div>
 </div>
 <p>This kind of effect encoding works well when your categorical variable has many levels. In tidymodels, the <span class="pkg">embed</span> package includes several recipe step functions for different kinds of effect encodings, such as <code><a href="https://embed.tidymodels.org/reference/step_lencode_glm.html">step_lencode_glm()</a></code>, <code><a href="https://embed.tidymodels.org/reference/step_lencode_mixed.html">step_lencode_mixed()</a></code>, and <code><a href="https://embed.tidymodels.org/reference/step_lencode_bayes.html">step_lencode_bayes()</a></code>. These steps use a generalized linear model to estimate the effect of each level in a categorical predictor on the outcome. When using a recipe step like <code><a href="https://embed.tidymodels.org/reference/step_lencode_glm.html">step_lencode_glm()</a></code>, specify the variable being encoded first and then the outcome using <code>vars()</code>:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-1_6a7a06f8d0708c93cf5644f4fae94295">
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-4_aea588047f8075dbb064335a4788d18d">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://embed.tidymodels.org">embed</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ames_glm</span> <span class="op">&lt;-</span> </span>
@@ -553,8 +561,8 @@ div.csl-indent {
 <span><span class="co">## • Interactions with: Gr_Liv_Area:starts_with("Bldg_Type_")</span></span>
 <span><span class="co">## • Natural splines on: Latitude, Longitude</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>As detailed in Section @ref(recipe-functions), we can <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> our recipe to fit or estimate parameters for the preprocessing transformations using training data. We can then <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> this prepared recipe to see the results:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-2_fee6614a76947d8a5db21bf555d4336b">
+<p>As detailed in <a href="16-dimensionality-reduction.html#sec-recipe-functions"><span>Section&nbsp;16.4</span></a>, we can <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> our recipe to fit or estimate parameters for the preprocessing transformations using training data. We can then <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> this prepared recipe to see the results:</p>
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-5_7b936810cddfe58ca47460c6bc9ced99">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">glm_estimates</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html">prep</a></span><span class="op">(</span><span class="va">ames_glm</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span>number <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
@@ -573,7 +581,7 @@ div.csl-indent {
 </div>
 <p>When we use the newly encoded <code>Neighborhood</code> numeric variable created via this method, we substitute the original level (such as <code>"North_Ames"</code>) with the estimate for <code>Sale_Price</code> from the GLM.</p>
 <p>Effect encoding methods like this one can also seamlessly handle situations where a novel factor level is encountered in the data. This <code>value</code> is the predicted price from the GLM when we don’t have any specific neighborhood information:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-3_584b2ee9105b773d4d71cb53872b5277">
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-6_ee062f5fb76c858022a02bbb6fb7a821">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">glm_estimates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">level</span> <span class="op">==</span> <span class="st">"..new"</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 4</span></span>
@@ -582,13 +590,13 @@ div.csl-indent {
 <span><span class="co">## 1 ..new  5.23 Neighborhood lencode_glm_ZsXdy</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdwarn">
-<p>Effect encodings can be powerful but should be used with care. The effects should be computed from the training set, after data splitting. This type of supervised preprocessing should be rigorously resampled to avoid overfitting (see Chapter @ref(resampling)).</p>
+<p>Effect encodings can be powerful but should be used with care. The effects should be computed from the training set, after data splitting. This type of supervised preprocessing should be rigorously resampled to avoid overfitting (see <a href="10-resampling.html">Chapter&nbsp;<span>10</span></a>).</p>
 </div>
 <p>When you create an effect encoding for your categorical variable, you are effectively layering a mini-model inside your actual model. The possibility of overfitting with effect encodings is a representative example for why feature engineering <em>must</em> be considered part of the model process, as described in Chapter @ref(workflows), and why feature engineering must be estimated together with model parameters inside resampling.</p>
 <section id="effect-encodings-with-partial-pooling" class="level3" data-number="17.3.1"><h3 data-number="17.3.1" class="anchored" data-anchor-id="effect-encodings-with-partial-pooling">
 <span class="header-section-number">17.3.1</span> Effect encodings with partial pooling</h3>
 <p>Creating an effect encoding with <code><a href="https://embed.tidymodels.org/reference/step_lencode_glm.html">step_lencode_glm()</a></code> estimates the effect separately for each factor level (in this example, neighborhood). However, some of these neighborhoods have many houses in them, and some have only a few. There is much more uncertainty in our measurement of price for the single training set home in the Landmark neighborhood than the 354 training set homes in North Ames. We can use <em>partial pooling</em> to adjust these estimates so that levels with small sample sizes are shrunken toward the overall mean. The effects for each level are modeled all at once using a mixed or hierarchical generalized linear model:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-4_70cca7d0e8361ddb663ee989918038f0">
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-7_bb879ed03c9d916dda3b33e5cefc3ef5">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_mixed</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="va">Gr_Liv_Area</span> <span class="op">+</span> <span class="va">Year_Built</span> <span class="op">+</span> <span class="va">Bldg_Type</span> <span class="op">+</span> </span>
 <span>           <span class="va">Latitude</span> <span class="op">+</span> <span class="va">Longitude</span>, data <span class="op">=</span> <span class="va">ames_train</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -615,7 +623,7 @@ div.csl-indent {
 <span><span class="co">## • Natural splines on: Latitude, Longitude</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Let’s <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> and <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> this recipe to see the results:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-5_b1d3aac805ca32a18a712d946c069153">
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-8_28667e5f8b61c6779df2f2b5979ee58d">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mixed_estimates</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html">prep</a></span><span class="op">(</span><span class="va">ames_mixed</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span>number <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
@@ -633,7 +641,7 @@ div.csl-indent {
 <span><span class="co">## # ℹ 23 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>New levels are then encoded at close to the same value as with the GLM:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-6_8ba02c7792e287708d6620c7461d3780">
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-9_56f051a16e4be7ef9558a795a293f0e6">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mixed_estimates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">level</span> <span class="op">==</span> <span class="st">"..new"</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 4</span></span>
@@ -644,8 +652,8 @@ div.csl-indent {
 <div class="rmdnote">
 <p>You can use a fully Bayesian hierarchical model for the effects in the same way with <code><a href="https://embed.tidymodels.org/reference/step_lencode_bayes.html">step_lencode_bayes()</a></code>.</p>
 </div>
-<p>Let’s visually compare the effects using partial pooling vs.&nbsp;no pooling in Figure @ref(fig:encoding-compare-pooling):</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/encoding-compare-pooling_3810ffc09d523123de888632d559673c">
+<p>Let’s visually compare the effects using partial pooling vs.&nbsp;no pooling in <a href="#fig-encoding-compare-pooling">Figure&nbsp;<span>17.2</span></a>:</p>
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/fig-encoding-compare-pooling_ea97cff2c1cf1b09f823352078b205c1">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">glm_estimates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">rename</span><span class="op">(</span>`no pooling` <span class="op">=</span> <span class="va">value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">left_join</span><span class="op">(</span></span>
@@ -663,17 +671,17 @@ div.csl-indent {
 <span>  <span class="fu">coord_fixed</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## Warning: Removed 1 rows containing missing values (`geom_point()`).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="17-encoding-categorical-data_files/figure-html/encoding-compare-pooling-1.png" class="img-fluid figure-img" alt="A scatter chart comparing the effect encodings for neighborhood estimated without pooling to those with partial pooling. Almost all neighborhoods are very close to the slope = 1 line, but the neighborhoods with the fewest homes are further away." width="672"></p>
-<figcaption class="figure-caption">Comparing the effect encodings for neighborhood estimated without pooling to those with partial pooling</figcaption></figure>
+<div id="fig-encoding-compare-pooling" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="17-encoding-categorical-data_files/figure-html/fig-encoding-compare-pooling-1.png" class="img-fluid figure-img" alt="A scatter chart comparing the effect encodings for neighborhood estimated without pooling to those with partial pooling. Almost all neighborhoods are very close to the slope = 1 line, but the neighborhoods with the fewest homes are further away." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;17.2: Comparing the effect encodings for neighborhood estimated without pooling to those with partial pooling</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Notice in Figure @ref(fig:encoding-compare-pooling) that most estimates for neighborhood effects are about the same when we compare pooling to no pooling. However, the neighborhoods with the fewest homes in them have been pulled (either up or down) toward the mean effect. When we use pooling, we shrink the effect estimates toward the mean because we don’t have as much evidence about the price in those neighborhoods.</p>
+<p>Notice in <a href="#fig-encoding-compare-pooling">Figure&nbsp;<span>17.2</span></a> that most estimates for neighborhood effects are about the same when we compare pooling to no pooling. However, the neighborhoods with the fewest homes in them have been pulled (either up or down) toward the mean effect. When we use pooling, we shrink the effect estimates toward the mean because we don’t have as much evidence about the price in those neighborhoods.</p>
 </section></section><section id="feature-hashing" class="level2" data-number="17.4"><h2 data-number="17.4" class="anchored" data-anchor-id="feature-hashing">
 <span class="header-section-number">17.4</span> Feature Hashing</h2>
-<p>Traditional dummy variables as described in Section @ref(dummies) require that all of the possible categories be known to create a full set of numeric features. <em>Feature hashing</em> methods <span class="citation" data-cites="weinberger2009feature">(<a href="references.html#ref-weinberger2009feature" role="doc-biblioref">Weinberger et al. 2009</a>)</span> also create dummy variables, but only consider the value of the category to assign it to a predefined pool of dummy variables. Let’s look at the <code>Neighborhood</code> values in Ames again and use the <code><a href="https://rlang.r-lib.org/reference/hash.html">rlang::hash()</a></code> function to understand more:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-7_72f829f9509b278cb007a625079e0c01">
+<p>Traditional dummy variables as described in <a href="08-feature-engineering.html#sec-dummies"><span>Section&nbsp;8.4.1</span></a> require that all of the possible categories be known to create a full set of numeric features. <em>Feature hashing</em> methods <span class="citation" data-cites="weinberger2009feature">(<a href="references.html#ref-weinberger2009feature" role="doc-biblioref">Weinberger et al. 2009</a>)</span> also create dummy variables, but only consider the value of the category to assign it to a predefined pool of dummy variables. Let’s look at the <code>Neighborhood</code> values in Ames again and use the <code><a href="https://rlang.r-lib.org/reference/hash.html">rlang::hash()</a></code> function to understand more:</p>
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-11_31846aad72653a52e85a8740b90f37aa">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org">rlang</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">ames_hashed</span> <span class="op">&lt;-</span></span>
@@ -698,7 +706,7 @@ div.csl-indent {
 <p>A hashing function takes an input of variable size and maps it to an output of fixed size. Hashing functions are commonly used in cryptography and databases.</p>
 </div>
 <p>The <code><a href="https://rlang.r-lib.org/reference/hash.html">rlang::hash()</a></code> function generates a 128-bit hash, which means there are <code>2^128</code> possible hash values. This is great for some applications but doesn’t help with feature hashing of <em>high cardinality</em> variables (variables with many levels). In feature hashing, the number of possible hashes is a hyperparameter and is set by the model developer through computing the modulo of the integer hashes. We can get sixteen possible hash values by using <code>Hash %% 16</code>:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-8_8f5cca417cb73231aa40945992a0ad6d">
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-12_8a6c33279c21d382b787075cf49af01e">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_hashed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="co">## first make a smaller hash for integers that R can handle</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>Hash <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/strtoi.html">strtoi</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substr.html">substr</a></span><span class="op">(</span><span class="va">Hash</span>, <span class="fl">26</span>, <span class="fl">32</span><span class="op">)</span>, base <span class="op">=</span> <span class="fl">16L</span><span class="op">)</span>,  </span>
@@ -721,7 +729,7 @@ div.csl-indent {
 <p>Feature hashing is useful for text data as well as high cardinality categorical data. See Section 6.7 of <span class="citation" data-cites="Hvitfeldt2021">Hvitfeldt and Silge (<a href="references.html#ref-Hvitfeldt2021" role="doc-biblioref">2021</a>)</span> for a case study demonstration with text predictors.</p>
 </div>
 <p>We can implement feature hashing using a tidymodels recipe step from the <span class="pkg">textrecipes</span> package:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-9_dcbe8e99e90b0b1971b4c47b10e56282">
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-13_d807782a18bd7c084fa31712b6244540">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/textrecipes">textrecipes</a></span><span class="op">)</span></span>
 <span><span class="va">ames_hash</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="va">Gr_Liv_Area</span> <span class="op">+</span> <span class="va">Year_Built</span> <span class="op">+</span> <span class="va">Bldg_Type</span> <span class="op">+</span> </span>
@@ -748,14 +756,15 @@ div.csl-indent {
 <span><span class="co">## • Interactions with: Gr_Liv_Area:starts_with("Bldg_Type_")</span></span>
 <span><span class="co">## • Natural splines on: Latitude, Longitude</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Feature hashing is fast and efficient but has a few downsides. For example, different category values often map to the same hash value. This is called a <em>collision</em> or <em>aliasing</em>. How often did this happen with our neighborhoods in Ames? Table @ref(tab:encoding-hash) presents the distribution of number of neighborhoods per hash value.</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/encoding-hash_9c3e3b09ae5fb1ee7a34d67afde12b70">
+<p>Feature hashing is fast and efficient but has a few downsides. For example, different category values often map to the same hash value. This is called a <em>collision</em> or <em>aliasing</em>. How often did this happen with our neighborhoods in Ames? <a href="#tbl-encoding-hash">Table&nbsp;<span>17.3</span></a> presents the distribution of number of neighborhoods per hash value.</p>
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/tbl-encoding-hash_816599df24f33dafb9d6e1d090ba76ad">
 <pre><code>## 'as(&lt;dgTMatrix&gt;, "dgCMatrix")' is deprecated.
 ## Use 'as(., "CsparseMatrix")' instead.
 ## See help("Deprecated") and help("Matrix-deprecated").</code></pre>
 <div class="cell-output-display">
+<div id="tbl-encoding-hash" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>The number of hash features at each number of neighborhoods.</caption>
+<caption>Table&nbsp;17.3: The number of hash features at each number of neighborhoods.</caption>
 <thead><tr class="header">
 <th style="text-align: right;" data-quarto-table-cell-role="th">Number of neighborhoods within a hash feature</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Number of occurrences</th>
@@ -783,6 +792,9 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
+</div>
+
+
 </div>
 </div>
 <p>The number of neighborhoods mapped to each hash value varies between zero and four. All of the hash values greater than one are examples of hash collisions.</p>
