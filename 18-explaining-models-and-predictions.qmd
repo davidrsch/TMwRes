@@ -29,7 +29,7 @@ lm_fit <- lm_wflow %>% fit(data = ames_train)
 
 # Explaining Models and Predictions {#sec-explain}
 
-In Section \@ref(model-types), we outlined a taxonomy of models and suggested that models typically are built as one or more of descriptive, inferential, or predictive. We suggested that model performance, as measured by appropriate metrics (like RMSE for regression or area under the ROC curve for classification), can be important for all modeling applications. Similarly, model explanations, answering *why* a model makes the predictions it does, can be important whether the purpose of your model is largely descriptive, to test a hypothesis, or to make a prediction. Answering the question "why?" allows modeling practitioners to understand which features were important in predictions and even how model predictions would change under different values for the features. This chapter covers how to ask a model why it makes the predictions it does.
+In @sec-model-types, we outlined a taxonomy of models and suggested that models typically are built as one or more of descriptive, inferential, or predictive. We suggested that model performance, as measured by appropriate metrics (like RMSE for regression or area under the ROC curve for classification), can be important for all modeling applications. Similarly, model explanations, answering *why* a model makes the predictions it does, can be important whether the purpose of your model is largely descriptive, to test a hypothesis, or to make a prediction. Answering the question "why?" allows modeling practitioners to understand which features were important in predictions and even how model predictions would change under different values for the features. This chapter covers how to ask a model why it makes the predictions it does.
 
 For some models, like linear regression, it is usually clear how to explain why the model makes its predictions. The structure of a linear model contains coefficients for each predictor that are typically straightforward to interpret. For other models, like random forests that can capture nonlinear behavior by design, it is less transparent how to explain the model's predictions from only the structure of the model itself. Instead, we can apply model explainer algorithms to generate understanding of predictions.
 
@@ -44,13 +44,14 @@ The tidymodels framework does not itself contain software for model explanations
 -   `r pkg(vip)` functions when we want to use *model-based* methods that take advantage of model structure (and are often faster)
 -   `r pkg(DALEX)` functions when we want to use *model-agnostic* methods that can be applied to any model
 
-In Chapters \@ref(resampling) and \@ref(compare), we trained and compared several models to predict the price of homes in Ames, IA, including a linear model with interactions and a random forest model, with results shown in Figure \@ref(fig:explain-obs-pred).
+In Chapters [-@sec-resampling] and [-@sec-compare], we trained and compared several models to predict the price of homes in Ames, IA, including a linear model with interactions and a random forest model, with results shown in @fig-explain-obs-pred.
 
-```{r explain-obs-pred}
-#| echo = FALSE,
-#| fig.height = 4,
-#| fig.cap = "Comparing predicted prices for a linear model with interactions and a random forest model",
-#| fig.alt = "Comparing predicted prices for a linear model with interactions and a random forest model. The random forest results in more accurate predictions."
+```{r}
+#| label: fig-explain-obs-pred
+#| echo: FALSE
+#| fig.height: 4
+#| fig.cap: "Comparing predicted prices for a linear model with interactions and a random forest model"
+#| fig.alt: "Comparing predicted prices for a linear model with interactions and a random forest model. The random forest results in more accurate predictions."
 bind_rows(
   augment(lm_fit, ames_train) %>% mutate(model = "lm + interactions"),
   augment(rf_fit, ames_train) %>% mutate(model = "random forest")
@@ -99,11 +100,11 @@ A linear model is typically straightforward to interpret and explain; you may no
 Dealing with significant feature engineering transformations during model explainability highlights some options we have (or sometimes, ambiguity in such analyses). We can quantify global or local model explanations either in terms of:
 
 -   *original, basic predictors* as they existed without significant feature engineering transformations, or
--   *derived features*, such as those created via dimensionality reduction (Chapter \@ref(dimensionality)) or interactions and spline terms, as in this example.
+-   *derived features*, such as those created via dimensionality reduction ([Chapter @sec-dimensionality]) or interactions and spline terms, as in this example.
 
 ## Local Explanations
 
-Local model explanations provide information about a prediction for a single observation. For example, let's consider an older duplex in the North Ames neighborhood (Section \@ref(exploring-features-of-homes-in-ames)):
+Local model explanations provide information about a prediction for a single observation. For example, let's consider an older duplex in the North Ames neighborhood (@sec-exploring-features-of-homes-in-ames):
 
 ```{r explain-duplex}
 duplex <- vip_train[120,]
@@ -155,7 +156,7 @@ shap_duplex <-
   )
 ```
 
-We could use the default plot method from `r pkg(DALEX)` by calling `plot(shap_duplex)`, or we can access the underlying data and create a custom plot. The box plots in Figure \@ref(fig:duplex-rf-shap) display the distribution of contributions across all the orderings we tried, and the bars display the average attribution for each feature:
+We could use the default plot method from `r pkg(DALEX)` by calling `plot(shap_duplex)`, or we can access the underlying data and create a custom plot. The box plots in @fig-duplex-rf-shap display the distribution of contributions across all the orderings we tried, and the bars display the average attribution for each feature:
 
 ```{r explain-duplex-rf-shap, eval=FALSE}
 library(forcats)
@@ -174,10 +175,12 @@ shap_duplex %>%
   labs(y = NULL)
 ```
 
-```{r duplex-rf-shap, ref.label = "explain-duplex-rf-shap"}
-#| echo = FALSE,
-#| fig.cap = "Shapley additive explanations from the random forest model for a duplex property",
-#| fig.alt = "Shapley additive explanations from the random forest model for a duplex property. Year built and gross living area have the largest contributions."
+```{r}
+#| label: fig-duplex-rf-shap
+#| ref.label: "explain-duplex-rf-shap"
+#| echo: FALSE
+#| fig.cap: "Shapley additive explanations from the random forest model for a duplex property"
+#| fig.alt: "Shapley additive explanations from the random forest model for a duplex property. Year built and gross living area have the largest contributions."
 ```
 
 What about a different observation in our data set? Let's look at a larger, newer one-family home in the Gilbert neighborhood:
@@ -200,12 +203,13 @@ shap_house <-
   )
 ```
 
-The results are shown in Figure \@ref(fig:gilbert-shap); unlike the duplex, the size and age of this house contribute to its price being higher.
+The results are shown in @fig-gilbert-shap; unlike the duplex, the size and age of this house contribute to its price being higher.
 
-```{r gilbert-shap}
-#| echo = FALSE,
-#| fig.cap = "Shapley additive explanations from the random forest model for a one-family home in Gilbert",
-#| fig.alt = "Shapley additive explanations from the random forest model for a one-family home in Gilbert. Gross living area and year built have the largest contributions but in the opposite direction as the previous explainer."
+```{r}
+#| label: fig-gilbert-shap
+#| echo: FALSE
+#| fig.cap: "Shapley additive explanations from the random forest model for a one-family home in Gilbert"
+#| fig.alt: "Shapley additive explanations from the random forest model for a one-family home in Gilbert. Gross living area and year built have the largest contributions but in the opposite direction as the previous explainer."
 
 shap_house %>%
   group_by(variable) %>%
@@ -282,18 +286,19 @@ ggplot_imp <- function(...) {
 }
 ```
 
-Using `ggplot_imp(vip_lm, vip_rf)` produces Figure \@ref(fig:global-rf).
+Using `ggplot_imp(vip_lm, vip_rf)` produces @fig-global-rf.
 
-```{r global-rf}
-#| echo = FALSE,
-#| fig.width = 8,
-#| fig.height = 4.5,
-#| fig.cap = "Global explainer for the random forest and linear regression models",
-#| fig.alt = "Global explainer for the random forest and linear regression models. For both models, gross living area and year built have the largest contributions, but the linear model uses the neighborhood predictor to a large degree."
+```{r}
+#| label: fig-global-rf
+#| echo: FALSE
+#| fig.width: 8
+#| fig.height: 4.5
+#| fig.cap: "Global explainer for the random forest and linear regression models"
+#| fig.alt: "Global explainer for the random forest and linear regression models. For both models, gross living area and year built have the largest contributions, but the linear model uses the neighborhood predictor to a large degree."
 ggplot_imp(vip_lm, vip_rf)
 ```
 
-The dashed line in each panel of Figure \@ref(fig:global-rf) shows the RMSE for the full model, either the linear model or the random forest model. Features farther to the right are more important, because permuting them results in higher RMSE. There is quite a lot of interesting information to learn from this plot; for example, neighborhood is quite important in the linear model with interactions/splines but the second least important feature for the random forest model.
+The dashed line in each panel of @fig-global-rf shows the RMSE for the full model, either the linear model or the random forest model. Features farther to the right are more important, because permuting them results in higher RMSE. There is quite a lot of interesting information to learn from this plot; for example, neighborhood is quite important in the linear model with interactions/splines but the second least important feature for the random forest model.
 
 ## Building Global Explanations from Local Explanations
 
@@ -335,7 +340,7 @@ ggplot_pdp <- function(obj, x) {
 }
 ```
 
-Using this function generates Figure \@ref(fig:year-built), where we can see the nonlinear behavior of the random forest model.
+Using this function generates @fig-year-built, where we can see the nonlinear behavior of the random forest model.
 
 ```{r explain-year-built, eval = FALSE}
 ggplot_pdp(pdp_age, Year_Built)  +
@@ -344,10 +349,12 @@ ggplot_pdp(pdp_age, Year_Built)  +
        color = NULL)
 ```
 
-```{r year-built, ref.label = "explain-year-built"}
-#| echo = FALSE,
-#| fig.cap = "Partial dependence profiles for the random forest model focusing on the year built predictor",
-#| fig.alt = "Partial dependence profiles for the random forest model focusing on the year built predictor. The profiles are mostly relatively constant but then increase linearly around 1950."
+```{r}
+#| label: fig-year-built
+#| ref.label: "explain-year-built"
+#| echo: FALSE
+#| fig.cap: "Partial dependence profiles for the random forest model focusing on the year built predictor"
+#| fig.alt: "Partial dependence profiles for the random forest model focusing on the year built predictor. The profiles are mostly relatively constant but then increase linearly around 1950."
 ```
 
 Sale price for houses built in different years is mostly flat, with a modest rise after about 1960. Partial dependence profiles can be computed for any other feature in the model, and also for groups in the data, such as `Bldg_Type`. Let's use 1,000 observations for these profiles.
@@ -366,15 +373,17 @@ ggplot_pdp(pdp_liv, Gr_Liv_Area) +
        color = NULL)
 ```
 
-This code produces Figure \@ref(fig:building-type-profiles), where we see that sale price increases the most between about 1,000 and 3,000 square feet of living area, and that different home types (like single family homes or different types of townhouses) mostly exhibit similar increasing trends in price with more living space.
+This code produces @fig-building-type-profiles, where we see that sale price increases the most between about 1,000 and 3,000 square feet of living area, and that different home types (like single family homes or different types of townhouses) mostly exhibit similar increasing trends in price with more living space.
 
-```{r building-type-profiles, ref.label = "explain-build-type-pdp"}
-#| echo = FALSE,
-#| fig.cap = "Partial dependence profiles for the random forest model focusing on building types and gross living area",
-#| fig.alt = "Partial dependence profiles for the random forest model focusing on building types and gross living area. The building type profiles are, for the most part, parallel over gross living area."
+```{r}
+#| label: fig-building-type-profiles
+#| ref.label: "explain-build-type-pdp"
+#| echo: FALSE
+#| fig.cap: "Partial dependence profiles for the random forest model focusing on building types and gross living area"
+#| fig.alt: "Partial dependence profiles for the random forest model focusing on building types and gross living area. The building type profiles are, for the most part, parallel over gross living area."
 ```
 
-We have the option of using `plot(pdp_liv)` for default `r pkg(DALEX)` plots, but since we are making plots with the underlying data here, we can even facet by one of the features to visualize if the predictions change differently and highlighting the imbalance in these subgroups (as shown in Figure \@ref(fig:building-type-facets)).
+We have the option of using `plot(pdp_liv)` for default `r pkg(DALEX)` plots, but since we are making plots with the underlying data here, we can even facet by one of the features to visualize if the predictions change differently and highlighting the imbalance in these subgroups (as shown in @fig-building-type-facets).
 
 ```{r explain-build-type-facet, eval = FALSE}
 as_tibble(pdp_liv$agr_profiles) %>%
@@ -392,17 +401,19 @@ as_tibble(pdp_liv$agr_profiles) %>%
        color = NULL)
 ```
 
-```{r building-type-facets, ref.label = "explain-build-type-facet"}
-#| echo = FALSE,
-#| fig.cap = "Partial dependence profiles for the random forest model focusing on building types and gross living area using facets",
-#| fig.alt = "Partial dependence profiles for the random forest model focusing on building types and gross living area using facets. The building type profiles are, for the most part, parallel over gross living area."
+```{r}
+#| label: fig-building-type-facets
+#| ref.label: "explain-build-type-facet"
+#| echo: FALSE
+#| fig.cap: "Partial dependence profiles for the random forest model focusing on building types and gross living area using facets"
+#| fig.alt: "Partial dependence profiles for the random forest model focusing on building types and gross living area using facets. The building type profiles are, for the most part, parallel over gross living area."
 ```
 
 There is no one correct approach for building model explanations, and the options outlined in this chapter are not exhaustive. We have highlighted good options for explanations at both the individual and global level, as well as how to bridge from one to the other, and we point you to @Biecek2021 and @Molnar2021 for further reading.
 
 ## Back to Beans!
 
-In Chapter \@ref(dimensionality), we discussed how to use dimensionality reduction as a feature engineering or preprocessing step when modeling high-dimensional data. For our example data set of dry bean morphology measures predicting bean type, we saw great results from partial least squares (PLS) dimensionality reduction combined with a regularized discriminant analysis model. Which of those morphological characteristics were *most* important in the bean type predictions? We can use the same approach outlined throughout this chapter to create a model-agnostic explainer and compute, say, global model explanations via `model_parts()`:
+In [Chapter @sec-dimensionality], we discussed how to use dimensionality reduction as a feature engineering or preprocessing step when modeling high-dimensional data. For our example data set of dry bean morphology measures predicting bean type, we saw great results from partial least squares (PLS) dimensionality reduction combined with a regularized discriminant analysis model. Which of those morphological characteristics were *most* important in the bean type predictions? We can use the same approach outlined throughout this chapter to create a model-agnostic explainer and compute, say, global model explanations via `model_parts()`:
 
 ```{r explain-bean-data, echo=FALSE}
 library(beans)
@@ -427,26 +438,27 @@ vip_beans <-
   model_parts() 
 ```
 
-Using our previously defined importance plotting function, `ggplot_imp(vip_beans)` produces Figure \@ref(fig:bean-explainer).
+Using our previously defined importance plotting function, `ggplot_imp(vip_beans)` produces @fig-bean-explainer.
 
-```{r bean-explainer}
-#| echo = FALSE,
-#| fig.width = 8,
-#| fig.cap = "Global explainer for the regularized discriminant analysis model on the beans data",
-#| fig.alt = "Global explainer for the regularized discriminant analysis model on the beans data. Almost all predictors have a significant contribution with shape factors one and four contributing the most. "
+```{r}
+#| label: fig-bean-explainer
+#| echo: FALSE
+#| fig.width: 8
+#| fig.cap: "Global explainer for the regularized discriminant analysis model on the beans data"
+#| fig.alt: "Global explainer for the regularized discriminant analysis model on the beans data. Almost all predictors have a significant contribution with shape factors one and four contributing the most. "
 
 ggplot_imp(vip_beans)
 ```
 
 ::: rmdwarning
-The measures of global feature importance that we see in Figure \@ref(fig:bean-explainer) incorporate the effects of all of the PLS components, but in terms of the original variables.
+The measures of global feature importance that we see in @fig-bean-explainer incorporate the effects of all of the PLS components, but in terms of the original variables.
 :::
 
-Figure \@ref(fig:bean-explainer) shows us that shape factors are among the most important features for predicting bean type, especially shape factor 4, a measure of solidity that takes into account the area $A$, major axis $L$, and minor axis $l$:
+@fig-bean-explainer shows us that shape factors are among the most important features for predicting bean type, especially shape factor 4, a measure of solidity that takes into account the area $A$, major axis $L$, and minor axis $l$:
 
 $$\text{SF4} = \frac{A}{\pi(L/2)(l/2)}$$
 
-We can see from Figure \@ref(fig:bean-explainer) that shape factor 1 (the ratio of the major axis to the area), the minor axis length, and roundness are the next most important bean characteristics for predicting bean variety.
+We can see from @fig-bean-explainer that shape factor 1 (the ratio of the major axis to the area), the minor axis length, and roundness are the next most important bean characteristics for predicting bean variety.
 
 ## Chapter Summary {#sec-explain-summary}
 
