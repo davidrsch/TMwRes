@@ -384,16 +384,16 @@ div.csl-indent {
 <div class="rmdnote">
 <p>Model stacking combines the predictions for multiple models of any type. For example, a logistic regression, classification tree, and support vector machine can be included in a stacking ensemble.</p>
 </div>
-<p>This chapter shows how to stack predictive models using the <span class="pkg">stacks</span> package. We’ll re-use the results from Chapter @ref(workflow-sets) where multiple models were evaluated to predict the compressive strength of concrete mixtures.</p>
+<p>This chapter shows how to stack predictive models using the <span class="pkg">stacks</span> package. We’ll re-use the results from <a href="15-workflow-sets.html">Chapter&nbsp;<span>15</span></a> where multiple models were evaluated to predict the compressive strength of concrete mixtures.</p>
 <p>The process of building a stacked ensemble is:</p>
 <ol type="1">
 <li>Assemble the training set of hold-out predictions (produced via resampling).</li>
 <li>Create a model to blend these predictions.</li>
 <li>For each member of the ensemble, fit the model on the original training set.</li>
 </ol>
-<p>In subsequent sections, we’ll describe this process. However, before proceeding, we’ll clarify some nomenclature for the variations of what “the model” can mean. This can quickly become an overloaded term when we are working on a complex modeling analysis! Let’s consider the multilayer perceptron (MLP) model (a.k.a. neural network) created in Chapter @ref(workflow-sets).</p>
+<p>In subsequent sections, we’ll describe this process. However, before proceeding, we’ll clarify some nomenclature for the variations of what “the model” can mean. This can quickly become an overloaded term when we are working on a complex modeling analysis! Let’s consider the multilayer perceptron (MLP) model (a.k.a. neural network) created in <a href="15-workflow-sets.html">Chapter&nbsp;<span>15</span></a>.</p>
 <p>In general, we’ll talk about an MLP model as the <em>type</em> of model. Linear regression and support vector machines are other model types.</p>
-<p>Tuning parameters are an important aspect of a model. Back in Chapter @ref(workflow-sets), the MLP model was tuned over 25 tuning parameter values. In the previous chapters, we’ve called these <em>candidate tuning parameter</em> values or <em>model configurations</em>. In literature on ensembling these have also been called the base models.</p>
+<p>Tuning parameters are an important aspect of a model. Back in <a href="15-workflow-sets.html">Chapter&nbsp;<span>15</span></a>, the MLP model was tuned over 25 tuning parameter values. In the previous chapters, we’ve called these <em>candidate tuning parameter</em> values or <em>model configurations</em>. In literature on ensembling these have also been called the base models.</p>
 <div class="rmdnote">
 <p>We’ll use the term <em>candidate members</em> to describe the possible model configurations (of all model types) that might be included in the stacking ensemble.</p>
 </div>
@@ -401,15 +401,16 @@ div.csl-indent {
 <section id="sec-data-stack" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="sec-data-stack">
 <span class="header-section-number">20.1</span> Creating the Training Set for Stacking</h2>
 <p>The first step for building a stacked ensemble relies on the assessment set predictions from a resampling scheme with multiple splits. For each data point in the training set, stacking requires an out-of-sample prediction of some sort. For regression models, this is the predicted outcome. For classification models, the predicted classes or probabilities are available for use, although the latter contains more information than the hard class predictions. For a set of models, a data set is assembled where rows are the training set samples and columns are the out-of-sample predictions from the set of multiple models.</p>
-<p>Back in Chapter @ref(workflow-sets), we used five repeats of 10-fold cross-validation to resample the data. This resampling scheme generates five assessment set predictions for each training set sample. Multiple out-of-sample predictions can occur in several other resampling techniques (e.g., bootstrapping). For the purpose of stacking, any replicate predictions for a data point in the training set are averaged so that there is a single prediction per training set sample per candidate member.</p>
+<p>Back in <a href="15-workflow-sets.html">Chapter&nbsp;<span>15</span></a>, we used five repeats of 10-fold cross-validation to resample the data. This resampling scheme generates five assessment set predictions for each training set sample. Multiple out-of-sample predictions can occur in several other resampling techniques (e.g., bootstrapping). For the purpose of stacking, any replicate predictions for a data point in the training set are averaged so that there is a single prediction per training set sample per candidate member.</p>
 <div class="rmdnote">
 <p>Simple validation sets can also be used with stacking since tidymodels considers this to be a single resample.</p>
 </div>
-<p>For the concrete example, the training set used for model stacking has columns for all of the candidate tuning parameter results. Table @ref(tab:ensemble-candidate-preds) presents the first six rows and selected columns.</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-data-example_3cbffbfe9fc410b5e5eb54eae31916e1">
+<p>For the concrete example, the training set used for model stacking has columns for all of the candidate tuning parameter results. <a href="#tbl-ensemble-candidate-preds">Table&nbsp;<span>20.1</span></a> presents the first six rows and selected columns.</p>
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/tbl-ensemble-candidate-preds_5bcca83b1787fdf6be68fb86b84eee20">
 <div class="cell-output-display">
+<div id="tbl-ensemble-candidate-preds" class="anchored">
 <table class="table table-striped table-sm small" data-quarto-postprocess="true">
-<caption>Predictions from candidate tuning parameter configurations.</caption>
+<caption>Table&nbsp;20.1: Predictions from candidate tuning parameter configurations.</caption>
 <colgroup>
 <col style="width: 12%">
 <col style="width: 12%">
@@ -502,6 +503,9 @@ Ensemble Candidate Predictions
 </tbody>
 </table>
 </div>
+
+
+</div>
 </div>
 <p>There is a single column for the bagged tree model since it has no tuning parameters. Also, recall that MARS was tuned over a single parameter (the product degree) with two possible configurations, so this model is represented by two columns. Most of the other models have 25 corresponding columns, as shown for Cubist in this example.</p>
 <div class="rmdwarning">
@@ -509,7 +513,7 @@ Ensemble Candidate Predictions
 </div>
 <p>To summarize where we are so far, the first step to stacking is to assemble the assessment set predictions for the training set from each candidate model. We can use these assessment set predictions to move forward and build a stacked ensemble.</p>
 <p>To start ensembling with the <span class="pkg">stacks</span> package, create an empty data stack using the <code><a href="https://stacks.tidymodels.org/reference/stacks.html">stacks()</a></code> function and then add candidate models. Recall that we used workflow sets to fit a wide variety of models to these data. We’ll use the racing results:</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-race_99972d4f2f63f21f4a9891cdbba088fa">
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-race_b69b3c5476a1ceb17a67e7f46d359df6">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">race_results</span></span>
 <span><span class="co">## # A workflow set/tibble: 12 × 4</span></span>
 <span><span class="co">##   wflow_id    info             option    result   </span></span>
@@ -523,7 +527,7 @@ Ensemble Candidate Predictions
 <span><span class="co">## # ℹ 6 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In this case, our syntax is:</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-data-stack_037fd033bd7e9835887d6fc161e5e477">
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-data-stack_954077dca446878af024ec52e09fda68">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stacks.tidymodels.org/">stacks</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -548,7 +552,7 @@ Ensemble Candidate Predictions
 <span><span class="co">## #   full_quad_KNN: 1 model configuration</span></span>
 <span><span class="co">## # Outcome: compressive_strength (numeric)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Recall that racing methods (Section @ref(racing)) are more efficient since they might not evaluate all configurations on all resamples. Stacking requires that all candidate members have the complete set of resamples. <code><a href="https://stacks.tidymodels.org/reference/add_candidates.html">add_candidates()</a></code> includes only the model configurations that have complete results.</p>
+<p>Recall that racing methods (<a href="13-grid-search.html#sec-racing"><span>Section&nbsp;13.5.5</span></a>) are more efficient since they might not evaluate all configurations on all resamples. Stacking requires that all candidate members have the complete set of resamples. <code><a href="https://stacks.tidymodels.org/reference/add_candidates.html">add_candidates()</a></code> includes only the model configurations that have complete results.</p>
 <div class="rmdnote">
 <p>Why use the racing results instead of the full set of candidate models contained in <code>grid_results</code>? Either can be used. We found better performance for these data using the racing results. This might be due to the racing method pre-selecting the best model(s) from the larger grid.</p>
 </div>
@@ -562,43 +566,43 @@ Ensemble Candidate Predictions
 </ul>
 <p><span class="citation" data-cites="breiman1996stacked">Breiman (<a href="references.html#ref-breiman1996stacked" role="doc-biblioref">1996b</a>)</span> also suggested that, when a linear model is used to blend the predictions, it might be helpful to constrain the blending coefficients to be nonnegative. We have generally found this to be good advice and it is the default for the <span class="pkg">stacks</span> package (but it can be changed via an optional argument).</p>
 <p>Since our outcome is numeric, linear regression is used for the metamodel. Fitting the metamodel is as straightforward as using:</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-initial-blend_93fbe3669824cce500a4662118871477">
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-initial-blend_7e4d13223ca59ac9aaca0c8b70961179">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2001</span><span class="op">)</span></span>
 <span><span class="va">ens</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stacks.tidymodels.org/reference/blend_predictions.html">blend_predictions</a></span><span class="op">(</span><span class="va">concrete_stack</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This evaluates the meta-learning model over a predefined grid of lasso penalty values and uses an internal resampling method to determine the best value. The <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method, shown in Figure @ref(fig:stacking-autoplot), helps us understand if the default penalization method was sufficient:</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-initial-blend-plot_621a5415bd5b04a308499a913d0e1661">
+<p>This evaluates the meta-learning model over a predefined grid of lasso penalty values and uses an internal resampling method to determine the best value. The <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method, shown in <a href="#fig-stacking-autoplot">Figure&nbsp;<span>20.1</span></a>, helps us understand if the default penalization method was sufficient:</p>
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-initial-blend-plot_c61ba53afcecd4bfab9dabb8e719c8aa">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">ens</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/stacking-autoplot_37f8b1b77ef552d02c62facd7a2baafe">
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/fig-stacking-autoplot_a6e00aa7a3e85a72f6c8bfe94b805921">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/stacking-autoplot-1.png" class="img-fluid figure-img" alt="The results of using the `autoplot()` method on the blended stacks object." width="672"></p>
-<figcaption class="figure-caption">Results of using the <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method on the blended stacks object</figcaption></figure>
+<div id="fig-stacking-autoplot" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="20-ensemble-models_files/figure-html/fig-stacking-autoplot-1.png" class="img-fluid figure-img" alt="The results of using the `autoplot()` method on the blended stacks object." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;20.1: Results of using the <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method on the blended stacks object</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The top panel of Figure @ref(fig:stacking-autoplot) shows the average number of candidate ensemble members retained by the meta-learning model. We can see that the number of members is fairly constant and, as it increases, the RMSE also increases.</p>
+<p>The top panel of <a href="#fig-stacking-autoplot">Figure&nbsp;<span>20.1</span></a> shows the average number of candidate ensemble members retained by the meta-learning model. We can see that the number of members is fairly constant and, as it increases, the RMSE also increases.</p>
 <p>The default range may not have served us well here. To evaluate the meta-learning model with larger penalties, let’s pass an additional option:</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-second-blend_219051e0ff2e9f9c29ad3e13cc28155c">
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-second-blend_43416a686b925c7a6cdb1a1c587e5c85">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2002</span><span class="op">)</span></span>
 <span><span class="va">ens</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stacks.tidymodels.org/reference/blend_predictions.html">blend_predictions</a></span><span class="op">(</span><span class="va">concrete_stack</span>, penalty <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">0.5</span>, length <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now, in Figure @ref(fig:stacking-autoplot-redo), we see a range where the ensemble model becomes worse than with our first blend (but not by much). The <span class="math inline">\(R^2\)</span> values increase with more members and larger penalties.</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-autoplot-calc_a7e7983fd691739d278b56c186f6b077">
+<p>Now, in <a href="#fig-stacking-autoplot-redo">Figure&nbsp;<span>20.2</span></a>, we see a range where the ensemble model becomes worse than with our first blend (but not by much). The <span class="math inline">\(R^2\)</span> values increase with more members and larger penalties.</p>
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-autoplot-calc_ee9a2e8c837e8ae68ed79b26bc84fbd9">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">ens</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/stacking-autoplot-redo_4c702fe15031c17a11229f36ac31ca57">
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/fig-stacking-autoplot-redo_1e4702636839e47adc0cb7296e9c385f">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/stacking-autoplot-redo-1.png" class="img-fluid figure-img" alt="The results of using the `autoplot()` method on the updated blended stacks object." width="672"></p>
-<figcaption class="figure-caption">The results of using the <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method on the updated blended stacks object</figcaption></figure>
+<div id="fig-stacking-autoplot-redo" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="20-ensemble-models_files/figure-html/fig-stacking-autoplot-redo-1.png" class="img-fluid figure-img" alt="The results of using the `autoplot()` method on the updated blended stacks object." width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;20.2: The results of using the <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method on the updated blended stacks object</figcaption></figure>
 </div>
 </div>
 </div>
 <p>When blending predictions using a regression model, it is common to constrain the blending parameters to be nonnegative. For these data, this constraint has the effect of eliminating many of the potential ensemble members; even at fairly low penalties, the ensemble is limited to a fraction of the original eighteen.</p>
 <p>The penalty value associated with the smallest RMSE was 0.01. Printing the object shows the details of the meta-learning model:</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-second-blend-print_727b27573166f6297aa33e836df6bb00">
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-second-blend-print_25fa89ad9d8ff9c218f9a038e15a3ac3">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ens</span></span>
 <span><span class="co">## ── A stacked ensemble model ─────────────────────────────────────</span></span>
 <span><span class="co">## </span></span>
@@ -622,23 +626,23 @@ Ensemble Candidate Predictions
 <span><span class="co">## </span></span>
 <span><span class="co">## Members have not yet been fitted with `fit_members()`.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The regularized linear regression meta-learning model contained five blending coefficients across five types of models. The <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method can be used again to show the contributions of each model type, to produce Figure @ref(fig:blending-weights).</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-blending-weights_5ae0c335aa466b17e02ea63c2125ac15">
+<p>The regularized linear regression meta-learning model contained five blending coefficients across five types of models. The <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method can be used again to show the contributions of each model type, to produce <a href="#fig-blending-weights">Figure&nbsp;<span>20.3</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-blending-weights_e28c16cf638ce2f666e2f932e29c9772">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">ens</span>, <span class="st">"weights"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_text</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">weight</span> <span class="op">+</span> <span class="fl">0.01</span>, label <span class="op">=</span> <span class="va">model</span><span class="op">)</span>, hjust <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">lims</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.01</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/blending-weights_7ea45479b95916169b51b5f2f2ede25c">
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/fig-blending-weights_d300184506b672e799d76fcd9348557d">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure"><p><img src="figures/blending-weights-1.png" class="img-fluid figure-img" alt="fig.alt = &quot;Blending coefficients for the stacking ensemble. The boosted tree and neural network models have the largest effects on the ensemble predictions.&quot;" width="672"></p>
-<figcaption class="figure-caption">Blending coefficients for the stacking ensemble</figcaption></figure>
+<div id="fig-blending-weights" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure"><p><img src="20-ensemble-models_files/figure-html/fig-blending-weights-1.png" class="img-fluid figure-img" alt="blending_alt" width="672"></p>
+<figcaption class="figure-caption">Figure&nbsp;20.3: Blending coefficients for the stacking ensemble</figcaption></figure>
 </div>
 </div>
 </div>
 <p>The boosted tree and neural network models have the largest contributions to the ensemble. For this ensemble, the outcome is predicted with the equation:</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-equation_15e1512b2b882a24cf44143b94a2cb65">
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-equation_30060f5a9dc4938afe50c2c42a688fc0">
 <p><span class="math display">\[\begin{align}
 \text{ensemble prediction} &amp;=-0.62 \\
     +&amp;0.71 \times \text{boost tree prediction} \notag \\
@@ -653,7 +657,7 @@ Ensemble Candidate Predictions
 <span class="header-section-number">20.3</span> Fit the Member Models</h2>
 <p>The ensemble contains five candidate members, and we now know how their predictions can be blended into a final prediction for the ensemble. However, these individual model fits have not yet been created. To be able to use the stacking model, five additional model fits are required. These use the entire training set with the original predictors.</p>
 <p>The five models to be fit are:</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-show-members_ae951278b36ab805f287f2b2407d0c1a">
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-show-members_e58167a95049fa46aef82a237853de5d">
 <ul>
 <li><p>boosting: number of trees = 1800, minimal node size = 25, tree depth = 4, learning rate = 0.109, minimum loss reduction = 9.84e-10, and proportion of observations sampled = 0.85</p></li>
 <li><p>Cubist: number of committees = 98 and number of nearest neighbors = 2</p></li>
@@ -663,14 +667,14 @@ Ensemble Candidate Predictions
 </ul>
 </div>
 <p>The <span class="pkg">stacks</span> package has a function, <code><a href="https://stacks.tidymodels.org/reference/fit_members.html">fit_members()</a></code>, that trains and returns these models:</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-fit-members_1ddb001a976c11f4a294956ade4e5f07">
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-fit-members_2714c93d9fab59933c8d181256c0446e">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ens</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stacks.tidymodels.org/reference/fit_members.html">fit_members</a></span><span class="op">(</span><span class="va">ens</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This updates the stacking object with the fitted workflow objects for each member. At this point, the stacking model can be used for prediction.</p>
 </section><section id="test-set-results" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="test-set-results">
 <span class="header-section-number">20.4</span> Test Set Results</h2>
-<p>Since the blending process used resampling, we can estimate that the ensemble with five members had an estimated RMSE of 4.09. Recall from Chapter @ref(workflow-sets) that the best boosted tree had a test set RMSE of 3.46. How will the ensemble model compare on the test set? We can <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> to find out:</p>
-<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-test-set_6ee28abd6f9f2b926da0600c4e7f2c21">
+<p>Since the blending process used resampling, we can estimate that the ensemble with five members had an estimated RMSE of 4.09. Recall from <a href="15-workflow-sets.html">Chapter&nbsp;<span>15</span></a> that the best boosted tree had a test set RMSE of 3.46. How will the ensemble model compare on the test set? We can <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> to find out:</p>
+<div class="cell" data-layout-align="center" data-hash="20-ensemble-models_cache/html/ensembles-test-set_7669246b644b1f3439327f86657dab75">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">reg_metrics</span> <span class="op">&lt;-</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">rmse</span>, <span class="va">rsq</span><span class="op">)</span></span>
 <span><span class="va">ens_test_pred</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">ens</span>, <span class="va">concrete_test</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
