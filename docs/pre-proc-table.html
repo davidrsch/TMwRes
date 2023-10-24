@@ -340,7 +340,7 @@ div.csl-indent {
 
 </header><p>The type of preprocessing needed depends on the type of model being fit. For example, models that use distance functions or dot products should have all of their predictors on the same scale so that distance is measured appropriately.</p>
 <p>To learn more about each of these models, and others that might be available, see <a href="https://www.tidymodels.org/find/parsnip/" class="uri">https://www.tidymodels.org/find/parsnip/</a>.</p>
-<p>This Appendix provides recommendations for baseline levels of preprocessing that are needed for various model functions. In Table @ref(tab:preprocessing), the preprocessing methods are categorized as:</p>
+<p>This Appendix provides recommendations for baseline levels of preprocessing that are needed for various model functions. In <a href="#tbl-preprocessing">Table&nbsp;<span>A.1</span></a>, the preprocessing methods are categorized as:</p>
 <ul>
 <li><p><strong>dummy</strong>: Do qualitative predictors require a numeric encoding (e.g., via dummy variables or other methods)?</p></li>
 <li><p><strong>zv</strong>: Should columns with a single unique value be removed?</p></li>
@@ -349,11 +349,12 @@ div.csl-indent {
 <li><p><strong>normalize</strong>: Should predictors be centered and scaled?</p></li>
 <li><p><strong>transform</strong>: Is it helpful to transform predictors to be more symmetric?</p></li>
 </ul>
-<p>The information in Table @ref(tab:preprocessing) is not exhaustive and somewhat depends on the implementation. For example, as noted below the table, some models may not require a particular preprocessing operation but the implementation may require it. In the table, ✔ indicates that the method is required for the model and × indicates that it is not. The ◌ symbol means that the model <em>may</em> be helped by the technique but it is not required.</p>
-<div class="cell" data-layout-align="center">
+<p>The information in <a href="#tbl-preprocessing">Table&nbsp;<span>A.1</span></a> is not exhaustive and somewhat depends on the implementation. For example, as noted below the table, some models may not require a particular preprocessing operation but the implementation may require it. In the table, ✔ indicates that the method is required for the model and × indicates that it is not. The ◌ symbol means that the model <em>may</em> be helped by the technique but it is not required.</p>
+<div class="cell" data-layout-align="center" data-hash="pre-proc-table_cache/html/tbl-preprocessing_fceadce8628b2d8e8d48f1f45b915666">
 <div class="cell-output-display">
+<div id="tbl-preprocessing" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Preprocessing methods for different models.</caption>
+<caption>Table&nbsp;A.1: Preprocessing methods for different models.</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">dummy</th>
@@ -573,6 +574,9 @@ div.csl-indent {
 </tr>
 </tbody>
 </table>
+</div>
+
+
 </div>
 </div>
 <p>Footnotes:</p>
