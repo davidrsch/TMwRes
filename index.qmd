@@ -1,24 +1,24 @@
-# Hello World {.unnumbered}
+# Hola Mundo {.unnumbered}
 
-Welcome to [*Tidy Modeling with R*](https://amzn.to/35Hn96s)! This book is a guide to using a collection of software in the R programming language for model building called `r pkg(tidymodels)`, and it has two main goals:
+¡Bienvenido a [*Tidy Modeling con R*](https://amzn.to/35Hn96s)! Este libro es una guía para utilizar una colección de software en el lenguaje de programación R para la construcción de modelos llamada `r pkg(tidymodels)` y tiene dos objetivos principales:
 
--   First and foremost, this book provides a practical introduction to **how to use** these specific R packages to create models. We focus on a dialect of R called [the tidyverse](https://www.tidyverse.org/) that is designed with a consistent, human-centered philosophy, and demonstrate how the tidyverse and the `r pkg(tidymodels)` packages can be used to produce high quality statistical and machine learning models.
+-   En primer lugar, este libro proporciona una introducción práctica a **cómo usar** estos paquetes de R específicos para crear modelos. Nos centramos en un dialecto de R llamado [tidyverse](https://www.tidyverse.org/) que son un conjunto de  paquetes diseñados con una filosofía consistente y centrada en el ser humano, y demostramos los paquetes que forman parte de tidyverse y `r pkg(tidymodels)` se pueden utilizar para producir modelos estadísticos y de aprendizaje automático de alta calidad.
 
--   Second, this book will show you how to **develop good methodology and statistical practices**. Whenever possible, our software, documentation, and other materials attempt to prevent common pitfalls.
+-   En segundo lugar, este libro le mostrará cómo **desarrollar buenas metodologías y prácticas estadísticas**. Siempre que sea posible, nuestro software, documentación y otros materiales intentan evitar errores comunes.
 
-In [Chapter @sec-software-modeling], we outline a taxonomy for models and highlight what good software for modeling is like. The ideas and syntax of the tidyverse, which we introduce (or review) in [Chapter @sec-tidyverse], are the basis for the tidymodels approach to these challenges of methodology and practice. [Chapter @sec-base-r] provides a quick tour of conventional base R modeling functions and summarizes the unmet needs in that area.
+En el [Capítulo @sec-software-modeling], describimos una taxonomía para modelos y destacamos cómo es un buen software para modelado. Las ideas y la sintaxis del tidyverse, que presentamos (o revisamos) en el [Capítulo @sec-tidyverse], son la base del enfoque de tidymodels para estos desafíos de metodología y práctica. El [Capítulo @sec-base-r] proporciona un recorrido rápido por las funciones de modelado convencionales de R base  y resume las necesidades no satisfechas en esa área.
 
-After that, this book is separated into parts, starting with the basics of modeling with tidy data principles. Chapters [-@sec-ames] through [-@sec-performance] introduces an example data set on house prices and demonstrates how to use the fundamental tidymodels packages: `r pkg(recipes)`, `r pkg(parsnip)`, `r pkg(workflows)`, `r pkg(yardstick)`, and others.
+Después de eso, este libro se divide en partes, comenzando con los conceptos básicos del modelado con principios de datos ordenados. Los capítulos [-@sec-ames] a [-@sec-performance] presentan un conjunto de datos de ejemplo sobre los precios de la vivienda y demuestran cómo utilizar los paquetes fundamentales de tidymodels: `r pkg(recipes)`, `r pkg(parsnip)`, `r pkg(workflows)`, `r pkg(yardstick)` y otros.
 
-The next part of the book moves forward with more details on the process of creating an effective model. Chapters [-@sec-resampling] through [-@sec-workflow-sets] focus on creating good estimates of performance as well as tuning model hyperparameters.
+La siguiente parte del libro avanza con más detalles sobre el proceso de creación de un modelo eficaz. Los capítulos [-@sec-resampling] a [-@sec-workflow-sets] se centran en crear buenas estimaciones de rendimiento, así como en ajustar los hiperparámetros del modelo.
 
-Finally, the last section of this book, Chapters [-@sec-dimensionality] through [-@sec-inferential], covers other important topics for model building. We discuss more advanced feature engineering approaches like dimensionality reduction and encoding high cardinality predictors, as well as how to answer questions about why a model makes certain predictions and when to trust your model predictions.
+Finalmente, la última sección de este libro, Capítulos [-@sec-dimensionality] a [-@sec-inferential], cubre otros temas importantes para la construcción de modelos. Analizamos enfoques de ingeniería de características más avanzados, como la reducción de dimensionalidad y la codificación de predictores de alta cardinalidad, así como también cómo responder preguntas sobre por qué un modelo hace ciertas predicciones y cuándo confiar en las predicciones de su modelo.
 
-We do not assume that readers have extensive experience in model building and statistics. Some statistical knowledge is required, such as random sampling, variance, correlation, basic linear regression, and other topics that are usually found in a basic undergraduate statistics or data analysis course. We do assume that the reader is at least slightly familiar with dplyr, ggplot2, and the `%>%` "pipe" operator in R, and is interested in applying these tools to modeling. For users who don't yet have this background R knowledge, we recommend books such as [*R for Data Science*](https://r4ds.had.co.nz/) by Wickham and Grolemund (2016). Investigating and analyzing data are an important part of any model process.
+No asumimos que los lectores tengan una amplia experiencia en la construcción de modelos y estadísticas. Se requieren algunos conocimientos estadísticos, como muestreo aleatorio, varianza, correlación, regresión lineal básica y otros temas que generalmente se encuentran en un curso básico de estadística o análisis de datos de pregrado. Suponemos que el lector está al menos ligeramente familiarizado con dplyr, ggplot2 y el operador "pipe" `%>%` en R, y que está interesado en aplicar estas herramientas al modelado. Para los usuarios que aún no tienen estos conocimientos básicos de R, recomendamos libros como [*R for Data Science*](https://r4ds.had.co.nz/) de Wickham y Grolemund (2016). La investigación y el análisis de datos son una parte importante de cualquier proceso de modelo.
 
-This book is not intended to be a comprehensive reference on modeling techniques; we suggest other resources to learn more about the statistical methods themselves. For general background on the most common type of model, the linear model, we suggest @fox08. For predictive models, @apm and @fes are good resources. For machine learning methods, @Goodfellow is an excellent (but formal) source of information. In some cases, we do describe the models we use in some detail, but in a way that is less mathematical, and hopefully more intuitive.
+Este libro no pretende ser una referencia exhaustiva sobre técnicas de modelado; sugerimos otros recursos para aprender más sobre los propios métodos estadísticos. Para obtener información general sobre el tipo de modelo más común, el modelo lineal, sugerimos @fox08. Para modelos predictivos, @apm y @fes son buenos recursos. Para los métodos de aprendizaje automático, @Goodfellow es una fuente de información excelente (pero formal). En algunos casos, describimos los modelos que utilizamos con cierto detalle, pero de una manera menos matemática y, con suerte, más intuitiva.
 
-## Acknowledgments {.unnumbered}
+## Reconocimientos {.unnumbered}
 
 ```{r, eval = FALSE, echo = FALSE}
 library(tidyverse)
@@ -48,9 +48,9 @@ contribs_all <- bind_rows(contribs_old, contribs_new) %>% arrange(login)
 write_csv(contribs_all, "contributors.csv")
 ```
 
-We are so thankful for the contributions, help, and perspectives of people who have supported us in this project. There are several we would like to thank in particular.
+Estamos muy agradecidos por las contribuciones, la ayuda y las perspectivas de las personas que nos han apoyado en este proyecto. Hay varios a los que nos gustaría agradecer en particular.
 
-We would like to thank our RStudio colleagues on the `r pkg(tidymodels)` team (Davis Vaughan, Hannah Frick, Emil Hvitfeldt, and Simon Couch) as well as the rest of our coworkers on the RStudio open source team. Thank you to Desirée De Leon for the site design of the online work. We would also like to thank our technical reviewers, Chelsea Parlett-Pelleriti and Dan Simpson, for their detailed, insightful feedback that substantively improved this book, as well as our editors, Nicole Tache and Rita Fernando, for their perspective and guidance during the process of writing and publishing.
+Nos gustaría agradecer a nuestros colegas de RStudio en el equipo `r pkg(tidymodels)` (Davis Vaughan, Hannah Frick, Emil Hvitfeldt y Simon Couch), así como al resto de nuestros compañeros de trabajo en el equipo de código abierto de RStudio. Gracias a Desirée De Leon por el diseño del sitio del trabajo en línea. También nos gustaría agradecer a nuestros revisores técnicos, Chelsea Parlett-Pelleriti y Dan Simpson, por sus comentarios detallados y perspicaces que mejoraron sustancialmente este libro, así como a nuestros editores, Nicole Tache y Rita Fernando, por su perspectiva y orientación durante el proceso. de escritura y publicación.
 
 ```{r, results = "asis", echo = FALSE, message = FALSE}
 library(dplyr)
@@ -61,12 +61,12 @@ contributors <- contributors %>%
     login = paste0("\\@", login),
     desc = ifelse(is.na(name), login, paste0(name, " (", login, ")"))
   )
-cat("This book was written in the open, and multiple people contributed via pull requests or issues. Special thanks goes to the ", xfun::n2w(nrow(contributors)), " people who contributed via GitHub pull requests (in alphabetical order by username): ", sep = "")
+cat("Este libro se escribió abiertamente y varias personas contribuyeron a través de solicitudes de extracción o problemas. Un agradecimiento especial para las ", xfun::n2w(nrow(contributors)), " personas que contribuyeron a través de pull requests de GitHub (en orden alfabético por nombre de usuario): ", sep = "")
 cat(paste0(contributors$desc, collapse = ", "))
 cat(".\n")
 ```
 
-## Using Code Examples {.unnumbered}
+## Usando ejemplos de código {.unnumbered}
 
 ```{r pkg-list, echo = FALSE}
 deps <- desc::desc_get_deps()
@@ -85,6 +85,14 @@ df <- tibble::tibble(
 pkg_info <- knitr::combine_words(df$info)
 ```
 
-This book was written with [RStudio](http://www.rstudio.com/ide/) using [bookdown](http://bookdown.org/). The [website](https://tmwr.org) is hosted via [Netlify](http://netlify.com/), and automatically built after every push by [GitHub Actions](https://help.github.com/actions). The complete source is available on [GitHub](https://github.com/tidymodels/TMwR). We generated all plots in this book using [ggplot2](https://ggplot2.tidyverse.org/) and its black and white theme (`theme_bw()`).
+Este libro fue escrito con [RStudio](http://www.rstudio.com/ide/) usando [bookdown](http://bookdown.org/). El [sito web](https://tmwr.org) está alojado a través de [Netlify](http://netlify.com/), y construido automáticamente después de cada push por [GitHub Actions](https://help.github.com/actions). La fuente completa está disponible en [GitHub](https://github.com/tidymodels/TMwR). Generamos todos los gráficos de este libro usando [ggplot2](https://ggplot2.tidyverse.org/) y su tema blanco y negro (`theme_bw()`).
 
-This version of the book was built with `r R.version.string`, [pandoc](https://pandoc.org/) version `r rmarkdown::pandoc_version()`, and the following packages: `r pkg_info`.
+Esta versión del libro fue construida con `r R.version.string`, [pandoc](https://pandoc.org/) versión `r rmarkdown::pandoc_version()`, y los siguientes paquetes: `r pkg_info`.
+
+## Sobre la traducción
+
+<a href="https://amzn.to/35Hn96s"><img src="logo.png" alt="Cover image" width="285" height="285" align="right" style="margin: 0 1em 0 1em"/></a> Esta traducción de "Modelado Ordenado con R" es un proyecto personal de [David Díaz Rodríguez](https://github.com/davidrsch) con el objetivo de facilitar el estudio de construcción de modelos mediante el uso de R, tanto al propio traductor como a todas aquellas personas de habla hispana que deseen aprender sobre este tema.
+
+Señalar que esta es una traducción textual del libro por lo que cuando los autores se refieren así mismo en primera persona, serán Max Kuhn & Julia Slige no el traductor.
+
+La traducción fue realizada usando Google Translate y fueron corregidos algunos errores gramaticales y de coherencia. Si detecta algún error relacionado con el contenido de la traducción, siéntase libre de abrir un issue o un pull request en este [repositorio](https://github.com/davidrsch/TMwRes).
