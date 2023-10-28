@@ -16,10 +16,21 @@ book:
       Este libro fue creado usando <a href="https://quarto.org/">Quarto</a>.
   cover-image: images/cover.png
   favicon: images/cover.png
-  site-url: https://www.tmwr.org/
-  repo-url: https://github.com/davidrsch/TMwRes
-  repo-branch: main
-  repo-actions: [edit, issue]
+  
+  author: 
+    - name: Max Kuhn
+    - name: Julia Silge
+  search: true
+  sidebar: 
+    pinned: true
+    tools: 
+      - icon: github
+        menu: 
+          - text: Original
+            url: https://github.com/tidymodels/TMwR
+          - text: Traducción
+            url: https://github.com/davidrsch/TMwRes
+  page-navigation: true
   chapters:
     - index.qmd
 
@@ -61,6 +72,7 @@ book:
     - references.qmd
 
 bibliography: TMwR.bib
+lang: es
 
 format:
   html:
@@ -69,6 +81,7 @@ format:
     cache: true
     author-meta: "Max Kuhn, y Julia Silge"
     callout-appearance: simple
+    include-after-body: [ddrsch_script.html]
 
 editor: visual
 

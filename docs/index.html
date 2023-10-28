@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
@@ -40,7 +40,6 @@ div.csl-indent {
 }</style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -64,16 +63,16 @@ div.csl-indent {
   "type": "textbox",
   "limit": 20,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
   }
 }</script><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
@@ -83,11 +82,11 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Hello World</a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Hola Mundo</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -99,8 +98,22 @@ div.csl-indent {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/davidrsch/TMwRes" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
   </div>
@@ -110,7 +123,7 @@ div.csl-indent {
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
+        <div id="quarto-search" class="" title="Buscar"></div>
         </div>
         </div>
     <div class="sidebar-menu-container"> 
@@ -118,14 +131,14 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Hello World</span></a>
+ <span class="menu-text">Hola Mundo</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
  <span class="menu-text">INTRODUCTION</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -154,7 +167,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
  <span class="menu-text">MODELING BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -201,7 +214,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
  <span class="menu-text">TOOLS FOR CREATING EFFECTIVE MODELS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -248,7 +261,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
  <span class="menu-text">BEYOND THE BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -294,8 +307,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -319,17 +332,18 @@ div.csl-indent {
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
 <li>
-<a href="#hello-world" id="toc-hello-world" class="nav-link active" data-scroll-target="#hello-world">Hello World</a>
+<a href="#hola-mundo" id="toc-hola-mundo" class="nav-link active" data-scroll-target="#hola-mundo">Hola Mundo</a>
   <ul class="collapse">
-<li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
-  <li><a href="#using-code-examples" id="toc-using-code-examples" class="nav-link" data-scroll-target="#using-code-examples">Using Code Examples</a></li>
+<li><a href="#reconocimientos" id="toc-reconocimientos" class="nav-link" data-scroll-target="#reconocimientos">Reconocimientos</a></li>
+  <li><a href="#usando-ejemplos-de-c%C3%B3digo" id="toc-usando-ejemplos-de-código" class="nav-link" data-scroll-target="#usando-ejemplos-de-c%C3%B3digo">Usando ejemplos de código</a></li>
+  <li><a href="#sobre-la-traducci%C3%B3n" id="toc-sobre-la-traducción" class="nav-link" data-scroll-target="#sobre-la-traducci%C3%B3n">Sobre la traducción</a></li>
   </ul>
 </li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
@@ -340,6 +354,13 @@ div.csl-indent {
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Autores/as</div>
+    <div class="quarto-title-meta-contents">
+             <p>Max Kuhn </p>
+             <p>Julia Silge </p>
+          </div>
+  </div>
     
   
     
@@ -347,27 +368,31 @@ div.csl-indent {
   
 
 </header>
-<section id="hello-world" class="level1 unnumbered"><h1 class="unnumbered">Hello World</h1><p><img src="images/cover.png" title="Modelado Ordenado con R" class="quarto-cover-image img-fluid"></p>
-<p>Welcome to <a href="https://amzn.to/35Hn96s"><em>Tidy Modeling with R</em></a>! This book is a guide to using a collection of software in the R programming language for model building called <span class="pkg">tidymodels</span>, and it has two main goals:</p>
+<section id="hola-mundo" class="level1 unnumbered"><h1 class="unnumbered">Hola Mundo</h1><p><img src="images/cover.png" title="Modelado Ordenado con R" class="quarto-cover-image img-fluid"></p>
+<p>¡Bienvenido a <a href="https://amzn.to/35Hn96s"><em>Tidy Modeling con R</em></a>! Este libro es una guía para utilizar una colección de software en el lenguaje de programación R para la construcción de modelos llamada <span class="pkg">tidymodels</span> y tiene dos objetivos principales:</p>
 <ul>
-<li><p>First and foremost, this book provides a practical introduction to <strong>how to use</strong> these specific R packages to create models. We focus on a dialect of R called <a href="https://www.tidyverse.org/">the tidyverse</a> that is designed with a consistent, human-centered philosophy, and demonstrate how the tidyverse and the <span class="pkg">tidymodels</span> packages can be used to produce high quality statistical and machine learning models.</p></li>
-<li><p>Second, this book will show you how to <strong>develop good methodology and statistical practices</strong>. Whenever possible, our software, documentation, and other materials attempt to prevent common pitfalls.</p></li>
+<li><p>En primer lugar, este libro proporciona una introducción práctica a <strong>cómo usar</strong> estos paquetes de R específicos para crear modelos. Nos centramos en un dialecto de R llamado <a href="https://www.tidyverse.org/">tidyverse</a> que son un conjunto de paquetes diseñados con una filosofía consistente y centrada en el ser humano, y demostramos los paquetes que forman parte de tidyverse y <span class="pkg">tidymodels</span> se pueden utilizar para producir modelos estadísticos y de aprendizaje automático de alta calidad.</p></li>
+<li><p>En segundo lugar, este libro le mostrará cómo <strong>desarrollar buenas metodologías y prácticas estadísticas</strong>. Siempre que sea posible, nuestro software, documentación y otros materiales intentan evitar errores comunes.</p></li>
 </ul>
-<p>In <a href="01-software-modeling.html">Chapter&nbsp;<span>1</span></a>, we outline a taxonomy for models and highlight what good software for modeling is like. The ideas and syntax of the tidyverse, which we introduce (or review) in <a href="02-tidyverse.html">Chapter&nbsp;<span>2</span></a>, are the basis for the tidymodels approach to these challenges of methodology and practice. <a href="03-base-r.html">Chapter&nbsp;<span>3</span></a> provides a quick tour of conventional base R modeling functions and summarizes the unmet needs in that area.</p>
-<p>After that, this book is separated into parts, starting with the basics of modeling with tidy data principles. Chapters <a href="04-ames.html"><span>4</span></a> through <a href="09-judging-model-effectiveness.html"><span>9</span></a> introduces an example data set on house prices and demonstrates how to use the fundamental tidymodels packages: <span class="pkg">recipes</span>, <span class="pkg">parsnip</span>, <span class="pkg">workflows</span>, <span class="pkg">yardstick</span>, and others.</p>
-<p>The next part of the book moves forward with more details on the process of creating an effective model. Chapters <a href="10-resampling.html"><span>10</span></a> through <a href="15-workflow-sets.html"><span>15</span></a> focus on creating good estimates of performance as well as tuning model hyperparameters.</p>
-<p>Finally, the last section of this book, Chapters <a href="16-dimensionality-reduction.html"><span>16</span></a> through <a href="21-inferential-analysis.html"><span>21</span></a>, covers other important topics for model building. We discuss more advanced feature engineering approaches like dimensionality reduction and encoding high cardinality predictors, as well as how to answer questions about why a model makes certain predictions and when to trust your model predictions.</p>
-<p>We do not assume that readers have extensive experience in model building and statistics. Some statistical knowledge is required, such as random sampling, variance, correlation, basic linear regression, and other topics that are usually found in a basic undergraduate statistics or data analysis course. We do assume that the reader is at least slightly familiar with dplyr, ggplot2, and the <code>%&gt;%</code> “pipe” operator in R, and is interested in applying these tools to modeling. For users who don’t yet have this background R knowledge, we recommend books such as <a href="https://r4ds.had.co.nz/"><em>R for Data Science</em></a> by Wickham and Grolemund (2016). Investigating and analyzing data are an important part of any model process.</p>
-<p>This book is not intended to be a comprehensive reference on modeling techniques; we suggest other resources to learn more about the statistical methods themselves. For general background on the most common type of model, the linear model, we suggest <span class="citation" data-cites="fox08">Fox (<a href="references.html#ref-fox08" role="doc-biblioref">2008</a>)</span>. For predictive models, <span class="citation" data-cites="apm">Kuhn and Johnson (<a href="references.html#ref-apm" role="doc-biblioref">2013</a>)</span> and <span class="citation" data-cites="fes">Kuhn and Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> are good resources. For machine learning methods, <span class="citation" data-cites="Goodfellow">Goodfellow, Bengio, and Courville (<a href="references.html#ref-Goodfellow" role="doc-biblioref">2016</a>)</span> is an excellent (but formal) source of information. In some cases, we do describe the models we use in some detail, but in a way that is less mathematical, and hopefully more intuitive.</p>
-<section id="acknowledgments" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
-<p>We are so thankful for the contributions, help, and perspectives of people who have supported us in this project. There are several we would like to thank in particular.</p>
-<p>We would like to thank our RStudio colleagues on the <span class="pkg">tidymodels</span> team (Davis Vaughan, Hannah Frick, Emil Hvitfeldt, and Simon Couch) as well as the rest of our coworkers on the RStudio open source team. Thank you to Desirée De Leon for the site design of the online work. We would also like to thank our technical reviewers, Chelsea Parlett-Pelleriti and Dan Simpson, for their detailed, insightful feedback that substantively improved this book, as well as our editors, Nicole Tache and Rita Fernando, for their perspective and guidance during the process of writing and publishing.</p>
-<div class="cell" data-layout-align="center" data-hash="index_cache/html/unnamed-chunk-2_b173718e404c29df064856b2a45cbf40">
-<p>This book was written in the open, and multiple people contributed via pull requests or issues. Special thanks goes to the thirty-eight people who contributed via GitHub pull requests (in alphabetical order by username): @arisp99, Brad Hill (@bradisbrad), Bryce Roney (@bryceroney), Cedric Batailler (@cedricbatailler), Ildikó Czeller (@czeildi), David Kane (@davidkane9), @DavZim, @DCharIAA, Emil Hvitfeldt (@EmilHvitfeldt), Emilio (@emilopezcano), Fgazzelloni (@Fgazzelloni), Hannah Frick (@hfrick), Hlynur (@hlynurhallgrims), Howard Baek (@howardbaek), Jae Yeon Kim (@jaeyk), Jonathan D. Trattner (@jdtrat), Jeffrey Girard (@jmgirard), John W Pickering (@JohnPickering), Jon Harmon (@jonthegeek), Joseph B. Rickert (@joseph-rickert), Maximilian Rohde (@maxdrohde), Michael Grund (@michaelgrund), @MikeJohnPage, Mine Cetinkaya-Rundel (@mine-cetinkaya-rundel), Mohammed Hamdy (@mmhamdy), @nattalides, Y. Yu (@PursuitOfDataScience), Riaz Hedayati (@riazhedayati), Rob Wiederstein (@RobWiederstein), Scott (@scottyd22), Simon Schölzel (@simonschoe), Simon Sayz (@tagasimon), @thrkng, Tanner Stauss (@tmstauss), Tony ElHabr (@tonyelhabr), Dmitry Zotikov (@x1o), Xiaochi (@xiaochi-liu), Zach Bogart (@zachbogart).</p>
+<p>En el <a href="01-software-modeling.html">Capítulo&nbsp;<span>1</span></a>, describimos una taxonomía para modelos y destacamos cómo es un buen software para modelado. Las ideas y la sintaxis del tidyverse, que presentamos (o revisamos) en el <a href="02-tidyverse.html">Capítulo&nbsp;<span>2</span></a>, son la base del enfoque de tidymodels para estos desafíos de metodología y práctica. El <a href="03-base-r.html">Capítulo&nbsp;<span>3</span></a> proporciona un recorrido rápido por las funciones de modelado convencionales de R base y resume las necesidades no satisfechas en esa área.</p>
+<p>Después de eso, este libro se divide en partes, comenzando con los conceptos básicos del modelado con principios de datos ordenados. Los capítulos <a href="04-ames.html"><span>4</span></a> a <a href="09-judging-model-effectiveness.html"><span>9</span></a> presentan un conjunto de datos de ejemplo sobre los precios de la vivienda y demuestran cómo utilizar los paquetes fundamentales de tidymodels: <span class="pkg">recipes</span>, <span class="pkg">parsnip</span>, <span class="pkg">workflows</span>, <span class="pkg">yardstick</span> y otros.</p>
+<p>La siguiente parte del libro avanza con más detalles sobre el proceso de creación de un modelo eficaz. Los capítulos <a href="10-resampling.html"><span>10</span></a> a <a href="15-workflow-sets.html"><span>15</span></a> se centran en crear buenas estimaciones de rendimiento, así como en ajustar los hiperparámetros del modelo.</p>
+<p>Finalmente, la última sección de este libro, Capítulos <a href="16-dimensionality-reduction.html"><span>16</span></a> a <a href="21-inferential-analysis.html"><span>21</span></a>, cubre otros temas importantes para la construcción de modelos. Analizamos enfoques de ingeniería de características más avanzados, como la reducción de dimensionalidad y la codificación de predictores de alta cardinalidad, así como también cómo responder preguntas sobre por qué un modelo hace ciertas predicciones y cuándo confiar en las predicciones de su modelo.</p>
+<p>No asumimos que los lectores tengan una amplia experiencia en la construcción de modelos y estadísticas. Se requieren algunos conocimientos estadísticos, como muestreo aleatorio, varianza, correlación, regresión lineal básica y otros temas que generalmente se encuentran en un curso básico de estadística o análisis de datos de pregrado. Suponemos que el lector está al menos ligeramente familiarizado con dplyr, ggplot2 y el operador “pipe” <code>%&gt;%</code> en R, y que está interesado en aplicar estas herramientas al modelado. Para los usuarios que aún no tienen estos conocimientos básicos de R, recomendamos libros como <a href="https://r4ds.had.co.nz/"><em>R for Data Science</em></a> de Wickham y Grolemund (2016). La investigación y el análisis de datos son una parte importante de cualquier proceso de modelo.</p>
+<p>Este libro no pretende ser una referencia exhaustiva sobre técnicas de modelado; sugerimos otros recursos para aprender más sobre los propios métodos estadísticos. Para obtener información general sobre el tipo de modelo más común, el modelo lineal, sugerimos <span class="citation" data-cites="fox08">Fox (<a href="references.html#ref-fox08" role="doc-biblioref">2008</a>)</span>. Para modelos predictivos, <span class="citation" data-cites="apm">Kuhn y Johnson (<a href="references.html#ref-apm" role="doc-biblioref">2013</a>)</span> y <span class="citation" data-cites="fes">Kuhn y Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> son buenos recursos. Para los métodos de aprendizaje automático, <span class="citation" data-cites="Goodfellow">Goodfellow, Bengio, y Courville (<a href="references.html#ref-Goodfellow" role="doc-biblioref">2016</a>)</span> es una fuente de información excelente (pero formal). En algunos casos, describimos los modelos que utilizamos con cierto detalle, pero de una manera menos matemática y, con suerte, más intuitiva.</p>
+<section id="reconocimientos" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="reconocimientos">Reconocimientos</h2>
+<p>Estamos muy agradecidos por las contribuciones, la ayuda y las perspectivas de las personas que nos han apoyado en este proyecto. Hay varios a los que nos gustaría agradecer en particular.</p>
+<p>Nos gustaría agradecer a nuestros colegas de RStudio en el equipo <span class="pkg">tidymodels</span> (Davis Vaughan, Hannah Frick, Emil Hvitfeldt y Simon Couch), así como al resto de nuestros compañeros de trabajo en el equipo de código abierto de RStudio. Gracias a Desirée De Leon por el diseño del sitio del trabajo en línea. También nos gustaría agradecer a nuestros revisores técnicos, Chelsea Parlett-Pelleriti y Dan Simpson, por sus comentarios detallados y perspicaces que mejoraron sustancialmente este libro, así como a nuestros editores, Nicole Tache y Rita Fernando, por su perspectiva y orientación durante el proceso. de escritura y publicación.</p>
+<div class="cell" data-layout-align="center" data-hash="index_cache/html/unnamed-chunk-2_b9d4c5846a52d39c6c02c4e0fb27c9c2">
+<p>Este libro se escribió abiertamente y varias personas contribuyeron a través de solicitudes de extracción o problemas. Un agradecimiento especial para las thirty-eight personas que contribuyeron a través de pull requests de GitHub (en orden alfabético por nombre de usuario): @arisp99, Brad Hill (@bradisbrad), Bryce Roney (@bryceroney), Cedric Batailler (@cedricbatailler), Ildikó Czeller (@czeildi), David Kane (@davidkane9), @DavZim, @DCharIAA, Emil Hvitfeldt (@EmilHvitfeldt), Emilio (@emilopezcano), Fgazzelloni (@Fgazzelloni), Hannah Frick (@hfrick), Hlynur (@hlynurhallgrims), Howard Baek (@howardbaek), Jae Yeon Kim (@jaeyk), Jonathan D. Trattner (@jdtrat), Jeffrey Girard (@jmgirard), John W Pickering (@JohnPickering), Jon Harmon (@jonthegeek), Joseph B. Rickert (@joseph-rickert), Maximilian Rohde (@maxdrohde), Michael Grund (@michaelgrund), @MikeJohnPage, Mine Cetinkaya-Rundel (@mine-cetinkaya-rundel), Mohammed Hamdy (@mmhamdy), @nattalides, Y. Yu (@PursuitOfDataScience), Riaz Hedayati (@riazhedayati), Rob Wiederstein (@RobWiederstein), Scott (@scottyd22), Simon Schölzel (@simonschoe), Simon Sayz (@tagasimon), @thrkng, Tanner Stauss (@tmstauss), Tony ElHabr (@tonyelhabr), Dmitry Zotikov (@x1o), Xiaochi (@xiaochi-liu), Zach Bogart (@zachbogart).</p>
 </div>
-</section><section id="using-code-examples" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="using-code-examples">Using Code Examples</h2>
-<p>This book was written with <a href="http://www.rstudio.com/ide/">RStudio</a> using <a href="http://bookdown.org/">bookdown</a>. The <a href="https://tmwr.org">website</a> is hosted via <a href="http://netlify.com/">Netlify</a>, and automatically built after every push by <a href="https://help.github.com/actions">GitHub Actions</a>. The complete source is available on <a href="https://github.com/tidymodels/TMwR">GitHub</a>. We generated all plots in this book using <a href="https://ggplot2.tidyverse.org/">ggplot2</a> and its black and white theme (<code>theme_bw()</code>).</p>
-<p>This version of the book was built with R version 4.3.1 (2023-06-16 ucrt), <a href="https://pandoc.org/">pandoc</a> version 3.1.1, and the following packages: applicable (0.1.0, CRAN), av (0.8.5, CRAN), baguette (1.0.1, CRAN), beans (0.1.0, CRAN), bestNormalize (1.9.1, CRAN), bookdown (0.35, CRAN), broom (1.0.5, CRAN), censored (0.2.0, CRAN), corrplot (0.92, CRAN), corrr (0.4.4, CRAN), Cubist (0.4.2.1, CRAN), DALEXtra (2.3.0, CRAN), dials (1.2.0, CRAN), dimRed (0.2.6, CRAN), discrim (1.0.1, CRAN), doMC (1.3.5, R-Forge), dplyr (1.1.3, CRAN), earth (5.3.2, CRAN), embed (1.1.2, CRAN), fastICA (1.2-3, CRAN), finetune (1.1.0, CRAN), forcats (1.0.0, CRAN), ggforce (0.4.1, CRAN), ggplot2 (3.4.3, CRAN), glmnet (4.1-8, CRAN), gridExtra (2.3, CRAN), infer (1.0.5, CRAN), kableExtra (1.3.4, CRAN), kernlab (0.9-32, CRAN), kknn (1.3.1, CRAN), klaR (1.7-2, CRAN), knitr (1.44, CRAN), learntidymodels (0.0.0.9001, Github), lime (0.5.3, CRAN), lme4 (1.1-34, CRAN), lubridate (1.9.3, CRAN), mda (0.5-4, CRAN), mixOmics (6.24.0, Bioconductor), modeldata (1.2.0, CRAN), multilevelmod (1.0.0, CRAN), nlme (3.1-162, CRAN), nnet (7.3-19, CRAN), parsnip (1.1.1, CRAN), patchwork (1.1.3, CRAN), pillar (1.9.0, CRAN), poissonreg (1.0.1, CRAN), prettyunits (1.2.0, CRAN), probably (1.0.2, CRAN), pscl (1.5.5.1, CRAN), purrr (1.0.2, CRAN), ranger (0.15.1, CRAN), recipes (1.0.8, CRAN), rlang (1.1.1, CRAN), rmarkdown (2.25, CRAN), rpart (4.1.19, CRAN), rsample (1.2.0, CRAN), rstanarm (2.26.1, CRAN), rules (1.0.2, CRAN), sessioninfo (1.2.2, CRAN), stacks (1.0.2, CRAN), stringr (1.5.0, CRAN), svglite (2.1.1, CRAN), text2vec (0.6.3, CRAN), textrecipes (1.0.4, CRAN), themis (1.0.2, CRAN), tibble (3.2.1, CRAN), tidymodels (1.1.1, CRAN), tidyposterior (1.0.0, CRAN), tidyverse (2.0.0, CRAN), tune (1.1.2, CRAN), uwot (0.1.16, CRAN), workflows (1.1.3, CRAN), workflowsets (1.0.1, CRAN), xgboost (1.7.5.1, CRAN), and yardstick (1.2.0, CRAN).</p>
+</section><section id="usando-ejemplos-de-código" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="usando-ejemplos-de-código">Usando ejemplos de código</h2>
+<p>Este libro fue escrito con <a href="http://www.rstudio.com/ide/">RStudio</a> usando <a href="http://bookdown.org/">bookdown</a>. El <a href="https://tmwr.org">sito web</a> está alojado a través de <a href="http://netlify.com/">Netlify</a>, y construido automáticamente después de cada push por <a href="https://help.github.com/actions">GitHub Actions</a>. La fuente completa está disponible en <a href="https://github.com/tidymodels/TMwR">GitHub</a>. Generamos todos los gráficos de este libro usando <a href="https://ggplot2.tidyverse.org/">ggplot2</a> y su tema blanco y negro (<code>theme_bw()</code>).</p>
+<p>Esta versión del libro fue construida con R version 4.3.1 (2023-06-16 ucrt), <a href="https://pandoc.org/">pandoc</a> versión 3.1.1, y los siguientes paquetes: applicable (0.1.0, CRAN), av (0.8.5, CRAN), baguette (1.0.1, CRAN), beans (0.1.0, CRAN), bestNormalize (1.9.1, CRAN), bookdown (0.35, CRAN), broom (1.0.5, CRAN), censored (0.2.0, CRAN), corrplot (0.92, CRAN), corrr (0.4.4, CRAN), Cubist (0.4.2.1, CRAN), DALEXtra (2.3.0, CRAN), dials (1.2.0, CRAN), dimRed (0.2.6, CRAN), discrim (1.0.1, CRAN), doMC (1.3.5, R-Forge), dplyr (1.1.3, CRAN), earth (5.3.2, CRAN), embed (1.1.2, CRAN), fastICA (1.2-3, CRAN), finetune (1.1.0, CRAN), forcats (1.0.0, CRAN), ggforce (0.4.1, CRAN), ggplot2 (3.4.3, CRAN), glmnet (4.1-8, CRAN), gridExtra (2.3, CRAN), infer (1.0.5, CRAN), kableExtra (1.3.4, CRAN), kernlab (0.9-32, CRAN), kknn (1.3.1, CRAN), klaR (1.7-2, CRAN), knitr (1.44, CRAN), learntidymodels (0.0.0.9001, Github), lime (0.5.3, CRAN), lme4 (1.1-34, CRAN), lubridate (1.9.3, CRAN), mda (0.5-4, CRAN), mixOmics (6.24.0, Bioconductor), modeldata (1.2.0, CRAN), multilevelmod (1.0.0, CRAN), nlme (3.1-162, CRAN), nnet (7.3-19, CRAN), parsnip (1.1.1, CRAN), patchwork (1.1.3, CRAN), pillar (1.9.0, CRAN), poissonreg (1.0.1, CRAN), prettyunits (1.2.0, CRAN), probably (1.0.2, CRAN), pscl (1.5.5.1, CRAN), purrr (1.0.2, CRAN), ranger (0.15.1, CRAN), recipes (1.0.8, CRAN), rlang (1.1.1, CRAN), rmarkdown (2.25, CRAN), rpart (4.1.19, CRAN), rsample (1.2.0, CRAN), rstanarm (2.26.1, CRAN), rules (1.0.2, CRAN), sessioninfo (1.2.2, CRAN), stacks (1.0.2, CRAN), stringr (1.5.0, CRAN), svglite (2.1.1, CRAN), text2vec (0.6.3, CRAN), textrecipes (1.0.4, CRAN), themis (1.0.2, CRAN), tibble (3.2.1, CRAN), tidymodels (1.1.1, CRAN), tidyposterior (1.0.0, CRAN), tidyverse (2.0.0, CRAN), tune (1.1.2, CRAN), uwot (0.1.16, CRAN), workflows (1.1.3, CRAN), workflowsets (1.0.1, CRAN), xgboost (1.7.5.1, CRAN), and yardstick (1.2.0, CRAN).</p>
+</section><section id="sobre-la-traducción" class="level2"><h2 class="anchored" data-anchor-id="sobre-la-traducción">Sobre la traducción</h2>
+<p><a href="https://amzn.to/35Hn96s"><img src="logo.png" alt="Cover image" width="285" height="285" align="right" style="margin: 0 1em 0 1em"></a> Esta traducción de “Modelado Ordenado con R” es un proyecto personal de <a href="https://github.com/davidrsch">David Díaz Rodríguez</a> con el objetivo de facilitar el estudio de construcción de modelos mediante el uso de R, tanto al propio traductor como a todas aquellas personas de habla hispana que deseen aprender sobre este tema.</p>
+<p>Señalar que esta es una traducción textual del libro por lo que cuando los autores se refieren así mismo en primera persona, serán Max Kuhn &amp; Julia Slige no el traductor.</p>
+<p>La traducción fue realizada usando Google Translate y fueron corregidos algunos errores gramaticales y de coherencia. Si detecta algún error relacionado con el contenido de la traducción, siéntase libre de abrir un issue o un pull request en este <a href="https://github.com/davidrsch/TMwRes">repositorio</a>.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
@@ -375,16 +400,83 @@ div.csl-indent {
 Fox, J. 2008. <em>Applied Regression Analysis and Generalized Linear Models</em>. Second. Thousand Oaks, <span>CA</span>: Sage.
 </div>
 <div id="ref-Goodfellow" class="csl-entry" role="listitem">
-Goodfellow, I, Y Bengio, and A Courville. 2016. <em>Deep Learning</em>. MIT Press.
+Goodfellow, I, Y Bengio, y A Courville. 2016. <em>Deep Learning</em>. MIT Press.
 </div>
 <div id="ref-apm" class="csl-entry" role="listitem">
-Kuhn, M, and K Johnson. 2013. <em>Applied Predictive Modeling</em>. Springer.
+Kuhn, M, y K Johnson. 2013. <em>Applied Predictive Modeling</em>. Springer.
 </div>
 <div id="ref-fes" class="csl-entry" role="listitem">
-———. 2020. <em>Feature Engineering and Selection: A Practical Approach for Predictive Models</em>. CRC Press.
+———. 2020. <em>Feature engineering and selection: A practical approach for predictive models</em>. CRC Press.
 </div>
 </div>
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></section></main><!-- /main --><script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -438,12 +530,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copiado");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copiado");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
