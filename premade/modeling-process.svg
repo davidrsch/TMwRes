@@ -305,28 +305,28 @@
       </g>
       <g id="Graphic_99">
         <text transform="translate(-3 569)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="16.372001" y="15">Exploratory Data </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="24.668" y="33.448">Analysis (EDA)</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="16.372001" y="15">Análisis Exploratorio</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="24.668" y="33.448">de Datos (EDA)</tspan>
         </text>
       </g>
       <g id="Graphic_100">
         <text transform="translate(213.0345 321)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="black" x="24868996e-20" y="12">Model #1</tspan>
+          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="black" x="24868996e-20" y="12">Modelo #1</tspan>
         </text>
       </g>
       <g id="Graphic_101">
         <text transform="translate(406.5345 321)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="black" x="24868996e-20" y="12">Model #2</tspan>
+          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="black" x="24868996e-20" y="12">Modelo #2</tspan>
         </text>
       </g>
       <g id="Graphic_102">
         <text transform="translate(213.0345 154.5)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="black" x="24868996e-20" y="12">Model #3</tspan>
+          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="black" x="24868996e-20" y="12">Modelo #3</tspan>
         </text>
       </g>
       <g id="Graphic_103">
         <text transform="translate(406.5345 154.5)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="black" x="24868996e-20" y="12">Model #4</tspan>
+          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="black" x="24868996e-20" y="12">Modelo #4</tspan>
         </text>
       </g>
       <g id="Line_104">
@@ -334,8 +334,8 @@
       </g>
       <g id="Graphic_105">
         <text transform="translate(122 634)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="28.364" y="15">Initial Feature </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="33.996" y="33.448">Engineering</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="-07.364" y="15">Ingeniería de Características</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="53.996" y="33.448">Inicial</tspan>
         </text>
       </g>
       <g id="Line_106">
@@ -344,13 +344,13 @@
       <g id="Graphic_107">
         <rect x="255.5" y="463.5" width="162.44" height="28.447998" fill="white"/>
         <text transform="translate(260.5 468.5)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="28.956" y="15">Initial Models</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="28.956" y="15">Modelos Iniciales</tspan>
         </text>
       </g>
       <g id="Graphic_108">
         <text transform="translate(369.78 575.552)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="53.844" y="15">Model </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="39.18" y="33.448">Evaluation</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="33.844" y="15">Evaluación de</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="49.18" y="33.448">Modelos</tspan>
         </text>
       </g>
       <g id="Line_109">
@@ -358,8 +358,8 @@
       </g>
       <g id="Graphic_110">
         <text transform="translate(515.5 634)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="28.652" y="15">More Feature </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="33.996" y="33.448">Engineering</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="18.652" y="15">Más Ingeniería de</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="33.996" y="33.448">Características</tspan>
         </text>
       </g>
       <g id="Line_111">
@@ -493,12 +493,12 @@
       </g>
       <g id="Graphic_113">
         <text transform="translate(739 249.33333)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="black" x="1314504e-19" y="12">Model #4a</tspan>
+          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="black" x="1314504e-19" y="12">Modelo #4a</tspan>
         </text>
       </g>
       <g id="Graphic_112">
         <text transform="translate(571 249.33333)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="black" x="1314504e-19" y="12">Model #1a</tspan>
+          <tspan font-family="Helvetica Neue" font-size="13" font-weight="400" fill="black" x="1314504e-19" y="12">Modelo #1a</tspan>
         </text>
       </g>
       <g id="Line_156">
@@ -512,9 +512,9 @@
       </g>
       <g id="Graphic_159">
         <text transform="translate(752 575.552)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="59.332" y="15">Final </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="53.844" y="33.448">Model </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="39.18" y="51.895996">Evaluation</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="39.332" y="15">Evaluación</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="48.844" y="33.448">Final del</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="52.18" y="51.895996">Modelo</tspan>
         </text>
       </g>
       <g id="Line_160">
@@ -523,7 +523,7 @@
       <g id="Graphic_161">
         <rect x="602" y="463.5" width="162.44" height="28.447998" fill="white"/>
         <text transform="translate(607 468.5)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="20.212001" y="15">Refined Models</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="20.212001" y="15">Modelos Refinados</tspan>
         </text>
       </g>
       <g id="Graphic_162">
@@ -536,7 +536,7 @@
       <g id="Graphic_163">
         <rect x="858" y="463.5" width="162.44" height="28.447998" fill="white"/>
         <text transform="translate(863 468.5)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="34.732" y="15">Final Model</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="34.732" y="15">Modelo Final</tspan>
         </text>
       </g>
     </g>

@@ -1,4 +1,4 @@
-# Software for modeling {#sec-software-modeling}
+# Software para modelar {#sec-software-modeling}
 
 ```{r software-setup, include = FALSE}
 knitr::opts_chunk$set(fig.path = "figures/")
@@ -10,63 +10,64 @@ library(kableExtra)
 data(ames, package = "modeldata")
 ```
 
-Models are mathematical tools that can describe a system and capture relationships in the data given to them. Models can be used for various purposes, including predicting future events, determining if there is a difference between several groups, aiding map-based visualization, discovering novel patterns in the data that could be further investigated, and more. The utility of a model hinges on its ability to be reductive, or to reduce complex relationships to simpler terms. The primary influences in the data can be captured mathematically in a useful way, such as in a relationship that can be expressed as an equation.
+Los modelos son herramientas matemáticas que pueden describir un sistema y capturar relaciones en los datos que se les proporcionan. Los modelos se pueden utilizar para diversos fines, incluida la predicción de eventos futuros, determinar si hay una diferencia entre varios grupos, ayudar en la visualización basada en mapas, descubrir patrones novedosos en los datos que podrían investigarse más a fondo y más. La utilidad de un modelo depende de su capacidad para ser reductivo o para reducir relaciones complejas a términos más simples. Las influencias principales en los datos se pueden capturar matemáticamente de una manera útil, como en una relación que se puede expresar como una ecuación.
 
-Since the beginning of the twenty-first century, mathematical models have become ubiquitous in our daily lives, in both obvious and subtle ways. A typical day for many people might involve checking the weather to see when might be a good time to walk the dog, ordering a product from a website, typing a text message to a friend and having it autocorrected, and checking email. In each of these instances, there is a good chance that some type of model was involved. In some cases, the contribution of the model might be easily perceived ("You might also be interested in purchasing product *X*") while in other cases, the impact could be the absence of something (e.g., spam email). Models are used to choose clothing that a customer might like, to identify a molecule that should be evaluated as a drug candidate, and might even be the mechanism that a nefarious company uses to avoid the discovery of cars that over-pollute. For better or worse, models are here to stay.
+Desde principios del siglo XXI, los modelos matemáticos se han vuelto omnipresentes en nuestra vida diaria, tanto de manera obvia como sutil. Un día típico para muchas personas puede implicar consultar el clima para ver cuándo podría ser un buen momento para pasear al perro, pedir un producto en un sitio web, escribir un mensaje de texto a un amigo y corregirlo automáticamente, y consultar el correo electrónico. En cada uno de estos casos, existe una buena probabilidad de que haya estado involucrado algún tipo de modelo. En algunos casos, la contribución del modelo puede percibirse fácilmente ("Es posible que también esté interesado en comprar el producto *X*"), mientras que en otros casos, el impacto podría ser la ausencia de algo (por ejemplo, correo electrónico no deseado). Los modelos se utilizan para elegir la ropa que podría gustarle a un cliente, para identificar una molécula que debería evaluarse como candidata a fármaco e incluso podrían ser el mecanismo que utiliza una empresa nefasta para evitar el descubrimiento de automóviles que contaminan demasiado. Para bien o para mal, los modelos llegaron para quedarse.
 
 ::: rmdnote
-There are two reasons that models permeate our lives today:
+Hay dos razones por las que los modelos impregnan nuestras vidas hoy en día:
 
--   an abundance of software exists to create models, and
--   it has become easier to capture and store data, as well as make it accessible.
+-   existe una gran cantidad de software para crear modelos, y
+
+-   se ha vuelto más fácil capturar y almacenar datos, así como hacerlos accesibles.
 :::
 
-This book focuses largely on software. It is obviously critical that software produces the correct relationships to represent the data. For the most part, determining mathematical correctness is possible, but the reliable creation of appropriate models requires more. In this chapter, we outline considerations for building or choosing modeling software, the purposes of models, and where modeling sits in the broader data analysis process.
+Este libro se centra principalmente en el software. Obviamente, es fundamental que el software produzca las relaciones correctas para representar los datos. En general, es posible determinar la corrección matemática, pero la creación fiable de modelos apropiados requiere más. En este capítulo, describimos consideraciones para crear o elegir software de modelado, los propósitos de los modelos y dónde se ubica el modelado en el proceso más amplio de análisis de datos.
 
-## Fundamentals for Modeling Software
+## Fundamentos del software de modelado
 
-It is important that the modeling software you use is easy to operate properly. The user interface should not be so poorly designed that the user would not know that they used it inappropriately. For example, @baggerly2009 report myriad problems in the data analyses from a high profile computational biology publication. One of the issues was related to how the users were required to add the names of the model inputs. The software user interface made it easy to offset the column names of the data from the actual data columns. This resulted in the wrong genes being identified as important for treating cancer patients and eventually contributed to the termination of several clinical trials [@Carlson2012].
+Es importante que el software de modelado que utilice sea fácil de utilizar correctamente. La interfaz de usuario no debe estar tan mal diseñada que el usuario no sepa que la utilizó de manera inapropiada. Por ejemplo, @baggerly2009 informa innumerables problemas en los análisis de datos de una publicación de biología computacional de alto perfil. Uno de los problemas estaba relacionado con cómo se requería que los usuarios agregaran los nombres de las entradas del modelo. La interfaz de usuario del software facilitó la compensación de los nombres de las columnas de datos de las columnas de datos reales. Esto dio lugar a que se identificaran genes equivocados como importantes para el tratamiento de pacientes con cáncer y, finalmente, contribuyó a la interrupción de varios ensayos clínicos. [@Carlson2012].
 
-If we need high quality models, software must facilitate proper usage. @abrams2003 describes an interesting principle to guide us:
+Si necesitamos modelos de alta calidad, el software debe facilitar su uso adecuado. @abrams2003 describe un principio interesante para guiarnos:
 
-> The Pit of Success: in stark contrast to a summit, a peak, or a journey across a desert to find victory through many trials and surprises, we want our customers to simply fall into winning practices by using our platform and frameworks.
+> El pozo del éxito: en marcado contraste con una cumbre, un pico o un viaje a través de un desierto para encontrar la victoria a través de muchas pruebas y sorpresas, queremos que nuestros clientes simplemente adopten prácticas ganadoras utilizando nuestra plataforma y marcos.
 
-Data analysis and modeling software should espouse this idea.
+El software de análisis y modelado de datos debería abrazar esta idea.
 
-Second, modeling software should promote good scientific methodology. When working with complex predictive models, it can be easy to unknowingly commit errors related to logical fallacies or inappropriate assumptions. Many machine learning models are so adept at discovering patterns that they can effortlessly find empirical patterns in the data that fail to reproduce later. Some of methodological errors are insidious in that the issue can go undetected until a later time when new data that contain the true result are obtained.
+En segundo lugar, el software de modelado debería promover una buena metodología científica. Cuando se trabaja con modelos predictivos complejos, puede resultar fácil cometer errores, sin saberlo, relacionados con falacias lógicas o suposiciones inapropiadas. Muchos modelos de aprendizaje automático son tan hábiles en descubrir patrones que pueden encontrar sin esfuerzo patrones empíricos en los datos que no logran reproducir más adelante. Algunos de los errores metodológicos son insidiosos en el sentido de que el problema puede pasar desapercibido hasta un momento posterior, cuando se obtienen nuevos datos que contienen el resultado verdadero.
 
 ::: rmdwarning
-As our models have become more powerful and complex, it has also become easier to commit latent errors.
+A medida que nuestros modelos se han vuelto más poderosos y complejos, también se ha vuelto más fácil cometer errores latentes.
 :::
 
-This same principle also applies to programming. Whenever possible, the software should be able to protect users from committing mistakes. Software should make it easy for users to do the right thing.
+Este mismo principio también se aplica a la programación. Siempre que sea posible, el software debería poder proteger a los usuarios de cometer errores. El software debería facilitar a los usuarios hacer lo correcto.
 
-These two aspects of model development -- ease of proper use and good methodological practice -- are crucial. Since tools for creating models are easily accessible and models can have such a profound impact, many more people are creating them. In terms of technical expertise and training, creators' backgrounds will vary. It is important that their tools be robust to the user's experience. Tools should be powerful enough to create high-performance models, but, on the other hand, should be easy to use appropriately. This book describes a suite of software for modeling that has been designed with these characteristics in mind.
+Estos dos aspectos del desarrollo de modelos (facilidad de uso adecuado y buenas prácticas metodológicas) son cruciales. Dado que las herramientas para crear modelos son fácilmente accesibles y los modelos pueden tener un impacto tan profundo, muchas más personas los están creando. En términos de experiencia técnica y capacitación, los antecedentes de los creadores variarán. Es importante que sus herramientas sean sólidas para la experiencia del usuario. Las herramientas deben ser lo suficientemente potentes como para crear modelos de alto rendimiento, pero, por otro lado, deben ser fáciles de utilizar de forma adecuada. Este libro describe un conjunto de software para modelado que ha sido diseñado teniendo en cuenta estas características.
 
-The software is based on the R programming language [@baseR]. R has been designed especially for data analysis and modeling. It is an implementation of the S language (with lexical scoping rules adapted from Scheme and Lisp) which was created in the 1970s to
+El software está basado en el lenguaje de programación R [@baseR]. R ha sido diseñado especialmente para el análisis y modelado de datos. Es una implementación del lenguaje S (con reglas de alcance léxico adaptadas de Scheme y Lisp) que se creó en la década de 1970 para
 
-> "turn ideas into software, quickly and faithfully" [@Chambers:1998]
+> "convertir ideas en software, de forma rápida y fiel" [@Chambers:1998]
 
-R is open source and free. It is a powerful programming language that can be used for many different purposes but specializes in data analysis, modeling, visualization, and machine learning. R is easily extensible; it has a vast ecosystem of packages, mostly user-contributed modules that focus on a specific theme, such as modeling, visualization, and so on.
+R es de código abierto y gratuito. Es un poderoso lenguaje de programación que se puede utilizar para muchos propósitos diferentes, pero se especializa en análisis de datos, modelado, visualización y aprendizaje automático. R es fácilmente extensible; Tiene un vasto ecosistema de paquetes, en su mayoría módulos aportados por los usuarios que se centran en un tema específico, como modelado, visualización, etc.
 
-One collection of packages is called the *tidyverse* [@tidyverse]. The tidyverse is an opinionated collection of R packages designed for data science. All packages share an underlying design philosophy, grammar, and data structures. Several of these design philosophies are directly informed by the aspects of software for modeling described in this chapter. If you've never used the tidyverse packages, [Chapter @sec-tidyverse] contains a review of basic concepts. Within the tidyverse, the subset of packages specifically focused on modeling are referred to as the *tidymodels* packages. This book is a practical guide for conducting modeling using the tidyverse and tidymodels packages. It shows how to use a set of packages, each with its own specific purpose, together to create high-quality models.
+Una colección de paquetes se llama *tidyverse* [@tidyverse]. Tidyverse es una colección obstinada de paquetes R diseñados para la ciencia de datos. Todos los paquetes comparten una filosofía de diseño, gramática y estructuras de datos subyacentes. Varias de estas filosofías de diseño están directamente informadas por los aspectos del software para modelado descritos en este capítulo. Si nunca ha usado los paquetes tidyverse, el [Capítulo @sec-tidyverse] contiene una revisión de los conceptos básicos. Dentro de tidyverse, el subconjunto de paquetes centrados específicamente en el modelado se conoce como paquetes *tidymodels*. Este libro es una guía práctica para realizar modelados utilizando los paquetes tidyverse y tidymodels. Muestra cómo utilizar un conjunto de paquetes, cada uno con su propósito específico, juntos para crear modelos de alta calidad.
 
-## Types of Models {#sec-model-types}
+## Tipos de modelos {#sec-model-types}
 
-Before proceeding, let's describe a taxonomy for types of models, grouped by purpose. This taxonomy informs both how a model is used and many aspects of how the model may be created or evaluated. While this list is not exhaustive, most models fall into at least one of these categories:
+Antes de continuar, describamos una taxonomía de tipos de modelos, agrupados por propósito. Esta taxonomía informa tanto cómo se utiliza un modelo como muchos aspectos de cómo se puede crear o evaluar el modelo. Si bien esta lista no es exhaustiva, la mayoría de los modelos caen en al menos una de estas categorías:
 
-### Descriptive models {.unnumbered}
+### Modelos descriptivos {.unnumbered}
 
-The purpose of a descriptive model is to describe or illustrate characteristics of some data. The analysis might have no other purpose than to visually emphasize some trend or artifact in the data.
+El propósito de un modelo descriptivo es describir o ilustrar las características de algunos datos. Es posible que el análisis no tenga otro propósito que enfatizar visualmente alguna tendencia o artefacto en los datos.
 
-For example, large scale measurements of RNA have been possible for some time using microarrays. Early laboratory methods placed a biological sample on a small microchip. Very small locations on the chip can measure a signal based on the abundance of a specific RNA sequence. The chip would contain thousands (or more) outcomes, each a quantification of the RNA related to a biological process. However, there could be quality issues on the chip that might lead to poor results. For example, a fingerprint accidentally left on a portion of the chip could cause inaccurate measurements when scanned.
+Por ejemplo, desde hace algún tiempo es posible realizar mediciones de ARN a gran escala utilizando microarrays. Los primeros métodos de laboratorio colocaban una muestra biológica en un pequeño microchip. Ubicaciones muy pequeñas en el chip pueden medir una señal basada en la abundancia de una secuencia de ARN específica. El chip contendría miles (o más) de resultados, cada uno de los cuales sería una cuantificación del ARN relacionado con un proceso biológico. Sin embargo, podría haber problemas de calidad en el chip que podrían provocar malos resultados. Por ejemplo, una huella digital dejada accidentalmente en una parte del chip podría provocar mediciones inexactas al escanearla.
 
-An early method for evaluating such issues were probe-level models, or PLMs [@bolstad2004]. A statistical model would be created that accounted for the known differences in the data, such as the chip, the RNA sequence, the type of sequence, and so on. If there were other, unknown factors in the data, these effects would be captured in the model residuals. When the residuals were plotted by their location on the chip, a good quality chip would show no patterns. When a problem did occur, some sort of spatial pattern would be discernible. Often the type of pattern would suggest the underlying issue (e.g., a fingerprint) and a possible solution (wipe off the chip and rescan, repeat the sample, etc.). @fig-software-descr-examples (a) shows an application of this method for two microarrays taken from @Gentleman2005. The images show two different color values; areas that are darker are where the signal intensity was larger than the model expects while the lighter color shows lower than expected values. The left-hand panel demonstrates a fairly random pattern while the right-hand panel exhibits an undesirable artifact in the middle of the chip.
+Uno de los primeros métodos para evaluar estas cuestiones fueron los modelos a nivel de sonda, o PLM [@bolstad2004]. Se crearía un modelo estadístico que tuviera en cuenta las diferencias conocidas en los datos, como el chip, la secuencia de ARN, el tipo de secuencia, etc. Si hubiera otros factores desconocidos en los datos, estos efectos se capturarían en los residuos del modelo. Cuando los residuos se trazaron según su ubicación en el chip, un chip de buena calidad no mostraría patrones. Cuando ocurría un problema, se podía discernir algún tipo de patrón espacial. A menudo, el tipo de patrón sugeriría el problema subyacente (por ejemplo, una huella digital) y una posible solución (limpiar el chip y volver a escanear, repetir la muestra, etc.). @fig-software-descr-examples (a) muestra una aplicación de este método para dos microarrays tomados de @Gentleman2005. Las imágenes muestran dos valores de color diferentes; Las áreas más oscuras son aquellas donde la intensidad de la señal fue mayor de lo esperado por el modelo, mientras que el color más claro muestra valores inferiores a los esperados. El panel de la izquierda muestra un patrón bastante aleatorio, mientras que el panel de la derecha muestra un artefacto indeseable en el medio del chip.
 
 ```{r}
 #| label: fig-software-descr-examples
 #| echo: FALSE
-#| fig.cap: "Two examples of how descriptive models can be used to illustrate specific patterns"
+#| fig.cap: "Dos ejemplos de cómo se pueden utilizar modelos descriptivos para ilustrar patrones específicos"
 #| out.width: '80%'
 #| dev: "png"
 #| fig.height: 8
@@ -77,7 +78,7 @@ load("RData/plm_resids.RData")
 
 resid_cols <- RColorBrewer::brewer.pal(8, "Set1")[1:2]
 
-# Red is where intensity is higher than expected
+# El rojo es donde la intensidad es mayor de lo esperado.
 plm_plot <- 
   plm_resids %>% 
   mutate(sign = ifelse(Intensity < 0, "low", "high")) %>% 
@@ -95,7 +96,7 @@ plm_plot <-
   labs(x = "", y = "") + 
   scale_fill_manual(values = c("white", "midnightblue")) + 
   coord_equal() + 
-  ggtitle("(a) Evaluating the quality of two microarray chips using a model.") + 
+  ggtitle("(a) Evaluación de la calidad de dos chips de microarrays mediante un modelo.") + 
   theme(plot.title = element_text(hjust = 0.5))
 
 
@@ -104,123 +105,123 @@ ames_plot <-
   geom_point(alpha = .2) + 
   geom_smooth(se = FALSE, method = stats::loess, method.args = list(span = .3), color = "red") + 
   scale_y_log10() + 
-  ylab("House Sale Price ($US)") + 
-  ggtitle("(b) Using a model-based smoother to discover trends.")
+  ylab("Precio de venta de la casa ($US)") + 
+  ggtitle("(b) Uso de un suavizador basado en modelos para descubrir tendencias.")
 
 grid.arrange(plm_plot, ames_plot, ncol = 1)
 ```
 
-Another example of a descriptive model is the *locally estimated scatterplot smoothing* model, more commonly known as LOESS [@cleveland1979]. Here, a smooth and flexible regression model is fit to a data set, usually with a single independent variable, and the fitted regression line is used to elucidate some trend in the data. These types of smoothers are used to discover potential ways to represent a variable in a model. This is demonstrated in @fig-software-descr-examples (b) where a nonlinear trend is illuminated by the flexible smoother. From this plot, it is clear that there is a highly nonlinear relationship between the sale price of a house and its latitude.
+Otro ejemplo de modelo descriptivo es el modelo de *suavizado de diagrama de dispersión estimado localmente*, más comúnmente conocido como LOESS [@cleveland1979]. En este caso, se ajusta un modelo de regresión suave y flexible a un conjunto de datos, generalmente con una única variable independiente, y se utiliza la línea de regresión ajustada para dilucidar alguna tendencia en los datos. Estos tipos de suavizadores se utilizan para descubrir formas potenciales de representar una variable en un modelo. Esto se demuestra en @fig-software-descr-examples (b), donde el suavizador flexible ilumina una tendencia no lineal. De este gráfico se desprende claramente que existe una relación altamente no lineal entre el precio de venta de una casa y su latitud.
 
-### Inferential models {.unnumbered}
+### Modelos inferenciales {.unnumbered}
 
-The goal of an inferential model is to produce a decision for a research question or to explore a specific hypothesis, similar to how statistical tests are used.[^01-software-modeling-1] An inferential model starts with a predefined conjecture or idea about a population and produces a statistical conclusion such as an interval estimate or the rejection of a hypothesis.
+El objetivo de un modelo inferencial es producir una decisión para una pregunta de investigación o explorar una hipótesis específica, de forma similar a cómo se utilizan las pruebas estadísticas.[^01-software-modeling-1] Un modelo inferencial comienza con una conjetura o idea predefinida sobre una población y produce una conclusión estadística como una estimación de intervalo o el rechazo de una hipótesis.
 
-[^01-software-modeling-1]: Many specific statistical tests are in fact equivalent to models. For example, t-tests and analysis of variance (ANOVA) methods are particular cases of the generalized linear model.
+[^01-software-modeling-1]: De hecho, muchas pruebas estadísticas específicas son equivalentes a modelos. Por ejemplo, las pruebas t y los métodos de análisis de varianza (ANOVA) son casos particulares del modelo lineal generalizado.
 
-For example, the goal of a clinical trial might be to provide confirmation that a new therapy does a better job in prolonging life than an alternative, such as an existing therapy or no treatment at all. If the clinical endpoint related to survival of a patient, the *null hypothesis* might be that the new treatment has an equal or lower median survival time, with the *alternative hypothesis* being that the new therapy has higher median survival. If this trial were evaluated using traditional null hypothesis significance testing via modeling, the significance testing would produce a p-value using some pre-defined methodology based on a set of assumptions for the data. Small values for the p-value in the model results would indicate there is evidence that the new therapy helps patients live longer. Large values for the p-value in the model results would conclude there is a failure to show such a difference; this lack of evidence could be due to a number of reasons, including the therapy not working.
+Por ejemplo, el objetivo de un ensayo clínico podría ser confirmar que una nueva terapia logra prolongar la vida mejor que una alternativa, como una terapia existente o ningún tratamiento. Si el criterio de valoración clínico se relaciona con la supervivencia de un paciente, la *hipótesis nula* podría ser que el nuevo tratamiento tiene una mediana de supervivencia igual o menor, siendo la *hipótesis alternativa* que la nueva terapia tiene una mediana de supervivencia más alta. Si este ensayo se evaluara utilizando pruebas de significancia de hipótesis nulas tradicionales mediante modelado, la prueba de significancia produciría un valor p usando alguna metodología predefinida basada en un conjunto de suposiciones para los datos. Valores pequeños para el valor p en los resultados del modelo indicarían que hay evidencia de que la nueva terapia ayuda a los pacientes a vivir más tiempo. Valores grandes para el valor p en los resultados del modelo concluirían que no se puede mostrar tal diferencia; Esta falta de evidencia podría deberse a varias razones, incluida la terapia que no funciona.
 
-What are the important aspects of this type of analysis? Inferential modeling techniques typically produce some type of probabilistic output, such as a p-value, confidence interval, or posterior probability. Generally, to compute such a quantity, formal probabilistic assumptions must be made about the data and the underlying processes that generated the data. The quality of the statistical modeling results are highly dependent on these pre-defined assumptions as well as how much the observed data appear to agree with them. The most critical factors here are theoretical: "If my data were independent and the residuals follow distribution *X*, then test statistic *Y* can be used to produce a p-value. Otherwise, the resulting p-value might be inaccurate."
-
-::: rmdwarning
-One aspect of inferential analyses is that there tends to be a delayed feedback loop in understanding how well the data match the model assumptions. In our clinical trial example, if statistical (and clinical) significance indicate that the new therapy should be available for patients to use, it still may be years before it is used in the field and enough data are generated for an independent assessment of whether the original statistical analysis led to the appropriate decision.
-:::
-
-### Predictive models {.unnumbered}
-
-Sometimes data are modeled to produce the most accurate prediction possible for new data. Here, the primary goal is that the predicted values have the highest possible fidelity to the true value of the new data.
-
-A simple example would be for a book buyer to predict how many copies of a particular book should be shipped to their store for the next month. An over-prediction wastes space and money due to excess books. If the prediction is smaller than it should be, there is opportunity loss and less profit.
-
-For this type of model, the problem type is one of estimation rather than inference. For example, the buyer is usually not concerned with a question such as "Will I sell more than 100 copies of book *X* next month?" but rather "How many copies of book *X* will customers purchase next month?" Also, depending on the context, there may not be any interest in why the predicted value is *X*. In other words, there is more interest in the value itself than in evaluating a formal hypothesis related to the data. The prediction can also include measures of uncertainty. In the case of the book buyer, providing a forecasting error may be helpful in deciding how many books to purchase. It can also serve as a metric to gauge how well the prediction method worked.
-
-What are the most important factors affecting predictive models? There are many different ways that a predictive model can be created, so the important factors depend on how the model was developed.[^01-software-modeling-2]
-
-[^01-software-modeling-2]: Broader discussions of these distinctions can be found in @breiman2001 and @shmueli2010.
-
-A *mechanistic model* could be derived using first principles to produce a model equation that depends on assumptions. For example, when predicting the amount of a drug that is in a person's body at a certain time, some formal assumptions are made on how the drug is administered, absorbed, metabolized, and eliminated. Based on this, a set of differential equations can be used to derive a specific model equation. Data are used to estimate the unknown parameters of this equation so that predictions can be generated. Like inferential models, mechanistic predictive models greatly depend on the assumptions that define their model equations. However, unlike inferential models, it is easy to make data-driven statements about how well the model performs based on how well it predicts the existing data. Here the feedback loop for the modeling practitioner is much faster than it would be for a hypothesis test.
-
-*Empirically driven models* are created with more vague assumptions. These models tend to fall into the machine learning category. A good example is the *K*-nearest neighbor (KNN) model. Given a set of reference data, a new sample is predicted by using the values of the *K* most similar data in the reference set. For example, if a book buyer needs a prediction for a new book, historical data from existing books may be available. A 5-nearest neighbor model would estimate the number of the new books to purchase based on the sales numbers of the five books that are most similar to the new one (for some definition of "similar"). This model is defined only by the structure of the prediction (the average of five similar books). No theoretical or probabilistic assumptions are made about the sales numbers or the variables that are used to define similarity. In fact, the primary method of evaluating the appropriateness of the model is to assess its accuracy using existing data. If the structure of this type of model was a good choice, the predictions would be close to the actual values.
-
-## Connections Between Types of Models
-
-::: rmdnote
-Note that we have defined the type of a model by how it is used, rather than its mathematical qualities.
-:::
-
-An ordinary linear regression model might fall into any of these three classes of model, depending on how it is used:
-
--   A descriptive smoother, similar to LOESS, called *restricted smoothing splines* [@Durrleman1989] can be used to describe trends in data using ordinary linear regression with specialized terms.
-
--   An *analysis of variance* (ANOVA) model is a popular method for producing the p-values used for inference. ANOVA models are a special case of linear regression.
-
--   If a simple linear regression model produces accurate predictions, it can be used as a predictive model.
-
-There are many examples of predictive models that cannot (or at least should not) be used for inference. Even if probabilistic assumptions were made for the data, the nature of the *K*-nearest neighbors model, for example, makes the math required for inference intractable.
-
-There is an additional connection between the types of models. While the primary purpose of descriptive and inferential models might not be related to prediction, the predictive capacity of the model should not be ignored. For example, logistic regression is a popular model for data in which the outcome is qualitative with two possible values. It can model how variables are related to the probability of the outcomes. When used inferentially, an abundance of attention is paid to the statistical qualities of the model. For example, analysts tend to strongly focus on the selection of independent variables contained in the model. Many iterations of model building may be used to determine a minimal subset of independent variables that have a "statistically significant" relationship to the outcome variable. This is usually achieved when all of the p-values for the independent variables are below a certain value (e.g., 0.05). From here, the analyst may focus on making qualitative statements about the relative influence that the variables have on the outcome (e.g., "There is a statistically significant relationship between age and the odds of heart disease.").
-
-However, this approach can be dangerous when statistical significance is used as the only measure of model quality. It is possible that this statistically optimized model has poor model accuracy, or it performs poorly on some other measure of predictive capacity. While the model might not be used for prediction, how much should inferences be trusted from a model that has significant p-values but dismal accuracy? Predictive performance tends to be related to how close the model's fitted values are to the observed data.
+¿Cuáles son los aspectos importantes de este tipo de análisis? Las técnicas de modelado inferencial suelen producir algún tipo de resultado probabilístico, como un valor p, un intervalo de confianza o una probabilidad posterior. Generalmente, para calcular tal cantidad, se deben hacer supuestos probabilísticos formales sobre los datos y los procesos subyacentes que generaron los datos. La calidad de los resultados del modelado estadístico depende en gran medida de estos supuestos predefinidos, así como de hasta qué punto los datos observados parecen coincidir con ellos. Los factores más críticos aquí son teóricos: "Si mis datos fueran independientes y los residuos siguieran la distribución *X*, entonces el estadístico de prueba *Y* se puede utilizar para producir un valor p. De lo contrario, el valor p resultante podría ser inexacto."
 
 ::: rmdwarning
-If a model has limited fidelity to the data, the inferences generated by the model should be highly suspect. In other words, statistical significance may not be sufficient proof that a model is appropriate.
+Un aspecto de los análisis inferenciales es que tiende a haber un ciclo de retroalimentación retardada en la comprensión de qué tan bien coinciden los datos con los supuestos del modelo. En nuestro ejemplo de ensayo clínico, si la significación estadística (y clínica) indica que la nueva terapia debería estar disponible para que la utilicen los pacientes, aún pueden pasar años antes de que se utilice en el campo y se generen suficientes datos para una evaluación independiente de si el análisis estadístico original condujo a la decisión adecuada.
 :::
 
-This may seem intuitively obvious, but it is often ignored in real-world data analysis.
+### Modelos predictivos {.unnumbered}
 
-## Some Terminology {#sec-model-terminology}
+A veces, los datos se modelan para producir la predicción más precisa posible para datos nuevos. Aquí, el objetivo principal es que los valores predichos tengan la mayor fidelidad posible al valor real de los nuevos datos.
 
-Before proceeding, we will outline additional terminology related to modeling and data. These descriptions are intended to be helpful as you read this book, but they are not exhaustive.
+Un ejemplo sencillo sería que un comprador de libros predijera cuántas copias de un libro en particular debería enviar a su tienda durante el próximo mes. Una predicción excesiva desperdicia espacio y dinero debido al exceso de libros. Si la predicción es menor de lo que debería ser, hay pérdida de oportunidades y menos ganancias.
 
-First, many models can be categorized as being *supervised* or *unsupervised*. Unsupervised models are those that learn patterns, clusters, or other characteristics of the data but lack an outcome, i.e., a dependent variable. Principal component analysis (PCA), clustering, and autoencoders are examples of unsupervised models; they are used to understand relationships between variables or sets of variables without an explicit relationship between predictors and an outcome. Supervised models are those that have an outcome variable. Linear regression, neural networks, and numerous other methodologies fall into this category.
+Para este tipo de modelo, el tipo de problema es de estimación más que de inferencia. Por ejemplo, al comprador normalmente no le preocupa una pregunta como "¿Venderé más de 100 copias del libro *X* el próximo mes?" sino "¿Cuántas copias del libro *X* comprarán los clientes el próximo mes?" Además, dependiendo del contexto, puede que no haya ningún interés en saber por qué el valor previsto es *X*. En otras palabras, hay más interés en el valor en sí que en evaluar una hipótesis formal relacionada con los datos. La predicción también puede incluir medidas de incertidumbre. En el caso del comprador de libros, proporcionar un error de pronóstico puede resultar útil para decidir cuántos libros comprar. También puede servir como métrica para evaluar qué tan bien funcionó el método de predicción.
 
-Within supervised models, there are two main sub-categories:
+¿Cuáles son los factores más importantes que afectan los modelos predictivos? Hay muchas formas diferentes de crear un modelo predictivo, por lo que los factores importantes dependen de cómo se desarrolló el modelo.[^01-software-modeling-2]
 
--   *Regression* predicts a numeric outcome.
+[^01-software-modeling-2]: Se pueden encontrar discusiones más amplias sobre estas distinciones en @breiman2001 y @shmueli2010.
 
--   *Classification* predicts an outcome that is an ordered or unordered set of qualitative values.
+Se podría derivar un *modelo mecanicista* utilizando primeros principios para producir una ecuación modelo que dependa de suposiciones. Por ejemplo, al predecir la cantidad de una droga que hay en el cuerpo de una persona en un momento determinado, se hacen algunas suposiciones formales sobre cómo se administra, absorbe, metaboliza y elimina la droga. En base a esto, se puede utilizar un conjunto de ecuaciones diferenciales para derivar una ecuación modelo específica. Los datos se utilizan para estimar los parámetros desconocidos de esta ecuación para poder generar predicciones. Al igual que los modelos inferenciales, los modelos predictivos mecanicistas dependen en gran medida de los supuestos que definen las ecuaciones de sus modelos. Sin embargo, a diferencia de los modelos inferenciales, es fácil hacer afirmaciones basadas en datos sobre qué tan bien se desempeña el modelo en función de qué tan bien predice los datos existentes. Aquí el ciclo de retroalimentación para el practicante de modelos es mucho más rápido de lo que sería para una prueba de hipótesis.
 
-These are imperfect definitions and do not account for all possible model types. In [Chapter @sec-models], we refer to this characteristic of supervised techniques as the *model mode*.
+*Modelos impulsados empíricamente* se crean con suposiciones más vagas. Estos modelos tienden a caer en la categoría de aprendizaje automático. Un buen ejemplo es el modelo *K*-vecino más cercano (KNN). Dado un conjunto de datos de referencia, se predice una nueva muestra utilizando los valores de los *K* datos más similares en el conjunto de referencia. Por ejemplo, si un comprador de libros necesita una predicción para un libro nuevo, es posible que haya disponibles datos históricos de libros existentes. Un modelo de cinco vecinos más cercanos estimaría el número de libros nuevos a comprar basándose en las cifras de ventas de los cinco libros que son más similares al nuevo (para alguna definición de "similar"). Este modelo se define únicamente por la estructura de la predicción (el promedio de cinco libros similares). No se hacen suposiciones teóricas o probabilísticas sobre las cifras de ventas o las variables que se utilizan para definir la similitud. De hecho, el método principal para evaluar la idoneidad del modelo es evaluar su precisión utilizando datos existentes. Si la estructura de este tipo de modelo fuera una buena elección, las predicciones se aproximarían a los valores reales.
 
-Different variables can have different *roles*, especially in a supervised modeling analysis. Outcomes (otherwise known as the labels, endpoints, or dependent variables) are the value being predicted in supervised models. The independent variables, which are the substrate for making predictions of the outcome, are also referred to as predictors, features, or covariates (depending on the context). The terms *outcomes* and *predictors* are used most frequently in this book.
-
-In terms of the data or variables themselves, whether used for supervised or unsupervised models, as predictors or outcomes, the two main categories are quantitative and qualitative. Examples of the former are real numbers like `3.14159` and integers like `42`. Qualitative values, also known as nominal data, are those that represent some sort of discrete state that cannot be naturally placed on a numeric scale, like "red", "green", and "blue".
-
-## How Does Modeling Fit into the Data Analysis Process? {#sec-model-phases}
-
-In what circumstances are models created? Are there steps that precede such an undertaking? Is model creation the first step in data analysis?
+## Conexiones entre tipos de modelos
 
 ::: rmdnote
-There are a few critical phases of data analysis that always come before modeling.
+Tenga en cuenta que hemos definido el tipo de modelo por cómo se utiliza, más que por sus cualidades matemáticas.
 :::
 
-First, there is the chronically underestimated process of *cleaning the data*. No matter the circumstances, you should investigate the data to make sure that they are applicable to your project goals, accurate, and appropriate. These steps can easily take more time than the rest of the data analysis process (depending on the circumstances).
+Un modelo de regresión lineal ordinario podría pertenecer a cualquiera de estas tres clases de modelos, dependiendo de cómo se utilice:
 
-Data cleaning can also overlap with the second phase of *understanding the data*, often referred to as exploratory data analysis (EDA). EDA brings to light how the different variables are related to one another, their distributions, typical ranges, and other attributes. A good question to ask at this phase is, "How did I come by *these* data?" This question can help you understand how the data at hand have been sampled or filtered and if these operations were appropriate. For example, when merging database tables, a join may go awry that could accidentally eliminate one or more subpopulations. Another good idea is to ask if the data are relevant. For example, to predict whether patients have Alzheimer's disease, it would be unwise to have a data set containing subjects with the disease and a random sample of healthy adults from the general population. Given the progressive nature of the disease, the model may simply predict who are the oldest patients.
+-   Se puede utilizar un suavizador descriptivo, similar a LOESS, llamado *splines de suavizado restringido* [@Durrleman1989] para describir tendencias en datos usando regresión lineal ordinaria con términos especializados.
 
-Finally, before starting a data analysis process, there should be clear expectations of the model's goal and how performance (and success) will be judged. At least one *performance metric* should be identified with realistic goals of what can be achieved. Common statistical metrics, discussed in more detail in [Chapter @sec-performance], are classification accuracy, true and false positive rates, root mean squared error, and so on. The relative benefits and drawbacks of these metrics should be weighed. It is also important that the metric be germane; alignment with the broader data analysis goals is critical.
+-   Un modelo de *análisis de varianza* (ANOVA) es un método popular para producir los valores p utilizados para la inferencia. Los modelos ANOVA son un caso especial de regresión lineal.
 
-The process of investigating the data may not be simple. @wickham2016 contains an excellent illustration of the general data analysis process, reproduced in @fig-software-data-science-model. Data ingestion and cleaning/tidying are shown as the initial steps. When the analytical steps for understanding commence, they are a heuristic process; we cannot pre-determine how long they may take. The cycle of transformation, modeling, and visualization often requires multiple iterations.
+-   Si un modelo de regresión lineal simple produce predicciones precisas, puede utilizarse como modelo predictivo.
+
+Hay muchos ejemplos de modelos predictivos que no pueden (o al menos no deberían) usarse para inferencias. Incluso si se hicieran suposiciones probabilísticas para los datos, la naturaleza del modelo *K* de vecinos más cercanos, por ejemplo, hace que las matemáticas necesarias para la inferencia sean intratables.
+
+Existe una conexión adicional entre los tipos de modelos. Si bien el propósito principal de los modelos descriptivos e inferenciales puede no estar relacionado con la predicción, no se debe ignorar la capacidad predictiva del modelo. Por ejemplo, la regresión logística es un modelo popular para datos en los que el resultado es cualitativo con dos valores posibles. Puede modelar cómo se relacionan las variables con la probabilidad de los resultados. Cuando se utiliza de manera inferencial, se presta mucha atención a las cualidades estadísticas del modelo. Por ejemplo, los analistas tienden a centrarse fuertemente en la selección de variables independientes contenidas en el modelo. Se pueden utilizar muchas iteraciones de la construcción de modelos para determinar un subconjunto mínimo de variables independientes que tengan una relación "estadísticamente significativa" con la variable de resultado. Esto generalmente se logra cuando todos los valores p de las variables independientes están por debajo de cierto valor (por ejemplo, 0,05). A partir de aquí, el analista puede centrarse en hacer afirmaciones cualitativas sobre la influencia relativa que tienen las variables en el resultado (por ejemplo, "Existe una relación estadísticamente significativa entre la edad y las probabilidades de enfermedad cardíaca").
+
+Sin embargo, este enfoque puede resultar peligroso cuando se utiliza la significación estadística como única medida de la calidad del modelo. Es posible que este modelo estadísticamente optimizado tenga una precisión deficiente o que tenga un desempeño deficiente en alguna otra medida de capacidad predictiva. Si bien es posible que el modelo no se utilice para la predicción, ¿cuánto se debe confiar en las inferencias de un modelo que tiene valores p significativos pero una precisión lamentable? El rendimiento predictivo tiende a estar relacionado con qué tan cerca están los valores ajustados del modelo a los datos observados.
+
+::: rmdwarning
+Si un modelo tiene una fidelidad limitada a los datos, las inferencias generadas por el modelo deberían ser muy sospechosas. En otras palabras, la significancia estadística puede no ser prueba suficiente de que un modelo es apropiado.
+:::
+
+Esto puede parecer intuitivamente obvio, pero a menudo se ignora en el análisis de datos del mundo real.
+
+## Terminología {#sec-model-terminology}
+
+Antes de continuar, describiremos terminología adicional relacionada con el modelado y los datos. Estas descripciones pretenden ser útiles a medida que lee este libro, pero no son exhaustivas.
+
+En primer lugar, muchos modelos pueden clasificarse como *supervisados* o *no supervisados*. Los modelos no supervisados ​​son aquellos que aprenden patrones, grupos u otras características de los datos pero carecen de un resultado, es decir, una variable dependiente. El análisis de componentes principales (PCA), la agrupación en clústeres y los codificadores automáticos son ejemplos de modelos no supervisados; se utilizan para comprender las relaciones entre variables o conjuntos de variables sin una relación explícita entre los predictores y un resultado. Los modelos supervisados ​​son aquellos que tienen una variable de resultado. La regresión lineal, las redes neuronales y muchas otras metodologías entran en esta categoría.
+
+Dentro de los modelos supervisados, hay dos subcategorías principales:
+
+-   *Regresión* predice un resultado numérico.
+
+-   *Clasificación* predice un resultado que es un conjunto ordenado o desordenado de valores cualitativos.
+
+Estas son definiciones imperfectas y no tienen en cuenta todos los tipos de modelos posibles. En el [Capítulo @sec-models], nos referimos a esta característica de las técnicas supervisadas como *modo modelo*.
+
+Diferentes variables pueden tener diferentes *roles*, especialmente en un análisis de modelado supervisado. Los resultados (también conocidos como etiquetas, criterios de valoración o variables dependientes) son el valor que se predice en los modelos supervisados. Las variables independientes, que son el sustrato para hacer predicciones del resultado, también se denominan predictores, características o covariables (según el contexto). Los términos *resultados* y *predictores* se utilizan con mayor frecuencia en este libro.
+
+En términos de los datos o variables en sí, ya sea que se utilicen para modelos supervisados ​​o no supervisados, como predictores o resultados, las dos categorías principales son cuantitativas y cualitativas. Ejemplos del primero son números reales como "3.14159" y números enteros como "42". Los valores cualitativos, también conocidos como datos nominales, son aquellos que representan algún tipo de estado discreto que no se puede ubicar naturalmente en una escala numérica, como "rojo", "verde" y "azul".
+
+## ¿Cómo encaja el modelado en el proceso de análisis de datos? {#sec-model-phases}
+
+¿En qué circunstancias se crean los modelos? ¿Hay pasos que preceden a tal empresa? ¿Es la creación de modelos el primer paso en el análisis de datos?
+
+::: rmdnote
+Hay algunas fases críticas del análisis de datos que siempre vienen antes del modelado.
+:::
+
+En primer lugar, está el proceso crónicamente subestimado de *limpiar los datos*. Independientemente de las circunstancias, debe investigar los datos para asegurarse de que sean aplicables a los objetivos de su proyecto, precisos y apropiados. Estos pasos fácilmente pueden llevar más tiempo que el resto del proceso de análisis de datos (según las circunstancias).
+
+La limpieza de datos también puede superponerse con la segunda fase de *comprensión de los datos*, a menudo denominada análisis de datos exploratorios (EDA). EDA saca a la luz cómo se relacionan las diferentes variables entre sí, sus distribuciones, rangos típicos y otros atributos. Una buena pregunta para hacer en esta fase es: "¿Cómo obtuve *estos* datos?" Esta pregunta puede ayudarle a comprender cómo se muestrearon o filtraron los datos disponibles y si estas operaciones fueron apropiadas. Por ejemplo, al fusionar tablas de bases de datos, una unión puede salir mal y eliminar accidentalmente una o más subpoblaciones. Otra buena idea es preguntar si los datos son relevantes. Por ejemplo, para predecir si los pacientes tienen la enfermedad de Alzheimer, no sería prudente tener un conjunto de datos que contenga sujetos con la enfermedad y una muestra aleatoria de adultos sanos de la población general. Dada la naturaleza progresiva de la enfermedad, el modelo puede simplemente predecir quiénes son los pacientes de mayor edad.
+
+Finalmente, antes de iniciar un proceso de análisis de datos, deben existir expectativas claras sobre el objetivo del modelo y cómo se juzgará el desempeño (y el éxito). Se debe identificar al menos una *métrica de desempeño* con objetivos realistas de lo que se puede lograr. Las métricas estadísticas comunes, que se analizan con más detalle en el [Capítulo @sec-performance], son la precisión de la clasificación, las tasas de verdaderos y falsos positivos, el error cuadrático medio, etc. Deben sopesarse los beneficios y desventajas relativos de estas métricas. También es importante que la métrica sea pertinente; la alineación con los objetivos más amplios del análisis de datos es fundamental.
+
+El proceso de investigación de los datos puede no ser sencillo. @wickham2016 contiene una excelente ilustración del proceso general de análisis de datos, reproducida en @fig-software-data-science-model. La ingesta de datos y la limpieza/ordenamiento se muestran como pasos iniciales. Cuando comienzan los pasos analíticos para la comprensión, son un proceso heurístico; No podemos predeterminar cuánto tiempo pueden tardar. El ciclo de transformación, modelado y visualización a menudo requiere múltiples iteraciones.
 
 ```{r}
 #| label: fig-software-data-science-model
 #| echo: FALSE
 #| out.width: '80%'
-#| fig.cap: "The data science process (from R for Data Science, used with permission)"
+#| fig.cap: "El proceso de ciencia de datos (de R para Ciencia de Datos, usado con permiso)"
 #| warning: FALSE
 
 knitr::include_graphics("premade/data-science-model.svg")
 ```
 
-This iterative process is especially true for modeling. @fig-software-modeling-process emulates the typical path to determining an appropriate model. The general phases are:
+Este proceso iterativo es especialmente cierto para el modelado. @fig-software-modeling-process emula la ruta típica para determinar un modelo apropiado. Las fases generales son:
 
--   *Exploratory data analysis (EDA):* Initially there is a back and forth between numerical analysis and data visualization (represented in @fig-software-data-science-model) where different discoveries lead to more questions and data analysis side-quests to gain more understanding.
+-   *Análisis de datos exploratorios (EDA):* Inicialmente hay un vaivén entre el análisis numérico y la visualización de datos (representado en @fig-software-data-science-model) donde diferentes descubrimientos conducen a más preguntas y misiones secundarias de análisis de datos para comprender mejor los datos.
 
--   *Feature engineering:* The understanding gained from EDA results in the creation of specific model terms that make it easier to accurately model the observed data. This can include complex methodologies (e.g., PCA) or simpler features (using the ratio of two predictors). [Chapter @sec-recipes] focuses entirely on this important step.
+-   *Ingeniería de características:* La comprensión obtenida con EDA da como resultado la creación de términos de modelo específicos que facilitan el modelado preciso de los datos observados. Esto puede incluir metodologías complejas (por ejemplo, PCA) o características más simples (usando la proporción de dos predictores). [Capítulo @sec-recipes] se centra completamente en este importante paso.
 
--   *Model tuning and selection (large circles with alternating segments):* A variety of models are generated and their performance is compared. Some models require parameter tuning in which some structural parameters must be specified or optimized. The alternating segments within the circles signify the repeated data splitting used during resampling (see [Chapter @sec-resampling]).
+-   *Ajuste y selección de modelos (círculos grandes con segmentos alternos):* Se genera una variedad de modelos y se compara su rendimiento. Algunos modelos requieren ajuste de parámetros en el que se deben especificar u optimizar algunos parámetros estructurales. Los segmentos alternos dentro de los círculos significan la división repetida de datos utilizada durante el remuestreo (consulte el [Capítulo @sec-resampling]).
 
--   *Model evaluation:* During this phase of model development, we assess the model's performance metrics, examine residual plots, and conduct other EDA-like analyses to understand how well the models work. In some cases, formal between-model comparisons ([Chapter @sec-compare]) help you understand whether any differences in models are within the experimental noise.
+-   *Evaluación del modelo:* Durante esta fase del desarrollo del modelo, evaluamos las métricas de rendimiento del modelo, examinamos gráficos residuales y realizamos otros análisis similares a EDA para comprender qué tan bien funcionan los modelos. En algunos casos, las comparaciones formales entre modelos ([Capítulo @sec-compare]) le ayudan a comprender si hay diferencias en los modelos dentro del ruido experimental.
 
 ```{r}
 #| label: fig-software-modeling-process
@@ -228,64 +229,64 @@ This iterative process is especially true for modeling. @fig-software-modeling-p
 #| out.width: '100%'
 #| fig.width: 8
 #| fig.height: 3
-#| fig.cap: "A schematic for the typical modeling process"
+#| fig.cap: "Un esquema para el proceso de modelado típico."
 #| warning: FALSE
 
 knitr::include_graphics("premade/modeling-process.svg")
 ```
 
-After an initial sequence of these tasks, more understanding is gained regarding which models are superior as well as which data subpopulations are not being effectively estimated. This leads to additional EDA and feature engineering, another round of modeling, and so on. Once the data analysis goals are achieved, typically the last steps are to finalize, document, and communicate the model. For predictive models, it is common at the end to validate the model on an additional set of data reserved for this specific purpose.
+Después de una secuencia inicial de estas tareas, se obtiene una mayor comprensión sobre qué modelos son superiores y qué subpoblaciones de datos no se están estimando de manera efectiva. Esto conduce a EDA adicional y a ingeniería de características, otra ronda de modelado, etc. Una vez que se logran los objetivos del análisis de datos, normalmente los últimos pasos son finalizar, documentar y comunicar el modelo. Para los modelos predictivos, es común al final validar el modelo con un conjunto adicional de datos reservados para este propósito específico.
 
-As an example, @fes use data to model the daily ridership of Chicago's public train system using predictors such as the date, the previous ridership results, the weather, and other factors. @tbl-inner-monologue shows an approximation of these authors' hypothetical inner monologue when analyzing these data and eventually selecting a model with sufficient performance.
+Como ejemplo, @fes utiliza datos para modelar el número de pasajeros diario del sistema de trenes públicos de Chicago utilizando predictores como la fecha, los resultados anteriores del número de pasajeros, el clima y otros factores. \@ tbl-inner-monologue muestra una aproximación al hipotético monólogo interno de estos autores al analizar estos datos y eventualmente seleccionar un modelo con suficiente rendimiento.
 
 ```{r}
 #| label: tbl-inner-monologue
 #| echo: FALSE
 #| results: 'asis'
-#| tbl-cap: "Hypothetical inner monologue of a model developer."
+#| tbl-cap: "Monólogo interior hipotético de un desarrollador de modelos."
 
 monolog <- 
   tribble(
-    ~Activity, ~`Analysis Cycle`, ~Thoughts,
+    ~Actividad, ~`Analysis Cycle`, ~Pensamientos,
     "EDA", "1",
-    "The daily ridership values between stations are extremely correlated.",
+    "Los valores de pasajeros diarios entre estaciones están extremadamente correlacionados.",
     "EDA", " ",
-    "Weekday and weekend ridership look very different.",
+    "El número de pasajeros entre semana y los fines de semana se ve muy diferente.",
     "EDA", " ",
-    "One day in the summer of 2010 has an abnormally large number of riders.",
+    "Un día del verano de 2010 tiene un número anormalmente grande de ciclistas.",
     "EDA", "1",
-    "Which stations had the lowest daily ridership values?",
-    "Feature Engineering", "1",
-    "Dates should at least be encoded as day-of-the-week, and year. ",
-    "Feature Engineering", " ",
-    "Maybe PCA could be used on the correlated predictors to make it easier for the models to use them. ",
-    "Feature Engineering", " ",
-    "Hourly weather records should probably be summarized into daily measurements. ",
-    "Model Fitting", "1",
-    "Let’s start with simple linear regression, K-nearest neighbors, and a boosted decision tree. ",
-    "Model Tuning", "1",
-    "How many neighbors should be used?",
-    "Model Tuning", " ",
-    "Should we run a lot of boosting iterations or just a few?",
-    "Model Tuning", "2",
-    "How many neighbors seemed to be optimal for these data? ",
-    "Model Evaluation", "2",
-    "Which models have the lowest root mean squared errors? ",
+    "¿Qué estaciones tuvieron los valores más bajos de pasajeros diarios?",
+    "Ingeniería de características", "1",
+    "Las fechas deben codificarse al menos como día de la semana y año.",
+    "Ingeniería de características", " ",
+    "Quizás se podría utilizar PCA en los predictores correlacionados para facilitar su uso por parte de los modelos.",
+    "Ingeniería de características", " ",
+    "Los registros meteorológicos horarios probablemente deberían resumirse en mediciones diarias.",
+    "Entrenamiento del modelo", "1",
+    "Comencemos con una regresión lineal simple, K vecinos más cercanos y un árbol de decisión mejorado. ",
+    "Ajuste del modelo", "1",
+    "¿Cuántos vecinos se deben utilizar?",
+    "Ajuste del modelo", " ",
+    "¿Deberíamos ejecutar muchas iteraciones de impulso o solo unas pocas?",
+    "Ajuste del modelo", "2",
+    "¿Cuántos vecinos parecían óptimos para estos datos? ",
+    "Evaluación del Modelo", "2",
+    "¿Qué modelos tienen los errores cuadráticos medios más bajos? ",
     "EDA", "2",
-    "Which days were poorly predicted? ",
-    "Model Evaluation", "2",
-    "Variable importance scores indicate that the weather information is not predictive. We’ll drop them from the next set of models. ",
-    "Model Evaluation", " ",
-    "It seems like we should focus on a lot of boosting iterations for that model.",
-    "Feature Engineering", "2", 
-    "We need to encode holiday features to improve predictions on (and around) those dates.",
-    "Model Evaluation", "2",
-    "Let’s drop KNN from the model list. "
+    "¿Qué días fueron mal predichos? ",
+    "Evaluación del Modelo", "2",
+    "Las puntuaciones de importancia variable indican que la información meteorológica no es predictiva. Los eliminaremos del siguiente conjunto de modelos. ",
+    "Evaluación del Modelo", " ",
+    "Parece que deberíamos centrarnos en muchas iteraciones de impulso para ese modelo.",
+    "Ingeniería de características", "2", 
+    "Necesitamos codificar funciones de vacaciones para mejorar las predicciones en (y alrededor de) esas fechas.",
+    "Evaluación del Modelo", "2",
+    "Eliminemos a KNN de la lista de modelos. "
   )
 if (knitr::is_html_output()) {
   tab <- 
     monolog %>% 
-    dplyr::select(Thoughts, Activity) %>% 
+    dplyr::select(Pensamientos, Actividad) %>% 
     kable() %>%
     kable_styling() %>% 
     column_spec(2, width = "25%") %>%
@@ -293,16 +294,16 @@ if (knitr::is_html_output()) {
 } else {
   tab <- 
     monolog %>% 
-    dplyr::select(Thoughts, Activity) %>% 
+    dplyr::select(Pensamientos, Actividad) %>% 
     kable(
-      caption = "Hypothetical inner monologue of a model developer.",
-      label = "inner-monologue"
+      caption = "Monólogo inteno hipotético de un desarrollador de modelos.",
+      label = "monologo-interno"
     ) %>%
     kable_styling()
 }
 tab
 ```
 
-## Chapter Summary {#sec-software-summary}
+## Resumen del capítulo {#sec-software-summary}
 
-This chapter focused on how models describe relationships in data, and different types of models such as descriptive models, inferential models, and predictive models. The predictive capacity of a model can be used to evaluate it, even when its main goal is not prediction. Modeling itself sits within the broader data analysis process, and exploratory data analysis is a key part of building high-quality models.
+Este capítulo se centró en cómo los modelos describen relaciones en los datos y en diferentes tipos de modelos, como modelos descriptivos, modelos inferenciales y modelos predictivos. La capacidad predictiva de un modelo puede utilizarse para evaluarlo, incluso cuando su objetivo principal no sea la predicción. El modelado en sí forma parte del proceso más amplio de análisis de datos, y el análisis de datos exploratorio es una parte clave de la construcción de modelos de alta calidad.

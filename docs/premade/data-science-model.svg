@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="53.5 71.5 514 187.5" width="514" height="187.5">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="53.5 71.5 514 187.5" width="514" height="187.5">
   <defs>
     <font-face font-family="Helvetica Neue" font-size="16" panose-1="2 0 5 3 0 0 0 2 0 4" units-per-em="1000" underline-position="-100" underline-thickness="50" slope="0" x-height="517" cap-height="714" ascent="951.9958" descent="-212.99744" font-weight="400">
       <font-face-src>
@@ -39,37 +39,37 @@
       </g>
       <g id="Graphic_3">
         <text transform="translate(66.6465 140)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Import</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Importar</tspan>
         </text>
       </g>
       <g id="Graphic_4">
         <text transform="translate(155.9505 140)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Tidy</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Ordenar</tspan>
         </text>
       </g>
       <g id="Graphic_5">
         <text transform="translate(329.388 95)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Visualise</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Visualizar</tspan>
         </text>
       </g>
       <g id="Graphic_6">
         <text transform="translate(327.812 182)" fill="#0096ff">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="700" fill="#0096ff" x="9947598e-20" y="16">Model</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="700" fill="#0096ff" x="9947598e-20" y="16">Modelar</tspan>
         </text>
       </g>
       <g id="Graphic_7">
         <text transform="translate(234.3505 140)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Transform</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Transformar</tspan>
         </text>
       </g>
       <g id="Graphic_8">
         <text transform="translate(453.9665 140)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Communicate</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Comunicar</tspan>
         </text>
       </g>
       <g id="Graphic_10">
         <text transform="translate(212 216)" fill="#424242">
-          <tspan font-family="Helvetica Neue" font-size="12" font-weight="700" fill="#424242" x="0" y="12">Understand</tspan>
+          <tspan font-family="Helvetica Neue" font-size="12" font-weight="700" fill="#424242" x="0" y="12">Entender</tspan>
         </text>
       </g>
       <g id="Line_11">
@@ -85,14 +85,14 @@
         <path d="M 322.5 199.731 C 307.5617 202.53395 290.1841 203.768 279 198 C 269.3879 193.04273 266.2337 183.88462 265.82477 174.8864" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Line_15">
-        <line x1="191.5625" y1="150" x2="219.1625" y2="150" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <line x1="210.5625" y1="150" x2="219.1625" y2="150" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Line_16">
-        <line x1="118.5625" y1="150" x2="140.6625" y2="150" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+        <line x1="125.5625" y1="150" x2="140.6625" y2="150" marker-end="url(#FilledArrow_Marker)" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
       </g>
       <g id="Graphic_40">
         <text transform="translate(59 243)" fill="#424242">
-          <tspan font-family="Helvetica Neue" font-size="12" font-weight="700" fill="#424242" x="0" y="12">Program</tspan>
+          <tspan font-family="Helvetica Neue" font-size="12" font-weight="700" fill="#424242" x="0" y="12">Programa</tspan>
         </text>
       </g>
     </g>

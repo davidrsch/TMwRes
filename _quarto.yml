@@ -34,7 +34,7 @@ book:
   chapters:
     - index.qmd
 
-    - part: "INTRODUCTION"
+    - part: "INTRODUCCIÓN"
       chapters:
         - 01-software-modeling.qmd
         - 02-tidyverse.qmd
