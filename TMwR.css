@@ -19,26 +19,26 @@ pre code {
 
 /* The next two rules make the horizontal line go straight across in top navbar */
 
-.summary > li:first-child {
-	height: 50px;
-	padding-top: 10px;
-	border-bottom: 1px solid transparent;
-}
-
-.book .book-summary ul.summary li.divider {
-	height: 0px;
-}
-
 /* TOC book title */
+.sidebar-tools-main{
+  color: #CA225E!important;
+}
 
-.summary > li:first-child {
+#quarto-search div.aa-Autocomplete form.aa-Form.d-flex{
+  border-color: #CA225E !important;
+}
+
+#quarto-search div.aa-Autocomplete form.aa-Form.d-flex div.aa-InputWrapperPrefix label.aa-Label button.aa-SubmitButton svg.aa-SubmitIcon{
+  color: #CA225E !important;
+}
+
+.sidebar-title {
     font-size: 1em;
     height: auto;
-    padding: 1em 20px;
     line-height: 2em;
 }
 
-.summary > li:first-child a {
+.sidebar-title>a {
     font-size: 12.8px;
     font-weight: bold;
     text-transform: uppercase;
@@ -50,43 +50,22 @@ pre code {
 
 }
 
-.summary > li:first-child a:hover {
-  border-left: none;
-}
-
-.book .book-summary > nav > ul > li > a {
-  border-left: 1pt solid white;
-}
-
-.book-summary .divider + .chapter > a {
-  white-space: normal !important;
-}
-
-li.part:first-child {
-   border-top: none;
-}
-
-/*.book .book-summary ul.summary li.divider {
-    height: 0;
-} */
-
-.book .book-header.fixed {
-  border-bottom: 1px solid transparent;
-}
-
-.book .book-header .btn {
+.sidebar-item a.sidebar-item-text {
   color: #1a162d99;
 }
 
-.book .book-header .btn:hover {
+.sidebar-item a.sidebar-item-text:hover {
   color: #1a162d;
 }
 
+.sidebar-item a.sidebar-item-text.active {
+  color: #CA225E;
+}
 
 
 /*------------- Body and header text---------------- */
 
-.book.font-family-1 {
+.content {
   font-family: 'Lato', sans-serif;
   color: #404040;
 }
@@ -145,69 +124,57 @@ h4 code {
   font-style: normal !important;
 }
 
-.author {
+div.quarto-title-meta {
+  grid-template-columns: auto !important;
+}
+
+div.quarto-title-meta-contents {
+  display: flex;
   color: #1A162D !important;
   text-transform: uppercase;
   letter-spacing: 2pt;
 }
 
-p.author em {
-  font-style: normal !important;
+div.quarto-title-meta-contents p {
+  margin-right: 2.5%;
 }
-
 
 
 /*-----Body Links-------*/
 
-.book .book-body .page-wrapper .page-inner section.normal a {
+main.content a {
   color: #ca225e;
 }
 
-.book .book-body .page-wrapper .page-inner section.normal a:hover {
- color: #ca225e; /* darker color when hovering */
+main.content a:hover {
+ color: #ca225e !important; /* darker color when hovering */
  text-decoration: underline;
 }
 
 
 /*------------ TOC --------------*/
+/*.sidebar-item a.sidebar-item-text.active*/
 
-.book .book-summary {
-  background: white;
-  border-right: #d9d9d9 solid 1pt;
-}
-
-.summary{
+.quarto-sidebar, #TOC {
   font-family: 'Lato', sans-serif;
 }
 
-/* numbers */
-
-li a b  {
-  padding-right: 1em;
+.action-links > p {
+  margin-bottom: 0.2rem!important;
 }
 
-/* list items*/
-.book .book-summary ul.summary li a, 
-.book .book-summary ul.summary li span {
-  padding-top: 8px;
-  padding-bottom: 8px;
-  padding-left: 15px;
-  padding-right: 15px;
-  color: #1a162dad;
+.chapter-number, #TOC ul li .nav-link, .toc-action{
+  color:#1a162d99!important;
+}
+a.sidebar-item-text:hover .chapter-number, #TOC ul li a.nav-link:hover, .toc-action:hover{
+  color:#1a162d!important;
+}
+a.sidebar-item-text.active .chapter-number, #TOC ul li a.nav-link.active, .toc-action.active{
+  color:#ca225e!important;
 }
 
-.summary a:hover {
-  color: #1a162dde !important;
-} 
-
-.book .book-summary ul.summary li.active>a { /*active TOC links*/
-  color: #CA225E !important;
-} 
-    
 /* parts */
-
-li.appendix span, li.part span { 
-  margin-top: 1.5em;
+.sidebar-item-section>.sidebar-item-container:first-child { 
   color: #1A162D;
   opacity: 1 !important;
   text-transform: uppercase;
@@ -221,8 +188,8 @@ li.appendix span, li.part span {
 
 /*------------- CODE --------------*/
 
-.book .book-body .page-wrapper .page-inner section.normal code, 
-.book .book-body .page-wrapper .page-inner section.normal pre {
+main.content code, 
+main.content pre {
   font-family: 'Source Code Pro', monospace;
   font-size: 1em;
 }
@@ -300,108 +267,6 @@ div.rmdwarning code {
   background-color: #cb9faf52 !important;
   font-size: 1em;
 }
-
-
-/* ----- For Large Screens -----*/
-
-
-@media (min-width: 1900px) {
-  
-  .book .book-header.fixed {
-    left: 500px;
-}
-  
-  /* Content width */
-  .book.with-summary .book-body {
-      left: 500px;
-  }
-  
-  /* TOC */
-  .book .book-summary {
-    width: 500px;
-    left: -500px;
-  }
-
-  .book.with-summary .book-header.fixed {
-      left: 500px;
-      
-  }
-}
-
-
-@media (min-width: 1500px) {
-  
-  /* Content width */
-  .book.with-summary .book-body {
-      left: 400px;
-  }
-  
-  /* TOC */
-  .book .book-summary {
-    width: 400px;
-    left: -400px;
-
-  }
-
-  .book.with-summary .book-header.fixed {
-      left: 400px;
-  }
-}
-
-
-@media (min-width: 1400px) {
-  
-  /* Content width */
-  .book.with-summary .book-body {
-      left: 350px;
-  }
-  
-  /* TOC */
-  .book .book-summary {
-      width: 350px;
-      left: -400px;
-  }
-
-  .book.with-summary .book-header.fixed {
-      left: 350px;
-  }
-} 
-
-/* ----References css bug fix----- */
-
-
-.page-inner+h3 {
-  max-width: 800px;
-  margin: 0 auto;
-  font-size: 24px;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-
-.page-inner + h3 + .references, 
-.page-inner + h3 + .references + .footnotes {
-  max-width: 800px;
-  margin: 0 auto;
-  color: #333333;
-  padding-left: 15px;
-  padding-right: 15px;
-  line-height: 1.7em;
-}
-
-.page-inner + h3 + .references + .footnotes hr {
-  max-width: 800px;
-  margin: 27.2px auto;
-  background-color: #e7e7e7;
-  height: 4px;
-  border: none;
-}
-
-.page-inner + h3 + .references a,
-.page-inner + h3 + .references + .footnotes a {
-  color: #CA225E;
-}
-
-
 /* Package Names */
 
 span.pkg {  
@@ -418,20 +283,4 @@ p, ul, ol, dl, blockquote, table, pre {
 
 li p {
   margin-bottom: 1em !important;
-}
-
-/* Cover image */
-
-img.cover {
-  float: right;
-  margin: 0 1rem 0 1rem;
-  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
-}
-
-@media (max-width: 767.98px) {
-  img.cover {
-    float: none;
-    display: block;
-    margin: 0 auto 1rem auto;
-  }
 }

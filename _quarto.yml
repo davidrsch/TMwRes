@@ -19,6 +19,7 @@ book:
   
   author: 
     - name: Max Kuhn
+    - name: and
     - name: Julia Silge
   search: true
   sidebar: 
