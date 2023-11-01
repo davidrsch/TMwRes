@@ -1,4 +1,4 @@
-# A Tidyverse Primer {#sec-tidyverse}
+# Una introducción tidyverse {#sec-tidyverse}
 
 ```{r tidyverse-setup, include = FALSE}
 knitr::opts_chunk$set(fig.path = "figures/")
@@ -6,29 +6,29 @@ library(tidyverse)
 library(lubridate)
 ```
 
-What is the tidyverse, and where does the tidymodels framework fit in? The tidyverse is a collection of R packages for data analysis that are developed with common ideas and norms. From @tidyverse:
+¿Qué es tidyverse y dónde encaja el marco de tidymodels? tidyverse es una colección de paquetes R para análisis de datos que se desarrollan con ideas y normas comunes. De @tidyverse:
 
-> "At a high level, the tidyverse is a language for solving data science challenges with R code. Its primary goal is to facilitate a conversation between a human and a computer about data. Less abstractly, the tidyverse is a collection of R packages that share a high-level design philosophy and low-level grammar and data structures, so that learning one package makes it easier to learn the next."
+> "En un nivel alto, tidyverse es un lenguaje para resolver desafíos de ciencia de datos con código R. Su objetivo principal es facilitar una conversación entre un humano y una computadora sobre datos. De manera menos abstracta, tidyverse es una colección de paquetes de R que comparten una filosofía de diseño de alto nivel y estructuras de datos y gramática de bajo nivel, de modo que aprender un paquete hace que sea más fácil aprender el siguiente."
 
-In this chapter, we briefly discuss important principles of the tidyverse design philosophy and how they apply in the context of modeling software that is easy to use properly and supports good statistical practice, like we outlined in [Chapter @sec-software-modeling]. The next chapter covers modeling conventions from the core R language. Together, you can use these discussions to understand the relationships between the tidyverse, tidymodels, and the core or base R language. Both tidymodels and the tidyverse build on the R language, and tidymodels applies tidyverse principles to building models.
+En este capítulo, analizamos brevemente principios importantes de la filosofía de diseño de tidyverse y cómo se aplican en el contexto del software de modelado para que sea fácil de usar correctamente y respalde las buenas prácticas estadísticas, como lo describimos en el [Capítulo @sec-software-modeling]. El siguiente capítulo cubre las convenciones de modelado del lenguaje principal R. Juntos, pueden utilizar estas discusiones para comprender las relaciones entre tidyverse, tidymodels y el lenguaje principal o básico, R. Tanto tidymodels como tidyverse se basan en el lenguaje R, y tidymodels aplica los principios de tidyverse para construir modelos.
 
-## Tidyverse Principles
+## Principios de Tidyverse
 
-The full set of strategies and tactics for writing R code in the tidyverse style can be found at the website <https://design.tidyverse.org>. Here we can briefly describe several of the general tidyverse design principles, their motivation, and how we think about modeling as an application of these principles.
+El conjunto completo de estrategias y tácticas para escribir código R en el estilo tidyverse se puede encontrar en el sitio web <https://design.tidyverse.org>. Aquí podemos describir brevemente varios de los principios generales de diseño de tidyverse, su motivación y cómo pensamos sobre el modelado como una aplicación de estos principios.
 
-### Design for humans
+### Diseño para humanos
 
-The tidyverse focuses on designing R packages and functions that can be easily understood and used by a broad range of people. Both historically and today, a substantial percentage of R users are not people who create software or tools but instead people who create analyses or models. As such, R users do not typically have (or need) computer science backgrounds, and many are not interested in writing their own R packages.
+Tidyverse se centra en diseñar paquetes y funciones de R que puedan ser fácilmente comprendidos y utilizados por una amplia gama de personas. Tanto históricamente como hoy, un porcentaje sustancial de usuarios de R no son personas que crean software o herramientas, sino personas que crean análisis o modelos. Como tal, los usuarios de R normalmente no tienen (ni necesitan) experiencia en informática, y muchos no están interesados ​​en escribir sus propios paquetes R.
 
-For this reason, it is critical that R code be easy to work with to accomplish your goals. Documentation, training, accessibility, and other factors play an important part in achieving this. However, if the syntax itself is difficult for people to easily comprehend, documentation is a poor solution. The software itself must be intuitive.
+Por esta razón, es fundamental que sea fácil trabajar con el código R para lograr sus objetivos. La documentación, la formación, la accesibilidad y otros factores juegan un papel importante para lograrlo. Sin embargo, si la sintaxis en sí es difícil de comprender para las personas, la documentación es una mala solución. El software en sí debe ser intuitivo.
 
-To contrast the tidyverse approach with more traditional R semantics, consider sorting a data frame. Data frames can represent different types of data in each column, and multiple values in each row. Using only the core language, we can sort a data frame using one or more columns by reordering the rows via R's subscripting rules in conjunction with `order()`; you cannot successfully use a function you might be tempted to try in such a situation because of its name, `sort()`. To sort the `mtcars` data by two of its columns, the call might look like:
+Para contrastar el enfoque tidyverse con la semántica R más tradicional, considere ordenar un marco de datos. Los marcos de datos pueden representar diferentes tipos de datos en cada columna y varios valores en cada fila. Usando solo el lenguaje central, podemos ordenar un marco de datos usando una o más columnas reordenando las filas mediante las reglas de subíndice de R junto con `order()`; no puedes utilizar con éxito una función que podrías sentirte tentado a probar en tal situación debido a su nombre, `sort()`. Para ordenar los datos de `mtcars` por dos de sus columnas, la llamada podría verse así:
 
 ```{r tidyverse-base-sort, eval = FALSE}
 mtcars[order(mtcars$gear, mtcars$mpg), ]
 ```
 
-While very computationally efficient, it would be difficult to argue that this is an intuitive user interface. In `r pkg(dplyr)` by contrast, the tidyverse function `arrange()` takes a set of variable names as input arguments directly:
+Si bien es muy eficiente desde el punto de vista computacional, sería difícil argumentar que se trata de una interfaz de usuario intuitiva. En `r pkg(dplyr)`, por el contrario, la función tidyverse `arrange()` toma un conjunto de nombres de variables como argumentos de entrada directamente:
 
 ```{r tidyverse-dplyr-sort, eval = FALSE}
 library(dplyr)
@@ -36,22 +36,22 @@ arrange(.data = mtcars, gear, mpg)
 ```
 
 ::: rmdnote
-The variable names used here are "unquoted"; many traditional R functions require a character string to specify variables, but tidyverse functions take unquoted names or *selector functions*. The selectors allow for one or more readable rules that are applied to the column names. For example, `ends_with("t")` would select the `drat` and `wt` columns of the `mtcars` data frame.
+Los nombres de variables utilizados aquí están "sin comillas"; muchas funciones tradicionales de R requieren una cadena de caracteres para especificar variables, pero las funciones tidyverse toman nombres sin comillas o *funciones de selección*. Los selectores permiten una o más reglas legibles que se aplican a los nombres de las columnas. Por ejemplo, `ends_with("t")` seleccionaría las columnas `drat` y `wt` del marco de datos `mtcars`.
 :::
 
-Additionally, naming is crucial. If you were new to R and were writing data analysis or modeling code involving linear algebra, you might be stymied when searching for a function that computes the matrix inverse. Using `apropos("inv")` yields no candidates. It turns out that the base R function for this task is `solve()`, for solving systems of linear equations. For a matrix `X`, you would use `solve(X)` to invert `X` (with no vector for the right-hand side of the equation). This is only documented in the description of one of the *arguments* in the help file. In essence, you need to know the name of the solution to be able to find the solution.
+Además, el nombramiento es crucial. Si era nuevo en R y estaba escribiendo análisis de datos o código de modelado que involucra álgebra lineal, es posible que se sienta bloqueado al buscar una función que calcule la matriz inversa. El uso de `apropos("inv")` no produce candidatos. Resulta que la función R base para esta tarea es `solve()`, para resolver sistemas de ecuaciones lineales. Para una matriz `X`, usarías `solve(X)` para invertir `X` (sin vector para el lado derecho de la ecuación). Esto sólo está documentado en la descripción de uno de los *argumentos* en el archivo de ayuda. En esencia, necesita saber el nombre de la solución para poder encontrarla.
 
-The tidyverse approach is to use function names that are descriptive and explicit over those that are short and implicit. There is a focus on verbs (e.g., `fit`, `arrange`, etc.) for general methods. Verb-noun pairs are particularly effective; consider `invert_matrix()` as a hypothetical function name. In the context of modeling, it is also important to avoid highly technical jargon, such as Greek letters or obscure terms in terms. Names should be as self-documenting as possible.
+El enfoque de tidyverse consiste en utilizar nombres de funciones que sean descriptivos y explícitos en lugar de aquellos que sean breves e implícitos. Hay un enfoque en los verbos (por ejemplo, "adaptar", "arreglar", etc.) para los métodos generales. Los pares verbo-sustantivo son particularmente eficaces; considere `invert_matrix()` como un nombre de función hipotético. En el contexto del modelado, también es importante evitar jergas muy técnicas, como letras griegas o términos oscuros. Los nombres deben ser lo más autodocumentados posible.
 
-When there are similar functions in a package, function names are designed to be optimized for tab-completion. For example, the `r pkg(glue)` package has a collection of functions starting with a common prefix (`glue_`) that enables users to quickly find the function they are looking for.
+Cuando hay funciones similares en un paquete, los nombres de las funciones están diseñados para optimizarse para completarse con tabulaciones. Por ejemplo, el paquete `r pkg(glue)` tiene una colección de funciones que comienzan con un prefijo común (`glue_`) que permite a los usuarios encontrar rápidamente la función que buscan.
 
-### Reuse existing data structures
+### Reutilizar estructuras de datos existentes
 
-Whenever possible, functions should avoid returning a novel data structure. If the results are conducive to an existing data structure, it should be used. This reduces the cognitive load when using software; no additional syntax or methods are required.
+Siempre que sea posible, las funciones deben evitar devolver una estructura de datos novedosa. Si los resultados son propicios para una estructura de datos existente, se debe utilizar. Esto reduce la carga cognitiva al utilizar software; no se requieren sintaxis ni métodos adicionales.
 
-The data frame is the preferred data structure in tidyverse and tidymodels packages, because its structure is a good fit for such a broad swath of data science tasks. Specifically, the tidyverse and tidymodels favor the tibble, a modern reimagining of R's data frame that we describe in the next section on example tidyverse syntax.
+El marco de datos es la estructura de datos preferida en los paquetes tidyverse y tidymodels, porque su estructura se adapta bien a una gama tan amplia de tareas de ciencia de datos. Específicamente, los modelos tidyverse y tidy favorecen el tibble, una reinvención moderna del marco de datos de R que describimos en la siguiente sección sobre el ejemplo de sintaxis de tidyverse.
 
-As an example, the `r pkg(rsample)` package can be used to create *resamples* of a data set, such as cross-validation or the bootstrap (described in [Chapter @sec-resampling]). The resampling functions return a tibble with a column called `splits` of objects that define the resampled data sets. Three bootstrap samples of a data set might look like:
+Como ejemplo, el paquete `r pkg(rsample)` se puede utilizar para crear *resamples* de un conjunto de datos, como la validación cruzada o el bootstrap (descrito en el [Capítulo @sec-resampling]). Las funciones de remuestreo devuelven un tibble con una columna llamada "divisiones" de objetos que definen los conjuntos de datos remuestreados. Tres muestras de arranque de un conjunto de datos podrían verse así:
 
 ```{r tidyverse-resample}
 boot_samp <- rsample::bootstraps(mtcars, times = 3)
@@ -59,31 +59,31 @@ boot_samp
 class(boot_samp)
 ```
 
-With this approach, vector-based functions can be used with these columns, such as `vapply()` or `purrr::map()`.[^02-tidyverse-1] This `boot_samp` object has multiple classes but inherits methods for data frames (`"data.frame"`) and tibbles (`"tbl_df"`). Additionally, new columns can be added to the results without affecting the class of the data. This is much easier and more versatile for users to work with than a completely new object type that does not make its data structure obvious.
+Con este enfoque, se pueden usar funciones basadas en vectores con estas columnas, como `vapply()` o `purrr::map()`.[^02-tidyverse-1] Este objeto `boot_samp` tiene múltiples clases pero hereda métodos para marcos de datos (`"data.frame"`) y tibbles (`"tbl_df"`). Además, se pueden agregar nuevas columnas a los resultados sin afectar la clase de los datos. Es mucho más fácil y versátil para los usuarios trabajar con esto que un tipo de objeto completamente nuevo que no hace que su estructura de datos sea obvia.
 
-[^02-tidyverse-1]: If you've never seen `::` in R code before, it is an explicit method for calling a function. The value of the left-hand side is the *namespace* where the function lives (usually a package name). The right-hand side is the function name. In cases where two packages use the same function name, this syntax ensures that the correct function is called.
+[^02-tidyverse-1]: Si nunca antes ha visto `::` en el código R, es un método explícito para llamar a una función. El valor del lado izquierdo es el *espacio de nombres* donde reside la función (normalmente un nombre de paquete). El lado derecho es el nombre de la función. En los casos en que dos paquetes usan el mismo nombre de función, esta sintaxis garantiza que se llame a la función correcta.
 
-One downside to relying on common data structures is the potential loss of computational performance. In some situations, data can be encoded in specialized formats that are more efficient representations of the data. For example:
+Una desventaja de depender de estructuras de datos comunes es la posible pérdida de rendimiento computacional. En algunas situaciones, los datos se pueden codificar en formatos especializados que son representaciones más eficientes de los datos. Por ejemplo:
 
--   In computational chemistry, the structure-data file format (SDF) is a tool to take chemical structures and encode them in a format that is computationally efficient to work with.
+-   En química computacional, el formato de archivo de datos estructurales (SDF) es una herramienta para tomar estructuras químicas y codificarlas en un formato con el que sea computacionalmente eficiente trabajar.
 
--   Data that have a large number of values that are the same (such as zeros for binary data) can be stored in a sparse matrix format. This format can reduce the size of the data as well as enable more efficient computational techniques.
+-   Los datos que tienen una gran cantidad de valores iguales (como ceros para datos binarios) se pueden almacenar en un formato de matriz dispersa. Este formato puede reducir el tamaño de los datos y permitir técnicas computacionales más eficientes.
 
-These formats are advantageous when the problem is well scoped and the potential data processing methods are both well defined and suited to such a format.[^02-tidyverse-2] However, once such constraints are violated, specialized data formats are less useful. For example, if we perform a transformation of the data that converts the data into fractional numbers, the output is no longer sparse; the sparse matrix representation is helpful for one specific algorithmic step in modeling, but this is often not true before or after that specific step.
+Estos formatos son ventajosos cuando el problema tiene un alcance adecuado y los posibles métodos de procesamiento de datos están bien definidos y son adecuados para dicho formato.[^02-tidyverse-2] Sin embargo, una vez que se violan dichas restricciones, los formatos de datos especializados son menos útiles. Por ejemplo, si realizamos una transformación de los datos que los convierte en números fraccionarios, la salida ya no es escasa; La representación matricial dispersa es útil para un paso algorítmico específico en el modelado, pero a menudo esto no es cierto antes o después de ese paso específico.
 
-[^02-tidyverse-2]: Not all algorithms can take advantage of sparse representations of data. In such cases, a sparse matrix must be converted to a more conventional format before proceeding.
+[^02-tidyverse-2]: No todos los algoritmos pueden aprovechar representaciones dispersas de datos. En tales casos, una matriz dispersa se debe convertir a un formato más convencional antes de continuar.
 
 ::: rmdwarning
-A specialized data structure is not flexible enough for an entire modeling workflow in the way that a common data structure is.
+Una estructura de datos especializada no es lo suficientemente flexible para un flujo de trabajo de modelado completo como lo es una estructura de datos común.
 :::
 
-One important feature in the tibble produced by `r pkg(rsample)` is that the `splits` column is a list. In this instance, each element of the list has the same type of object: an `rsplit` object that contains the information about which rows of `mtcars` belong in the bootstrap sample. *List columns* can be very useful in data analysis and, as will be seen throughout this book, are important to tidymodels.
+Una característica importante del tibble producido por `r pkg(rsample)` es que la columna `splits` es una lista. En este caso, cada elemento de la lista tiene el mismo tipo de objeto: un objeto `rsplit` que contiene información sobre qué filas de `mtcars` pertenecen a la muestra de arranque. Las *columnas de lista* pueden ser muy útiles en el análisis de datos y, como se verá a lo largo de este libro, son importantes para los modelos ordenados.
 
-### Design for the pipe and functional programming
+### Diseño para la tubería y programación funcional.
 
-The `r pkg(magrittr)` pipe operator (`%>%`) is a tool for chaining together a sequence of R functions.[^02-tidyverse-3] To demonstrate, consider the following commands that sort a data frame and then retain the first 10 rows:
+El operador de canalización `r pkg(magrittr)` (`%>%`) es una herramienta para encadenar una secuencia de funciones R.[^02-tidyverse-3] Para demostrarlo, considere los siguientes comandos que ordenan un marco de datos y luego conserve las primeras 10 filas:
 
-[^02-tidyverse-3]: In R 4.1.0, a native pipe operator `|>` was introduced as well. In this book, we use the `r pkg(magrittr)` pipe since users on older versions of R will not have the new native pipe.
+[^02-tidyverse-3]: En R 4.1.0, también se introdujo un operador de canalización nativo `|>`. En este libro, utilizamos la canalización `r pkg(magrittr)` ya que los usuarios de versiones anteriores de R no tendrán la nueva canalización nativa.
 
 ```{r tidyverse-no-pipe, eval = FALSE}
 small_mtcars <- arrange(mtcars, gear)
@@ -93,7 +93,7 @@ small_mtcars <- slice(small_mtcars, 1:10)
 small_mtcars <- slice(arrange(mtcars, gear), 1:10)
 ```
 
-The pipe operator substitutes the value of the left-hand side of the operator as the first argument to the right-hand side, so we can implement the same result as before with:
+El operador de tubería sustituye el valor del lado izquierdo del operador como primer argumento del lado derecho, por lo que podemos implementar el mismo resultado que antes con:
 
 ```{r tidyverse-pipe, eval = FALSE}
 small_mtcars <- 
@@ -102,9 +102,9 @@ small_mtcars <-
   slice(1:10)
 ```
 
-The piped version of this sequence is more readable; this readability increases as more operations are added to a sequence. This approach to programming works in this example because all of the functions we used return the same data structure (a data frame) that is then the first argument to the next function. This is by design. When possible, create functions that can be incorporated into a pipeline of operations.
+La versión canalizada de esta secuencia es más legible; esta legibilidad aumenta a medida que se agregan más operaciones a una secuencia. Este enfoque de programación funciona en este ejemplo porque todas las funciones que utilizamos devuelven la misma estructura de datos (un marco de datos) que luego es el primer argumento de la siguiente función. Esto es por diseño. Cuando sea posible, cree funciones que puedan incorporarse a un conjunto de operaciones.
 
-If you have used `r pkg(ggplot2)`, this is not unlike the layering of plot components into a `ggplot` object with the `+` operator. To make a scatter plot with a regression line, the initial `ggplot()` call is augmented with two additional operations:
+Si ha utilizado `r pkg(ggplot2)`, esto no es diferente a la superposición de componentes de la trama en un objeto `ggplot` con el operador `+`. Para hacer un diagrama de dispersión con una línea de regresión, la llamada inicial a `ggplot()` se aumenta con dos operaciones adicionales:
 
 ```{r tidyverse-ggplot-chain, eval = FALSE}
 library(ggplot2)
@@ -113,13 +113,13 @@ ggplot(mtcars, aes(x = wt, y = mpg)) +
   geom_smooth(method = lm)
 ```
 
-While similar to the `r pkg(dplyr)` pipeline, note that the first argument to this pipeline is a data set (`mtcars`) and that each function call returns a `ggplot` object. Not all pipelines need to keep the returned values (plot objects) the same as the initial value (a data frame). Using the pipe operator with `r pkg(dplyr)` operations has acclimated many R users to expect to return a data frame when pipelines are used; as shown with `r pkg(ggplot2)`, this does not need to be the case. Pipelines are incredibly useful in modeling workflows but modeling pipelines can return, instead of a data frame, objects such as model components.
+Si bien es similar a la canalización `r pkg(dplyr)`, tenga en cuenta que el primer argumento de esta canalización es un conjunto de datos (`mtcars`) y que cada llamada de función devuelve un objeto `ggplot`. No todas las canalizaciones necesitan mantener los valores devueltos (objetos de trazado) iguales que el valor inicial (un marco de datos). El uso del operador de canalización con operaciones `r pkg(dplyr)` ha hecho que muchos usuarios de R esperen devolver un marco de datos cuando se utilizan canalizaciones; como se muestra con `r pkg(ggplot2)`, no tiene por qué ser así. Las canalizaciones son increíblemente útiles para modelar flujos de trabajo, pero el modelado de canalizaciones puede devolver, en lugar de un marco de datos, objetos como componentes del modelo.
 
-R has excellent tools for creating, changing, and operating on functions, making it a great language for functional programming. This approach can replace iterative loops in many situations, such as when a function returns a value without other side effects.[^02-tidyverse-4]
+R tiene excelentes herramientas para crear, cambiar y operar funciones, lo que lo convierte en un excelente lenguaje para la programación funcional. Este enfoque puede reemplazar los bucles iterativos en muchas situaciones, como cuando una función devuelve un valor sin otros efectos secundarios.[^02-tidyverse-4]
 
-[^02-tidyverse-4]: Examples of function side effects could include changing global data or printing a value.
+[^02-tidyverse-4]: Ejemplos de efectos secundarios de funciones podrían incluir cambiar datos globales o imprimir un valor.
 
-Let's look at an example. Suppose you are interested in the logarithm of the ratio of the fuel efficiency to the car weight. To those new to R and/or coming from other programming languages, a loop might seem like a good option:
+Veamos un ejemplo. Suponga que está interesado en el logaritmo de la relación entre la eficiencia del combustible y el peso del automóvil. Para aquellos nuevos en R y/o que vienen de otros lenguajes de programación, un bucle puede parecer una buena opción:
 
 ```{r tidyverse-loop}
 n <- nrow(mtcars)
@@ -130,25 +130,25 @@ for (car in 1:n) {
 head(ratios)
 ```
 
-Those with more experience in R may know that there is a much simpler and faster vectorized version that can be computed by:
+Aquellos con más experiencia en R sabrán que existe una versión vectorizada mucho más simple y rápida que se puede calcular mediante:
 
 ```{r tidyverse-vectorized}
 ratios <- log(mtcars$mpg/mtcars$wt)
 ```
 
-However, in many real-world cases, the element-wise operation of interest is too complex for a vectorized solution. In such a case, a good approach is to write a function to do the computations. When we design for functional programming, it is important that the output depends only on the inputs and that the function has no side effects. Violations of these ideas in the following function are shown with comments:
+Sin embargo, en muchos casos del mundo real, la operación de interés por elementos es demasiado compleja para una solución vectorizada. En tal caso, un buen enfoque es escribir una función para realizar los cálculos. Cuando diseñamos para programación funcional, es importante que la salida dependa sólo de las entradas y que la función no tenga efectos secundarios. Las violaciones de estas ideas en la siguiente función se muestran con comentarios:
 
 ```{r tidyverse-non-functional}
 compute_log_ratio <- function(mpg, wt) {
-  log_base <- getOption("log_base", default = exp(1)) # gets external data
+  log_base <- getOption("log_base", default = exp(1)) # obtiene datos externos
   results <- log(mpg/wt, base = log_base)
-  print(mean(results))                                # prints to the console
-  done <<- TRUE                                       # sets external data
+  print(mean(results))                                # imprime en la consola
+  done <<- TRUE                                       # establece datos externos
   results
 }
 ```
 
-A better version would be:
+Una mejor versión sería:
 
 ```{r tidyverse-better-function}
 compute_log_ratio <- function(mpg, wt, log_base = exp(1)) {
@@ -162,49 +162,49 @@ The `r pkg(purrr)` package contains tools for functional programming. Let's focu
 map(head(mtcars$mpg, 3), sqrt)
 ```
 
-There are specialized variants of `map()` that return values when we know or expect that the function will generate one of the basic vector types. For example, since the square root returns a double-precision number:
+Existen variantes especializadas de `map()` que devuelven valores cuando sabemos o esperamos que la función genere uno de los tipos de vectores básicos. Por ejemplo, dado que la raíz cuadrada devuelve un número de doble precisión:
 
 ```{r map-dbl}
 map_dbl(head(mtcars$mpg, 3), sqrt)
 ```
 
-There are also mapping functions that operate across multiple vectors:
+También hay funciones de mapeo que operan en múltiples vectores:
 
 ```{r map2}
 log_ratios <- map2_dbl(mtcars$mpg, mtcars$wt, compute_log_ratio)
 head(log_ratios)
 ```
 
-The `map()` functions also allow for temporary, anonymous functions defined using the tilde character. The argument values are `.x` and `.y` for `map2()`:
+Las funciones `map()` también permiten funciones temporales y anónimas definidas usando el carácter de tilde. Los valores de los argumentos son `.x` y `.y` para `map2()`:
 
 ```{r map2-inline}
 map2_dbl(mtcars$mpg, mtcars$wt, ~ log(.x/.y)) %>% 
   head()
 ```
 
-These examples have been trivial but, in later sections, will be applied to more complex problems.
+Estos ejemplos han sido triviales pero, en secciones posteriores, se aplicarán a problemas más complejos.
 
 ::: rmdnote
-For functional programming in tidy modeling, functions should be defined so that functions like `map()` can be used for iterative computations.
+Para la programación funcional en el modelado ordenado, las funciones deben definirse de modo que funciones como `map()` puedan usarse para cálculos iterativos.
 :::
 
-## Examples of Tidyverse Syntax {#sec-examples-of-tidyverse-syntax}
+## Ejemplos de sintaxis de Tidyverse {#sec-examples-of-tidyverse-syntax}
 
-Let's begin our discussion of tidyverse syntax by exploring more deeply what a tibble is, and how tibbles work. Tibbles have slightly different rules than basic data frames in R. For example, tibbles naturally work with column names that are not syntactically valid variable names:
+Comencemos nuestra discusión sobre la sintaxis de tidyverse explorando más profundamente qué es un tibble y cómo funcionan. Los tibbles tienen reglas ligeramente diferentes a los marcos de datos básicos en R. Por ejemplo, los tibbles funcionan naturalmente con nombres de columnas que no son nombres de variables sintácticamente válidos:
 
 ```{r tidyverse-names}
-# Wants valid names:
+# Quiere nombres válidos:
 data.frame(`variable 1` = 1:2, two = 3:4)
-# But can be coerced to use them with an extra option:
+# Pero se puede obligar a utilizarlos con una opción adicional:
 df <- data.frame(`variable 1` = 1:2, two = 3:4, check.names = FALSE)
 df
 
-# But tibbles just work:
+# Pero los tibbles simplemente funcionan:
 tbbl <- tibble(`variable 1` = 1:2, two = 3:4)
 tbbl
 ```
 
-Standard data frames enable *partial matching* of arguments so that code using only a portion of the column names still works. Tibbles prevent this from happening since it can lead to accidental errors.
+Los marcos de datos estándar permiten *coincidencia parcial* de argumentos para que el código que utiliza solo una parte de los nombres de las columnas siga funcionando. Tibbles evita que esto suceda, ya que puede provocar errores accidentales.
 
 ```{r tidyverse-partial, error = TRUE}
 df$tw
@@ -212,7 +212,7 @@ df$tw
 tbbl$tw
 ```
 
-Tibbles also prevent one of the most common R errors: dropping dimensions. If a standard data frame subsets the columns down to a single column, the object is converted to a vector. Tibbles never do this:
+Tibbles también previene uno de los errores de R más comunes: eliminar dimensiones. Si un marco de datos estándar subconjunto de columnas en una sola columna, el objeto se convierte en un vector. Tibbles nunca hace esto:
 
 ```{r tidyverse-drop}
 df[, "two"]
@@ -220,9 +220,9 @@ df[, "two"]
 tbbl[, "two"]
 ```
 
-There are other advantages to using tibbles instead of data frames, such as better printing and more.[^02-tidyverse-5]
+Hay otras ventajas al usar tibbles en lugar de marcos de datos, como una mejor impresión y más.[^02-tidyverse-5]
 
-[^02-tidyverse-5]: Chapter 10 of @wickham2016 has more details on tibbles.
+[^02-tidyverse-5]: El capítulo 10 de @wickham2016 tiene más detalles sobre tibbles.
 
 ```{r tidyverse-import-raw, include = FALSE}
 url <- "chi.csv"
@@ -240,25 +240,25 @@ num_combos <-
   nrow()
 ```
 
-To demonstrate some syntax, let's use tidyverse functions to read in data that could be used in modeling. The data set comes from the city of Chicago's data portal and contains daily ridership data for the city's elevated train stations. The data set has columns for:
+Para demostrar algo de sintaxis, usemos funciones tidyverse para leer datos que podrían usarse en el modelado. El conjunto de datos proviene del portal de datos de la ciudad de Chicago y contiene datos diarios sobre el número de pasajeros de las estaciones de trenes elevados de la ciudad. El conjunto de datos tiene columnas para:
 
--   the station identifier (numeric)
--   the station name (character)
--   the date (character in `mm/dd/yyyy` format)
--   the day of the week (character)
--   the number of riders (numeric)
+-   el identificador de la estación (númerico)
+-   el nombre de la estación (texto)
+-   la fecha (texto en formato `mm/dd/yyyy`)
+-   el día de la semana (texto)
+-   el número de pasajeros (númerico)
 
-Our tidyverse pipeline will conduct the following tasks, in order:
+Nuestro canalización tidyverse llevará a cabo las siguientes tareas, en orden:
 
-1.  Use the tidyverse package `r pkg(readr)` to read the data from the source website and convert them into a tibble. To do this, the `read_csv()` function can determine the type of data by reading an initial number of rows. Alternatively, if the column names and types are already known, a column specification can be created in R and passed to `read_csv()`.
+1.  Utilice el paquete tidyverse `r pkg(readr)` para leer los datos del sitio web de origen y convertirlos en un tibble. Para hacer esto, la función `read_csv()` puede determinar el tipo de datos leyendo un número inicial de filas. Alternativamente, si los nombres y tipos de las columnas ya se conocen, se puede crear una especificación de columna en R y pasarla a `read_csv()`.
 
-2.  Filter the data to eliminate a few columns that are not needed (such as the station ID) and change the column `stationname` to `station`. The function `select()` is used for this. When filtering, use either the column names or a `r pkg(dplyr)` selector function. When selecting names, a new variable name can be declared using the argument format `new_name = old_name`.
+2.  Filtre los datos para eliminar algunas columnas que no son necesarias (como el ID de la estación) y cambie la columna "nombre de la estación" a "estación". Para esto se utiliza la función `select()`. Al filtrar, utilice los nombres de las columnas o una función selectora `r pkg(dplyr)`. Al seleccionar nombres, se puede declarar un nuevo nombre de variable utilizando el formato de argumento `nuevo_nombre = antiguo_nombre`.
 
-3.  Convert the date field to the R date format using the `mdy()` function from the `r pkg(lubridate)` package. We also convert the ridership numbers to thousands. Both of these computations are executed using the `dplyr::mutate()` function.
+3.  Convierta el campo de fecha al formato de fecha R usando la función `mdy()` del paquete `r pkg(lubridate)`. También convertimos los números de pasajeros a miles. Ambos cálculos se ejecutan utilizando la función `dplyr::mutate()`.
 
-4.  Use the maximum number of rides for each station and day combination. This mitigates the issue of a small number of days that have more than one record of ridership numbers at certain stations. We group the ridership data by station and day, and then summarize within each of the `r num_combos` unique combinations with the maximum statistic.
+4.  Utilice el número máximo de viajes para cada estación y combinación de días. Esto mitiga el problema de una pequeña cantidad de días que tienen más de un registro de número de pasajeros en determinadas estaciones. Agrupamos los datos de número de pasajeros por estación y día, y luego resumimos dentro de cada una de las combinaciones únicas `r num_combos` con la estadística máxima.
 
-The tidyverse code for these steps is:
+El código tidyverse para estos pasos es:
 
 ```{r tidyverse-import, message = FALSE}
 library(tidyverse)
@@ -267,20 +267,20 @@ library(lubridate)
 url <- "https://data.cityofchicago.org/api/views/5neh-572f/rows.csv?accessType=DOWNLOAD&bom=true&format=true"
 
 all_stations <- 
-  # Step 1: Read in the data.
+  # Paso 1: leer los datos.
   read_csv(url) %>% 
-  # Step 2: filter columns and rename stationname
+  # Paso 2: filtrar columnas y cambiar el nombre de la estación
   dplyr::select(station = stationname, date, rides) %>% 
-  # Step 3: Convert the character date field to a date encoding.
-  # Also, put the data in units of 1K rides
+  # Paso 3: convierta el campo de fecha de caracteres a una codificación de fecha.
+  # Además, coloque los datos en unidades de 1K viajes.
   mutate(date = mdy(date), rides = rides / 1000) %>% 
-  # Step 4: Summarize the multiple records using the maximum.
+  # Paso 4: resuma los múltiples registros utilizando el máximo.
   group_by(date, station) %>% 
   summarize(rides = max(rides), .groups = "drop")
 ```
 
-This pipeline of operations illustrates why the tidyverse is popular. A series of data manipulations is used that have simple and easy to understand functions for each transformation; the series is bundled in a streamlined, readable way. The focus is on how the user interacts with the software. This approach enables more people to learn R and achieve their analysis goals, and adopting these same principles for modeling in R has the same benefits.
+Esta canalización de operaciones ilustra por qué tidyverse es popular. Se utiliza una serie de manipulaciones de datos que tienen funciones simples y fáciles de entender para cada transformación; La serie se presenta de forma simplificada y legible. La atención se centra en cómo el usuario interactúa con el software. Este enfoque permite que más personas aprendan R y alcancen sus objetivos de análisis, y adoptar estos mismos principios para modelar en R tiene los mismos beneficios.
 
-## Chapter Summary
+## Resumen del capítulo
 
-This chapter introduced the tidyverse, with a focus on applications for modeling and how tidyverse design principles inform the tidymodels framework. Think of the tidymodels framework as applying tidyverse principles to the domain of building models. We described differences in conventions between the tidyverse and base R, and introduced two important components of the tidyverse system, tibbles and the pipe operator `%>%`. Data cleaning and processing can feel mundane at times, but these tasks are important for modeling in the real world; we illustrated how to use tibbles, the pipe, and tidyverse functions in an example data import and processing exercise.
+Este capítulo presentó tidyverse, centrándose en las aplicaciones para modelado y cómo los principios de diseño de tidyverse informan el marco de trabajo de tidymodels. Piense en el marco de tidymodels como una aplicación de los principios de tidyverse al dominio de la construcción de modelos. Describimos las diferencias en las convenciones entre tidyverse y base R, e introdujimos dos componentes importantes del sistema tidyverse, tibbles y el operador de canalización `%>%`. La limpieza y el procesamiento de datos pueden parecer mundanos a veces, pero estas tareas son importantes para el modelado en el mundo real; Ilustramos cómo usar las funciones tibbles, pipe y tidyverse en un ejercicio de ejemplo de importación y procesamiento de datos.
