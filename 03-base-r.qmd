@@ -1,4 +1,4 @@
-# A Review of R Modeling Fundamentals {#sec-base-r}
+# Una revisión de los fundamentos del modelado con R {#sec-base-r}
 
 ```{r base-r-setup, include = FALSE}
 knitr::opts_chunk$set(fig.path = "figures/")
@@ -7,13 +7,13 @@ library(tidyverse)
 library(kableExtra)
 ```
 
-Before describing how to use tidymodels for applying tidy data principles to building models with R, let's review how models are created, trained, and used in the core R language (often called "base R"). This chapter is a brief illustration of core language conventions that are important to be aware of even if you never use base R for models at all. This chapter is not exhaustive, but it provides readers (especially those new to R) the basic, most commonly used motifs.
+Antes de describir cómo usar tidymodels para aplicar principios de datos ordenados para construir modelos con R, revisemos cómo se crean, entrenan y usan los modelos en el lenguaje R central (a menudo llamado "R base"). Este capítulo es una breve ilustración de las convenciones básicas del lenguaje que es importante tener en cuenta incluso si nunca utiliza base R para modelos. Este capítulo no es exhaustivo, pero proporciona a los lectores (especialmente aquellos nuevos en R) los motivos básicos más utilizados.
 
-The S language, on which R is based, has had a rich data analysis environment since the publication of @WhiteBook (commonly known as The White Book). This version of S introduced standard infrastructure components familiar to R users today, such as symbolic model formulae, model matrices, and data frames, as well as standard object-oriented programming methods for data analysis. These user interfaces have not substantively changed since then.
+El lenguaje S, en el que se basa R, ha tenido un rico entorno de análisis de datos desde la publicación de @WhiteBook (comúnmente conocido como El Libro Blanco). Esta versión de S introdujo componentes de infraestructura estándar familiares para los usuarios de R hoy en día, como fórmulas de modelos simbólicos, matrices de modelos y marcos de datos, así como métodos de programación estándar orientados a objetos para el análisis de datos. Estas interfaces de usuario no han cambiado sustancialmente desde entonces.
 
-## An Example
+## Un ejemplo
 
-To demonstrate some fundamentals for modeling in base R, let's use experimental data from @mcdonald2009, by way of @mangiafico2015, on the relationship between the ambient temperature and the rate of cricket chirps per minute. Data were collected for two species: *O. exclamationis* and *O. niveus*. The data are contained in a data frame called `crickets` with a total of `r nrow(crickets)` data points. These data are shown in @fig-cricket-plot using the following `r pkg(ggplot2)` code.
+Para demostrar algunos fundamentos del modelado en base R, usemos datos experimentales de @mcdonald2009, a través de @mangiafico2015, sobre la relación entre la temperatura ambiente y la tasa de chirridos de los grillos por minuto. Se recolectaron datos para dos especies: *O. exclamationis* y *O. niveus*. Los datos están contenidos en un marco de datos llamado "crickets" (grillos en español) con un total de puntos de datos "r nrow(crickets)". Estos datos se muestran en @fig-cricket-plot usando el siguiente código `r pkg(ggplot2)`.
 
 ```{r base-r-cricket-plot, eval = FALSE}
 library(tidyverse)
@@ -21,16 +21,16 @@ library(tidyverse)
 data(crickets, package = "modeldata")
 names(crickets)
 
-# Plot the temperature on the x-axis, the chirp rate on the y-axis. The plot
-# elements will be colored differently for each species:
+# Grápica de la temperatura en el eje x, la tasa de chirrido en el eje y. Los elementos
+# de la gráfica se colorean de forma diferente para cada especie:
 ggplot(crickets, 
        aes(x = temp, y = rate, color = species, pch = species, lty = species)) + 
-  # Plot points for each data point and color by species
+  # Traza puntos para cada punto de datos y color por especie.
   geom_point(size = 2) + 
-  # Show a simple linear model fit created separately for each species:
+  # Muestra un ajuste de modelo lineal simple creado por separado para cada especie:
   geom_smooth(method = lm, se = FALSE, alpha = 0.5) + 
   scale_color_brewer(palette = "Paired") +
-  labs(x = "Temperature (C)", y = "Chirp Rate (per minute)")
+  labs(x = "Temperatura (C)", y = "Tasa de chirrido (por minuto)")
 ```
 
 ```{r}
@@ -42,89 +42,89 @@ ggplot(crickets,
 #| warning: FALSE
 #| message: FALSE
 #| echo: FALSE
-#| fig.cap: "Relationship between chirp rate and temperature for two different species of crickets"
-#| fig.alt: "A scatter plot of the chirp rate and temperature for two different species of crickets with linear trend lines per species. The trends are linearly increasing with a separation between the two species."
+#| fig.cap: "Relación entre la tasa de chirrido y la temperatura de dos especies diferentes de grillos"
+#| fig.alt: "Un diagrama de dispersión de la tasa de chirrido y la temperatura de dos especies diferentes de grillos con líneas de tendencia lineales por especie. Las tendencias aumentan linealmente con una separación entre las dos especies."
 ```
 
-The data exhibit fairly linear trends for each species. For a given temperature, *O. exclamationis* appears to chirp more per minute than the other species. For an inferential model, the researchers might have specified the following null hypotheses prior to seeing the data:
+Los datos muestran tendencias bastante lineales para cada especie. Para una temperatura dada, *O. exclamationis* parece chirriar más por minuto que las otras especies. Para un modelo inferencial, los investigadores podrían haber especificado las siguientes hipótesis nulas antes de ver los datos:
 
--   Temperature has no effect on the chirp rate.
+-   La temperatura no tiene ningún efecto sobre la tasa de chirrido.
 
--   There are no differences between the species' chirp rate.
+-   No hay diferencias entre la tasa de chirrido de las especies.
 
-There may be some scientific or practical value in predicting the chirp rate but in this example we will focus on inference.
+Puede haber algún valor científico o práctico en predecir la tasa de chirrido, pero en este ejemplo nos centraremos en la inferencia.
 
-To fit an ordinary linear model in R, the `lm()` function is commonly used. The important arguments to this function are a model formula and a data frame that contains the data. The formula is *symbolic*. For example, the simple formula:
+Para ajustar un modelo lineal ordinario en R, se usa comúnmente la función `lm()`. Los argumentos importantes de esta función son una fórmula modelo y un marco de datos que contiene los datos. La fórmula es *simbólica*. Por ejemplo, la fórmula simple:
 
 ``` r
 rate ~ temp
 ```
 
-specifies that the chirp rate is the outcome (since it is on the left-hand side of the tilde `~`) and that the temperature value is the predictor.[^03-base-r-1] Suppose the data contained the time of day in which the measurements were obtained in a column called `time`. The formula:
+especifica que la tasa de chirrido es el resultado (ya que está en el lado izquierdo de la tilde `~`) y que el valor de la temperatura es el predictor.[^03-base-r-1] Supongamos que los datos contienen la hora del día en el que se obtuvieron las medidas en una columna llamada `hora`. La formula:
 
-[^03-base-r-1]: Most model functions implicitly add an intercept column.
+[^03-base-r-1]: La mayoría de las funciones del modelo agregan implícitamente una columna de intersección.
 
 ``` r
 rate ~ temp + time
 ```
 
-would not add the time and temperature values together. This formula would symbolically represent that temperature and time should be added as separate *main effects* to the model. A main effect is a model term that contains a single predictor variable.
+no sumaría los valores de tiempo y temperatura. Esta fórmula representaría simbólicamente que la temperatura y el tiempo deben agregarse como *efectos principales* separados al modelo. Un efecto principal es un término del modelo que contiene una única variable predictiva.
 
-There are no time measurements in these data but the species can be added to the model in the same way:
+No hay mediciones de tiempo en estos datos pero las especies se pueden agregar al modelo de la misma manera:
 
 ``` r
 rate ~ temp + species
 ```
 
-Species is not a quantitative variable; in the data frame, it is represented as a factor column with levels `"O. exclamationis"` and `"O. niveus"`. The vast majority of model functions cannot operate on nonnumeric data. For species, the model needs to encode the species data in a numeric format. The most common approach is to use indicator variables (also known as dummy variables) in place of the original qualitative values. In this instance, since species has two possible values, the model formula will automatically encode this column as numeric by adding a new column that has a value of zero when the species is `"O. exclamationis"` and a value of one when the data correspond to `"O. niveus"`. The underlying formula machinery automatically converts these values for the data set used to create the model, as well as for any new data points (for example, when the model is used for prediction).
+La especie no es una variable cuantitativa; en el marco de datos, se representa como una columna de factor con niveles `"O. exclamationis"` y `"O. niveus"`. La gran mayoría de las funciones del modelo no pueden operar con datos no numéricos. Para las especies, el modelo necesita codificar los datos de las especies en un formato numérico. El enfoque más común es utilizar variables indicadoras (también conocidas como variables ficticias) en lugar de los valores cualitativos originales. En este caso, dado que la especie tiene dos valores posibles, la fórmula del modelo codificará automáticamente esta columna como numérica agregando una nueva columna que tiene un valor de cero cuando la especie es `"O. exclamationis"` y un valor de uno cuando la especie es `"O. niveus"`. La maquinaria de fórmulas subyacente convierte automáticamente estos valores para el conjunto de datos utilizado para crear el modelo, así como para cualquier punto de datos nuevo (por ejemplo, cuando el modelo se utiliza para predicción).
 
 ::: rmdnote
-Suppose there were five species instead of two. The model formula, in this case, would create four binary columns that are binary indicators for four of the species. The *reference level* of the factor (i.e., the first level) is always left out of the predictor set. The idea is that, if you know the values of the four indicator variables, the value of the species can be determined. We discuss binary indicator variables in more detail in [Section -@sec-dummies].
+Supongamos que hubiera cinco especies en lugar de dos. La fórmula del modelo, en este caso, crearía cuatro columnas binarias que son indicadores binarios para cuatro de las especies. El *nivel de referencia* del factor (es decir, el primer nivel) siempre se deja fuera del conjunto de predictores. La idea es que, si se conocen los valores de las cuatro variables indicadoras, se pueda determinar el valor de la especie. Analizamos las variables de los indicadores binarios con más detalle en la [Sección -@sec-dummies].
 :::
 
-The model formula `rate ~ temp + species` creates a model with different y-intercepts for each species; the slopes of the regression lines could be different for each species as well. To accommodate this structure, an interaction term can be added to the model. This can be specified in a few different ways, and the most basic uses the colon:
+La fórmula del modelo `rate ~ temp + species` crea un modelo con diferentes intersecciones en el eje y para cada especie; las pendientes de las líneas de regresión también podrían ser diferentes para cada especie. Para adaptarse a esta estructura, se puede agregar un término de interacción al modelo. Esto se puede especificar de varias maneras diferentes, y la más básica utiliza los dos puntos:
 
 ``` r
 rate ~ temp + species + temp:species
 
-# A shortcut can be used to expand all interactions containing
-# interactions with two variables:
-rate ~ (temp + species)^2
+# Se puede utilizar un atajo para expandir todas las interacciones que contienen
+# dos variables:
+rate ~ (temp + species) ^ 2
 
-# Another shortcut to expand factors to include all possible
-# interactions (equivalent for this example):
+# Otro atajo para ampliar los factores para incluir todos las posibles
+# interacciones (equivalentes para este ejemplo):
 rate ~ temp * species
 ```
 
-In addition to the convenience of automatically creating indicator variables, the formula offers a few other niceties:
+Además de la conveniencia de crear variables indicadoras automáticamente, la fórmula ofrece algunas otras sutilezas:
 
--   *In-line* functions can be used in the formula. For example, to use the natural log of the temperature, we can create the formula `rate ~ log(temp)`. Since the formula is symbolic by default, literal math can also be applied to the predictors using the identity function `I()`. To use Fahrenheit units, the formula could be `rate ~ I( (temp * 9/5) + 32 )` to convert from Celsius.
+-   Las funciones *en línea* se pueden utilizar en la fórmula. Por ejemplo, para utilizar el registro natural de la temperatura, podemos crear la fórmula `rate ~ log(temp)`. Dado que la fórmula es simbólica por defecto, la matemática literal también se puede aplicar a los predictores usando la función de identidad `I()`. Para usar unidades Fahrenheit, la fórmula podría ser `rate ~ I( (temp * 9/5) + 32 )` para convertir de Celsius.
 
--   R has many functions that are useful inside of formulas. For example, `poly(x, 3)` adds linear, quadratic, and cubic terms for `x` to the model as main effects. The `r pkg(splines)` package also has several functions to create nonlinear spline terms in the formula.
+-   R tiene muchas funciones que son útiles dentro de las fórmulas. Por ejemplo, "poly(x, 3)" agrega términos lineales, cuadráticos y cúbicos para "x" al modelo como efectos principales. El paquete `r pkg(splines)` también tiene varias funciones para crear términos spline no lineales en la fórmula.
 
--   For data sets where there are many predictors, the period shortcut is available. The period represents main effects for all of the columns that are not on the left-hand side of the tilde. Using `~ (.)^3` would add main effects as well as all two- and three-variable interactions to the model.
+-   Para conjuntos de datos donde hay muchos predictores, el acceso directo al período está disponible. El punto representa los efectos principales para todas las columnas que no están en el lado izquierdo de la tilde. El uso de `~ (.)^3` agregaría efectos principales, así como todas las interacciones de dos y tres variables, al modelo.
 
-Returning to our chirping crickets, let's use a two-way interaction model. In this book, we use the suffix `_fit` for R objects that are fitted models.
+Volviendo a nuestros grillos cantando, usemos un modelo de interacción bidireccional. En este libro, utilizamos el sufijo `_fit` para objetos R que son modelos ajustados.
 
 ```{r base-r-cricket-fit}
 interaction_fit <-  lm(rate ~ (temp + species)^2, data = crickets) 
 
-# To print a short summary of the model:
+# Para imprimir un breve resumen del modelo:
 interaction_fit
 ```
 
-This output is a little hard to read. For the species indicator variables, R mashes the variable name (`species`) together with the factor level (`O. niveus`) with no delimiter.
+Este resultado es un poco difícil de leer. Para las variables indicadoras de especies, R combina el nombre de la variable (`species`) con el nivel del factor (`O. niveus`) sin delimitador.
 
-Before going into any inferential results for this model, the fit should be assessed using diagnostic plots. We can use the `plot()` method for `lm` objects. This method produces a set of four plots for the object, each showing different aspects of the fit, as shown in @fig-interaction-plots.
+Antes de entrar en resultados inferenciales para este modelo, se debe evaluar el ajuste mediante gráficos de diagnóstico. Podemos usar el método `plot()` para objetos `lm`. Este método produce un conjunto de cuatro gráficos para el objeto, cada uno de los cuales muestra diferentes aspectos del ajuste, como se muestra en @fig-interaction-plots.
 
 ```{r base-r-interaction-plots, eval = FALSE}
-# Place two plots next to one another:
+# Coloca dos gráficas una juunto a la otra:
 par(mfrow = c(1, 2))
 
-# Show residuals vs predicted values:
+# Muestra residuos frente a valores previstos:
 plot(interaction_fit, which = 1)
 
-# A normal quantile plot on the residuals:
+# Una gráfica de cuantiles normales sobre los residuos:
 plot(interaction_fit, which = 2)
 ```
 
@@ -136,39 +136,39 @@ plot(interaction_fit, which = 2)
 #| fig.height: 4.5
 #| warning: FALSE
 #| echo: FALSE
-#| fig.cap: "Residual diagnostic plots for the linear model with interactions, which appear reasonable enough to conduct inferential analysis"
-#| fig.alt: "On the left is a scatter plot of the model residuals versus predicted values. There are no strong trends in the data. The right-hand panel shows a normal quantile-quantile plot where the points indicate that normality is probably a good assumption."
+#| fig.cap: "Gráficos de diagnóstico residuales para el modelo lineal con interacciones, que parecen lo suficientemente razonables para realizar análisis inferenciales."
+#| fig.alt: "A la izquierda hay un diagrama de dispersión de los residuos del modelo versus los valores predichos. No hay tendencias fuertes en los datos. El panel de la derecha muestra un gráfico cuantil-cuantil normal donde los puntos indican que la normalidad probablemente sea una buena suposición."
 ```
 
 ::: rmdnote
-When it comes to the technical details of evaluating expressions, R is *lazy* (as opposed to eager). This means that model fitting functions typically compute the minimum possible quantities at the last possible moment. For example, if you are interested in the coefficient table for each model term, this is not automatically computed with the model but is instead computed via the `summary()` method.
+Cuando se trata de los detalles técnicos de la evaluación de expresiones, R es *perezoso* (en lugar de entusiasta). Esto significa que las funciones de ajuste del modelo normalmente calculan las cantidades mínimas posibles en el último momento posible. Por ejemplo, si está interesado en la tabla de coeficientes para cada término del modelo, esto no se calcula automáticamente con el modelo, sino que se calcula mediante el método `summary()`.
 :::
 
-Our next order of business with the crickets is to assess if the inclusion of the interaction term is necessary. The most appropriate approach for this model is to recompute the model without the interaction term and use the `anova()` method.
+Nuestra siguiente tarea con los grillos es evaluar si es necesaria la inclusión del término de interacción. El enfoque más apropiado para este modelo es recalcular el modelo sin el término de interacción y utilizar el método `anova()`.
 
 ```{r base-r-cricket-anova}
-# Fit a reduced model:
+# Montar un modelo reducido:
 main_effect_fit <-  lm(rate ~ temp + species, data = crickets) 
 
-# Compare the two:
+# Comparar los modelos
 anova(main_effect_fit, interaction_fit)
 ```
 
-This statistical test generates a p-value of `r format.pval(anova(interaction_fit, main_effect_fit)[2,6])`. This implies that there is a lack of evidence against the null hypothesis that the interaction term is not needed by the model. For this reason, we will conduct further analysis on the model without the interaction.
+Esta prueba estadística genera un valor p de `r format.pval(anova(interaction_fit, main_effect_fit)[2,6])`. Esto implica que falta evidencia contra la hipótesis nula de que el modelo no necesita el término de interacción. Por esta razón, realizaremos más análisis del modelo sin la interacción.
 
-Residual plots should be reassessed to make sure that our theoretical assumptions are valid enough to trust the p-values produced by the model (plots not shown here but spoiler alert: they are).
+Los gráficos residuales deben reevaluarse para asegurarnos de que nuestros supuestos teóricos sean lo suficientemente válidos como para confiar en los valores p producidos por el modelo (los gráficos no se muestran aquí, pero alerta de spoiler: lo son).
 
-We can use the `summary()` method to inspect the coefficients, standard errors, and p-values of each model term:
+Podemos usar el método `summary()` para inspeccionar los coeficientes, errores estándar y valores p de cada término del modelo:
 
 ```{r base-r-main-coef}
 summary(main_effect_fit)
 ```
 
-The chirp rate for each species increases by `r round(coef(main_effect_fit)[2], 2)` chirps as the temperature increases by a single degree. This term shows strong statistical significance as evidenced by the p-value. The species term has a value of `r round(coef(main_effect_fit)[3], 2)`. This indicates that, across all temperature values, *O. niveus* has a chirp rate that is about `r floor(abs(coef(main_effect_fit)[3]))` fewer chirps per minute than *O. exclamationis*. Similar to the temperature term, the species effect is associated with a very small p-value.
+La tasa de chirrido para cada especie aumenta en `r round(coef(main_effect_fit)[2], 2)` chirridos a medida que la temperatura aumenta en un solo grado. Este término muestra una fuerte significación estadística como lo demuestra el valor p. El término de especie tiene un valor de `r round(coef(main_effect_fit)[3], 2)`. Esto indica que, en todos los valores de temperatura, *O. niveus* tiene una frecuencia de chirrido que es aproximadamente `r floor(abs(coef(main_effect_fit)[3]))` menos chirridos por minuto que *O. exclamationis*. De manera similar al término de temperatura, el efecto de especie se asocia con un valor p muy pequeño.
 
-The only issue in this analysis is the intercept value. It indicates that at 0° C, there are negative chirps per minute for both species. While this doesn't make sense, the data only go as low as `r min(crickets$temp)`° C and interpreting the model at 0° C would be an extrapolation. This would be a bad idea. That being said, the model fit is good within the *applicable range* of the temperature values; the conclusions should be limited to the observed temperature range.
+El único problema en este análisis es el valor de la intersección. Indica que a 0° C, hay chirridos negativos por minuto para ambas especies. Si bien esto no tiene sentido, los datos solo llegan a `r min(crickets$temp)`° C e interpretar el modelo a 0° C sería una extrapolación. Esta sería una mala idea. Dicho esto, el ajuste del modelo es bueno dentro del *rango aplicable* de los valores de temperatura; las conclusiones deben limitarse al rango de temperatura observado.
 
-If we needed to estimate the chirp rate at a temperature that was not observed in the experiment, we could use the `predict()` method. It takes the model object and a data frame of new values for prediction. For example, the model estimates the chirp rate for *O. exclamationis* for temperatures between 15° C and 20° C can be computed via:
+Si necesitáramos estimar la tasa de chirrido a una temperatura que no se observó en el experimento, podríamos usar el método `predecit()`. Toma el objeto modelo y un marco de datos de nuevos valores para la predicción. Por ejemplo, el modelo estima la tasa de chirrido para *O. exclamationis* para temperaturas entre 15° C y 20° C se puede calcular mediante:
 
 ```{r base-r-cricket-pred}
 new_values <- data.frame(species = "O. exclamationis", temp = 15:20)
@@ -176,44 +176,44 @@ predict(main_effect_fit, new_values)
 ```
 
 ::: rmdwarning
-Note that the non-numeric value of `species` is passed to the predict method, as opposed to the numeric, binary indicator variable.
+Tenga en cuenta que el valor no numérico de `species` se pasa al método de predicción, a diferencia de la variable indicadora binaria numérica.
 :::
 
-While this analysis has obviously not been an exhaustive demonstration of R's modeling capabilities, it does highlight some major features important for the rest of this book:
+Si bien este análisis obviamente no ha sido una demostración exhaustiva de las capacidades de modelado de R, sí resalta algunas características importantes para el resto de este libro:
 
--   The language has an expressive syntax for specifying model terms for both simple and quite complex models.
+-   El lenguaje tiene una sintaxis expresiva para especificar términos de modelo tanto para modelos simples como para modelos bastante complejos.
 
--   The R formula method has many conveniences for modeling that are also applied to new data when predictions are generated.
+-   El método de la fórmula R tiene muchas ventajas para el modelado que también se aplican a datos nuevos cuando se generan predicciones.
 
--   There are numerous helper functions (e.g., `anova()`, `summary()` and `predict()`) that you can use to conduct specific calculations after the fitted model is created.
+-   Existen numerosas funciones auxiliares (por ejemplo, `anova()`, `summary()` y `predict()`) que puede utilizar para realizar cálculos específicos después de crear el modelo ajustado.
 
-Finally, as previously mentioned, this framework was first published in 1992. Most of these ideas and methods were developed in that period but have remained remarkably relevant to this day. It highlights that the S language and, by extension R, has been designed for data analysis since its inception.
+Finalmente, como se mencionó anteriormente, este marco se publicó por primera vez en 1992. La mayoría de estas ideas y métodos se desarrollaron en ese período, pero siguen siendo notablemente relevantes hasta el día de hoy. Destaca que el lenguaje S y, por extensión, R, ha sido diseñado para el análisis de datos desde sus inicios.
 
-## What Does the R Formula Do? {#sec-formula}
+## ¿Qué hace la fórmula R? {#sec-formula}
 
-The R model formula is used by many modeling packages. It usually serves multiple purposes:
+Muchos paquetes de modelado utilizan la fórmula del modelo R. Suele tener múltiples propósitos:
 
--   The formula defines the columns that the model uses.
+-   La fórmula define las columnas que utiliza el modelo.
 
--   The standard R machinery uses the formula to encode the columns into an appropriate format.
+-   La maquinaria R estándar utiliza la fórmula para codificar las columnas en un formato apropiado.
 
--   The roles of the columns are defined by the formula.
+-   Los roles de las columnas están definidos por la fórmula.
 
-For the most part, practitioners' understanding of what the formula does is dominated by the last purpose. Our focus when typing out a formula is often to declare how the columns should be used. For example, the previous specification we discussed sets up predictors to be used in a specific way:
+En su mayor parte, la comprensión de los profesionales sobre lo que hace la fórmula está dominada por el último propósito. Nuestro enfoque al escribir una fórmula suele ser declarar cómo se deben usar las columnas. Por ejemplo, la especificación anterior que analizamos configura predictores que se utilizarán de una manera específica:
 
 ``` r
 (temp + species)^2
 ```
 
-Our focus, when seeing this, is that there are two predictors and the model should contain their main effects and the two-way interactions. However, this formula also implies that, since `species` is a factor, it should also create indicator variable columns for this predictor (see [Section -@sec-dummies]) and multiply those columns by the `temp` column to create the interactions. This transformation represents our second bullet point on encoding; the formula also defines how each column is encoded and can create additional columns that are not in the original data.
+Nuestro enfoque, al ver esto, es que hay dos predictores y el modelo debe contener sus efectos principales y las interacciones bidireccionales. Sin embargo, esta fórmula también implica que, dado que `species` es un factor, también se deben crear columnas de variables indicadoras para este predictor (ver [Sección -@sec-dummies]) y multiplicar esas columnas por la columna `temp` para crear el interacciones. Esta transformación representa nuestro segundo punto sobre codificación; la fórmula también define cómo se codifica cada columna y puede crear columnas adicionales que no están en los datos originales.
 
 ::: rmdwarning
-This is an important point that will come up multiple times in this text, especially when we discuss more complex feature engineering in [Chapter @sec-recipes] and beyond. The formula in R has some limitations, and our approaches to overcoming them contend with all three aspects.
+Este es un punto importante que surgirá varias veces en este texto, especialmente cuando analicemos la ingeniería de funciones más compleja en el [Capítulo @sec-recipes] y más allá. La fórmula en R tiene algunas limitaciones y nuestros enfoques para superarlas se enfrentan a los tres aspectos.
 :::
 
-## Why Tidiness Is Important for Modeling {#sec-tidiness-modeling}
+## Por qué el orden es importante para modelar {#sec-tidiness-modeling}
 
-One of the strengths of R is that it encourages developers to create a user interface that fits their needs. As an example, here are three common methods for creating a scatter plot of two numeric variables in a data frame called `plot_data`:
+Uno de los puntos fuertes de R es que anima a los desarrolladores a crear una interfaz de usuario que se ajuste a sus necesidades. A modo de ejemplo, aquí se muestran tres métodos comunes para crear un diagrama de dispersión de dos variables numéricas en un marco de datos llamado `plot_data`:
 
 ```{r base-r-three-plots, eval = FALSE}
 plot(plot_data$x, plot_data$y)
@@ -225,27 +225,27 @@ library(ggplot2)
 ggplot(plot_data, aes(x = x, y = y)) + geom_point()
 ```
 
-In these three cases, separate groups of developers devised three distinct interfaces for the same task. Each has advantages and disadvantages.
+En estos tres casos, grupos separados de desarrolladores idearon tres interfaces distintas para la misma tarea. Cada uno tiene ventajas y desventajas.
 
-In comparison, the *Python Developer's Guide* espouses the notion that, when approaching a problem:
+En comparación, la *Guía del desarrollador de Python* defiende la noción de que, al abordar un problema:
 
-> "There should be one -- and preferably only one -- obvious way to do it."
+> "Debería haber una, y preferiblemente sólo una, manera obvia de hacerlo."
 
-R is quite different from Python in this respect. An advantage of R's diversity of interfaces is that it can evolve over time and fit different needs for different users.
+R es bastante diferente de Python a este respecto. Una ventaja de la diversidad de interfaces de R es que puede evolucionar con el tiempo y adaptarse a diferentes necesidades de diferentes usuarios.
 
-Unfortunately, some of the syntactical diversity is due to a focus on the needs of the person *developing* the code instead of the needs of the person *using* the code. Inconsistencies among packages can be a stumbling block for R users.
+Desafortunadamente, parte de la diversidad sintáctica se debe a un enfoque en las necesidades de la persona que *desarrolla* el código en lugar de las necesidades de la persona que *usa* el código. Las inconsistencias entre paquetes pueden ser un obstáculo para los usuarios de R.
 
-Suppose your modeling project has an outcome with two classes. There are a variety of statistical and machine learning models you could choose from. In order to produce a class probability estimate for each sample, it is common for a model function to have a corresponding `predict()` method. However, there is significant heterogeneity in the argument values used by those methods to make class probability predictions; this heterogeneity can be difficult for even experienced users to navigate. A sampling of these argument values for different models is shown in @tbl-probability-args.
+Suponga que su proyecto de modelado tiene un resultado con dos clases. Existe una variedad de modelos estadísticos y de aprendizaje automático entre los que puede elegir. Para producir una estimación de probabilidad de clase para cada muestra, es común que una función de modelo tenga un método `predict()` correspondiente. Sin embargo, existe una heterogeneidad significativa en los valores de los argumentos utilizados por esos métodos para hacer predicciones de probabilidad de clase; esta heterogeneidad puede resultar difícil de navegar incluso para los usuarios experimentados. En @tbl-probability-args se muestra una muestra de estos valores de argumentos para diferentes modelos.
 
 ```{r}
 #| label: tbl-probability-args
 #| echo: FALSE
 #| results: "asis"
-#| tbl-cap: "Heterogeneous argument names for different modeling functions."
+#| tbl-cap: "Nombres de argumentos heterogéneos para diferentes funciones de modelado."
 
 prob_tbl <- 
   tribble(
-    ~ Function, ~Package, ~Code,
+    ~ Función, ~Paquete, ~Código,
     "lda()"        , "MASS"       ,  "predict(object)"                      ,
     "glm()"        , "stats"      ,  'predict(object, type = "response")'          ,
     "gbm()"        , "gbm"        ,  'predict(object, type = "response", n.trees)' ,
@@ -261,59 +261,59 @@ prob_tbl %>%
     escape = FALSE
   ) %>%
   kable_styling(full_width = FALSE) %>%
-  column_spec(1, monospace = ifelse(prob_tbl$Function == "various", FALSE, TRUE)) %>%
+  column_spec(1, monospace = ifelse(prob_tbl$`Función` == "various", FALSE, TRUE)) %>%
   column_spec(3, monospace = TRUE)
 ```
 
-Note that the last example has a custom function to make predictions instead of using the more common `predict()` interface (the generic `predict()` method). This lack of consistency is a barrier to day-to-day usage of R for modeling.
+Tenga en cuenta que el último ejemplo tiene una función personalizada para hacer predicciones en lugar de utilizar la interfaz `predict()` más común (el método genérico `predict()`). Esta falta de coherencia es una barrera para el uso diario de R para modelado.
 
-As another example of unpredictability, the R language has conventions for missing data that are handled inconsistently. The general rule is that missing data propagate more missing data; the average of a set of values with a missing data point is itself missing and so on. When models make predictions, the vast majority require all of the predictors to have complete values. There are several options baked in to R at this point with the generic function `na.action()`. This sets the policy for how a function should behave if there are missing values. The two most common policies are `na.fail()` and `na.omit()`. The former produces an error if missing data are present while the latter removes the missing data prior to calculations by case-wise deletion. From our previous example:
+Como otro ejemplo de imprevisibilidad, el lenguaje R tiene convenciones para datos faltantes que se manejan de manera inconsistente. La regla general es que los datos faltantes propagan más datos faltantes; el promedio de un conjunto de valores al que le falta un punto de datos también falta, y así sucesivamente. Cuando los modelos hacen predicciones, la gran mayoría requiere que todos los predictores tengan valores completos. Hay varias opciones integradas en R en este punto con la función genérica `na.action()`. Esto establece la política sobre cómo debe comportarse una función si faltan valores. Las dos políticas más comunes son `na.fail()` y `na.omit()`. El primero produce un error si hay datos faltantes, mientras que el segundo elimina los datos faltantes antes de los cálculos mediante eliminación entre mayúsculas y minúsculas. De nuestro ejemplo anterior:
 
 ```{r base-r-lm-missing, error = TRUE}
-# Add a missing value to the prediction set
+# Añade un valor faltante al conjunto de predicción
 new_values$temp[1] <- NA
 
-# The predict method for `lm` defaults to `na.pass`:
+# El método de predicción para `lm` por defecto es `na.pass`:
 predict(main_effect_fit, new_values)
 
-# Alternatively 
+# Alternativamente 
 predict(main_effect_fit, new_values, na.action = na.fail)
 
 predict(main_effect_fit, new_values, na.action = na.omit)
 ```
 
-From a user's point of view, `na.omit()` can be problematic. In our example, `new_values` has `r nrow(new_values)` rows but only `r nrow(new_values) - 1` would be returned with `na.omit()`. To adjust for this, the user would have to determine which row had the missing value and interleave a missing value in the appropriate place if the predictions were merged into `new_values`.[^03-base-r-2] While it is rare that a prediction function uses `na.omit()` as its missing data policy, this does occur. Users who have determined this as the cause of an error in their code find it quite memorable.
+Desde el punto de vista del usuario, `na.omit()` puede ser problemático. En nuestro ejemplo, `new_values` tiene filas `r nrow(new_values)` pero solo `r nrow(new_values) - 1` se devolvería con `na.omit()`. Para ajustar esto, el usuario tendría que determinar qué fila tenía el valor faltante e intercalar un valor faltante en el lugar apropiado si las predicciones se fusionaran en `new_values`.[^03-base-r-2] Si bien es poco común que una función de predicción utiliza `na.omit()` como política de datos faltantes, esto ocurre. Los usuarios que han determinado esto como la causa de un error en su código lo encuentran bastante memorable.
 
-[^03-base-r-2]: A base R policy called `na.exclude()` does exactly this.
+[^03-base-r-2]: Una política base R llamada `na.exclude()` hace exactamente esto.
 
-To resolve the usage issues described here, the tidymodels packages have a set of design goals. Most of the tidymodels design goals fall under the existing rubric of "Design for Humans" from the tidyverse [@tidyverse], but with specific applications for modeling code. There are a few additional tidymodels design goals that complement those of the tidyverse. Some examples:
+Para resolver los problemas de uso descritos aquí, los paquetes tidymodels tienen un conjunto de objetivos de diseño. La mayoría de los objetivos de diseño de tidymodels se incluyen en la rúbrica existente de "Diseño para humanos" de tidyverse [@tidyverse], pero con aplicaciones específicas para código de modelado. Hay algunos objetivos de diseño de tidymodels adicionales que complementan los del tidyverse. Algunos ejemplos:
 
--   R has excellent capabilities for object-oriented programming, and we use this in lieu of creating new function names (such as a hypothetical new `predict_samples()` function).
+-   R tiene excelentes capacidades para la programación orientada a objetos, y las usamos en lugar de crear nuevos nombres de funciones (como una nueva función hipotética `predict_samples()`).
 
--   *Sensible defaults* are very important. Also, functions should have no default for arguments when it is more appropriate to force the user to make a choice (e.g., the file name argument for `read_csv()`).
+-   *Los valores predeterminados sensatos* son muy importantes. Además, las funciones no deberían tener argumentos predeterminados cuando es más apropiado obligar al usuario a tomar una decisión (por ejemplo, el argumento del nombre del archivo para `read_csv()`).
 
--   Similarly, argument values whose default can be derived from the data should be. For example, for `glm()` the `family` argument could check the type of data in the outcome and, if no `family` was given, a default could be determined internally.
+-   De manera similar, los valores de los argumentos cuyo valor predeterminado pueda derivarse de los datos deberían serlo. Por ejemplo, para `glm()`, el argumento `family` podría verificar el tipo de datos en el resultado y, si no se proporcionó ninguna `family`, se podría determinar internamente un valor predeterminado.
 
--   Functions should take the *data structures that users have* as opposed to the data structure that developers want. For example, a model function's only interface should not be constrained to matrices. Frequently, users will have non-numeric predictors such as factors.
+-   Las funciones deben tomar las *estructuras de datos que tienen los usuarios* en lugar de la estructura de datos que desean los desarrolladores. Por ejemplo, la única interfaz de una función modelo no debe limitarse a matrices. Con frecuencia, los usuarios tendrán predictores no numéricos, como factores.
 
-Many of these ideas are described in the tidymodels guidelines for model implementation.[^03-base-r-3] In subsequent chapters, we will illustrate examples of existing issues, along with their solutions.
+Muchas de estas ideas se describen en las pautas de tidymodels para la implementación de modelos.[^03-base-r-3] En los capítulos siguientes, ilustraremos ejemplos de problemas existentes, junto con sus soluciones.
 
 [^03-base-r-3]: <https://tidymodels.github.io/model-implementation-principles>
 
 ::: rmdnote
-A few existing R packages provide a unified interface to harmonize these heterogeneous modeling APIs, such as `r pkg(caret)` and `r pkg(mlr)`. The tidymodels framework is similar to these in adopting a unification of the function interface, as well as enforcing consistency in the function names and return values. It is different in its opinionated design goals and modeling implementation, discussed in detail throughout this book.
+Algunos paquetes R existentes proporcionan una interfaz unificada para armonizar estas API de modelado heterogéneas, como `r pkg(caret)` y `r pkg(mlr)`. El marco tidymodels es similar a estos en cuanto a que adopta una unificación de la interfaz de funciones, así como también exige coherencia en los nombres de las funciones y los valores de retorno. Se diferencia en sus obstinados objetivos de diseño y en su implementación de modelado, que se analizan en detalle a lo largo de este libro.
 :::
 
-The `broom::tidy()` function, which we use throughout this book, is another tool for standardizing the structure of R objects. It can return many types of R objects in a more usable format. For example, suppose that predictors are being screened based on their correlation to the outcome column. Using `purrr::map()`, the results from `cor.test()` can be returned in a list for each predictor:
+La función `broom::tidy()`, que utilizamos a lo largo de este libro, es otra herramienta para estandarizar la estructura de los objetos R. Puede devolver muchos tipos de objetos R en un formato más utilizable. Por ejemplo, supongamos que los predictores se seleccionan en función de su correlación con la columna de resultados. Usando `purrr::map()`, los resultados de `cor.test()` se pueden devolver en una lista para cada predictor:
 
 ```{r base-r-corr-list}
 corr_res <- map(mtcars %>% select(-mpg), cor.test, y = mtcars$mpg)
 
-# The first of ten results in the vector: 
+# El primero de diez resultados en el vector:
 corr_res[[1]]
 ```
 
-If we want to use these results in a plot, the standard format of hypothesis test results are not very useful. The `tidy()` method can return this as a tibble with standardized names:
+Si queremos utilizar estos resultados en una gráfica, el formato estándar de los resultados de las pruebas de hipótesis no es muy útil. El método `tidy()` puede devolver esto como un tibble con nombres estandarizados:
 
 ```{r base-r-corr-tidy}
 library(broom)
@@ -321,31 +321,31 @@ library(broom)
 tidy(corr_res[[1]])
 ```
 
-These results can be "stacked" and added to a `ggplot()`, as shown in @fig-corr-plot.
+Estos resultados se pueden "apilar" y agregar a un `ggplot()`, como se muestra en @fig-corr-plot.
 
 ```{r base-r-corr-plot, eval=FALSE}
 corr_res %>% 
-  # Convert each to a tidy format; `map_dfr()` stacks the data frames 
+  # Convierte cada uno a un formato ordenado; `map_dfr()` apila los marcos de datos 
   map_dfr(tidy, .id = "predictor") %>% 
   ggplot(aes(x = fct_reorder(predictor, estimate))) + 
   geom_point(aes(y = estimate)) + 
   geom_errorbar(aes(ymin = conf.low, ymax = conf.high), width = .1) +
-  labs(x = NULL, y = "Correlation with mpg")
+  labs(x = NULL, y = "Correlación con mpg")
 ```
 
 ```{r}
 #| label: fig-corr-plot
 #| ref.label: "base-r-corr-plot"
 #| echo: FALSE
-#| fig.cap: "Correlations (and 95% confidence intervals) between predictors and the outcome in the `mtcars` data set"
-#| fig.alt: "A plot of the correlations (and 95% confidence intervals) between predictors and the outcome in the `mtcars` data set. None of the intervals overlap with zero. The car weight had the largest negative correlation and the rear axle ratio has the highest positive correlation."
+#| fig.cap: "Correlaciones (e intervalos de confianza del 95%) entre los predictores y el resultado en el conjunto de datos `mtcars`"
+#| fig.alt: "Un gráfico de las correlaciones (e intervalos de confianza del 95%) entre los predictores y el resultado en el conjunto de datos `mtcars`. Ninguno de los intervalos se superpone con cero. El peso del automóvil tuvo la mayor correlación negativa y la relación del eje trasero tiene la mayor correlación positiva."
 ```
 
-Creating such a plot is possible using core R language functions, but automatically reformatting the results makes for more concise code with less potential for errors.
+Es posible crear un gráfico de este tipo utilizando las funciones básicas del lenguaje R, pero reformatear automáticamente los resultados genera un código más conciso con menos posibilidades de errores.
 
-## Combining Base R Models and the Tidyverse
+## Combinando modelos Base R y Tidyverse
 
-R modeling functions from the core language or other R packages can be used in conjunction with the tidyverse, especially with the `r pkg(dplyr)`, `r pkg(purrr)`, and `r pkg(tidyr)` packages. For example, if we wanted to fit separate models for each cricket species, we can first break out the cricket data by this column using `dplyr::group_nest()`:
+Las funciones de modelado de R del lenguaje central u otros paquetes de R se pueden usar junto con tidyverse, especialmente con los paquetes `r pkg(dplyr)`, `r pkg(purrr)` y `r pkg(tidyr)`. Por ejemplo, si quisiéramos ajustar modelos separados para cada especie de grillo, primero podemos desglosar los datos del grillo en esta columna usando `dplyr::group_nest()`:
 
 ```{r base-r-by-species-split}
 split_by_species <- 
@@ -354,7 +354,7 @@ split_by_species <-
 split_by_species
 ```
 
-The `data` column contains the `rate` and `temp` columns from `crickets` in a *list column*. From this, the `purrr::map()` function can create individual models for each species:
+La columna `data` contiene las columnas `rate` y `temp` de `crickets` en una *columna de lista*. A partir de esto, la función `purrr::map()` puede crear modelos individuales para cada especie:
 
 ```{r base-r-species-models}
 model_by_species <- 
@@ -363,7 +363,7 @@ model_by_species <-
 model_by_species
 ```
 
-To collect the coefficients for each of these models, use `broom::tidy()` to convert them to a consistent data frame format so that they can be unnested:
+Para recopilar los coeficientes de cada uno de estos modelos, use `broom::tidy()` para convertirlos a un formato de marco de datos consistente para que se puedan desanidar:
 
 ```{r base-r-species-coefs}
 model_by_species %>% 
@@ -373,12 +373,12 @@ model_by_species %>%
 ```
 
 ::: rmdnote
-List columns can be very powerful in modeling projects. List columns provide containers for any type of R objects, from a fitted model itself to the important data frame structure.
+Las columnas de lista pueden ser muy poderosas en proyectos de modelado. Las columnas de lista proporcionan contenedores para cualquier tipo de objetos R, desde un modelo ajustado hasta la importante estructura del marco de datos.
 :::
 
-## The tidymodels Metapackage
+## El metapaquete tidymodels
 
-The tidyverse ([Chapter @sec-tidyverse]) is designed as a set of modular R packages, each with a fairly narrow scope. The tidymodels framework follows a similar design. For example, the `r pkg(rsample)` package focuses on data splitting and resampling. Although resampling methods are critical to other activities of modeling (e.g., measuring performance), they reside in a single package, and performance metrics are contained in a different, separate package, `r pkg(yardstick)`. There are many benefits to adopting this philosophy of modular packages, from less bloated model deployment to smoother package maintenance.
+El tidyverse ([Capítulo @sec-tidyverse]) está diseñado como un conjunto de paquetes R modulares, cada uno con un alcance bastante limitado. El marco tidymodels sigue un diseño similar. Por ejemplo, el paquete `r pkg(rsample)` se centra en la división y el remuestreo de datos. Aunque los métodos de remuestreo son críticos para otras actividades de modelado (por ejemplo, medir el desempeño), residen en un solo paquete y las métricas de desempeño están contenidas en un paquete diferente e independiente, `r pkg(yardstick)`. Hay muchos beneficios al adoptar esta filosofía de paquetes modulares, desde una implementación de modelos menos inflada hasta un mantenimiento de paquetes más fluido.
 
 ```{r base-r-detach, warning = FALSE, message = FALSE, echo = FALSE}
 pkgs <- paste0("package:", 
@@ -390,35 +390,35 @@ for (i in pkgs) {
 }
 ```
 
-The downside to this philosophy is that there are a lot of packages in the tidymodels framework. To compensate for this, the tidymodels *package* (which you can think of as a metapackage like the tidyverse package) loads a core set of tidymodels and tidyverse packages. Loading the package shows which packages are attached:
+La desventaja de esta filosofía es que hay muchos paquetes en el marco de tidymodels. Para compensar esto, el *paquete* tidymodels (que puedes considerar como un metapaquete como el paquete tidyverse) carga un conjunto central de paquetes tidymodels y tidyverse. Al cargar el paquete se muestran qué paquetes están adjuntos:
 
 ```{r base-r-tidymodels-package}
 library(tidymodels)
 ```
 
-If you have used the tidyverse, you'll notice some familiar names as a few tidyverse packages, such as `r pkg(dplyr)` and `r pkg(ggplot2)`, are loaded together with the tidymodels packages. We've already said that the tidymodels framework applies tidyverse principles to modeling, but the tidymodels framework also literally builds on some of the most fundamental tidyverse packages such as these.
+Si ha utilizado tidyverse, notará algunos nombres familiares ya que algunos paquetes de tidyverse, como `r pkg(dplyr)` y `r pkg(ggplot2)`, se cargan junto con los paquetes tidymodels. Ya hemos dicho que el marco tidymodels aplica los principios de tidyverse al modelado, pero el marco tidymodels también se basa literalmente en algunos de los paquetes tidyverse más fundamentales, como estos.
 
-Loading the metapackage also shows if there are function naming conflicts with previously loaded packages. As an example of a naming conflict, before loading `r pkg(tidymodels)`, invoking the `filter()` function will execute the function in the `r pkg(stats)` package. After loading tidymodels, it will execute the `r pkg(dplyr)` function of the same name.
+La carga del metapaquete también muestra si hay conflictos de nombres de funciones con paquetes cargados previamente. Como ejemplo de un conflicto de nombres, antes de cargar `r pkg(tidymodels)`, al invocar la función `filter()` se ejecutará la función en el paquete `r pkg(stats)`. Después de cargar tidymodels, ejecutará la función `r pkg(dplyr)` del mismo nombre.
 
-There are a few ways to handle naming conflicts. The function can be called with its namespace (e.g., `stats::filter()`). This is not bad practice, but it does make the code less readable.
+Hay algunas formas de manejar los conflictos de nombres. La función se puede llamar con su espacio de nombres (por ejemplo, `stats::filter()`). Esta no es una mala práctica, pero hace que el código sea menos legible.
 
-Another option is to use the `r pkg(conflicted)` package. We can set a rule that remains in effect until the end of the R session to ensure that one specific function will always run if no namespace is given in the code. As an example, if we prefer the `r pkg(dplyr)` version of the previous function:
+Otra opción es utilizar el paquete `r pkg(conflicted)`. Podemos establecer una regla que permanezca vigente hasta el final de la sesión de R para garantizar que siempre se ejecute una función específica si no se proporciona ningún espacio de nombres en el código. Como ejemplo, si preferimos la versión `r pkg(dplyr)` de la función anterior:
 
 ```{r base-r-conflicted, eval = FALSE}
 library(conflicted)
 conflict_prefer("filter", winner = "dplyr")
 ```
 
-For convenience, `r pkg(tidymodels)` contains a function that captures most of the common naming conflicts that we might encounter:
+Por conveniencia, `r pkg(tidymodels)` contiene una función que captura la mayoría de los conflictos de nombres comunes que podemos encontrar:
 
 ```{r base-r-clonflicts}
 tidymodels_prefer(quiet = FALSE)
 ```
 
 ::: rmdwarning
-Be aware that using this function opts you in to using `conflicted::conflict_prefer()` for all namespace conflicts, making every conflict an error and forcing you to choose which function to use. The function `tidymodels::tidymodels_prefer()` handles the most common conflicts from tidymodels functions, but you will need to handle other conflicts in your R session yourself.
+Tenga en cuenta que el uso de esta función le permite optar por utilizar `conflicted::conflict_prefer()` para todos los conflictos de espacios de nombres, lo que convierte cada conflicto en un error y le obliga a elegir qué función utilizar. La función `tidymodels::tidymodels_prefer()` maneja los conflictos más comunes de las funciones de tidymodels, pero necesitarás manejar otros conflictos en tu sesión de R tú mismo.
 :::
 
-## Chapter Summary
+## Resumen del capítulo
 
-This chapter reviewed core R language conventions for creating and using models that are an important foundation for the rest of this book. The formula operator is an expressive and important aspect of fitting models in R and often serves multiple purposes in non-tidymodels functions. Traditional R approaches to modeling have some limitations, especially when it comes to fluently handling and visualizing model output. The `r pkg(tidymodels)` metapackage applies tidyverse design philosophy to modeling packages.
+Este capítulo revisó las convenciones básicas del lenguaje R para crear y usar modelos que son una base importante para el resto de este libro. El operador de fórmula es un aspecto expresivo e importante del ajuste de modelos en R y, a menudo, sirve para múltiples propósitos en funciones que no son de tidymodels. Los enfoques tradicionales de R para modelar tienen algunas limitaciones, especialmente cuando se trata de manejar y visualizar con fluidez los resultados del modelo. El metapaquete `r pkg(tidymodels)` aplica la filosofía de diseño tidyverse a los paquetes de modelado.
