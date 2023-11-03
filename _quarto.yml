@@ -41,7 +41,7 @@ book:
         - 02-tidyverse.qmd
         - 03-base-r.qmd
 
-    - part: "MODELING BASICS"
+    - part: "FUNDAMENTOS DE MODELADO"
       chapters:
         - 04-ames.qmd
         - 05-data-spending.qmd

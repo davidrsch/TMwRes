@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 4&nbsp; The Ames Housing Data</title>
+<title>Modelado Ordenado con R - 4&nbsp; Los datos de vivienda de Ames</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -74,7 +74,6 @@ div.csl-indent {
 }</style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -99,16 +98,16 @@ div.csl-indent {
   "type": "textbox",
   "limit": 20,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
   }
 }</script><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
@@ -118,11 +117,11 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">MODELING BASICS</a></li><li class="breadcrumb-item"><a href="./04-ames.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Ames Housing Data</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./04-ames.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -134,8 +133,22 @@ div.csl-indent {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/davidrsch/TMwRes" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
   </div>
@@ -145,7 +158,7 @@ div.csl-indent {
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
+        <div id="quarto-search" class="" title="Buscar"></div>
         </div>
         </div>
     <div class="sidebar-menu-container"> 
@@ -153,14 +166,14 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Hello World</span></a>
+ <span class="menu-text">Hola Mundo</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">INTRODUCTION</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -168,19 +181,19 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software for modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software para modelar</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A Tidyverse Primer</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una introducción tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Review of R Modeling Fundamentals</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span></a>
   </div>
 </li>
       </ul>
@@ -188,8 +201,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">MODELING BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -197,7 +210,7 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Ames Housing Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -236,7 +249,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
  <span class="menu-text">TOOLS FOR CREATING EFFECTIVE MODELS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -283,7 +296,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
  <span class="menu-text">BEYOND THE BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -329,8 +342,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -354,16 +367,16 @@ div.csl-indent {
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-<li><a href="#sec-exploring-features-of-homes-in-ames" id="toc-sec-exploring-features-of-homes-in-ames" class="nav-link active" data-scroll-target="#sec-exploring-features-of-homes-in-ames"><span class="header-section-number">4.1</span> Exploring Features of Homes in Ames</a></li>
-  <li><a href="#sec-ames-summary" id="toc-sec-ames-summary" class="nav-link" data-scroll-target="#sec-ames-summary"><span class="header-section-number">4.2</span> Chapter Summary</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/04-ames.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<li><a href="#sec-exploring-features-of-homes-in-ames" id="toc-sec-exploring-features-of-homes-in-ames" class="nav-link active" data-scroll-target="#sec-exploring-features-of-homes-in-ames"><span class="header-section-number">4.1</span> Explorando las características de las casas en Ames</a></li>
+  <li><a href="#sec-ames-summary" id="toc-sec-ames-summary" class="nav-link" data-scroll-target="#sec-ames-summary"><span class="header-section-number">4.2</span> Resumen del capítulo</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-ames" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Ames Housing Data</span></span></h1>
+<h1 class="title"><span id="sec-ames" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></h1>
 </div>
 
 
@@ -376,156 +389,223 @@ div.csl-indent {
   </div>
   
 
-</header><p>In this chapter, we’ll introduce the Ames housing data set <span class="citation" data-cites="ames">(<a href="#ref-ames" role="doc-biblioref">De Cock 2011</a>)</span>, which we will use in modeling examples throughout this book. Exploratory data analysis, like what we walk through in this chapter, is an important first step in building a reliable model. The data set contains information on 2,930 properties in Ames, Iowa, including columns related to:</p>
+</header><p>En este capítulo, presentaremos el conjunto de datos de vivienda de Ames <span class="citation" data-cites="ames">(<a href="references.html#ref-ames" role="doc-biblioref">De Cock 2011</a>)</span>, que usaremos en ejemplos de modelado a lo largo de este libro. El análisis exploratorio de datos, como el que analizamos en este capítulo, es un primer paso importante para construir un modelo confiable. El conjunto de datos contiene información sobre las propiedades 2,930 en Ames, Iowa, incluidas columnas relacionadas con:</p>
 <ul>
-<li>house characteristics (bedrooms, garage, fireplace, pool, porch, etc.)</li>
-<li>location (neighborhood)</li>
-<li>lot information (zoning, shape, size, etc.)</li>
-<li>ratings of condition and quality</li>
-<li>sale price</li>
+<li>Características de la casa (dormitorios, garaje, chimenea, piscina, porche, etc.)</li>
+<li>ubicación (barrio)</li>
+<li>información del lote (zonificación, forma, tamaño, etc.)</li>
+<li>calificaciones de condición y calidad</li>
+<li>precio de venta</li>
 </ul>
 <div class="rmdnote">
-<p>Our modeling goal is to predict the sale price of a house based on other information we have, such as its characteristics and location.</p>
+<p>Nuestro objetivo de modelado es predecir el precio de venta de una casa en función de otra información que tenemos, como sus características y ubicación.</p>
 </div>
-<p>The raw housing data are provided in <span class="citation" data-cites="ames">De Cock (<a href="#ref-ames" role="doc-biblioref">2011</a>)</span>, but in our analyses in this book, we use a transformed version available in the <span class="pkg">modeldata</span> package. This version has several changes and improvements to the data.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> For example, the longitude and latitude values have been determined for each property. Also, some columns were modified to be more analysis ready. For example:</p>
+<p>Los datos brutos de vivienda se proporcionan en <span class="citation" data-cites="ames">De Cock (<a href="references.html#ref-ames" role="doc-biblioref">2011</a>)</span>, pero en nuestros análisis de este libro utilizamos una versión transformada disponible en el paquete <span class="pkg">modeldata</span>. Esta versión tiene varios cambios y mejoras en los datos.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Por ejemplo, se han determinado los valores de longitud y latitud para cada propiedad. Además, algunas columnas se modificaron para que estuvieran más preparadas para el análisis. Por ejemplo:</p>
 <ul>
-<li><p>In the raw data, if a house did not have a particular feature, it was implicitly encoded as missing. For example, 2,732 properties did not have an alleyway. Instead of leaving these as missing, they were relabeled in the transformed version to indicate that no alley was available.</p></li>
-<li><p>The categorical predictors were converted to R’s factor data type. While both the tidyverse and base R have moved away from importing data as factors by default, this data type is a better approach for storing qualitative data for modeling than simple strings.<br></p></li>
-<li><p>We removed a set of quality descriptors for each house since they are more like outcomes than predictors.</p></li>
+<li><p>En los datos sin procesar, si una casa no tenía una característica particular, se codificaba implícitamente como faltante. Por ejemplo, 2,732 las propiedades no tenían callejón. En lugar de dejarlos como faltantes, se volvieron a etiquetar en la versión transformada para indicar que no había ningún callejón disponible.</p></li>
+<li><p>Los predictores categóricos se convirtieron al tipo de datos de factor de R. Si bien tanto tidyverse como base R han dejado de importar datos como factores de forma predeterminada, este tipo de datos es un mejor enfoque para almacenar datos cualitativos para modelado que cadenas simples.</p></li>
+<li><p>Eliminamos un conjunto de descriptores de calidad para cada casa, ya que se parecen más a resultados que a predictores.</p></li>
 </ul>
-<p>To load the data:</p>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-load_2b2fc8be319ffabe53e2e90106027d4f">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modeldata.tidymodels.org">modeldata</a></span><span class="op">)</span> <span class="co"># This is also loaded by the tidymodels package</span></span>
+<p>Para cargar los datos:</p>
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-load_88500dc61e078c243e48280eb15a2e51">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://modeldata.tidymodels.org">modeldata</a></span><span class="op">)</span> <span class="co"># Esto también lo carga el paquete tidymodels.</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># or, in one line:</span></span>
+<span><span class="co"># o, en una línea:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span>, package <span class="op">=</span> <span class="st">"modeldata"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
-<span><span class="co">## [1] 2930   74</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 2930   74</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="sec-exploring-features-of-homes-in-ames" class="level2" data-number="4.1"><h2 data-number="4.1" class="anchored" data-anchor-id="sec-exploring-features-of-homes-in-ames">
-<span class="header-section-number">4.1</span> Exploring Features of Homes in Ames</h2>
-<p>Let’s start our exploratory data analysis by focusing on the outcome we want to predict: the last sale price of the house (in USD). We can create a histogram to see the distribution of sale prices in <a href="#fig-ames-sale-price-hist">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-sale-price-hist</span></a>.</p>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-sale-price-code_6ebc9e6ab72d90526c9799f2c7637e43">
+<span class="header-section-number">4.1</span> Explorando las características de las casas en Ames</h2>
+<p>Comencemos nuestro análisis exploratorio de datos centrándonos en el resultado que queremos predecir: el último precio de venta de la casa (en USD). Podemos crear un histograma para ver la distribución de los precios de venta en <a href="#fig-ames-sale-price-hist">Figura&nbsp;<span>4.1</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-sale-price-code_878a12e1d5ff9a200f2579debc7604d8">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="va">ames</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">50</span>, col<span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">50</span>, col<span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-sale-price-hist_75936e22e90bd335f42c8bc3b2e48818">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-sale-price-hist_37ae5c259349def823971633f6d21d26">
 <div class="cell-output-display">
 <div id="fig-ames-sale-price-hist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-ames-sale-price-hist-1.png" class="img-fluid figure-img" style="width:100.0%" alt="A histogram of the sale prices of houses in Ames, Iowa. The distribution has a long right tail."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.1: Sale prices of houses in Ames, Iowa</figcaption></figure>
+<figure class="figure"><p><img src="04-ames_files/figure-html/fig-ames-sale-price-hist-1.png" class="img-fluid figure-img" style="width:100.0%" alt="Un histograma de los precios de venta de casas en Ames, Iowa. La distribución tiene una cola larga derecha."></p>
+<figcaption class="figure-caption">Figura&nbsp;4.1: Precios de venta de casas en Ames (Iowa)</figcaption></figure>
 </div>
 </div>
 </div>
-<p>This plot shows us that the data are right-skewed; there are more inexpensive houses than expensive ones. The median sale price was $160,000, and the most expensive house was $755,000. When modeling this outcome, a strong argument can be made that the price should be log-transformed. The advantages of this type of transformation are that no houses would be predicted with negative sale prices and that errors in predicting expensive houses will not have an undue influence on the model. Also, from a statistical perspective, a logarithmic transform may also stabilize the variance in a way that makes inference more legitimate. We can use similar steps to now visualize the transformed data, shown in <a href="#fig-ames-log-sale-price-hist">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-log-sale-price-hist</span></a>.</p>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-log-sale-price-code_b739bceaf32f9dc0db698f70714cc9e5">
+<p>Este gráfico nos muestra que los datos están sesgados hacia la derecha; Hay más casas baratas que caras. El precio de venta medio fue $160,000, y la casa más cara era $755,000. Al modelar este resultado, se puede argumentar con fuerza que el precio debe transformarse logarítmicamente. Las ventajas de este tipo de transformación son que no se pronosticarían casas con precios de venta negativos y que los errores al predecir casas caras no tendrán una influencia indebida en el modelo. Además, desde una perspectiva estadística, una transformada logarítmica también puede estabilizar la varianza de una manera que haga que la inferencia sea más legítima. Podemos usar pasos similares para visualizar ahora los datos transformados, que se muestran en <a href="#fig-ames-log-sale-price-hist">Figura&nbsp;<span>4.2</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-log-sale-price-code_3f1fef4d5ce9475c3c82c9ca64ddecbc">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">ames</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">50</span>, col<span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">scale_x_log10</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">scale_x_log10</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-log-sale-price-hist_78154f44ab2f9e627ae0bccbd33f8c8d">
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-log-sale-price-hist_b59700a61f728174b3f80d76fef64a6f">
 <div class="cell-output-display">
 <div id="fig-ames-log-sale-price-hist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-ames-log-sale-price-hist-1.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figure&nbsp;4.2: Sale prices of houses in Ames, Iowa after a log (base 10) transformation</figcaption></figure>
+<figure class="figure"><p><img src="04-ames_files/figure-html/fig-ames-log-sale-price-hist-1.png" class="img-fluid figure-img" style="width:100.0%" alt="Un histograma de los precios de venta de casas en Ames, Iowa, después de una transformación logarítmica (base 10). La distribución, si bien no es perfectamente simétrica, muestra mucha menos asimetría."></p>
+<figcaption class="figure-caption">Figura&nbsp;4.2: Precios de venta de casas en Ames, Iowa después de una transformación logarítmica (base 10)</figcaption></figure>
 </div>
 </div>
 </div>
-<p>While not perfect, this will likely result in better models than using the untransformed data, for the reasons just outlined.</p>
+<p>Si bien no es perfecto, esto probablemente dará como resultado mejores modelos que el uso de datos no transformados, por las razones que acabamos de describir.</p>
 <div class="rmdwarning">
-<p>The disadvantages of transforming the outcome mostly relate to interpretation of model results.</p>
+<p>Las desventajas de transformar el resultado se relacionan principalmente con la interpretación de los resultados del modelo.</p>
 </div>
-<p>The units of the model coefficients might be more difficult to interpret, as will measures of performance. For example, the root mean squared error (RMSE) is a common performance metric used in regression models. It uses the difference between the observed and predicted values in its calculations. If the sale price is on the log scale, these differences (i.e., the residuals) are also on the log scale. It can be difficult to understand the quality of a model whose RMSE is 0.15 on such a log scale.</p>
-<p>Despite these drawbacks, the models used in this book use the log transformation for this outcome. <em>From this point on</em>, the outcome column is prelogged in the <code>ames</code> data frame:</p>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-log_1d1715c323cd060195d44f25460ad202">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="va">ames</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Las unidades de los coeficientes del modelo podrían ser más difíciles de interpretar, al igual que las medidas de desempeño. Por ejemplo, el error cuadrático medio (RMSE) es una métrica de rendimiento común que se utiliza en los modelos de regresión. Utiliza la diferencia entre los valores observados y predichos en sus cálculos. Si el precio de venta está en la escala logarítmica, estas diferencias (es decir, los residuos) también están en la escala logarítmica. Puede resultar difícil comprender la calidad de un modelo cuyo RMSE es 0,15 en una escala logarítmica de este tipo.</p>
+<p>A pesar de estos inconvenientes, los modelos utilizados en este libro utilizan la transformación logarítmica para este resultado. <em>A partir de este momento</em>, la columna de resultados está preregistrada en el marco de datos <code>ames</code>:</p>
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-log_b50d26465f1320a570a9304c96000fc7">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="va">ames</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Another important aspect of these data for our modeling is their geographic locations. This spatial information is contained in the data in two ways: a qualitative <code>Neighborhood</code> label as well as quantitative longitude and latitude data. To visualize the spatial information, let’s use both together to plot the data on a map in <a href="#fig-ames-map">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-map</span></a>.</p>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-map_a0d86c90c58b982613a0b533b75f3654">
+<p>Otro aspecto importante de estos datos para nuestro modelado es su ubicación geográfica. Esta información espacial está contenida en los datos de dos maneras: una etiqueta cualitativa de <code>Vecindario</code> y datos cuantitativos de longitud y latitud. Para visualizar la información espacial, usemos ambos juntos para trazar los datos en un mapa en <a href="#fig-ames-map">Figura&nbsp;<span>4.3</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-map_79e12e17abe741e185a2d4053a225cb5">
 <div class="cell-output-display">
 <div id="fig-ames-map" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="premade/ames.png" class="img-fluid figure-img" style="width:100.0%" alt="A scatter plot of house locations in Ames superimposed over a street map. There is a significant area in the center of the map where no homes were sold."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.3: Neighborhoods in Ames, IA</figcaption></figure>
+<figure class="figure"><p><img src="premade/ames.png" class="img-fluid figure-img" style="width:100.0%" alt="Un diagrama de dispersión de la ubicación de las casas en Ames superpuesto a un mapa de calles. Hay un área importante en el centro del mapa donde no se vendieron casas."></p>
+<figcaption class="figure-caption">Figura&nbsp;4.3: Barrios en Ames, IA</figcaption></figure>
 </div>
 </div>
 </div>
-<p>We can see a few noticeable patterns. First, there is a void of data points in the center of Ames. This corresponds to the campus of Iowa State University where there are no residential houses. Second, while there are a number of adjacent neighborhoods, others are geographically isolated. For example, as <a href="#fig-ames-timberland">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-timberland</span></a> shows, Timberland is located apart from almost all other neighborhoods.</p>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-timberland_22b87d77fe1345e1cd157d847265a76f">
+<p>Podemos ver algunos patrones notables. Primero, hay un vacío de puntos de datos en el centro de Ames. Esto corresponde al campus de la Universidad Estatal de Iowa donde no hay casas residenciales. En segundo lugar, si bien hay varios barrios adyacentes, otros están geográficamente aislados. Por ejemplo, como muestra <a href="#fig-ames-timberland">Figura&nbsp;<span>4.4</span></a>, Timberland está ubicado aparte de casi todos los demás vecindarios.</p>
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-timberland_0e9fae09342383f1dbd56b2377f2ca52">
 <div class="cell-output-display">
 <div id="fig-ames-timberland" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="premade/timberland.png" class="img-fluid figure-img" style="width:80.0%" alt="A scatter plot of locations of homes in Timberland, located in the southern part of Ames."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.4: Locations of homes in Timberland</figcaption></figure>
+<figure class="figure"><p><img src="premade/timberland.png" class="img-fluid figure-img" style="width:80.0%" alt="Un diagrama de dispersión de la ubicación de las casas en Timberland, ubicada en la parte sur de Ames."></p>
+<figcaption class="figure-caption">Figura&nbsp;4.4: Ubicaciones de casas en Timberland</figcaption></figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-ames-mitchell">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-mitchell</span></a> visualizes how the Meadow Village neighborhood in southwest Ames is like an island of properties inside the sea of properties that make up the Mitchell neighborhood.</p>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-mitchell_843a73769da6836d7a81f98e577960d5">
+<p><a href="#fig-ames-mitchell">Figura&nbsp;<span>4.5</span></a> visualiza cómo el barrio de Meadow Village en el suroeste de Ames es como una isla de propiedades dentro del mar de propiedades que conforman el barrio de Mitchell.</p>
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-mitchell_3c46bd0efd5948f733c943672330a5b5">
 <div class="cell-output-display">
 <div id="fig-ames-mitchell" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="premade/mitchell.png" class="img-fluid figure-img" style="width:60.0%" alt="A scatter plot of locations of homes in Meadow Village and Mitchell. The small number of Meadow Village properties are enclosed inside the the ones labeled as being in Mitchell."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.5: Locations of homes in Meadow Village and Mitchell</figcaption></figure>
+<figure class="figure"><p><img src="premade/mitchell.png" class="img-fluid figure-img" style="width:60.0%" alt="Un diagrama de dispersión de la ubicación de las casas en Meadow Village y Mitchell. La pequeña cantidad de propiedades de Meadow Village están incluidas dentro de las etiquetadas como en Mitchell."></p>
+<figcaption class="figure-caption">Figura&nbsp;4.5: Ubicación de las casas en Meadow Village y Mitchell</figcaption></figure>
 </div>
 </div>
 </div>
-<p>A detailed inspection of the map also shows that the neighborhood labels are not completely reliable. For example, <a href="#fig-ames-northridge">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-northridge</span></a> shows some properties labeled as being in Northridge are surrounded by homes in the adjacent Somerset neighborhood.</p>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-northridge_0f88d72a9f16e77185832d91ec2fd20c">
+<p>Una inspección detallada del mapa también muestra que las etiquetas de los barrios no son totalmente fiables. Por ejemplo, <a href="#fig-ames-northridge">Figura&nbsp;<span>4.6</span></a> muestra que algunas propiedades etiquetadas como ubicadas en Northridge están rodeadas de casas en el vecindario adyacente de Somerset.</p>
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-northridge_722b262d7f7e87f8596a80c34822f864">
 <div class="cell-output-display">
 <div id="fig-ames-northridge" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="premade/northridge.png" class="img-fluid figure-img" style="width:90.0%" alt="A scatter plot of locations of homes in Somerset and Northridge. There are a few homes in Somerset mixed in the periphery of Northridge (and vice versa)."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.6: Locations of homes in Somerset and Northridge</figcaption></figure>
+<figure class="figure"><p><img src="premade/northridge.png" class="img-fluid figure-img" style="width:90.0%" alt="Un diagrama de dispersión de la ubicación de viviendas en Somerset y Northridge. Hay algunas casas en Somerset mezcladas en la periferia de Northridge (y viceversa)."></p>
+<figcaption class="figure-caption">Figura&nbsp;4.6: Ubicación de las casas en Somerset y Northridge</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Also, there are ten isolated homes labeled as being in Crawford that, as you can see in <a href="#fig-ames-crawford">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-crawford</span></a>, are not close to the majority of the other homes in that neighborhood.</p>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-crawford_30107ba761664dc7b40270b35c52c432">
+<p>Además, hay diez casas aisladas etiquetadas como en Crawford que, como puedes ver en <a href="#fig-ames-crawford">Figura&nbsp;<span>4.7</span></a>, no están cerca de la mayoría de las otras casas en ese vecindario.</p>
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-crawford_1a78ae21f7a04694e3a9a3693d9ec81d">
 <div class="cell-output-display">
 <div id="fig-ames-crawford" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="premade/crawford.png" class="img-fluid figure-img" style="width:80.0%" alt="A scatter plot of locations of homes in Crawford. There is a large cluster of homes to the west of a small, separate cluster of properties also labeled as Crawford."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.7: Locations of homes in Crawford</figcaption></figure>
+<figure class="figure"><p><img src="premade/crawford.png" class="img-fluid figure-img" style="width:80.0%" alt="Un diagrama de dispersión de la ubicación de las casas en Crawford. Hay un gran grupo de casas al oeste de un pequeño grupo separado de propiedades también etiquetadas como Crawford."></p>
+<figcaption class="figure-caption">Figura&nbsp;4.7: Ubicación de las casas en Crawford</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Also notable is the “Iowa Department of Transportation (DOT) and Rail Road” neighborhood adjacent to the main road on the east side of Ames, shown in <a href="#fig-ames-dot-rr">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-dot-rr</span></a>. There are several clusters of homes within this neighborhood as well as some longitudinal outliers; the two homes farthest east are isolated from the other locations.</p>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-dot-rr_da99dfa3237163b910caf69f40756fcb">
+<p>También es notable el vecindario del “Departamento de Transporte de Iowa (DOT) y Ferrocarriles” adyacente a la carretera principal en el lado este de Ames, que se muestra en <a href="#fig-ames-dot-rr">Figura&nbsp;<span>4.8</span></a>. Hay varios grupos de viviendas dentro de este vecindario, así como algunos valores atípicos longitudinales; las dos casas más al este están aisladas de las otras ubicaciones.</p>
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/fig-ames-dot-rr_cd26a54fe1656613a91bb192ecacedc1">
 <div class="cell-output-display">
 <div id="fig-ames-dot-rr" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="premade/dot_rr.png" class="img-fluid figure-img" style="width:100.0%" alt="A scatter plot of locations of homes labeled as 'Iowa Department of Transportation (DOT) and Rail Road'. The longitude distribution is right-skewed with a few outlying properties."></p>
-<figcaption class="figure-caption">Figure&nbsp;4.8: Homes labeled as Iowa Department of Transportation (DOT) and Rail Road</figcaption></figure>
+<figure class="figure"><p><img src="premade/dot_rr.png" class="img-fluid figure-img" style="width:100.0%" alt="Un diagrama de dispersión de la ubicación de las casas etiquetadas como 'Departamento de Transporte (DOT) y Ferrocarriles de Iowa'. La distribución de longitud está sesgada hacia la derecha con algunas propiedades periféricas."></p>
+<figcaption class="figure-caption">Figura&nbsp;4.8: Casas etiquetadas como Departamento de Transporte de Iowa (DOT) y Ferrocarril</figcaption></figure>
 </div>
 </div>
 </div>
-<p>As described in <a href="#sec-software-modeling">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-software-modeling</span></a>, it is critical to conduct exploratory data analysis prior to beginning any modeling. These housing data have characteristics that present interesting challenges about how the data should be processed and modeled. We describe many of these in later chapters. Some basic questions that could be examined during this exploratory stage include:</p>
+<p>Como se describe en el <a href="01-software-modeling.html">Capítulo&nbsp;<span>1</span></a>, es fundamental realizar un análisis de datos exploratorio antes de comenzar cualquier modelado. Estos datos sobre vivienda tienen características que presentan desafíos interesantes sobre cómo se deben procesar y modelar los datos. Describimos muchos de estos en capítulos posteriores. Algunas preguntas básicas que podrían examinarse durante esta etapa exploratoria incluyen:</p>
 <ul>
-<li><p>Is there anything odd or noticeable about the distributions of the individual predictors? Is there much skewness or any pathological distributions?</p></li>
-<li><p>Are there high correlations between predictors? For example, there are multiple predictors related to house size. Are some redundant?</p></li>
-<li><p>Are there associations between predictors and the outcomes?</p></li>
+<li><p>¿Hay algo extraño o notable en las distribuciones de los predictores individuales? ¿Hay mucha asimetría o distribuciones patológicas?</p></li>
+<li><p>¿Existen altas correlaciones entre los predictores? Por ejemplo, existen múltiples predictores relacionados con el tamaño de la casa. ¿Algunas son redundantes?</p></li>
+<li><p>¿Existen asociaciones entre los predictores y los resultados?</p></li>
 </ul>
-<p>Many of these questions will be revisited as these data are used throughout this book.</p>
+<p>Muchas de estas preguntas serán revisadas a medida que estos datos se utilicen a lo largo de este libro.</p>
 </section><section id="sec-ames-summary" class="level2" data-number="4.2"><h2 data-number="4.2" class="anchored" data-anchor-id="sec-ames-summary">
-<span class="header-section-number">4.2</span> Chapter Summary</h2>
-<p>This chapter introduced the Ames housing data set and investigated some of its characteristics. This data set will be used in later chapters to demonstrate tidymodels syntax. Exploratory data analysis like this is an essential component of any modeling project; EDA uncovers information that contributes to better modeling practice.</p>
-<p>The important code for preparing the Ames data set that we will carry forward into subsequent chapters is:</p>
-<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-summary_fae2014750282d98c4659076d979f46c">
+<span class="header-section-number">4.2</span> Resumen del capítulo</h2>
+<p>Este capítulo presentó el conjunto de datos de vivienda de Ames e investigó algunas de sus características. Este conjunto de datos se utilizará en capítulos posteriores para demostrar la sintaxis de tidymodels. El análisis de datos exploratorios como este es un componente esencial de cualquier proyecto de modelado; EDA descubre información que contribuye a una mejor práctica de modelado.</p>
+<p>El código importante para preparar el conjunto de datos de Ames que llevaremos a los capítulos siguientes es:</p>
+<div class="cell" data-layout-align="center" data-hash="04-ames_cache/html/ames-summary_a9cb3c587171de42fe915ccc9592d82e">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
-<span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="va">ames</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="va">ames</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-ames" class="csl-entry" role="listitem">
-De Cock, D. 2011. <span>“<span>Ames, Iowa</span>: Alternative to the <span>Boston</span> Housing Data as an End of Semester Regression Project.”</span> <em>Journal of Statistics Education</em> 19 (3).
+De Cock, D. 2011. <span>«<span>Ames, Iowa</span>: Alternative to the <span>Boston</span> housing data as an end of semester regression project»</span>. <em>Journal of Statistics Education</em> 19 (3).
 </div>
 </div>
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
-<li id="fn1"><p>For a complete account of the differences, see <a href="https://github.com/topepo/AmesHousing/blob/master/R/make_ames.R" class="uri">https://github.com/topepo/AmesHousing/blob/master/R/make_ames.R</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<li id="fn1"><p>Para obtener una descripción completa de las diferencias, consulte <a href="https://github.com/topepo/AmesHousing/blob/master/R/make_ames.R" class="uri">https://github.com/topepo/AmesHousing/blob/master/R/make_ames.R</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -579,12 +659,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copiado");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copiado");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
@@ -759,7 +839,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./03-base-r.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Review of R Modeling Fundamentals</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
