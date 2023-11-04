@@ -6,46 +6,46 @@ tidymodels_prefer()
 source("ames_snippets.R")
 ```
 
-# Spending our Data {#sec-splitting}
+# Gastar nuestros datos {#sec-splitting}
 
-There are several steps to creating a useful model, including parameter estimation, model selection and tuning, and performance assessment. At the start of a new project, there is usually an initial finite pool of data available for all these tasks, which we can think of as an available data budget. How should the data be applied to different steps or tasks? The idea of *data spending* is an important first consideration when modeling, especially as it relates to empirical validation.
+Hay varios pasos para crear un modelo útil, incluida la estimación de parámetros, la selección y ajuste del modelo y la evaluación del desempeño. Al comienzo de un nuevo proyecto, generalmente hay un conjunto inicial finito de datos disponibles para todas estas tareas, que podemos considerar como un presupuesto de datos disponible. ¿Cómo se deben aplicar los datos a diferentes pasos o tareas? La idea de *gasto de datos* es una primera consideración importante al modelar, especialmente en lo que se refiere a la validación empírica.
 
 ::: rmdwarning
-When data are reused for multiple tasks, instead of carefully "spent" from the finite data budget, certain risks increase, such as the risk of accentuating bias or compounding effects from methodological errors.
+Cuando los datos se reutilizan para múltiples tareas, en lugar de "gastarlos" cuidadosamente del presupuesto finito de datos, aumentan ciertos riesgos, como el riesgo de acentuar el sesgo o agravar los efectos de los errores metodológicos.
 :::
 
-When there are copious amounts of data available, a smart strategy is to allocate specific subsets of data for different tasks, as opposed to allocating the largest possible amount (or even all) to the model parameter estimation only. For example, one possible strategy (when both data and predictors are abundant) is to spend a specific subset of data to determine which predictors are informative, before considering parameter estimation at all. If the initial pool of data available is not huge, there will be some overlap in how and when our data is "spent" or allocated, and a solid methodology for data spending is important.
+Cuando hay grandes cantidades de datos disponibles, una estrategia inteligente es asignar subconjuntos específicos de datos para diferentes tareas, en lugar de asignar la mayor cantidad posible (o incluso toda) a la estimación de parámetros del modelo únicamente. Por ejemplo, una estrategia posible (cuando tanto los datos como los predictores son abundantes) es gastar un subconjunto específico de datos para determinar qué predictores son informativos, antes de considerar la estimación de parámetros. Si el conjunto inicial de datos disponibles no es enorme, habrá cierta superposición en cómo y cuándo se "gastan" o asignan nuestros datos, y es importante contar con una metodología sólida para el gasto de datos.
 
-This chapter demonstrates the basics of *splitting* (i.e., creating a data budget) for our initial pool of samples for different purposes.
+Este capítulo demuestra los conceptos básicos de *división* (es decir, creación de un presupuesto de datos) para nuestro conjunto inicial de muestras para diferentes propósitos.
 
-## Common Methods for Splitting Data {#sec-splitting-methods}
+## Métodos comunes para dividir datos {#sec-splitting-methods}
 
-The primary approach for empirical model validation is to split the existing pool of data into two distinct sets, the training set and the test set. One portion of the data is used to develop and optimize the model. This *training set* is usually the majority of the data. These data are a sandbox for model building where different models can be fit, feature engineering strategies are investigated, and so on. As modeling practitioners, we spend the vast majority of the modeling process using the training set as the substrate to develop the model.
+El enfoque principal para la validación del modelo empírico es dividir el conjunto de datos existente en dos conjuntos distintos, el conjunto de entrenamiento y el conjunto de prueba. Una parte de los datos se utiliza para desarrollar y optimizar el modelo. Este *conjunto de entrenamiento* suele ser la mayoría de los datos. Estos datos son una zona de pruebas para la construcción de modelos donde se pueden ajustar diferentes modelos, se investigan estrategias de ingeniería de características, etc. Como profesionales del modelado, pasamos la gran mayor parte del proceso de modelado utilizando el conjunto de entrenamiento como sustrato para desarrollar el modelo.
 
-The other portion of the data is placed into the *test set*. This is held in reserve until one or two models are chosen as the methods most likely to succeed. The test set is then used as the final arbiter to determine the efficacy of the model. It is critical to look at the test set only once; otherwise, it becomes part of the modeling process.
+La otra parte de los datos se coloca en el *conjunto de prueba*. Esto se mantiene en reserva hasta que se elijan uno o dos modelos como los métodos con mayor probabilidad de éxito. Luego, el conjunto de prueba se utiliza como árbitro final para determinar la eficacia del modelo. Es fundamental mirar el conjunto de prueba sólo una vez; de lo contrario, pasa a formar parte del proceso de modelado.
 
 ::: rmdnote
-How should we conduct this split of the data? The answer depends on the context.
+¿Cómo deberíamos llevar a cabo esta división de los datos? La respuesta depende del contexto.
 :::
 
-Suppose we allocate 80% of the data to the training set and the remaining 20% for testing. The most common method is to use simple random sampling. The [`r pkg(rsample)`](https://rsample.tidymodels.org/) package has tools for making data splits such as this; the function `initial_split()` was created for this purpose. It takes the data frame as an argument as well as the proportion to be placed into training. Using the data frame produced by the code snippet from the summary in @sec-ames-summary that prepared the Ames data set:
+Supongamos que asignamos el 80% de los datos al conjunto de entrenamiento y el 20% restante a las pruebas. El método más común es utilizar muestreo aleatorio simple. El paquete [`r pkg(rsample)`](https://rsample.tidymodels.org/) tiene herramientas para realizar divisiones de datos como esta; la función `initial_split()` fue creada para este propósito. Toma el marco de datos como argumento, así como la proporción que se colocará en el entrenamiento. Usando el marco de datos producido por el fragmento de código del resumen en @sec-ames-summary que preparó el conjunto de datos de Ames:
 
 ```{r ames-split, message = FALSE, warning = FALSE}
 library(tidymodels)
 tidymodels_prefer()
 
-# Set the random number stream using `set.seed()` so that the results can be 
-# reproduced later. 
+# Configure el flujo de números aleatorios usando `set.seed()` para que los resultados puedan ser
+# reproducido más tarde. 
 set.seed(501)
 
-# Save the split information for an 80/20 split of the data
+# Guarde la información dividida para una división 80/20 de los datos
 ames_split <- initial_split(ames, prop = 0.80)
 ames_split
 ```
 
-The printed information denotes the amount of data in the training set ($n = `r format(nrow(training(ames_split)), big.mark = ",")`$), the amount in the test set ($n = `r format(nrow(testing(ames_split)), big.mark = ",")`$), and the size of the original pool of samples ($n = `r format(nrow(ames), big.mark = ",")`$).
+La información impresa denota la cantidad de datos en el conjunto de entrenamiento ($n = `r format(nrow(training(ames_split)), big.mark = ",")`$), la cantidad en el conjunto de prueba ($n = `r format(nrow(testing(ames_split)), big.mark = ",")`$), y el tamaño del conjunto original de muestras. ($n = `r format(nrow(ames), big.mark = ",")`$).
 
-The object `ames_split` is an `rsplit` object and contains only the partitioning information; to get the resulting data sets, we apply two more functions:
+El objeto `ames_split` es un objeto `rsplit` y contiene sólo la información de partición; Para obtener los conjuntos de datos resultantes, aplicamos dos funciones más:
 
 ```{r ames-split-df}
 ames_train <- training(ames_split)
@@ -54,15 +54,15 @@ ames_test  <-  testing(ames_split)
 dim(ames_train)
 ```
 
-These objects are data frames with the same columns as the original data but only the appropriate rows for each set.
+Estos objetos son marcos de datos con las mismas columnas que los datos originales pero solo las filas apropiadas para cada conjunto.
 
-Simple random sampling is appropriate in many cases but there are exceptions. When there is a dramatic *class imbalance* in classification problems, one class occurs much less frequently than another. Using a simple random sample may haphazardly allocate these infrequent samples disproportionately into the training or test set. To avoid this, *stratified sampling* can be used. The training/test split is conducted separately within each class and then these subsamples are combined into the overall training and test set. For regression problems, the outcome data can be artificially binned into quartiles and then stratified sampling can be conducted four separate times. This is an effective method for keeping the distributions of the outcome similar between the training and test set. The distribution of the sale price outcome for the Ames housing data is shown in @fig-ames-sale-price.
+El muestreo aleatorio simple es apropiado en muchos casos, pero existen excepciones. Cuando hay un *desequilibrio de clases* dramático en los problemas de clasificación, una clase ocurre con mucha menos frecuencia que otra. El uso de una muestra aleatoria simple puede asignar al azar estas muestras poco frecuentes de manera desproporcionada al conjunto de entrenamiento o prueba. Para evitar esto, se puede utilizar *muestreo estratificado*. La división de entrenamiento/prueba se realiza por separado dentro de cada clase y luego estas submuestras se combinan en el conjunto general de entrenamiento y prueba. Para problemas de regresión, los datos de resultados se pueden agrupar artificialmente en cuartiles y luego se puede realizar un muestreo estratificado en cuatro ocasiones distintas. Este es un método eficaz para mantener similares las distribuciones del resultado entre el conjunto de entrenamiento y de prueba. La distribución del resultado del precio de venta para los datos de vivienda de Ames se muestra en @fig-ames-sale-price.
 
 ```{r}
 #| label: fig-ames-sale-price
 #| echo: FALSE
-#| fig.cap: "The distribution of the sale price (in log units) for the Ames housing data. The vertical lines indicate the quartiles of the data"
-#| fig.alt: "The distribution of the sale price (in log units) for the Ames housing data. The vertical lines indicate the quartiles of the data."
+#| fig.cap: "La distribución del precio de venta (en unidades logarítmicas) de los datos de vivienda de Ames. Las líneas verticales indican los cuartiles de los datos. Algunos datos de vivienda de Ames se muestran en @fig-ames-sale-price."
+#| fig.alt: "La distribución del precio de venta (en unidades logarítmicas) de los datos de vivienda de Ames. Las líneas verticales indican los cuartiles de los datos."
 
 sale_dens <- 
   density(ames$Sale_Price, n = 2^10) %>% 
@@ -76,11 +76,11 @@ quart_plot <- ggplot(ames, aes(x = Sale_Price)) +
   geom_segment(data = quartiles,
                aes(x = value, xend = value, y = 0, yend = y),
                lty = 2) +
-  labs(x = "Sale Price (log-10 USD)", y = NULL)
+  labs(x = "Precio de venta (log-10 USD)", y = NULL)
 quart_plot
 ```
 
-As discussed in [Chapter @sec-ames], the sale price distribution is right-skewed, with proportionally more inexpensive houses than expensive houses on either side of the center of the distribution. The worry here with simple splitting is that the more expensive houses would not be well represented in the training set; this would increase the risk that our model would be ineffective at predicting the price for such properties. The dotted vertical lines in @fig-ames-sale-price indicate the four quartiles for these data. A stratified random sample would conduct the 80/20 split within each of these data subsets and then pool the results. In `r pkg(rsample)`, this is achieved using the `strata` argument:
+Como se analiza en el [Capítulo @sec-ames], la distribución del precio de venta está sesgada hacia la derecha, con proporcionalmente más casas económicas que caras a ambos lados del centro de la distribución. La preocupación aquí con una simple división es que las casas más caras no estarían bien representadas en el conjunto de capacitación; esto aumentaría el riesgo de que nuestro modelo fuera ineficaz para predecir el precio de dichas propiedades. Las líneas verticales de puntos en @fig-ames-sale-price indican los cuatro cuartiles de estos datos. Una muestra aleatoria estratificada realizaría la división 80/20 dentro de cada uno de estos subconjuntos de datos y luego agruparía los resultados. En `r pkg(rsample)`, esto se logra usando el argumento `strata`:
 
 ```{r ames-strata-split}
 set.seed(502)
@@ -91,44 +91,44 @@ ames_test  <-  testing(ames_split)
 dim(ames_train)
 ```
 
-Only a single column can be used for stratification.
+Sólo se puede utilizar una columna para la estratificación.
 
 ::: rmdnote
-There is very little downside to using stratified sampling.
+El uso del muestreo estratificado tiene muy pocas desventajas.
 :::
 
-Are there situations when random sampling is not the best choice? One case is when the data have a significant time component, such as time series data. Here, it is more common to use the most recent data as the test set. The `r pkg(rsample)` package contains a function called `initial_time_split()` that is very similar to `initial_split()`. Instead of using random sampling, the `prop` argument denotes what proportion of the first part of the data should be used as the training set; the function assumes that the data have been pre-sorted in an appropriate order.
+¿Hay situaciones en las que el muestreo aleatorio no es la mejor opción? Un caso es cuando los datos tienen un componente temporal significativo, como los datos de series temporales. Aquí, es más común utilizar los datos más recientes como conjunto de prueba. El paquete `r pkg(rsample)` contiene una función llamada `initial_time_split()` que es muy similar a `initial_split()`. En lugar de utilizar muestreo aleatorio, el argumento "prop" denota qué proporción de la primera parte de los datos debe usarse como conjunto de entrenamiento; la función supone que los datos han sido preclasificados en un orden apropiado.
 
 ::: rmdnote
-The proportion of data that should be allocated for splitting is highly dependent on the context of the problem at hand. Too little data in the training set hampers the model's ability to find appropriate parameter estimates. Conversely, too little data in the test set lowers the quality of the performance estimates. Parts of the statistics community eschew test sets in general because they believe all of the data should be used for parameter estimation. While there is merit to this argument, it is good modeling practice to have an unbiased set of observations as the final arbiter of model quality. A test set should be avoided only when the data are pathologically small.
+La proporción de datos que deben asignarse para la división depende en gran medida del contexto del problema en cuestión. Muy pocos datos en el conjunto de entrenamiento obstaculizan la capacidad del modelo para encontrar estimaciones de parámetros apropiadas. Por el contrario, muy pocos datos en el conjunto de pruebas reducen la calidad de las estimaciones de rendimiento. Partes de la comunidad estadística evitan los conjuntos de pruebas en general porque creen que todos los datos deben usarse para la estimación de parámetros. Si bien este argumento tiene sus méritos, es una buena práctica de modelado tener un conjunto imparcial de observaciones como árbitro final de la calidad del modelo. Se debe evitar un conjunto de pruebas sólo cuando los datos sean patológicamente pequeños.
 :::
 
-## What About a Validation Set? {#sec-what-about-a-validation-set}
+## ¿Qué pasa con un conjunto de validación? {#sec-what-about-a-validation-set}
 
-When describing the goals of data splitting, we singled out the test set as the data that should be used to properly evaluate of model performance on the final model(s). This begs the question: "How can we tell what is best if we don't measure performance until the test set?"
+Al describir los objetivos de la división de datos, seleccionamos el conjunto de pruebas como los datos que deben usarse para evaluar adecuadamente el desempeño del modelo en los modelos finales. Esto plantea la pregunta: "¿Cómo podemos saber qué es mejor si no medimos el rendimiento hasta el conjunto de pruebas?"
 
-It is common to hear about *validation sets* as an answer to this question, especially in the neural network and deep learning literature. During the early days of neural networks, researchers realized that measuring performance by re-predicting the training set samples led to results that were overly optimistic (significantly, unrealistically so). This led to models that overfit, meaning that they performed very well on the training set but poorly on the test set.[^05-data-spending-1] To combat this issue, a small validation set of data were held back and used to measure performance as the network was trained. Once the validation set error rate began to rise, the training would be halted. In other words, the validation set was a means to get a rough sense of how well the model performed prior to the test set.
+Es común escuchar acerca de *conjuntos de validación* como respuesta a esta pregunta, especialmente en la literatura sobre redes neuronales y aprendizaje profundo. Durante los primeros días de las redes neuronales, los investigadores se dieron cuenta de que medir el rendimiento reprediciendo las muestras del conjunto de entrenamiento conducía a resultados demasiado optimistas (de manera significativa y poco realista). Esto llevó a modelos que se sobreajustaron, lo que significa que tuvieron un desempeño muy bueno en el conjunto de entrenamiento pero pobre en el conjunto de prueba.[^05-data-spend-1] Para combatir este problema, se retuvo y utilizó un pequeño conjunto de datos de validación. para medir el desempeño a medida que se entrenaba la red. Una vez que la tasa de error del conjunto de validación comenzara a aumentar, el entrenamiento se detendría. En otras palabras, el conjunto de validación era un medio para tener una idea aproximada de qué tan bien se desempeñaba el modelo antes del conjunto de prueba.
 
-[^05-data-spending-1]: This is discussed in much greater detail in @sec-overfitting-bad.
+[^05-data-spending-1]: Esto se analiza con mucho más detalle en @sec-overfitting-bad.
 
 ::: rmdnote
-Whether validation sets are a subset of the training set or a third allocation in the initial split of the data largely comes down to semantics.
+Si los conjuntos de validación son un subconjunto del conjunto de entrenamiento o una tercera asignación en la división inicial de los datos se reduce en gran medida a la semántica.
 :::
 
-Validation sets are discussed more in @sec-validation as a special case of *resampling* methods that are used on the training set. If you are going to use a validation set, you can start with a different splitting function[^05-data-spending-2]:
+Los conjuntos de validación se analizan más en @sec-validation como un caso especial de métodos de *remuestreo* que se utilizan en el conjunto de entrenamiento. Si va a utilizar un conjunto de validación, puede comenzar con una función de división diferente [^05-data-spending-2]:
 
-[^05-data-spending-2]: This interface is available as of rsample version 1.2.0 (circa September 2023).
+[^05-data-spending-2]: Esta interfaz está disponible a partir de la versión 1.2.0 de rsample (alrededor de septiembre de 2023).
 
 ```{r ames-val-split, message = FALSE, warning = FALSE}
 set.seed(52)
-# To put 60% into training, 20% in validation, and 20% in testing:
+# Para dedicar el 60 % a la capacitación, el 20 % a la validación y el 20 % a las pruebas:
 ames_val_split <- initial_validation_split(ames, prop = c(0.6, 0.2))
 ames_val_split
 ```
 
-Printing the split now shows the size of the training set (`r format(nrow(training(ames_val_split)), big.mark = ",")`), validation set (`r format(nrow(validation(ames_val_split)), big.mark = ",")`), and test set ((`r format(nrow(testing(ames_val_split)), big.mark = ",")`).
+Al imprimir la división ahora se muestra el tamaño del conjunto de entrenamiento. (`r format(nrow(training(ames_val_split)), big.mark = ",")`), del conjunto de validación (`r format(nrow(validation(ames_val_split)), big.mark = ",")`), y del conjunto de prueba ((`r format(nrow(testing(ames_val_split)), big.mark = ",")`).
 
-To get the training, validation, and testing data, the same syntax is used:
+Para obtener los datos de entrenamiento, validación y prueba, se utiliza la misma sintaxis:
 
 ```{r ames-val-data, eval = FALSE}
 ames_train <- training(ames_val_split)
@@ -136,43 +136,43 @@ ames_test <- testing(ames_val_split)
 ames_val <- validation(ames_val_split)
 ```
 
-@sec-validation will demonstrate how to use the `ames_val_split` object for resampling and model optimization.
+@sec-validation demostrará cómo utilizar el objeto `ames_val_split` para remuestreo y optimización del modelo.
 
-## Multilevel Data
+## Datos multinivel
 
-With the Ames housing data, a property is considered to be the *independent experimental unit*. It is safe to assume that, statistically, the data from a property are independent of other properties. For other applications, that is not always the case:
+Con los datos de vivienda de Ames, una propiedad se considera la *unidad experimental independiente*. Es seguro asumir que, estadísticamente, los datos de una propiedad son independientes de otras propiedades. Para otras aplicaciones, ese no es siempre el caso:
 
--   For longitudinal data, for example, the same independent experimental unit can be measured over multiple time points. An example would be a human subject in a medical trial.
+-   Para datos longitudinales, por ejemplo, la misma unidad experimental independiente se puede medir en múltiples puntos de tiempo. Un ejemplo sería un sujeto humano en un ensayo médico.
 
--   A batch of manufactured product might also be considered the independent experimental unit. In repeated measures designs, replicate data points from a batch are collected at multiple times.
+-   Un lote de producto manufacturado también podría considerarse la unidad experimental independiente. En los diseños de medidas repetidas, los puntos de datos replicados de un lote se recopilan varias veces.
 
--   @spicer2018 report an experiment where different trees were sampled across the top and bottom portions of a stem. Here, the tree is the experimental unit and the data hierarchy is sample within stem position within tree.
+-   @spicer2018 Informe un experimento en el que se tomaron muestras de diferentes árboles en las partes superior e inferior de un tallo. Aquí, el árbol es la unidad experimental y la jerarquía de datos es la muestra dentro de la posición del tallo dentro del árbol.
 
-Chapter 9 of @fes contains other examples.
+El capítulo 9 de @fes contiene otros ejemplos.
 
-In these situations, the data set will have multiple rows per experimental unit. Simple resampling across rows would lead to some data within an experimental unit being in the training set and others in the test set. Data splitting should occur at the independent experimental unit level of the data. For example, to produce an 80/20 split of the Ames housing data set, 80% of the properties should be allocated for the training set.
+En estas situaciones, el conjunto de datos tendrá varias filas por unidad experimental. Un simple remuestreo entre filas llevaría a que algunos datos dentro de una unidad experimental estuvieran en el conjunto de entrenamiento y otros en el conjunto de prueba. La división de datos debe ocurrir en el nivel de unidad experimental independiente de los datos. Por ejemplo, para producir una división 80/20 del conjunto de datos de vivienda de Ames, el 80% de las propiedades deben asignarse al conjunto de entrenamiento.
 
-## Other Considerations for a Data Budget
+## Otras Consideraciones para un Presupuesto de Datos
 
-When deciding how to spend the data available to you, keep a few more things in mind. First, it is critical to quarantine the test set from any model building activities. As you read this book, notice which data are exposed to the model at any given time.
+Al decidir cómo gastar los datos disponibles, tenga en cuenta algunas cosas más. En primer lugar, es fundamental poner en cuarentena el conjunto de pruebas de cualquier actividad de construcción de modelos. Mientras lee este libro, observe qué datos están expuestos al modelo en un momento dado.
 
 ::: rmdwarning
-The problem of *information leakage* occurs when data outside of the training set are used in the modeling process.
+El problema de la *fuga de información* ocurre cuando en el proceso de modelado se utilizan datos fuera del conjunto de entrenamiento.
 :::
 
-For example, in a machine learning competition, the test set data might be provided without the true outcome values so that the model can be scored and ranked. One potential method for improving the score might be to fit the model using the training set points that are most similar to the test set values. While the test set isn't directly used to fit the model, it still has a heavy influence. In general, this technique is highly problematic since it reduces the *generalization error* of the model to optimize performance on a specific data set. There are more subtle ways that the test set data can be used during training. Keeping the training data in a separate data frame from the test set is one small check to make sure that information leakage does not occur by accident.
+Por ejemplo, en una competencia de aprendizaje automático, los datos del conjunto de pruebas podrían proporcionarse sin los valores reales de los resultados para que el modelo pueda calificarse y clasificarse. Un método potencial para mejorar la puntuación podría ser ajustar el modelo utilizando los puntos de ajuste de entrenamiento que sean más similares a los valores del conjunto de prueba. Si bien el conjunto de prueba no se utiliza directamente para ajustar el modelo, aún tiene una gran influencia. En general, esta técnica es muy problemática ya que reduce el *error de generalización* del modelo para optimizar el rendimiento en un conjunto de datos específico. Hay formas más sutiles de utilizar los datos del conjunto de prueba durante el entrenamiento. Mantener los datos de entrenamiento en un marco de datos separado del conjunto de prueba es una pequeña verificación para garantizar que la fuga de información no se produzca por accidente.
 
-Second, techniques to subsample the training set can mitigate specific issues (e.g., class imbalances). This is a valid and common technique that deliberately results in the training set data diverging from the population from which the data were drawn. It is critical that the test set continues to mirror what the model would encounter in the wild. In other words, the test set should always resemble new data that will be given to the model.
+En segundo lugar, las técnicas para submuestrear el conjunto de capacitación pueden mitigar problemas específicos (por ejemplo, desequilibrios de clases). Esta es una técnica válida y común que deliberadamente da como resultado que los datos del conjunto de entrenamiento diverjan de la población de la que se extrajeron los datos. Es fundamental que el conjunto de prueba siga reflejando lo que el modelo encontraría en la naturaleza. En otras palabras, el conjunto de prueba siempre debe parecerse a los datos nuevos que se proporcionarán al modelo.
 
-Next, at the beginning of this chapter, we warned about using the same data for different tasks. [Chapter -@sec-resampling] will discuss solid, data-driven methodologies for data usage that will reduce the risks related to bias, overfitting, and other issues. Many of these methods apply the data-splitting tools introduced in this chapter.
+A continuación, al comienzo de este capítulo, advertimos sobre el uso de los mismos datos para diferentes tareas. El [Capítulo -@sec-resampling] discutirá metodologías sólidas basadas en datos para el uso de datos que reducirán los riesgos relacionados con el sesgo, el sobreajuste y otros problemas. Muchos de estos métodos aplican las herramientas de división de datos presentadas en este capítulo.
 
-Finally, the considerations in this chapter apply to developing and choosing a reliable model, the main topic of this book. When training a final chosen model for production, after ascertaining the expected performance on new data, practitioners often use all available data for better parameter estimation.
+Finalmente, las consideraciones de este capítulo se aplican al desarrollo y elección de un modelo confiable, el tema principal de este libro. Al entrenar un modelo elegido final para producción, después de determinar el rendimiento esperado con nuevos datos, los profesionales suelen utilizar todos los datos disponibles para una mejor estimación de los parámetros.
 
-## Chapter Summary {#sec-splitting-summary}
+## Resumen del capítulo {#sec-splitting-summary}
 
-Data splitting is the fundamental strategy for empirical validation of models. Even in the era of unrestrained data collection, a typical modeling project has a limited amount of appropriate data, and wise spending of a project's data is necessary. In this chapter, we discussed several strategies for partitioning the data into distinct groups for modeling and evaluation.
+La división de datos es la estrategia fundamental para la validación empírica de modelos. Incluso en la era de la recopilación de datos desenfrenada, un proyecto de modelado típico tiene una cantidad limitada de datos apropiados, y es necesario gastar sabiamente los datos de un proyecto. En este capítulo, analizamos varias estrategias para dividir los datos en distintos grupos para modelado y evaluación.
 
-At this checkpoint, the important code snippets for preparing and splitting are:
+En este punto de control, los fragmentos de código importantes para preparar y dividir son:
 
 ```{r splitting-summary, eval = FALSE}
 library(tidymodels)

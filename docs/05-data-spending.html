@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 5&nbsp; Spending our Data</title>
+<title>Modelado Ordenado con R - 5&nbsp; Gastar nuestros datos</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -74,7 +74,6 @@ div.csl-indent {
 }</style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -99,16 +98,16 @@ div.csl-indent {
   "type": "textbox",
   "limit": 20,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
   }
 }</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
@@ -118,11 +117,11 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">MODELING BASICS</a></li><li class="breadcrumb-item"><a href="./05-data-spending.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spending our Data</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./05-data-spending.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -134,8 +133,22 @@ div.csl-indent {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/davidrsch/TMwRes" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
   </div>
@@ -145,7 +158,7 @@ div.csl-indent {
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
+        <div id="quarto-search" class="" title="Buscar"></div>
         </div>
         </div>
     <div class="sidebar-menu-container"> 
@@ -153,14 +166,14 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Hello World</span></a>
+ <span class="menu-text">Hola Mundo</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">INTRODUCTION</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -168,19 +181,19 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software for modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software para modelar</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A Tidyverse Primer</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una introducción tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Review of R Modeling Fundamentals</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span></a>
   </div>
 </li>
       </ul>
@@ -188,8 +201,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">MODELING BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -197,13 +210,13 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Ames Housing Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spending our Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -236,7 +249,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
  <span class="menu-text">TOOLS FOR CREATING EFFECTIVE MODELS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -283,7 +296,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
  <span class="menu-text">BEYOND THE BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -329,8 +342,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -354,19 +367,19 @@ div.csl-indent {
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-<li><a href="#sec-splitting-methods" id="toc-sec-splitting-methods" class="nav-link active" data-scroll-target="#sec-splitting-methods"><span class="header-section-number">5.1</span> Common Methods for Splitting Data</a></li>
-  <li><a href="#sec-what-about-a-validation-set" id="toc-sec-what-about-a-validation-set" class="nav-link" data-scroll-target="#sec-what-about-a-validation-set"><span class="header-section-number">5.2</span> What About a Validation Set?</a></li>
-  <li><a href="#multilevel-data" id="toc-multilevel-data" class="nav-link" data-scroll-target="#multilevel-data"><span class="header-section-number">5.3</span> Multilevel Data</a></li>
-  <li><a href="#other-considerations-for-a-data-budget" id="toc-other-considerations-for-a-data-budget" class="nav-link" data-scroll-target="#other-considerations-for-a-data-budget"><span class="header-section-number">5.4</span> Other Considerations for a Data Budget</a></li>
-  <li><a href="#sec-splitting-summary" id="toc-sec-splitting-summary" class="nav-link" data-scroll-target="#sec-splitting-summary"><span class="header-section-number">5.5</span> Chapter Summary</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/05-data-spending.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<li><a href="#sec-splitting-methods" id="toc-sec-splitting-methods" class="nav-link active" data-scroll-target="#sec-splitting-methods"><span class="header-section-number">5.1</span> Métodos comunes para dividir datos</a></li>
+  <li><a href="#sec-what-about-a-validation-set" id="toc-sec-what-about-a-validation-set" class="nav-link" data-scroll-target="#sec-what-about-a-validation-set"><span class="header-section-number">5.2</span> ¿Qué pasa con un conjunto de validación?</a></li>
+  <li><a href="#datos-multinivel" id="toc-datos-multinivel" class="nav-link" data-scroll-target="#datos-multinivel"><span class="header-section-number">5.3</span> Datos multinivel</a></li>
+  <li><a href="#otras-consideraciones-para-un-presupuesto-de-datos" id="toc-otras-consideraciones-para-un-presupuesto-de-datos" class="nav-link" data-scroll-target="#otras-consideraciones-para-un-presupuesto-de-datos"><span class="header-section-number">5.4</span> Otras Consideraciones para un Presupuesto de Datos</a></li>
+  <li><a href="#sec-splitting-summary" id="toc-sec-splitting-summary" class="nav-link" data-scroll-target="#sec-splitting-summary"><span class="header-section-number">5.5</span> Resumen del capítulo</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-splitting" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spending our Data</span></span></h1>
+<h1 class="title"><span id="sec-splitting" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span></h1>
 </div>
 
 
@@ -379,120 +392,120 @@ div.csl-indent {
   </div>
   
 
-</header><p>There are several steps to creating a useful model, including parameter estimation, model selection and tuning, and performance assessment. At the start of a new project, there is usually an initial finite pool of data available for all these tasks, which we can think of as an available data budget. How should the data be applied to different steps or tasks? The idea of <em>data spending</em> is an important first consideration when modeling, especially as it relates to empirical validation.</p>
+</header><p>Hay varios pasos para crear un modelo útil, incluida la estimación de parámetros, la selección y ajuste del modelo y la evaluación del desempeño. Al comienzo de un nuevo proyecto, generalmente hay un conjunto inicial finito de datos disponibles para todas estas tareas, que podemos considerar como un presupuesto de datos disponible. ¿Cómo se deben aplicar los datos a diferentes pasos o tareas? La idea de <em>gasto de datos</em> es una primera consideración importante al modelar, especialmente en lo que se refiere a la validación empírica.</p>
 <div class="rmdwarning">
-<p>When data are reused for multiple tasks, instead of carefully “spent” from the finite data budget, certain risks increase, such as the risk of accentuating bias or compounding effects from methodological errors.</p>
+<p>Cuando los datos se reutilizan para múltiples tareas, en lugar de “gastarlos” cuidadosamente del presupuesto finito de datos, aumentan ciertos riesgos, como el riesgo de acentuar el sesgo o agravar los efectos de los errores metodológicos.</p>
 </div>
-<p>When there are copious amounts of data available, a smart strategy is to allocate specific subsets of data for different tasks, as opposed to allocating the largest possible amount (or even all) to the model parameter estimation only. For example, one possible strategy (when both data and predictors are abundant) is to spend a specific subset of data to determine which predictors are informative, before considering parameter estimation at all. If the initial pool of data available is not huge, there will be some overlap in how and when our data is “spent” or allocated, and a solid methodology for data spending is important.</p>
-<p>This chapter demonstrates the basics of <em>splitting</em> (i.e., creating a data budget) for our initial pool of samples for different purposes.</p>
+<p>Cuando hay grandes cantidades de datos disponibles, una estrategia inteligente es asignar subconjuntos específicos de datos para diferentes tareas, en lugar de asignar la mayor cantidad posible (o incluso toda) a la estimación de parámetros del modelo únicamente. Por ejemplo, una estrategia posible (cuando tanto los datos como los predictores son abundantes) es gastar un subconjunto específico de datos para determinar qué predictores son informativos, antes de considerar la estimación de parámetros. Si el conjunto inicial de datos disponibles no es enorme, habrá cierta superposición en cómo y cuándo se “gastan” o asignan nuestros datos, y es importante contar con una metodología sólida para el gasto de datos.</p>
+<p>Este capítulo demuestra los conceptos básicos de <em>división</em> (es decir, creación de un presupuesto de datos) para nuestro conjunto inicial de muestras para diferentes propósitos.</p>
 <section id="sec-splitting-methods" class="level2" data-number="5.1"><h2 data-number="5.1" class="anchored" data-anchor-id="sec-splitting-methods">
-<span class="header-section-number">5.1</span> Common Methods for Splitting Data</h2>
-<p>The primary approach for empirical model validation is to split the existing pool of data into two distinct sets, the training set and the test set. One portion of the data is used to develop and optimize the model. This <em>training set</em> is usually the majority of the data. These data are a sandbox for model building where different models can be fit, feature engineering strategies are investigated, and so on. As modeling practitioners, we spend the vast majority of the modeling process using the training set as the substrate to develop the model.</p>
-<p>The other portion of the data is placed into the <em>test set</em>. This is held in reserve until one or two models are chosen as the methods most likely to succeed. The test set is then used as the final arbiter to determine the efficacy of the model. It is critical to look at the test set only once; otherwise, it becomes part of the modeling process.</p>
+<span class="header-section-number">5.1</span> Métodos comunes para dividir datos</h2>
+<p>El enfoque principal para la validación del modelo empírico es dividir el conjunto de datos existente en dos conjuntos distintos, el conjunto de entrenamiento y el conjunto de prueba. Una parte de los datos se utiliza para desarrollar y optimizar el modelo. Este <em>conjunto de entrenamiento</em> suele ser la mayoría de los datos. Estos datos son una zona de pruebas para la construcción de modelos donde se pueden ajustar diferentes modelos, se investigan estrategias de ingeniería de características, etc. Como profesionales del modelado, pasamos la gran mayor parte del proceso de modelado utilizando el conjunto de entrenamiento como sustrato para desarrollar el modelo.</p>
+<p>La otra parte de los datos se coloca en el <em>conjunto de prueba</em>. Esto se mantiene en reserva hasta que se elijan uno o dos modelos como los métodos con mayor probabilidad de éxito. Luego, el conjunto de prueba se utiliza como árbitro final para determinar la eficacia del modelo. Es fundamental mirar el conjunto de prueba sólo una vez; de lo contrario, pasa a formar parte del proceso de modelado.</p>
 <div class="rmdnote">
-<p>How should we conduct this split of the data? The answer depends on the context.</p>
+<p>¿Cómo deberíamos llevar a cabo esta división de los datos? La respuesta depende del contexto.</p>
 </div>
-<p>Suppose we allocate 80% of the data to the training set and the remaining 20% for testing. The most common method is to use simple random sampling. The <a href="https://rsample.tidymodels.org/"><span class="pkg">rsample</span></a> package has tools for making data splits such as this; the function <code>initial_split()</code> was created for this purpose. It takes the data frame as an argument as well as the proportion to be placed into training. Using the data frame produced by the code snippet from the summary in <a href="#sec-ames-summary"><span class="quarto-unresolved-ref">sec-ames-summary</span></a> that prepared the Ames data set:</p>
-<div class="cell" data-layout-align="center">
+<p>Supongamos que asignamos el 80% de los datos al conjunto de entrenamiento y el 20% restante a las pruebas. El método más común es utilizar muestreo aleatorio simple. El paquete <a href="https://rsample.tidymodels.org/"><span class="pkg">rsample</span></a> tiene herramientas para realizar divisiones de datos como esta; la función <code>initial_split()</code> fue creada para este propósito. Toma el marco de datos como argumento, así como la proporción que se colocará en el entrenamiento. Usando el marco de datos producido por el fragmento de código del resumen en <a href="04-ames.html#sec-ames-summary"><span>Sección&nbsp;4.2</span></a> que preparó el conjunto de datos de Ames:</p>
+<div class="cell" data-layout-align="center" data-hash="05-data-spending_cache/html/ames-split_0d39e50d4c4343d910f1f32116eb1303">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Set the random number stream using `set.seed()` so that the results can be </span></span>
-<span><span class="co"># reproduced later. </span></span>
+<span><span class="co"># Configure el flujo de números aleatorios usando `set.seed()` para que los resultados puedan ser</span></span>
+<span><span class="co"># reproducido más tarde. </span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">501</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Save the split information for an 80/20 split of the data</span></span>
+<span><span class="co"># Guarde la información dividida para una división 80/20 de los datos</span></span>
 <span><span class="va">ames_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">ames</span>, prop <span class="op">=</span> <span class="fl">0.80</span><span class="op">)</span></span>
 <span><span class="va">ames_split</span></span>
 <span><span class="co">## &lt;Training/Testing/Total&gt;</span></span>
-<span><span class="co">## &lt;2344/586/2930&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## &lt;2344/586/2930&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The printed information denotes the amount of data in the training set (<span class="math inline">\(n = 2,344\)</span>), the amount in the test set (<span class="math inline">\(n = 586\)</span>), and the size of the original pool of samples (<span class="math inline">\(n = 2,930\)</span>).</p>
-<p>The object <code>ames_split</code> is an <code>rsplit</code> object and contains only the partitioning information; to get the resulting data sets, we apply two more functions:</p>
-<div class="cell" data-layout-align="center">
+<p>La información impresa denota la cantidad de datos en el conjunto de entrenamiento (<span class="math inline">\(n = 2,344\)</span>), la cantidad en el conjunto de prueba (<span class="math inline">\(n = 586\)</span>), y el tamaño del conjunto original de muestras. (<span class="math inline">\(n = 2,930\)</span>).</p>
+<p>El objeto <code>ames_split</code> es un objeto <code>rsplit</code> y contiene sólo la información de partición; Para obtener los conjuntos de datos resultantes, aplicamos dos funciones más:</p>
+<div class="cell" data-layout-align="center" data-hash="05-data-spending_cache/html/ames-split-df_d2f09f173e6e5feb4f99920b7d3ca3c6">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
 <span><span class="va">ames_test</span>  <span class="op">&lt;-</span>  <span class="fu">testing</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">ames_train</span><span class="op">)</span></span>
-<span><span class="co">## [1] 2344   74</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 2344   74</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>These objects are data frames with the same columns as the original data but only the appropriate rows for each set.</p>
-<p>Simple random sampling is appropriate in many cases but there are exceptions. When there is a dramatic <em>class imbalance</em> in classification problems, one class occurs much less frequently than another. Using a simple random sample may haphazardly allocate these infrequent samples disproportionately into the training or test set. To avoid this, <em>stratified sampling</em> can be used. The training/test split is conducted separately within each class and then these subsamples are combined into the overall training and test set. For regression problems, the outcome data can be artificially binned into quartiles and then stratified sampling can be conducted four separate times. This is an effective method for keeping the distributions of the outcome similar between the training and test set. The distribution of the sale price outcome for the Ames housing data is shown in <a href="#fig-ames-sale-price">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-sale-price</span></a>.</p>
-<div class="cell" data-layout-align="center">
+<p>Estos objetos son marcos de datos con las mismas columnas que los datos originales pero solo las filas apropiadas para cada conjunto.</p>
+<p>El muestreo aleatorio simple es apropiado en muchos casos, pero existen excepciones. Cuando hay un <em>desequilibrio de clases</em> dramático en los problemas de clasificación, una clase ocurre con mucha menos frecuencia que otra. El uso de una muestra aleatoria simple puede asignar al azar estas muestras poco frecuentes de manera desproporcionada al conjunto de entrenamiento o prueba. Para evitar esto, se puede utilizar <em>muestreo estratificado</em>. La división de entrenamiento/prueba se realiza por separado dentro de cada clase y luego estas submuestras se combinan en el conjunto general de entrenamiento y prueba. Para problemas de regresión, los datos de resultados se pueden agrupar artificialmente en cuartiles y luego se puede realizar un muestreo estratificado en cuatro ocasiones distintas. Este es un método eficaz para mantener similares las distribuciones del resultado entre el conjunto de entrenamiento y de prueba. La distribución del resultado del precio de venta para los datos de vivienda de Ames se muestra en <a href="#fig-ames-sale-price">Figura&nbsp;<span>5.1</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="05-data-spending_cache/html/fig-ames-sale-price_e9de70901bf8c02bcd4e31ca2e702e26">
 <div class="cell-output-display">
 <div id="fig-ames-sale-price" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-ames-sale-price-1.png" class="img-fluid figure-img" alt="The distribution of the sale price (in log units) for the Ames housing data. The vertical lines indicate the quartiles of the data." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;5.1: The distribution of the sale price (in log units) for the Ames housing data. The vertical lines indicate the quartiles of the data</figcaption></figure>
+<figure class="figure"><p><img src="figures/fig-ames-sale-price-1.png" class="img-fluid figure-img" alt="La distribución del precio de venta (en unidades logarítmicas) de los datos de vivienda de Ames. Las líneas verticales indican los cuartiles de los datos." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;5.1: La distribución del precio de venta (en unidades logarítmicas) de los datos de vivienda de Ames. Las líneas verticales indican los cuartiles de los datos. Algunos datos de vivienda de Ames se muestran en <a href="#fig-ames-sale-price">Figura&nbsp;<span>5.1</span></a>.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>As discussed in <a href="#sec-ames">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-ames</span></a>, the sale price distribution is right-skewed, with proportionally more inexpensive houses than expensive houses on either side of the center of the distribution. The worry here with simple splitting is that the more expensive houses would not be well represented in the training set; this would increase the risk that our model would be ineffective at predicting the price for such properties. The dotted vertical lines in <a href="#fig-ames-sale-price">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-sale-price</span></a> indicate the four quartiles for these data. A stratified random sample would conduct the 80/20 split within each of these data subsets and then pool the results. In <span class="pkg">rsample</span>, this is achieved using the <code>strata</code> argument:</p>
-<div class="cell" data-layout-align="center">
+<p>Como se analiza en el <a href="04-ames.html">Capítulo&nbsp;<span>4</span></a>, la distribución del precio de venta está sesgada hacia la derecha, con proporcionalmente más casas económicas que caras a ambos lados del centro de la distribución. La preocupación aquí con una simple división es que las casas más caras no estarían bien representadas en el conjunto de capacitación; esto aumentaría el riesgo de que nuestro modelo fuera ineficaz para predecir el precio de dichas propiedades. Las líneas verticales de puntos en <a href="#fig-ames-sale-price">Figura&nbsp;<span>5.1</span></a> indican los cuatro cuartiles de estos datos. Una muestra aleatoria estratificada realizaría la división 80/20 dentro de cada uno de estos subconjuntos de datos y luego agruparía los resultados. En <span class="pkg">rsample</span>, esto se logra usando el argumento <code>strata</code>:</p>
+<div class="cell" data-layout-align="center" data-hash="05-data-spending_cache/html/ames-strata-split_2867488ef080207238d696ef25099c8d">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">502</span><span class="op">)</span></span>
 <span><span class="va">ames_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">ames</span>, prop <span class="op">=</span> <span class="fl">0.80</span>, strata <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span></span>
 <span><span class="va">ames_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
 <span><span class="va">ames_test</span>  <span class="op">&lt;-</span>  <span class="fu">testing</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">ames_train</span><span class="op">)</span></span>
-<span><span class="co">## [1] 2342   74</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 2342   74</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Only a single column can be used for stratification.</p>
+<p>Sólo se puede utilizar una columna para la estratificación.</p>
 <div class="rmdnote">
-<p>There is very little downside to using stratified sampling.</p>
+<p>El uso del muestreo estratificado tiene muy pocas desventajas.</p>
 </div>
-<p>Are there situations when random sampling is not the best choice? One case is when the data have a significant time component, such as time series data. Here, it is more common to use the most recent data as the test set. The <span class="pkg">rsample</span> package contains a function called <code>initial_time_split()</code> that is very similar to <code>initial_split()</code>. Instead of using random sampling, the <code>prop</code> argument denotes what proportion of the first part of the data should be used as the training set; the function assumes that the data have been pre-sorted in an appropriate order.</p>
+<p>¿Hay situaciones en las que el muestreo aleatorio no es la mejor opción? Un caso es cuando los datos tienen un componente temporal significativo, como los datos de series temporales. Aquí, es más común utilizar los datos más recientes como conjunto de prueba. El paquete <span class="pkg">rsample</span> contiene una función llamada <code>initial_time_split()</code> que es muy similar a <code>initial_split()</code>. En lugar de utilizar muestreo aleatorio, el argumento “prop” denota qué proporción de la primera parte de los datos debe usarse como conjunto de entrenamiento; la función supone que los datos han sido preclasificados en un orden apropiado.</p>
 <div class="rmdnote">
-<p>The proportion of data that should be allocated for splitting is highly dependent on the context of the problem at hand. Too little data in the training set hampers the model’s ability to find appropriate parameter estimates. Conversely, too little data in the test set lowers the quality of the performance estimates. Parts of the statistics community eschew test sets in general because they believe all of the data should be used for parameter estimation. While there is merit to this argument, it is good modeling practice to have an unbiased set of observations as the final arbiter of model quality. A test set should be avoided only when the data are pathologically small.</p>
+<p>La proporción de datos que deben asignarse para la división depende en gran medida del contexto del problema en cuestión. Muy pocos datos en el conjunto de entrenamiento obstaculizan la capacidad del modelo para encontrar estimaciones de parámetros apropiadas. Por el contrario, muy pocos datos en el conjunto de pruebas reducen la calidad de las estimaciones de rendimiento. Partes de la comunidad estadística evitan los conjuntos de pruebas en general porque creen que todos los datos deben usarse para la estimación de parámetros. Si bien este argumento tiene sus méritos, es una buena práctica de modelado tener un conjunto imparcial de observaciones como árbitro final de la calidad del modelo. Se debe evitar un conjunto de pruebas sólo cuando los datos sean patológicamente pequeños.</p>
 </div>
 </section><section id="sec-what-about-a-validation-set" class="level2" data-number="5.2"><h2 data-number="5.2" class="anchored" data-anchor-id="sec-what-about-a-validation-set">
-<span class="header-section-number">5.2</span> What About a Validation Set?</h2>
-<p>When describing the goals of data splitting, we singled out the test set as the data that should be used to properly evaluate of model performance on the final model(s). This begs the question: “How can we tell what is best if we don’t measure performance until the test set?”</p>
-<p>It is common to hear about <em>validation sets</em> as an answer to this question, especially in the neural network and deep learning literature. During the early days of neural networks, researchers realized that measuring performance by re-predicting the training set samples led to results that were overly optimistic (significantly, unrealistically so). This led to models that overfit, meaning that they performed very well on the training set but poorly on the test set.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> To combat this issue, a small validation set of data were held back and used to measure performance as the network was trained. Once the validation set error rate began to rise, the training would be halted. In other words, the validation set was a means to get a rough sense of how well the model performed prior to the test set.</p>
+<span class="header-section-number">5.2</span> ¿Qué pasa con un conjunto de validación?</h2>
+<p>Al describir los objetivos de la división de datos, seleccionamos el conjunto de pruebas como los datos que deben usarse para evaluar adecuadamente el desempeño del modelo en los modelos finales. Esto plantea la pregunta: “¿Cómo podemos saber qué es mejor si no medimos el rendimiento hasta el conjunto de pruebas?”</p>
+<p>Es común escuchar acerca de <em>conjuntos de validación</em> como respuesta a esta pregunta, especialmente en la literatura sobre redes neuronales y aprendizaje profundo. Durante los primeros días de las redes neuronales, los investigadores se dieron cuenta de que medir el rendimiento reprediciendo las muestras del conjunto de entrenamiento conducía a resultados demasiado optimistas (de manera significativa y poco realista). Esto llevó a modelos que se sobreajustaron, lo que significa que tuvieron un desempeño muy bueno en el conjunto de entrenamiento pero pobre en el conjunto de prueba.[^05-data-spend-1] Para combatir este problema, se retuvo y utilizó un pequeño conjunto de datos de validación. para medir el desempeño a medida que se entrenaba la red. Una vez que la tasa de error del conjunto de validación comenzara a aumentar, el entrenamiento se detendría. En otras palabras, el conjunto de validación era un medio para tener una idea aproximada de qué tan bien se desempeñaba el modelo antes del conjunto de prueba.</p>
 <div class="rmdnote">
-<p>Whether validation sets are a subset of the training set or a third allocation in the initial split of the data largely comes down to semantics.</p>
+<p>Si los conjuntos de validación son un subconjunto del conjunto de entrenamiento o una tercera asignación en la división inicial de los datos se reduce en gran medida a la semántica.</p>
 </div>
-<p>Validation sets are discussed more in <a href="#sec-validation"><span class="quarto-unresolved-ref">sec-validation</span></a> as a special case of <em>resampling</em> methods that are used on the training set. If you are going to use a validation set, you can start with a different splitting function<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
-<div class="cell" data-layout-align="center">
+<p>Los conjuntos de validación se analizan más en <a href="10-resampling.html#sec-validation"><span>Sección&nbsp;10.2.2</span></a> como un caso especial de métodos de <em>remuestreo</em> que se utilizan en el conjunto de entrenamiento. Si va a utilizar un conjunto de validación, puede comenzar con una función de división diferente <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
+<div class="cell" data-layout-align="center" data-hash="05-data-spending_cache/html/ames-val-split_734be3318fc034d9d3bfdd6f2e84edd8">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">52</span><span class="op">)</span></span>
-<span><span class="co"># To put 60% into training, 20% in validation, and 20% in testing:</span></span>
+<span><span class="co"># Para dedicar el 60 % a la capacitación, el 20 % a la validación y el 20 % a las pruebas:</span></span>
 <span><span class="va">ames_val_split</span> <span class="op">&lt;-</span> <span class="fu">initial_validation_split</span><span class="op">(</span><span class="va">ames</span>, prop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ames_val_split</span></span>
 <span><span class="co">## &lt;Training/Validation/Testing/Total&gt;</span></span>
-<span><span class="co">## &lt;1758/586/586/2930&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## &lt;1758/586/586/2930&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Printing the split now shows the size of the training set (1,758), validation set (586), and test set ((586).</p>
-<p>To get the training, validation, and testing data, the same syntax is used:</p>
-<div class="cell" data-layout-align="center">
+<p>Al imprimir la división ahora se muestra el tamaño del conjunto de entrenamiento. (1,758), del conjunto de validación (586), y del conjunto de prueba ((586).</p>
+<p>Para obtener los datos de entrenamiento, validación y prueba, se utiliza la misma sintaxis:</p>
+<div class="cell" data-layout-align="center" data-hash="05-data-spending_cache/html/ames-val-data_7ad76c472184fc4b3027de6064a6c02f">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">ames_val_split</span><span class="op">)</span></span>
 <span><span class="va">ames_test</span> <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">ames_val_split</span><span class="op">)</span></span>
-<span><span class="va">ames_val</span> <span class="op">&lt;-</span> <span class="fu">validation</span><span class="op">(</span><span class="va">ames_val_split</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">ames_val</span> <span class="op">&lt;-</span> <span class="fu">validation</span><span class="op">(</span><span class="va">ames_val_split</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><a href="#sec-validation"><span class="quarto-unresolved-ref">sec-validation</span></a> will demonstrate how to use the <code>ames_val_split</code> object for resampling and model optimization.</p>
-</section><section id="multilevel-data" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="multilevel-data">
-<span class="header-section-number">5.3</span> Multilevel Data</h2>
-<p>With the Ames housing data, a property is considered to be the <em>independent experimental unit</em>. It is safe to assume that, statistically, the data from a property are independent of other properties. For other applications, that is not always the case:</p>
+<p><a href="10-resampling.html#sec-validation"><span>Sección&nbsp;10.2.2</span></a> demostrará cómo utilizar el objeto <code>ames_val_split</code> para remuestreo y optimización del modelo.</p>
+</section><section id="datos-multinivel" class="level2" data-number="5.3"><h2 data-number="5.3" class="anchored" data-anchor-id="datos-multinivel">
+<span class="header-section-number">5.3</span> Datos multinivel</h2>
+<p>Con los datos de vivienda de Ames, una propiedad se considera la <em>unidad experimental independiente</em>. Es seguro asumir que, estadísticamente, los datos de una propiedad son independientes de otras propiedades. Para otras aplicaciones, ese no es siempre el caso:</p>
 <ul>
-<li><p>For longitudinal data, for example, the same independent experimental unit can be measured over multiple time points. An example would be a human subject in a medical trial.</p></li>
-<li><p>A batch of manufactured product might also be considered the independent experimental unit. In repeated measures designs, replicate data points from a batch are collected at multiple times.</p></li>
-<li><p><span class="citation" data-cites="spicer2018">Johnson et al. (<a href="#ref-spicer2018" role="doc-biblioref">2018</a>)</span> report an experiment where different trees were sampled across the top and bottom portions of a stem. Here, the tree is the experimental unit and the data hierarchy is sample within stem position within tree.</p></li>
+<li><p>Para datos longitudinales, por ejemplo, la misma unidad experimental independiente se puede medir en múltiples puntos de tiempo. Un ejemplo sería un sujeto humano en un ensayo médico.</p></li>
+<li><p>Un lote de producto manufacturado también podría considerarse la unidad experimental independiente. En los diseños de medidas repetidas, los puntos de datos replicados de un lote se recopilan varias veces.</p></li>
+<li><p><span class="citation" data-cites="spicer2018">Johnson et&nbsp;al. (<a href="references.html#ref-spicer2018" role="doc-biblioref">2018</a>)</span> Informe un experimento en el que se tomaron muestras de diferentes árboles en las partes superior e inferior de un tallo. Aquí, el árbol es la unidad experimental y la jerarquía de datos es la muestra dentro de la posición del tallo dentro del árbol.</p></li>
 </ul>
-<p>Chapter 9 of <span class="citation" data-cites="fes">Kuhn and Johnson (<a href="#ref-fes" role="doc-biblioref">2020</a>)</span> contains other examples.</p>
-<p>In these situations, the data set will have multiple rows per experimental unit. Simple resampling across rows would lead to some data within an experimental unit being in the training set and others in the test set. Data splitting should occur at the independent experimental unit level of the data. For example, to produce an 80/20 split of the Ames housing data set, 80% of the properties should be allocated for the training set.</p>
-</section><section id="other-considerations-for-a-data-budget" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="other-considerations-for-a-data-budget">
-<span class="header-section-number">5.4</span> Other Considerations for a Data Budget</h2>
-<p>When deciding how to spend the data available to you, keep a few more things in mind. First, it is critical to quarantine the test set from any model building activities. As you read this book, notice which data are exposed to the model at any given time.</p>
+<p>El capítulo 9 de <span class="citation" data-cites="fes">Kuhn y Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> contiene otros ejemplos.</p>
+<p>En estas situaciones, el conjunto de datos tendrá varias filas por unidad experimental. Un simple remuestreo entre filas llevaría a que algunos datos dentro de una unidad experimental estuvieran en el conjunto de entrenamiento y otros en el conjunto de prueba. La división de datos debe ocurrir en el nivel de unidad experimental independiente de los datos. Por ejemplo, para producir una división 80/20 del conjunto de datos de vivienda de Ames, el 80% de las propiedades deben asignarse al conjunto de entrenamiento.</p>
+</section><section id="otras-consideraciones-para-un-presupuesto-de-datos" class="level2" data-number="5.4"><h2 data-number="5.4" class="anchored" data-anchor-id="otras-consideraciones-para-un-presupuesto-de-datos">
+<span class="header-section-number">5.4</span> Otras Consideraciones para un Presupuesto de Datos</h2>
+<p>Al decidir cómo gastar los datos disponibles, tenga en cuenta algunas cosas más. En primer lugar, es fundamental poner en cuarentena el conjunto de pruebas de cualquier actividad de construcción de modelos. Mientras lee este libro, observe qué datos están expuestos al modelo en un momento dado.</p>
 <div class="rmdwarning">
-<p>The problem of <em>information leakage</em> occurs when data outside of the training set are used in the modeling process.</p>
+<p>El problema de la <em>fuga de información</em> ocurre cuando en el proceso de modelado se utilizan datos fuera del conjunto de entrenamiento.</p>
 </div>
-<p>For example, in a machine learning competition, the test set data might be provided without the true outcome values so that the model can be scored and ranked. One potential method for improving the score might be to fit the model using the training set points that are most similar to the test set values. While the test set isn’t directly used to fit the model, it still has a heavy influence. In general, this technique is highly problematic since it reduces the <em>generalization error</em> of the model to optimize performance on a specific data set. There are more subtle ways that the test set data can be used during training. Keeping the training data in a separate data frame from the test set is one small check to make sure that information leakage does not occur by accident.</p>
-<p>Second, techniques to subsample the training set can mitigate specific issues (e.g., class imbalances). This is a valid and common technique that deliberately results in the training set data diverging from the population from which the data were drawn. It is critical that the test set continues to mirror what the model would encounter in the wild. In other words, the test set should always resemble new data that will be given to the model.</p>
-<p>Next, at the beginning of this chapter, we warned about using the same data for different tasks. <a href="#sec-resampling">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-resampling</span></a> will discuss solid, data-driven methodologies for data usage that will reduce the risks related to bias, overfitting, and other issues. Many of these methods apply the data-splitting tools introduced in this chapter.</p>
-<p>Finally, the considerations in this chapter apply to developing and choosing a reliable model, the main topic of this book. When training a final chosen model for production, after ascertaining the expected performance on new data, practitioners often use all available data for better parameter estimation.</p>
+<p>Por ejemplo, en una competencia de aprendizaje automático, los datos del conjunto de pruebas podrían proporcionarse sin los valores reales de los resultados para que el modelo pueda calificarse y clasificarse. Un método potencial para mejorar la puntuación podría ser ajustar el modelo utilizando los puntos de ajuste de entrenamiento que sean más similares a los valores del conjunto de prueba. Si bien el conjunto de prueba no se utiliza directamente para ajustar el modelo, aún tiene una gran influencia. En general, esta técnica es muy problemática ya que reduce el <em>error de generalización</em> del modelo para optimizar el rendimiento en un conjunto de datos específico. Hay formas más sutiles de utilizar los datos del conjunto de prueba durante el entrenamiento. Mantener los datos de entrenamiento en un marco de datos separado del conjunto de prueba es una pequeña verificación para garantizar que la fuga de información no se produzca por accidente.</p>
+<p>En segundo lugar, las técnicas para submuestrear el conjunto de capacitación pueden mitigar problemas específicos (por ejemplo, desequilibrios de clases). Esta es una técnica válida y común que deliberadamente da como resultado que los datos del conjunto de entrenamiento diverjan de la población de la que se extrajeron los datos. Es fundamental que el conjunto de prueba siga reflejando lo que el modelo encontraría en la naturaleza. En otras palabras, el conjunto de prueba siempre debe parecerse a los datos nuevos que se proporcionarán al modelo.</p>
+<p>A continuación, al comienzo de este capítulo, advertimos sobre el uso de los mismos datos para diferentes tareas. El <a href="10-resampling.html">Capítulo&nbsp;<span>10</span></a> discutirá metodologías sólidas basadas en datos para el uso de datos que reducirán los riesgos relacionados con el sesgo, el sobreajuste y otros problemas. Muchos de estos métodos aplican las herramientas de división de datos presentadas en este capítulo.</p>
+<p>Finalmente, las consideraciones de este capítulo se aplican al desarrollo y elección de un modelo confiable, el tema principal de este libro. Al entrenar un modelo elegido final para producción, después de determinar el rendimiento esperado con nuevos datos, los profesionales suelen utilizar todos los datos disponibles para una mejor estimación de los parámetros.</p>
 </section><section id="sec-splitting-summary" class="level2" data-number="5.5"><h2 data-number="5.5" class="anchored" data-anchor-id="sec-splitting-summary">
-<span class="header-section-number">5.5</span> Chapter Summary</h2>
-<p>Data splitting is the fundamental strategy for empirical validation of models. Even in the era of unrestrained data collection, a typical modeling project has a limited amount of appropriate data, and wise spending of a project’s data is necessary. In this chapter, we discussed several strategies for partitioning the data into distinct groups for modeling and evaluation.</p>
-<p>At this checkpoint, the important code snippets for preparing and splitting are:</p>
-<div class="cell" data-layout-align="center">
+<span class="header-section-number">5.5</span> Resumen del capítulo</h2>
+<p>La división de datos es la estrategia fundamental para la validación empírica de modelos. Incluso en la era de la recopilación de datos desenfrenada, un proyecto de modelado típico tiene una cantidad limitada de datos apropiados, y es necesario gastar sabiamente los datos de un proyecto. En este capítulo, analizamos varias estrategias para dividir los datos en distintos grupos para modelado y evaluación.</p>
+<p>En este punto de control, los fragmentos de código importantes para preparar y dividir son:</p>
+<div class="cell" data-layout-align="center" data-hash="05-data-spending_cache/html/splitting-summary_b1627c114e89f2254a0d69262bbe6d5a">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
 <span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="va">ames</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span>
@@ -500,23 +513,89 @@ div.csl-indent {
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">502</span><span class="op">)</span></span>
 <span><span class="va">ames_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">ames</span>, prop <span class="op">=</span> <span class="fl">0.80</span>, strata <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span></span>
 <span><span class="va">ames_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
-<span><span class="va">ames_test</span>  <span class="op">&lt;-</span>  <span class="fu">testing</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">ames_test</span>  <span class="op">&lt;-</span>  <span class="fu">testing</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-spicer2018" class="csl-entry" role="listitem">
-Johnson, D, P Eckart, N Alsamadisi, H Noble, C Martin, and R Spicer. 2018. <span>“Polar Auxin Transport Is Implicated in Vessel Differentiation and Spatial Patterning During Secondary Growth in Populus.”</span> <em>American Journal of Botany</em> 105 (2): 186–96.
+Johnson, D, P Eckart, N Alsamadisi, H Noble, C Martin, y R Spicer. 2018. <span>«Polar auxin transport is implicated in vessel differentiation and spatial patterning during secondary growth in Populus»</span>. <em>American Journal of Botany</em> 105 (2): 186-96.
 </div>
 <div id="ref-fes" class="csl-entry" role="listitem">
-Kuhn, M, and K Johnson. 2020. <em>Feature Engineering and Selection: A Practical Approach for Predictive Models</em>. CRC Press.
+Kuhn, M, y K Johnson. 2020. <em>Feature engineering and selection: A practical approach for predictive models</em>. CRC Press.
 </div>
 </div>
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
-<li id="fn1"><p>This is discussed in much greater detail in <a href="#sec-overfitting-bad"><span class="quarto-unresolved-ref">sec-overfitting-bad</span></a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>This interface is available as of rsample version 1.2.0 (circa September 2023).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<li id="fn1"><p>Esta interfaz está disponible a partir de la versión 1.2.0 de rsample (alrededor de septiembre de 2023).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -570,12 +649,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copiado");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copiado");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
@@ -750,7 +829,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./04-ames.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Ames Housing Data</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
