@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 7&nbsp; A Model Workflow</title>
+<title>Modelado Ordenado con R - 7&nbsp; Un Flujo de Modelado</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -55,7 +55,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -80,16 +79,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "type": "textbox",
   "limit": 20,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
   }
 }</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
@@ -99,11 +98,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">MODELING BASICS</a></li><li class="breadcrumb-item"><a href="./07-the-model-workflow.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A Model Workflow</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./07-the-model-workflow.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo de Modelado</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -115,8 +114,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/davidrsch/TMwRes" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
   </div>
@@ -126,7 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
+        <div id="quarto-search" class="" title="Buscar"></div>
         </div>
         </div>
     <div class="sidebar-menu-container"> 
@@ -134,14 +147,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Hello World</span></a>
+ <span class="menu-text">Hola Mundo</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">INTRODUCTION</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -149,19 +162,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software for modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software para modelar</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A Tidyverse Primer</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una introducción tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Review of R Modeling Fundamentals</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span></a>
   </div>
 </li>
       </ul>
@@ -169,8 +182,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">MODELING BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -178,25 +191,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Ames Housing Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spending our Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fitting Models with parsnip</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A Model Workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo de Modelado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -217,7 +230,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
  <span class="menu-text">TOOLS FOR CREATING EFFECTIVE MODELS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -264,7 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
  <span class="menu-text">BEYOND THE BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -310,8 +323,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -335,27 +348,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-<li><a href="#sec-begin-model-end" id="toc-sec-begin-model-end" class="nav-link active" data-scroll-target="#sec-begin-model-end"><span class="header-section-number">7.1</span> Where Does the Model Begin and End?</a></li>
-  <li><a href="#workflow-basics" id="toc-workflow-basics" class="nav-link" data-scroll-target="#workflow-basics"><span class="header-section-number">7.2</span> Workflow Basics</a></li>
-  <li><a href="#adding-raw-variables-to-the-workflow" id="toc-adding-raw-variables-to-the-workflow" class="nav-link" data-scroll-target="#adding-raw-variables-to-the-workflow"><span class="header-section-number">7.3</span> Adding Raw Variables to the <code>workflow()</code></a></li>
+<li><a href="#sec-begin-model-end" id="toc-sec-begin-model-end" class="nav-link active" data-scroll-target="#sec-begin-model-end"><span class="header-section-number">7.1</span> ¿Dónde Comienza y Termina el Modelo?</a></li>
+  <li><a href="#conceptos-b%C3%A1sicos-del-flujo-de-trabajo" id="toc-conceptos-básicos-del-flujo-de-trabajo" class="nav-link" data-scroll-target="#conceptos-b%C3%A1sicos-del-flujo-de-trabajo"><span class="header-section-number">7.2</span> Conceptos Básicos del Flujo de Trabajo</a></li>
+  <li><a href="#agregar-variables-sin-procesar-al-workflow" id="toc-agregar-variables-sin-procesar-al-workflow" class="nav-link" data-scroll-target="#agregar-variables-sin-procesar-al-workflow"><span class="header-section-number">7.3</span> Agregar Variables sin Procesar al <code>workflow()</code></a></li>
   <li>
-<a href="#how-does-a-workflow-use-the-formula-sec-workflow-encoding" id="toc-how-does-a-workflow-use-the-formula-sec-workflow-encoding" class="nav-link" data-scroll-target="#how-does-a-workflow-use-the-formula-sec-workflow-encoding"><span class="header-section-number">7.4</span> How Does a <code>workflow()</code> Use the Formula? {sec-#workflow-encoding}</a>
+<a href="#sec-workflow-encoding" id="toc-sec-workflow-encoding" class="nav-link" data-scroll-target="#sec-workflow-encoding"><span class="header-section-number">7.4</span> ¿Cómo Utiliza un <code>workflow()</code> la Fórmula?</a>
   <ul class="collapse">
-<li><a href="#tree-based-models" id="toc-tree-based-models" class="nav-link" data-scroll-target="#tree-based-models">Tree-based models</a></li>
-  <li><a href="#sec-special-model-formulas" id="toc-sec-special-model-formulas" class="nav-link" data-scroll-target="#sec-special-model-formulas"><span class="header-section-number">7.4.1</span> Special formulas and inline functions</a></li>
+<li><a href="#modelos-basados-en-%C3%A1rboles" id="toc-modelos-basados-en-árboles" class="nav-link" data-scroll-target="#modelos-basados-en-%C3%A1rboles">Modelos basados en árboles</a></li>
+  <li><a href="#sec-special-model-formulas" id="toc-sec-special-model-formulas" class="nav-link" data-scroll-target="#sec-special-model-formulas"><span class="header-section-number">7.4.1</span> Fórmulas especiales y funciones en línea.</a></li>
   </ul>
 </li>
-  <li><a href="#sec-workflow-sets-intro" id="toc-sec-workflow-sets-intro" class="nav-link" data-scroll-target="#sec-workflow-sets-intro"><span class="header-section-number">7.5</span> Creating Multiple Workflows at Once</a></li>
-  <li><a href="#evaluating-the-test-set" id="toc-evaluating-the-test-set" class="nav-link" data-scroll-target="#evaluating-the-test-set"><span class="header-section-number">7.6</span> Evaluating the Test Set</a></li>
-  <li><a href="#sec-workflows-summary" id="toc-sec-workflows-summary" class="nav-link" data-scroll-target="#sec-workflows-summary"><span class="header-section-number">7.7</span> Chapter Summary</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/07-the-model-workflow.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  <li><a href="#sec-workflow-sets-intro" id="toc-sec-workflow-sets-intro" class="nav-link" data-scroll-target="#sec-workflow-sets-intro"><span class="header-section-number">7.5</span> Crear Múltiples Flujos de Trabajo a la vez</a></li>
+  <li><a href="#evaluaci%C3%B3n-del-conjunto-de-prueba" id="toc-evaluación-del-conjunto-de-prueba" class="nav-link" data-scroll-target="#evaluaci%C3%B3n-del-conjunto-de-prueba"><span class="header-section-number">7.6</span> Evaluación del Conjunto de Prueba</a></li>
+  <li><a href="#sec-workflows-summary" id="toc-sec-workflows-summary" class="nav-link" data-scroll-target="#sec-workflows-summary"><span class="header-section-number">7.7</span> Resumen del capítulo</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-workflows" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A Model Workflow</span></span></h1>
+<h1 class="title"><span id="sec-workflows" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo de Modelado</span></span></h1>
 </div>
 
 
@@ -368,61 +381,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
-</header><p>In the previous chapter, we discussed the <span class="pkg">parsnip</span> package, which can be used to define and fit the model. This chapter introduces a new concept called a <em>model workflow</em>. The purpose of this concept (and the corresponding tidymodels <code>workflow()</code> object) is to encapsulate the major pieces of the modeling process (discussed in <a href="#sec-model-phases"><span class="quarto-unresolved-ref">sec-model-phases</span></a>). The workflow is important in two ways. First, using a workflow concept encourages good methodology since it is a single point of entry to the estimation components of a data analysis. Second, it enables the user to better organize projects. These two points are discussed in the following sections.</p>
+</header><p>En el capítulo anterior, analizamos el paquete <span class="pkg">parsnip</span>, que se puede utilizar para definir y ajustar el modelo. Este capítulo presenta un nuevo concepto llamado <em>flujo de modelado</em>. El propósito de este concepto (y el objeto tidymodels <code>workflow()</code> correspondiente) es encapsular las partes principales del proceso de modelado (discutido en <a href="01-software-modeling.html#sec-model-phases"><span>Sección&nbsp;1.5</span></a>). El flujo de trabajo es importante en dos sentidos. En primer lugar, utilizar un concepto de flujo de trabajo fomenta una buena metodología, ya que es un punto de entrada único a los componentes de estimación de un análisis de datos. En segundo lugar, permite al usuario organizar mejor los proyectos. Estos dos puntos se analizan en las siguientes secciones.</p>
 <section id="sec-begin-model-end" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="sec-begin-model-end">
-<span class="header-section-number">7.1</span> Where Does the Model Begin and End?</h2>
-<p>So far, when we have used the term “the model,” we have meant a structural equation that relates some predictors to one or more outcomes. Let’s consider again linear regression as an example. The outcome data are denoted as <span class="math inline">\(y_i\)</span>, where there are <span class="math inline">\(i = 1 \ldots n\)</span> samples in the training set. Suppose that there are <span class="math inline">\(p\)</span> predictors <span class="math inline">\(x_{i1}, \ldots, x_{ip}\)</span> that are used in the model. Linear regression produces a model equation of</p>
+<span class="header-section-number">7.1</span> ¿Dónde Comienza y Termina el Modelo?</h2>
+<p>Hasta ahora, cuando hemos utilizado el término “el modelo”, nos referimos a una ecuación estructural que relaciona algunos predictores con uno o más resultados. Consideremos nuevamente la regresión lineal como ejemplo. Los datos de resultado se indican como <span class="math inline">\(y_i\)</span>, donde hay <span class="math inline">\(i = 1 \ldots n\)</span> muestras en el conjunto de entrenamiento. Supongamos que hay <span class="math inline">\(p\)</span> predictores <span class="math inline">\(x_{i1}, \ldots, x_{ip}\)</span> que se utilizan en el modelo. La regresión lineal produce una ecuación modelo de</p>
 <p><span class="math display">\[ \hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1x_{i1} + \ldots + \hat{\beta}_px_{ip} \]</span></p>
-<p>While this is a linear model, it is linear only in the parameters. The predictors could be nonlinear terms (such as the <span class="math inline">\(\log(x_i)\)</span>).</p>
+<p>Si bien este es un modelo lineal, es lineal sólo en los parámetros. Los predictores podrían ser términos no lineales (como el <span class="math inline">\(\log(x_i)\)</span>).</p>
 <div class="rmdwarning">
-<p>The conventional way of thinking about the modeling process is that it only includes the model fit.</p>
+<p>La forma convencional de pensar sobre el proceso de modelado es que sólo incluye el ajuste del modelo.</p>
 </div>
-<p>For some straightforward data sets, fitting the model itself may be the entire process. However, a variety of choices and additional steps often occur before the model is fit:</p>
+<p>Para algunos conjuntos de datos sencillos, ajustar el modelo en sí puede ser todo el proceso. Sin embargo, a menudo se presentan una variedad de opciones y pasos adicionales antes de que el modelo se ajuste:</p>
 <ul>
-<li>While our example model has <span class="math inline">\(p\)</span> predictors, it is common to start with more than <span class="math inline">\(p\)</span> candidate predictors. Through exploratory data analysis or using domain knowledge, some of the predictors may be excluded from the analysis. In other cases, a feature selection algorithm may be used to make a data-driven choice for the minimum predictor set for the model.</li>
-<li>There are times when the value of an important predictor is missing. Rather than eliminating this sample from the data set, the missing value could be imputed using other values in the data. For example, if <span class="math inline">\(x_1\)</span> were missing but was correlated with predictors <span class="math inline">\(x_2\)</span> and <span class="math inline">\(x_3\)</span>, an imputation method could estimate the missing <span class="math inline">\(x_1\)</span> observation from the values of <span class="math inline">\(x_2\)</span> and <span class="math inline">\(x_3\)</span>.</li>
-<li>It may be beneficial to transform the scale of a predictor. If there is not <em>a priori</em> information on what the new scale should be, we can estimate the proper scale using a statistical transformation technique, the existing data, and some optimization criterion. Other transformations, such as PCA, take groups of predictors and transform them into new features that are used as the predictors.</li>
+<li>Si bien nuestro modelo de ejemplo tiene predictores <span class="math inline">\(p\)</span>, es común comenzar con más predictores candidatos <span class="math inline">\(p\)</span>. Mediante un análisis de datos exploratorio o utilizando el conocimiento del dominio, algunos de los predictores pueden excluirse del análisis. En otros casos, se puede utilizar un algoritmo de selección de características para realizar una elección basada en datos para el conjunto de predictores mínimo para el modelo.</li>
+<li>Hay ocasiones en las que falta el valor de un predictor importante. En lugar de eliminar esta muestra del conjunto de datos, el valor faltante podría imputarse utilizando otros valores de los datos. Por ejemplo, si faltara <span class="math inline">\(x_1\)</span> pero estuviera correlacionado con los predictores <span class="math inline">\(x_2\)</span> y <span class="math inline">\(x_3\)</span>, un método de imputación podría estimar la observación faltante de <span class="math inline">\(x_1\)</span> a partir de los valores de <span class="math inline">\(x_2\)</span> y <span class="math inline">\(x_3\)</span>.</li>
+<li>Puede resultar beneficioso transformar la escala de un predictor. Si no hay información <em>a priori</em> sobre cuál debería ser la nueva escala, podemos estimar la escala adecuada utilizando una técnica de transformación estadística, los datos existentes y algún criterio de optimización. Otras transformaciones, como PCA, toman grupos de predictores y los transforman en nuevas características que se utilizan como predictores.</li>
 </ul>
-<p>While these examples are related to steps that occur before the model fit, there may also be operations that occur after the model is created. When a classification model is created where the outcome is binary (e.g., <code>event</code> and <code>non-event</code>), it is customary to use a 50% probability cutoff to create a discrete class prediction, also known as a hard prediction. For example, a classification model might estimate that the probability of an event was 62%. Using the typical default, the hard prediction would be <code>event</code>. However, the model may need to be more focused on reducing false positive results (i.e., where true nonevents are classified as events). One way to do this is to raise the cutoff from 50% to some greater value. This increases the level of evidence required to call a new sample an event. While this reduces the true positive rate (which is bad), it may have a more dramatic effect on reducing false positives. The choice of the cutoff value should be optimized using data. This is an example of a post-processing step that has a significant effect on how well the model works, even though it is not contained in the model fitting step.</p>
-<p>It is important to focus on the broader <em>modeling process</em>, instead of only fitting the specific model used to estimate parameters. This broader process includes any preprocessing steps, the model fit itself, as well as potential post-processing activities. In this book, we will refer to this more comprehensive concept as the <em>model workflow</em> and highlight how to handle all its components to produce a final model equation.</p>
+<p>Si bien estos ejemplos están relacionados con pasos que ocurren antes de que el modelo se ajuste, también puede haber operaciones que ocurren después de que se crea el modelo. Cuando se crea un modelo de clasificación donde el resultado es binario (por ejemplo, “evento” y “no evento”), se acostumbra utilizar un límite de probabilidad del 50% para crear una predicción de clase discreta, también conocida como predicción dura. Por ejemplo, un modelo de clasificación podría estimar que la probabilidad de un evento era del 62%. Usando el valor predeterminado típico, la predicción difícil sería “evento”. Sin embargo, es posible que el modelo deba centrarse más en reducir los resultados falsos positivos (es decir, donde los verdaderos no eventos se clasifican como eventos). Una forma de hacerlo es elevar el límite del 50% a un valor mayor. Esto aumenta el nivel de evidencia requerido para llamar evento a una nueva muestra. Si bien esto reduce la tasa de verdaderos positivos (lo cual es malo), puede tener un efecto más dramático en la reducción de falsos positivos. La elección del valor de corte debe optimizarse utilizando datos. Este es un ejemplo de un paso de posprocesamiento que tiene un efecto significativo en el funcionamiento del modelo, aunque no esté incluido en el paso de ajuste del modelo.</p>
+<p>Es importante centrarse en el <em>proceso de modelado</em> más amplio, en lugar de ajustar únicamente el modelo específico utilizado para estimar los parámetros. Este proceso más amplio incluye cualquier paso de preprocesamiento, el ajuste del modelo en sí mismo, así como posibles actividades de posprocesamiento. En este libro, nos referiremos a este concepto más completo como <em>flujo de modelado</em> y resaltaremos cómo manejar todos sus componentes para producir una ecuación de modelo final.</p>
 <div class="rmdnote">
-<p>In other software, such as Python or Spark, similar collections of steps are called <em>pipelines</em>. In tidymodels, the term “pipeline” already connotes a sequence of operations chained together with a pipe operator (such as <code>%&gt;%</code> from <span class="pkg">magrittr</span> or the newer native <code>|&gt;</code>). Rather than using ambiguous terminology in this context, we call the sequence of computational operations related to modeling <em>workflows</em>.</p>
+<p>En otro software, como Python o Spark, colecciones similares de pasos se denominan <em>pipelines</em>. En tidymodels, el término “pipeline” ya connota una secuencia de operaciones encadenadas con un operador de pipe (como <code>%&gt;%</code> de <span class="pkg">magrittr</span> o el nativo más nuevo <code>|&gt;</code>). En lugar de utilizar terminología ambigua en este contexto, llamamos a la secuencia de operaciones computacionales relacionadas con el modelado <em>flujos de trabajo</em>.</p>
 </div>
-<p>Binding together the analytical components of data analysis is important for another reason. Future chapters will demonstrate how to accurately measure performance, as well as how to optimize structural parameters (i.e., model tuning). To correctly quantify model performance on the training set, <a href="#sec-resampling">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-resampling</span></a> advocates using resampling methods. To do this properly, no data-driven parts of the analysis should be excluded from validation. To this end, the workflow must include all significant estimation steps.</p>
-<p>To illustrate, consider principal component analysis (PCA) signal extraction. We’ll talk about this more in <a href="#sec-example-steps"><span class="quarto-unresolved-ref">sec-example-steps</span></a> as well as <a href="#sec-dimensionality">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-dimensionality</span></a>; PCA is a way to replace correlated predictors with new artificial features that are uncorrelated and capture most of the information in the original set. The new features could be used as the predictors, and least squares regression could be used to estimate the model parameters.</p>
-<p>There are two ways of thinking about the model workflow. <a href="#fig-bad-workflow">Figure&nbsp;<span class="quarto-unresolved-ref">fig-bad-workflow</span></a> illustrates the <em>incorrect</em> method: to think of the PCA preprocessing step, as <em>not being part of the modeling workflow</em>.</p>
-<div class="cell" data-layout-align="center">
+<p>Unir los componentes analíticos del análisis de datos es importante por otra razón. Los capítulos futuros demostrarán cómo medir con precisión el rendimiento, así como también cómo optimizar los parámetros estructurales (es decir, ajuste del modelo). Para cuantificar correctamente el rendimiento del modelo en el conjunto de entrenamiento, [Capítulo @ sec-resampling] recomienda el uso de métodos de remuestreo. Para hacer esto correctamente, no se debe excluir de la validación ninguna parte del análisis basada en datos. Para ello, el flujo de trabajo debe incluir todos los pasos de estimación importantes.</p>
+<p>A modo de ejemplo, considere la extracción de señales del análisis de componentes principales (PCA). Hablaremos más sobre esto en <a href="08-feature-engineering.html#sec-example-steps"><span>Sección&nbsp;8.4</span></a> y en el <a href="16-dimensionality-reduction.html">Capítulo&nbsp;<span>16</span></a>; PCA es una forma de reemplazar predictores correlacionados con nuevas características artificiales que no están correlacionadas y capturan la mayor parte de la información del conjunto original. Las nuevas características podrían usarse como predictores y la regresión de mínimos cuadrados podría usarse para estimar los parámetros del modelo.</p>
+<p>Hay dos formas de pensar sobre el flujo de trabajo del modelo. <a href="#fig-bad-workflow">Figura&nbsp;<span>7.1</span></a> ilustra el método <em>incorrecto</em>: pensar que el paso de preprocesamiento de PCA <em>no forma parte del flujo de trabajo de modelado</em>.</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/fig-bad-workflow_bbba6c1b8b2e2862ef1790770c3dc1a8">
 <div class="cell-output-display">
 <div id="fig-bad-workflow" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="premade/bad-workflow.svg" class="img-fluid figure-img" style="width:80.0%" alt="An incorrect mental model of where model estimation occurs in the data analysis process. The data and predictor set are substrates for an initial preprocessing step using PCA. These data are passed to the model fitting algorithm to produce a fitted model. The figure indicates that the model workflow only includes the model fitting process. This implies that the model fit is the only place where estimation occurs."></p>
-<figcaption class="figure-caption">Figure&nbsp;7.1: Incorrect mental model of where model estimation occurs in the data analysis process</figcaption></figure>
+<figure class="figure"><p><img src="premade/bad-workflow.svg" class="img-fluid figure-img" style="width:80.0%" alt="Un modelo mental incorrecto de dónde ocurre la estimación del modelo en el proceso de análisis de datos. Los datos y el conjunto de predictores son sustratos para un paso de preprocesamiento inicial utilizando PCA. Estos datos se pasan al algoritmo de ajuste del modelo para producir un modelo ajustado. La figura indica que el flujo de trabajo del modelo solo incluye el proceso de ajuste del modelo. Esto implica que el ajuste del modelo es el único lugar donde se produce la estimación."></p>
+<figcaption class="figure-caption">Figura&nbsp;7.1: Modelo mental incorrecto de dónde ocurre la estimación del modelo en el proceso de análisis de datos</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The fallacy here is that, although PCA does significant computations to produce the components, its operations are assumed to have no uncertainty associated with them. The PCA components are treated as <em>known</em> and, if not included in the model workflow, the effect of PCA could not be adequately measured.</p>
-<p><a href="#fig-good-workflow">Figure&nbsp;<span class="quarto-unresolved-ref">fig-good-workflow</span></a> shows an <em>appropriate</em> approach.</p>
-<div class="cell" data-layout-align="center">
+<p>La falacia aquí es que, aunque PCA realiza cálculos importantes para producir los componentes, se supone que sus operaciones no tienen incertidumbre asociada con ellos. Los componentes de PCA se tratan como <em>conocidos</em> y, si no se incluyen en el flujo de trabajo del modelo, el efecto de PCA no se podría medir adecuadamente.</p>
+<p><a href="#fig-good-workflow">Figura&nbsp;<span>7.2</span></a> muestra un enfoque <em>apropiado</em>.</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/fig-good-workflow_d44fa432b0d75f2b5599e760d7b116ed">
 <div class="cell-output-display">
 <div id="fig-good-workflow" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="premade/proper-workflow.svg" class="img-fluid figure-img" style="width:80.0%" alt="A correct mental model of where model estimation occurs in the data analysis process. The data and predictor set are substrates for an initial preprocessing step using PCA. These data are passed to the model fitting algorithm to produce a fitted model. The figure indicates that the model workflow includes the model fitting process and the PCA step. This implies that both operations should be considered estimation steps."></p>
-<figcaption class="figure-caption">Figure&nbsp;7.2: Correct mental model of where model estimation occurs in the data analysis process</figcaption></figure>
+<figure class="figure"><p><img src="premade/proper-workflow.svg" class="img-fluid figure-img" style="width:80.0%" alt="Un modelo mental correcto de dónde ocurre la estimación del modelo en el proceso de análisis de datos. Los datos y el conjunto de predictores son sustratos para un paso de preprocesamiento inicial utilizando PCA. Estos datos se pasan al algoritmo de ajuste del modelo para producir un modelo ajustado. La figura indica que el flujo de trabajo del modelo incluye el proceso de ajuste del modelo y el paso PCA. Esto implica que ambas operaciones deben considerarse pasos de estimación."></p>
+<figcaption class="figure-caption">Figura&nbsp;7.2: Modelo mental correcto de dónde ocurre la estimación del modelo en el proceso de análisis de datos.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>In this way, the PCA preprocessing is considered part of the modeling process.</p>
-</section><section id="workflow-basics" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="workflow-basics">
-<span class="header-section-number">7.2</span> Workflow Basics</h2>
-<p>The <span class="pkg">workflows</span> package allows the user to bind modeling and preprocessing objects together. Let’s start again with the Ames data and a simple linear model:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>  <span class="co"># Includes the workflows package</span></span>
+<p>De esta forma, el preprocesamiento PCA se considera parte del proceso de modelado.</p>
+</section><section id="conceptos-básicos-del-flujo-de-trabajo" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="conceptos-básicos-del-flujo-de-trabajo">
+<span class="header-section-number">7.2</span> Conceptos Básicos del Flujo de Trabajo</h2>
+<p>El paquete <span class="pkg">workflows</span> permite al usuario vincular objetos de modelado y preprocesamiento. Empecemos de nuevo con los datos de Ames y un modelo lineal simple:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-simple_dc9c662766a6046b9011c78a422aee61">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>  <span class="co"># Incluye el paquete de flujos de trabajo.</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">lm_model</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>A workflow always requires a <span class="pkg">parsnip</span> model object:</p>
-<div class="cell" data-layout-align="center">
+<p>Un flujo de trabajo siempre requiere un objeto modelo <span class="pkg">parsnip</span>:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-model-only_3377624690cf1684a0c38b6eded79866">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_wflow</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">lm_model</span><span class="op">)</span></span>
@@ -435,11 +448,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">## Linear Regression Model Specification (regression)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Computational engine: lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Notice that we have not yet specified how this workflow should preprocess the data: <code>Preprocessor: None</code>.</p>
-<p>If our model is very simple, a standard R formula can be used as a preprocessor:</p>
-<div class="cell" data-layout-align="center">
+<p>Tenga en cuenta que aún no hemos especificado cómo este flujo de trabajo debe preprocesar los datos: <code>Preprocessor: None</code>.</p>
+<p>Si nuestro modelo es muy simple, se puede utilizar una fórmula R estándar como preprocesador:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-form_d8230d131f1f26b8249b5a42d658f5b9">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_wflow</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">lm_wflow</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">add_formula</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span><span class="op">)</span></span>
@@ -455,10 +468,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">## Linear Regression Model Specification (regression)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Computational engine: lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Workflows have a <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> method that can be used to create the model. Using the objects created in <a href="#sec-models-summary"><span class="quarto-unresolved-ref">sec-models-summary</span></a>:</p>
-<div class="cell" data-layout-align="center">
+<p>Los flujos de trabajo tienen un método <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> que se puede utilizar para crear el modelo. Usando los objetos creados en <a href="06-fitting-models.html#sec-models-summary"><span>Sección&nbsp;6.6</span></a>:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-form-fit_02e667c3dd977e006cad300867b3db8b">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_fit</span> <span class="op">&lt;-</span> <span class="fu">fit</span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_train</span><span class="op">)</span></span>
 <span><span class="va">lm_fit</span></span>
 <span><span class="co">## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════</span></span>
@@ -475,21 +488,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
 <span><span class="co">## (Intercept)    Longitude     Latitude  </span></span>
-<span><span class="co">##     -302.97        -2.07         2.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##     -302.97        -2.07         2.71</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can also <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> on the fitted workflow:</p>
-<div class="cell" data-layout-align="center">
+<p>También podemos <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> en el flujo de trabajo ajustado:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-form-pred_a8aba96da2edb42f9ca03386a4910116">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_fit</span>, <span class="va">ames_test</span> <span class="op">%&gt;%</span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 3 × 1</span></span>
 <span><span class="co">##   .pred</span></span>
 <span><span class="co">##   &lt;dbl&gt;</span></span>
 <span><span class="co">## 1  5.22</span></span>
 <span><span class="co">## 2  5.21</span></span>
-<span><span class="co">## 3  5.28</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 3  5.28</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> method follows all of the same rules and naming conventions that we described for the <span class="pkg">parsnip</span> package in <a href="#sec-parsnip-predictions"><span class="quarto-unresolved-ref">sec-parsnip-predictions</span></a>.</p>
-<p>Both the model and preprocessor can be removed or updated:</p>
-<div class="cell" data-layout-align="center">
+<p>El método <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> sigue las mismas reglas y convenciones de nomenclatura que describimos para el paquete <span class="pkg">parsnip</span> en <a href="06-fitting-models.html#sec-parsnip-predictions"><span>Sección&nbsp;6.3</span></a>.</p>
+<p>Tanto el modelo como el preprocesador se pueden eliminar o actualizar:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-form-update_54f76802bd71ec872e191eab3462451e">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_fit</span> <span class="op">%&gt;%</span> <span class="fu">update_formula</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span><span class="op">)</span></span>
 <span><span class="co">## ══ Workflow ═════════════════════════════════════════════════════════════════════════</span></span>
 <span><span class="co">## Preprocessor: Formula</span></span>
@@ -501,14 +514,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">## Linear Regression Model Specification (regression)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Computational engine: lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Note that, in this new object, the output shows that the previous fitted model was removed since the new formula is inconsistent with the previous model fit.</p>
-</section><section id="adding-raw-variables-to-the-workflow" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="adding-raw-variables-to-the-workflow">
-<span class="header-section-number">7.3</span> Adding Raw Variables to the <code>workflow()</code>
+<p>Tenga en cuenta que, en este nuevo objeto, el resultado muestra que el modelo ajustado anterior se eliminó ya que la nueva fórmula es inconsistente con el ajuste del modelo anterior.</p>
+</section><section id="agregar-variables-sin-procesar-al-workflow" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="agregar-variables-sin-procesar-al-workflow">
+<span class="header-section-number">7.3</span> Agregar Variables sin Procesar al <code>workflow()</code>
 </h2>
-<p>There is another interface for passing data to the model, the <code>add_variables()</code> function, which uses a <span class="pkg">dplyr</span>-like syntax for choosing variables. The function has two primary arguments: <code>outcomes</code> and <code>predictors</code>. These use a selection approach similar to the <span class="pkg">tidyselect</span> backend of <span class="pkg">tidyverse</span> packages to capture multiple selectors using <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</p>
-<div class="cell" data-layout-align="center">
+<p>Hay otra interfaz para pasar datos al modelo, la función <code>add_variables()</code>, que usa una sintaxis similar a <span class="pkg">dplyr</span> para elegir variables. La función tiene dos argumentos principales: <code>outcomes</code> y <code>predictors</code>. Estos utilizan un enfoque de selección similar al backend <span class="pkg">tidyselect</span> de los paquetes <span class="pkg">tidyverse</span> para capturar múltiples selectores usando <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-add-variables_ab82d17da791423fb0d6a3b389c62dd2">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_wflow</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">lm_wflow</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">remove_formula</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
@@ -525,18 +538,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">## Linear Regression Model Specification (regression)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Computational engine: lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The predictors could also have been specified using a more general selector, such as</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">predictors</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"tude"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Los predictores también podrían haberse especificado utilizando un selector más general, como</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-selector_88c1d33a58d8f7873ca6ddb1c27718a6">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">predictors</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"tude"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>One nicety is that any outcome columns accidentally specified in the predictors argument will be quietly removed. This facilitates the use of:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">predictors</span> <span class="op">=</span> <span class="fu">everything</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Una ventaja es que cualquier columna de resultados especificada accidentalmente en el argumento de los predictores se eliminará silenciosamente. Esto facilita el uso de:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-selector-all_b17a1ef32b2018c39c806c1b2f2e49d3">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">predictors</span> <span class="op">=</span> <span class="fu">everything</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>When the model is fit, the specification assembles these data, unaltered, into a data frame and passes it to the underlying function:</p>
-<div class="cell" data-layout-align="center">
+<p>Cuando el modelo se ajusta, la especificación reúne estos datos, sin modificar, en un marco de datos y los pasa a la función subyacente:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-add-variables-fit_716fc223b40cd484ca7234a61e8a8cf3">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fit</span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_train</span><span class="op">)</span></span>
 <span><span class="co">## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════</span></span>
 <span><span class="co">## Preprocessor: Variables</span></span>
@@ -553,31 +566,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
 <span><span class="co">## (Intercept)    Longitude     Latitude  </span></span>
-<span><span class="co">##     -302.97        -2.07         2.71</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##     -302.97        -2.07         2.71</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>If you would like the underlying modeling method to do what it would normally do with the data, <code>add_variables()</code> can be a helpful interface. As we will see in <a href="#sec-special-model-formulas"><span class="quarto-unresolved-ref">sec-special-model-formulas</span></a>, it also facilitates more complex modeling specifications. However, as we mention in the next section, models such as <code>glmnet</code> and <code>xgboost</code> expect the user to make indicator variables from factor predictors. In these cases, a recipe or formula interface will typically be a better choice.</p>
-<p>In the next chapter, we will look at a more powerful preprocessor (called a <em>recipe</em>) that can also be added to a workflow.</p>
-</section><section id="how-does-a-workflow-use-the-formula-sec-workflow-encoding" class="level2" data-number="7.4"><h2 data-number="7.4" class="anchored" data-anchor-id="how-does-a-workflow-use-the-formula-sec-workflow-encoding">
-<span class="header-section-number">7.4</span> How Does a <code>workflow()</code> Use the Formula? {sec-#workflow-encoding}</h2>
-<p>Recall from <a href="#sec-formula"><span class="quarto-unresolved-ref">sec-formula</span></a> that the formula method in R has multiple purposes (we will discuss this further in <a href="#sec-recipes">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-recipes</span></a>). One of these is to properly encode the original data into an analysis-ready format. This can involve executing inline transformations (e.g., <code>log(x)</code>), creating dummy variable columns, creating interactions or other column expansions, and so on. However, many statistical methods require different types of encodings:</p>
+<p>Si desea que el método de modelado subyacente haga lo que normalmente haría con los datos, <code>add_variables()</code> puede ser una interfaz útil. Como veremos en <a href="#sec-special-model-formulas"><span>Sección&nbsp;7.4.1</span></a>, también facilita especificaciones de modelado más complejas. Sin embargo, como mencionamos en la siguiente sección, modelos como <code>glmnet</code> y <code>xgboost</code> esperan que el usuario cree variables indicadoras a partir de predictores de factores. En estos casos, una interfaz de receta o fórmula suele ser una mejor opción.</p>
+<p>En el próximo capítulo, veremos un preprocesador más potente (llamado <em>recipe</em>) que también se puede agregar a un flujo de trabajo.</p>
+</section><section id="sec-workflow-encoding" class="level2" data-number="7.4"><h2 data-number="7.4" class="anchored" data-anchor-id="sec-workflow-encoding">
+<span class="header-section-number">7.4</span> ¿Cómo Utiliza un <code>workflow()</code> la Fórmula?</h2>
+<p>Recuerde de <a href="03-base-r.html#sec-formula"><span>Sección&nbsp;3.2</span></a> que el método de fórmula en R tiene múltiples propósitos (lo discutiremos más a fondo en el <a href="08-feature-engineering.html">Capítulo&nbsp;<span>8</span></a>). Uno de ellos es codificar correctamente los datos originales en un formato listo para el análisis. Esto puede implicar la ejecución de transformaciones en línea (por ejemplo, <code>log(x)</code>), la creación de columnas de variables ficticias, la creación de interacciones u otras expansiones de columnas, etc. Sin embargo, muchos métodos estadísticos requieren diferentes tipos de codificaciones:</p>
 <ul>
-<li><p>Most packages for tree-based models use the formula interface but <em>do not</em> encode the categorical predictors as dummy variables.</p></li>
-<li><p>Packages can use special inline functions that tell the model function how to treat the predictor in the analysis. For example, in survival analysis models, a formula term such as <code>strata(site)</code> would indicate that the column <code>site</code> is a stratification variable. This means it should not be treated as a regular predictor and does not have a corresponding location parameter estimate in the model.</p></li>
-<li><p>A few R packages have extended the formula in ways that base R functions cannot parse or execute. In multilevel models (e.g., mixed models or hierarchical Bayesian models), a model term such as <code>(week | subject)</code> indicates that the column <code>week</code> is a random effect that has different slope parameter estimates for each value of the <code>subject</code> column.</p></li>
+<li><p>La mayoría de los paquetes para modelos basados en árboles utilizan la interfaz de fórmulas pero <em>no</em> codifican los predictores categóricos como variables ficticias.</p></li>
+<li><p>Los paquetes pueden utilizar funciones en línea especiales que le indican a la función del modelo cómo tratar el predictor en el análisis. Por ejemplo, en los modelos de análisis de supervivencia, un término de fórmula como <code>strata(site)</code> indicaría que la columna <code>site</code> es una variable de estratificación. Esto significa que no debe tratarse como un predictor regular y no tiene una estimación de parámetro de ubicación correspondiente en el modelo.</p></li>
+<li><p>Algunos paquetes de R han ampliado la fórmula de manera que las funciones básicas de R no pueden analizar ni ejecutar. En modelos multinivel (por ejemplo, modelos mixtos o modelos bayesianos jerárquicos), un término de modelo como <code>(semana | sujeto)</code> indica que la columna <code>semana</code> es un efecto aleatorio que tiene diferentes estimaciones de parámetros de pendiente para cada valor de la columna <code>sujeto</code>.</p></li>
 </ul>
-<p>A workflow is a general purpose interface. When <code>add_formula()</code> is used, how should the workflow preprocess the data? Since the preprocessing is model dependent, <span class="pkg">workflows</span> attempts to emulate what the underlying model would do whenever possible. If it is not possible, the formula processing should not do anything to the columns used in the formula. Let’s look at this in more detail.</p>
-<section id="tree-based-models" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="tree-based-models">Tree-based models</h3>
-<p>When we fit a tree to the data, the <span class="pkg">parsnip</span> package understands what the modeling function would do. For example, if a random forest model is fit using the <span class="pkg">ranger</span> or <span class="pkg">randomForest</span> packages, the workflow knows predictors columns that are factors should be left as is.</p>
-<p>As a counterexample, a boosted tree created with the <span class="pkg">xgboost</span> package requires the user to create dummy variables from factor predictors (since <code><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html">xgboost::xgb.train()</a></code> will not). This requirement is embedded into the model specification object and a workflow using <span class="pkg">xgboost</span> will create the indicator columns for this engine. Also note that a different engine for boosted trees, C5.0, does not require dummy variables so none are made by the workflow.</p>
-<p>This determination is made for each model and engine combination.</p>
+<p>Un flujo de trabajo es una interfaz de propósito general. Cuando se utiliza <code>add_formula()</code>, ¿cómo debería el flujo de trabajo preprocesar los datos? Dado que el preprocesamiento depende del modelo, <span class="pkg">workflows</span> intenta emular lo que haría el modelo subyacente siempre que sea posible. Si no es posible, el procesamiento de la fórmula no debe afectar las columnas utilizadas en la fórmula. Veamos esto con más detalle.</p>
+<section id="modelos-basados-en-árboles" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="modelos-basados-en-árboles">Modelos basados en árboles</h3>
+<p>Cuando ajustamos un árbol a los datos, el paquete <span class="pkg">parsnip</span> comprende lo que haría la función de modelado. Por ejemplo, si un modelo de bosque aleatorio se ajusta usando los paquetes <span class="pkg">ranger</span> o <span class="pkg">randomForest</span>, el flujo de trabajo sabe que las columnas de predictores que son factores deben dejarse como están.</p>
+<p>Como contraejemplo, un árbol potenciado creado con el paquete <span class="pkg">xgboost</span> requiere que el usuario cree variables ficticias a partir de predictores de factores (ya que <code><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html">xgboost::xgb.train()</a></code> no lo hará). Este requisito está integrado en el objeto de especificación del modelo y un flujo de trabajo que utiliza <span class="pkg">xgboost</span> creará las columnas indicadoras para este motor. También tenga en cuenta que un motor diferente para árboles potenciados, C5.0, no requiere variables ficticias, por lo que el flujo de trabajo no crea ninguna.</p>
+<p>Esta determinación se realiza para cada combinación de modelo y motor.</p>
 </section><section id="sec-special-model-formulas" class="level3" data-number="7.4.1"><h3 data-number="7.4.1" class="anchored" data-anchor-id="sec-special-model-formulas">
-<span class="header-section-number">7.4.1</span> Special formulas and inline functions</h3>
-<p>A number of multilevel models have standardized on a formula specification devised in the <span class="pkg">lme4</span> package. For example, to fit a regression model that has random effects for subjects, we would use the following formula:</p>
+<span class="header-section-number">7.4.1</span> Fórmulas especiales y funciones en línea.</h3>
+<p>Varios modelos multinivel se han estandarizado según una especificación de fórmula diseñada en el paquete <span class="pkg">lme4</span>. Por ejemplo, para ajustar un modelo de regresión que tenga efectos aleatorios para los sujetos, usaríamos la siguiente fórmula:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/">lme4</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span><span class="op">(</span><span class="va">distance</span> <span class="op">~</span> <span class="va">Sex</span> <span class="op">+</span> <span class="op">(</span><span class="va">age</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">Orthodont</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>The effect of this is that each subject will have an estimated intercept and slope parameter for <code>age</code>.</p>
-<p>The problem is that standard R methods can’t properly process this formula:</p>
-<div class="cell" data-layout-align="center">
+<span><span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span><span class="op">(</span><span class="va">distance</span> <span class="op">~</span> <span class="va">Sex</span> <span class="op">+</span> <span class="op">(</span><span class="va">age</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">Orthodont</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>El efecto de esto es que cada sujeto tendrá un parámetro estimado de intersección y pendiente para la “edad”.</p>
+<p>El problema es que los métodos estándar de R no pueden procesar adecuadamente esta fórmula:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-rand-mm_dfd942271beef622af3d8b68634633ed">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span><span class="op">(</span><span class="va">distance</span> <span class="op">~</span> <span class="va">Sex</span> <span class="op">+</span> <span class="op">(</span><span class="va">age</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">Orthodont</span><span class="op">)</span></span>
 <span><span class="co">## Warning in Ops.ordered(age, Subject): '|' is not meaningful for ordered factors</span></span>
 <span><span class="co">##      (Intercept) SexFemale age | SubjectTRUE</span></span>
@@ -588,25 +601,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## [1] "contr.treatment"</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## attr(,"contrasts")$`age | Subject`</span></span>
-<span><span class="co">## [1] "contr.treatment"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] "contr.treatment"</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The result is a zero row data frame.</p>
+<p>El resultado es un marco de datos de cero filas.</p>
 <div class="rmdwarning">
-<p>The issue is that the special formula has to be processed by the underlying package code, not the standard <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code> approach.</p>
+<p>El problema es que la fórmula especial debe ser procesada por el código del paquete subyacente, no por el enfoque estándar <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code>.</p>
 </div>
-<p>Even if this formula could be used with <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code>, this would still present a problem since the formula also specifies the statistical attributes of the model.</p>
-<p>The solution in <span class="pkg">workflows</span> is an optional supplementary model formula that can be passed to <code>add_model()</code>. The <code>add_variables()</code> specification provides the bare column names, and then the actual formula given to the model is set within <code>add_model()</code>:</p>
-<div class="cell" data-layout-align="center">
+<p>Incluso si esta fórmula pudiera usarse con <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code>, esto aún presentaría un problema ya que la fórmula también especifica los atributos estadísticos del modelo.</p>
+<p>La solución en <span class="pkg">workflows</span> es una fórmula de modelo suplementaria opcional que se puede pasar a <code>add_model()</code>. La especificación <code>add_variables()</code> proporciona los nombres de las columnas básicas, y luego la fórmula real dada al modelo se establece dentro de <code>add_model()</code>:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-special-formula_9b900467dfb6a9cc75f12ba06b9cfb18">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/multilevelmod">multilevelmod</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">multilevel_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"lmer"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">multilevel_workflow</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
-<span>  <span class="co"># Pass the data along as-is: </span></span>
+<span>  <span class="co"># Pase los datos tal cual:</span></span>
 <span>  <span class="fu">add_variables</span><span class="op">(</span>outcome <span class="op">=</span> <span class="va">distance</span>, predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Sex</span>, <span class="va">age</span>, <span class="va">Subject</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">multilevel_spec</span>, </span>
-<span>            <span class="co"># This formula is given to the model</span></span>
+<span>            <span class="co"># Esta fórmula se le da al modelo.</span></span>
 <span>            formula <span class="op">=</span> <span class="va">distance</span> <span class="op">~</span> <span class="va">Sex</span> <span class="op">+</span> <span class="op">(</span><span class="va">age</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">multilevel_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">multilevel_workflow</span>, data <span class="op">=</span> <span class="va">Orthodont</span><span class="op">)</span></span>
@@ -632,10 +645,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## Number of obs: 108, groups:  Subject, 27</span></span>
 <span><span class="co">## Fixed Effects:</span></span>
 <span><span class="co">## (Intercept)    SexFemale  </span></span>
-<span><span class="co">##       24.52        -2.15</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##       24.52        -2.15</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can even use the previously mentioned <code><a href="https://rdrr.io/pkg/survival/man/strata.html">strata()</a></code> function from the <span class="pkg">survival</span> package for survival analysis:</p>
-<div class="cell" data-layout-align="center">
+<p>Incluso podemos usar la función <code><a href="https://rdrr.io/pkg/survival/man/strata.html">strata()</a></code> mencionada anteriormente del paquete <span class="pkg">survival</span> para el análisis de supervivencia:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-strata_358ddf078330698a0340e205db18e085">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/censored">censored</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">parametric_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/survival_reg.html">survival_reg</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -671,28 +684,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## </span></span>
 <span><span class="co">## Loglik(model)= -89.4   Loglik(intercept only)= -97.1</span></span>
 <span><span class="co">##  Chisq= 15.36 on 1 degrees of freedom, p= 9e-05 </span></span>
-<span><span class="co">## n= 26</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## n= 26</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Notice how in both of these calls the model-specific formula was used.</p>
+<p>Observe cómo en ambas convocatorias se utilizó la fórmula específica del modelo.</p>
 </section></section><section id="sec-workflow-sets-intro" class="level2" data-number="7.5"><h2 data-number="7.5" class="anchored" data-anchor-id="sec-workflow-sets-intro">
-<span class="header-section-number">7.5</span> Creating Multiple Workflows at Once</h2>
-<p>In some situations, the data require numerous attempts to find an appropriate model. For example:</p>
+<span class="header-section-number">7.5</span> Crear Múltiples Flujos de Trabajo a la vez</h2>
+<p>En algunas situaciones, los datos requieren numerosos intentos para encontrar un modelo apropiado. Por ejemplo:</p>
 <ul>
-<li><p>For predictive models, it is advisable to evaluate a variety of different model types. This requires the user to create multiple model specifications.</p></li>
-<li><p>Sequential testing of models typically starts with an expanded set of predictors. This “full model” is compared to a sequence of the same model that removes each predictor in turn. Using basic hypothesis testing methods or empirical validation, the effect of each predictor can be isolated and assessed.</p></li>
+<li><p>Para los modelos predictivos, es aconsejable evaluar una variedad de tipos de modelos diferentes. Esto requiere que el usuario cree múltiples especificaciones de modelo.</p></li>
+<li><p>Las pruebas secuenciales de modelos suelen comenzar con un conjunto ampliado de predictores. Este “modelo completo” se compara con una secuencia del mismo modelo que elimina cada predictor por turno. Utilizando métodos básicos de prueba de hipótesis o validación empírica, se puede aislar y evaluar el efecto de cada predictor.</p></li>
 </ul>
-<p>In these situations, as well as others, it can become tedious or onerous to create a lot of workflows from different sets of preprocessors and/or model specifications. To address this problem, the <span class="pkg">workflowset</span> package creates combinations of workflow components. A list of preprocessors (e.g., formulas, <span class="pkg">dplyr</span> selectors, or feature engineering recipe objects discussed in the next chapter) can be combined with a list of model specifications, resulting in a set of workflows.</p>
-<p>As an example, let’s say that we want to focus on the different ways that house location is represented in the Ames data. We can create a set of formulas that capture these predictors:</p>
-<div class="cell" data-layout-align="center">
+<p>En estas situaciones, así como en otras, puede resultar tedioso u oneroso crear muchos flujos de trabajo a partir de diferentes conjuntos de preprocesadores y/o especificaciones de modelo. Para solucionar este problema, el paquete <span class="pkg">workflowset</span> crea combinaciones de componentes de flujo de trabajo. Una lista de preprocesadores (por ejemplo, fórmulas, selectores <span class="pkg">dplyr</span> u objetos de recetas de ingeniería de características que se analizan en el siguiente capítulo) se puede combinar con una lista de especificaciones de modelo, lo que da como resultado un conjunto de flujos de trabajo.</p>
+<p>Como ejemplo, digamos que queremos centrarnos en las diferentes formas en que se representa la ubicación de la casa en los datos de Ames. Podemos crear un conjunto de fórmulas que capturen estos predictores:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-location-location-location_4d8aaf71e97ce0f28e1970afd54e4350">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">location</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
 <span>  longitude <span class="op">=</span> <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span>,</span>
 <span>  latitude <span class="op">=</span> <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Latitude</span>,</span>
 <span>  coords <span class="op">=</span> <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span>,</span>
 <span>  neighborhood <span class="op">=</span> <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Neighborhood</span></span>
-<span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>These representations can be crossed with one or more models using the <code><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set()</a></code> function. We’ll just use the previous linear model specification to demonstrate:</p>
-<div class="cell" data-layout-align="center">
+<p>Estas representaciones se pueden cruzar con uno o más modelos usando la función <code><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set()</a></code>. Simplemente usaremos la especificación del modelo lineal anterior para demostrar:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-set-location_95656d9ffc3f369a5d69cdfa6e4afa2f">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/workflowsets">workflowsets</a></span><span class="op">)</span></span>
 <span><span class="va">location_models</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set</a></span><span class="op">(</span>preproc <span class="op">=</span> <span class="va">location</span>, models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>lm <span class="op">=</span> <span class="va">lm_model</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">location_models</span></span>
@@ -719,11 +732,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">## Linear Regression Model Specification (regression)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Computational engine: lm</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Workflow sets are mostly designed to work with resampling, which is discussed in <a href="#sec-resampling">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-resampling</span></a>. The columns <code>option</code> and <code>result</code> must be populated with specific types of objects that result from resampling. We will demonstrate this in more detail in Chapters <a href="#sec-compare"><span class="quarto-unresolved-ref ref-noprefix">sec-compare</span></a> and <a href="#sec-workflow-sets"><span class="quarto-unresolved-ref ref-noprefix">sec-workflow-sets</span></a>.</p>
-<p>In the meantime, let’s create model fits for each formula and save them in a new column called <code>fit</code>. We’ll use basic <span class="pkg">dplyr</span> and <span class="pkg">purrr</span> operations:</p>
-<div class="cell" data-layout-align="center">
+<p>Los conjuntos de flujos de trabajo están diseñados principalmente para funcionar con remuestreo, lo cual se analiza en el <a href="10-resampling.html">Capítulo&nbsp;<span>10</span></a>. Las columnas “opción” y “resultado” deben completarse con tipos específicos de objetos que resultan del remuestreo. Demostraremos esto con más detalle en los Capítulos <a href="11-comparing-models.html"><span>11</span></a> y <a href="15-workflow-sets.html"><span>15</span></a>.</p>
+<p>Mientras tanto, creemos ajustes de modelo para cada fórmula y guárdelos en una nueva columna llamada <code>fit</code>. Usaremos las operaciones básicas <span class="pkg">dplyr</span> y <span class="pkg">purrr</span>:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-set-fit_473e443809fe319af3bb3b79c986828a">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">location_models</span> <span class="op">&lt;-</span></span>
 <span>   <span class="va">location_models</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>   <span class="fu">mutate</span><span class="op">(</span>fit <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">info</span>, <span class="op">~</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">.x</span><span class="op">$</span><span class="va">workflow</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">ames_train</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
@@ -750,17 +763,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
 <span><span class="co">## (Intercept)    Longitude  </span></span>
-<span><span class="co">##     -184.40        -2.02</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##     -184.40        -2.02</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We use a <span class="pkg">purrr</span> function here to map through our models, but there is an easier, better approach to fit workflow sets that will be introduced in <a href="#sec-workflow-set"><span class="quarto-unresolved-ref">sec-workflow-set</span></a>.</p>
+<p>Usamos una función <span class="pkg">purrr</span> aquí para mapear nuestros modelos, pero existe un enfoque mejor y más fácil para ajustar conjuntos de flujo de trabajo que se presentará en <a href="11-comparing-models.html#sec-workflow-set"><span>Sección&nbsp;11.1</span></a>.</p>
 <div class="rmdnote">
-<p>In general, there’s a lot more to workflow sets! While we’ve covered the basics here, the nuances and advantages of workflow sets won’t be illustrated until <a href="#sec-workflow-sets">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-workflow-sets</span></a>.</p>
+<p>En general, ¡hay mucho más en los conjuntos de flujos de trabajo! Si bien hemos cubierto los conceptos básicos aquí, los matices y ventajas de los conjuntos de flujo de trabajo no se ilustrarán hasta el <a href="15-workflow-sets.html">Capítulo&nbsp;<span>15</span></a>.</p>
 </div>
-</section><section id="evaluating-the-test-set" class="level2" data-number="7.6"><h2 data-number="7.6" class="anchored" data-anchor-id="evaluating-the-test-set">
-<span class="header-section-number">7.6</span> Evaluating the Test Set</h2>
-<p>Let’s say that we’ve concluded our model development and have settled on a final model. There is a convenience function called <code>last_fit()</code> that will <em>fit</em> the model to the entire training set and <em>evaluate</em> it with the testing set.</p>
-<p>Using <code>lm_wflow</code> as an example, we can pass the model and the initial training/testing split to the function:</p>
-<div class="cell" data-layout-align="center">
+</section><section id="evaluación-del-conjunto-de-prueba" class="level2" data-number="7.6"><h2 data-number="7.6" class="anchored" data-anchor-id="evaluación-del-conjunto-de-prueba">
+<span class="header-section-number">7.6</span> Evaluación del Conjunto de Prueba</h2>
+<p>Digamos que hemos concluido el desarrollo de nuestro modelo y nos hemos decidido por un modelo final. Hay una función de conveniencia llamada <code>last_fit()</code> que <em>ajustará</em> el modelo a todo el conjunto de entrenamiento y lo <em>evaluará</em> con el conjunto de prueba.</p>
+<p>Usando <code>lm_wflow</code> como ejemplo, podemos pasar el modelo y la división inicial de entrenamiento/prueba a la función:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/lm-last-fit_5359d8f954e7773413aa9f711565143f">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">final_lm_res</span> <span class="op">&lt;-</span> <span class="fu">last_fit</span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_split</span><span class="op">)</span></span>
 <span><span class="va">final_lm_res</span></span>
 <span><span class="co">## # Resampling results</span></span>
@@ -768,29 +781,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="co">## # A tibble: 1 × 6</span></span>
 <span><span class="co">##   splits             id               .metrics .notes   .predictions .workflow </span></span>
 <span><span class="co">##   &lt;list&gt;             &lt;chr&gt;            &lt;list&gt;   &lt;list&gt;   &lt;list&gt;       &lt;list&gt;    </span></span>
-<span><span class="co">## 1 &lt;split [2342/588]&gt; train/test split &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;     &lt;workflow&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 &lt;split [2342/588]&gt; train/test split &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;     &lt;workflow&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdnote">
-<p>Notice that <code>last_fit()</code> takes a data split as an input, not a dataframe. This function uses the split to generate the training and test sets for the final fitting and evaluation.</p>
+<p>Observe que <code>last_fit()</code> toma una división de datos como entrada, no un marco de datos. Esta función utiliza la división para generar los conjuntos de entrenamiento y prueba para el ajuste y la evaluación finales.</p>
 </div>
-<p>The <code>.workflow</code> column contains the fitted workflow and can be pulled out of the results using:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fitted_lm_wflow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_workflow</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>La columna <code>.workflow</code> contiene el flujo de trabajo ajustado y se puede extraer de los resultados usando:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/extract-last-fit_94f1cdaaef0a6bdaad364b3caf02d780">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fitted_lm_wflow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_workflow</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Similarly, <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics()</a></code> and <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions()</a></code> provide access to the performance metrics and predictions, respectively.</p>
-<div class="cell" data-layout-align="center">
+<p>De manera similar, <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics()</a></code> y <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions()</a></code> proporcionan acceso a las métricas de rendimiento y predicciones, respectivamente.</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/collect-last-fit_04eea1081d5d1b715795b7a2cc67035f">
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We’ll see more about <code>last_fit()</code> in action and how to use it again in <a href="#sec-bean-models"><span class="quarto-unresolved-ref">sec-bean-models</span></a>.</p>
+<p>Veremos más sobre <code>last_fit()</code> en acción y cómo usarlo nuevamente en <a href="16-dimensionality-reduction.html#sec-bean-models"><span>Sección&nbsp;16.6</span></a>.</p>
 <div class="rmdnote">
-<p>When using validation sets, <code>last_fit()</code> has an argument called <code>add_validation_set</code> to specify if we should train the final model solely on the training set (the default) or the combination of the training and validation sets.</p>
+<p>Cuando se usan conjuntos de validación, <code>last_fit()</code> tiene un argumento llamado <code>add_validation_set</code> para especificar si debemos entrenar el modelo final únicamente en el conjunto de entrenamiento (el predeterminado) o la combinación de los conjuntos de entrenamiento y validación.</p>
 </div>
 </section><section id="sec-workflows-summary" class="level2" data-number="7.7"><h2 data-number="7.7" class="anchored" data-anchor-id="sec-workflows-summary">
-<span class="header-section-number">7.7</span> Chapter Summary</h2>
-<p>In this chapter, you learned that the modeling process encompasses more than just estimating the parameters of an algorithm that connects predictors to an outcome. This process also includes preprocessing steps and operations taken after a model is fit. We introduced a concept called a <em>model workflow</em> that can capture the important components of the modeling process. Multiple workflows can also be created inside of a <em>workflow set</em>. The <code>last_fit()</code> function is convenient for fitting a final model to the training set and evaluating with the test set.</p>
-<p>For the Ames data, the related code that we’ll see used again is:</p>
-<div class="cell" data-layout-align="center">
+<span class="header-section-number">7.7</span> Resumen del capítulo</h2>
+<p>En este capítulo, aprendió que el proceso de modelado abarca más que simplemente estimar los parámetros de un algoritmo que conecta los predictores con un resultado. Este proceso también incluye pasos de preprocesamiento y operaciones realizadas después de que se ajusta un modelo. Introdujimos un concepto llamado <em>flujo de trabajo modelo</em> que puede capturar los componentes importantes del proceso de modelado. También se pueden crear múltiples flujos de trabajo dentro de un <em>conjunto de flujos de trabajo</em>. La función <code>last_fit()</code> es conveniente para ajustar un modelo final al conjunto de entrenamiento y evaluar con el conjunto de prueba.</p>
+<p>Para los datos de Ames, el código relacionado que veremos usado nuevamente es:</p>
+<div class="cell" data-layout-align="center" data-hash="07-the-model-workflow_cache/html/workflows-summary_913d9a1bacea3af7c005d6d1c31eb2ce">
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
 <span></span>
@@ -808,11 +821,78 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">lm_model</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">add_variables</span><span class="op">(</span>outcome <span class="op">=</span> <span class="va">Sale_Price</span>, predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Longitude</span>, <span class="va">Latitude</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">lm_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_train</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">lm_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_train</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -866,12 +946,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copiado");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copiado");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
@@ -1046,7 +1126,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./06-fitting-models.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fitting Models with parsnip</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
