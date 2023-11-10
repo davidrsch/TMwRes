@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 9&nbsp; Judging Model Effectiveness</title>
+<title>Modelado Ordenado con R - 9&nbsp; Juzgar la Eficacia del Modelo</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -74,7 +74,6 @@ div.csl-indent {
 }</style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -99,16 +98,16 @@ div.csl-indent {
   "type": "textbox",
   "limit": 20,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
   }
 }</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
@@ -118,11 +117,11 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">MODELING BASICS</a></li><li class="breadcrumb-item"><a href="./09-judging-model-effectiveness.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Judging Model Effectiveness</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./09-judging-model-effectiveness.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar la Eficacia del Modelo</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -134,8 +133,22 @@ div.csl-indent {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/davidrsch/TMwRes" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
   </div>
@@ -145,7 +158,7 @@ div.csl-indent {
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
+        <div id="quarto-search" class="" title="Buscar"></div>
         </div>
         </div>
     <div class="sidebar-menu-container"> 
@@ -153,14 +166,14 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Hello World</span></a>
+ <span class="menu-text">Hola Mundo</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">INTRODUCTION</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -168,19 +181,19 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software for modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software para modelar</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A Tidyverse Primer</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una introducción tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Review of R Modeling Fundamentals</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span></a>
   </div>
 </li>
       </ul>
@@ -188,8 +201,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">MODELING BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -197,37 +210,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Ames Housing Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spending our Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fitting Models with parsnip</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A Model Workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo de Modelado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Feature Engineering with recipes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería de Características con recipes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Judging Model Effectiveness</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar la Eficacia del Modelo</span></span></a>
   </div>
 </li>
       </ul>
@@ -236,7 +249,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
  <span class="menu-text">TOOLS FOR CREATING EFFECTIVE MODELS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -283,7 +296,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
  <span class="menu-text">BEYOND THE BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -329,8 +342,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -354,19 +367,19 @@ div.csl-indent {
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-<li><a href="#performance-metrics-and-inference" id="toc-performance-metrics-and-inference" class="nav-link active" data-scroll-target="#performance-metrics-and-inference"><span class="header-section-number">9.1</span> Performance Metrics and Inference</a></li>
-  <li><a href="#regression-metrics" id="toc-regression-metrics" class="nav-link" data-scroll-target="#regression-metrics"><span class="header-section-number">9.2</span> Regression Metrics</a></li>
-  <li><a href="#binary-classification-metrics" id="toc-binary-classification-metrics" class="nav-link" data-scroll-target="#binary-classification-metrics"><span class="header-section-number">9.3</span> Binary Classification Metrics</a></li>
-  <li><a href="#multiclass-classification-metrics" id="toc-multiclass-classification-metrics" class="nav-link" data-scroll-target="#multiclass-classification-metrics"><span class="header-section-number">9.4</span> Multiclass Classification Metrics</a></li>
-  <li><a href="#sec-performance-summary" id="toc-sec-performance-summary" class="nav-link" data-scroll-target="#sec-performance-summary"><span class="header-section-number">9.5</span> Chapter Summary</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/09-judging-model-effectiveness.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<li><a href="#m%C3%A9tricas-de-rendimiento-e-inferencia" id="toc-métricas-de-rendimiento-e-inferencia" class="nav-link active" data-scroll-target="#m%C3%A9tricas-de-rendimiento-e-inferencia"><span class="header-section-number">9.1</span> Métricas de rendimiento e inferencia</a></li>
+  <li><a href="#m%C3%A9tricas-de-regresi%C3%B3n" id="toc-métricas-de-regresión" class="nav-link" data-scroll-target="#m%C3%A9tricas-de-regresi%C3%B3n"><span class="header-section-number">9.2</span> Métricas de regresión</a></li>
+  <li><a href="#m%C3%A9tricas-de-clasificaci%C3%B3n-binaria" id="toc-métricas-de-clasificación-binaria" class="nav-link" data-scroll-target="#m%C3%A9tricas-de-clasificaci%C3%B3n-binaria"><span class="header-section-number">9.3</span> Métricas de clasificación binaria</a></li>
+  <li><a href="#m%C3%A9tricas-de-clasificaci%C3%B3n-multiclase" id="toc-métricas-de-clasificación-multiclase" class="nav-link" data-scroll-target="#m%C3%A9tricas-de-clasificaci%C3%B3n-multiclase"><span class="header-section-number">9.4</span> Métricas de Clasificación Multiclase</a></li>
+  <li><a href="#sec-performance-summary" id="toc-sec-performance-summary" class="nav-link" data-scroll-target="#sec-performance-summary"><span class="header-section-number">9.5</span> Resumen del capítulo</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-performance" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Judging Model Effectiveness</span></span></h1>
+<h1 class="title"><span id="sec-performance" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar la Eficacia del Modelo</span></span></h1>
 </div>
 
 
@@ -379,44 +392,44 @@ div.csl-indent {
   </div>
   
 
-</header><p>Once we have a model, we need to know how well it works. A quantitative approach for estimating effectiveness allows us to understand the model, to compare different models, or to tweak the model to improve performance. Our focus in tidymodels is on empirical validation; this usually means using data that were not used to create the model as the substrate to measure effectiveness.</p>
+</header><p>Una vez que tenemos un modelo, necesitamos saber qué tan bien funciona. Un enfoque cuantitativo para estimar la efectividad nos permite comprender el modelo, comparar diferentes modelos o modificar el modelo para mejorar el rendimiento. Nuestro enfoque en tidymodels está en la validación empírica; Esto generalmente significa usar datos que no se usaron para crear el modelo como sustrato para medir la efectividad.</p>
 <div class="rmdwarning">
-<p>The best approach to empirical validation involves using <em>resampling</em> methods that will be introduced in <a href="#sec-resampling">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-resampling</span></a>. In this chapter, we will motivate the need for empirical validation by using the test set. Keep in mind that the test set can only be used once, as explained in <a href="#sec-splitting-methods"><span class="quarto-unresolved-ref">sec-splitting-methods</span></a>.</p>
+<p>El mejor enfoque para la validación empírica implica el uso de métodos de <em>resampling</em> que se presentarán en el <a href="10-resampling.html">Capítulo&nbsp;<span>10</span></a>. En este capítulo, motivaremos la necesidad de una validación empírica mediante el uso del conjunto de pruebas. Tenga en cuenta que el conjunto de prueba solo se puede utilizar una vez, como se explica en <a href="05-data-spending.html#sec-splitting-methods"><span>Sección&nbsp;5.1</span></a>.</p>
 </div>
-<p>When judging model effectiveness, your decision about which metrics to examine can be critical. In later chapters, certain model parameters will be empirically optimized and a primary performance metric will be used to choose the best sub-model. Choosing the wrong metric can easily result in unintended consequences. For example, two common metrics for regression models are the root mean squared error (RMSE) and the coefficient of determination (a.k.a. <span class="math inline">\(R^2\)</span>). The former measures <em>accuracy</em> while the latter measures <em>correlation</em>. These are not necessarily the same thing. <a href="#fig-performance-reg-metrics">Figure&nbsp;<span class="quarto-unresolved-ref">fig-performance-reg-metrics</span></a> demonstrates the difference between the two.</p>
-<div class="cell" data-layout-align="center">
+<p>Al juzgar la eficacia del modelo, su decisión sobre qué métricas examinar puede ser fundamental. En capítulos posteriores, se optimizarán empíricamente ciertos parámetros del modelo y se utilizará una métrica de rendimiento primaria para elegir el mejor submodelo. Elegir la métrica incorrecta puede fácilmente tener consecuencias no deseadas. Por ejemplo, dos métricas comunes para los modelos de regresión son la raíz del error cuadrático medio (RMSE) y el coeficiente de determinación (también conocido como <span class="math inline">\(R^2\)</span>). El primero mide la <em>precisión</em> mientras que el segundo mide la <em>correlación</em>. Estos no son necesariamente lo mismo. <span class="quarto-unresolved-ref">?fig-Performance-reg-metrics</span> demuestra la diferencia entre los dos.</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/fig-performance-reg-metrics_3e2c2c29d1bf7eb50f22f984b7e3ed9c">
 <div class="cell-output-display">
 <div id="fig-performance-reg-metrics" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-performance-reg-metrics-1.png" class="img-fluid figure-img" alt="Scatter plots of numeric observed versus predicted values for models that are optimized using the RMSE and the coefficient of determination. The former results in results that are close to the 45 degree line of identity while the latter shows results with a tight linear correlation but falls well off of the line of identity." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;9.1: Observed versus predicted values for models that are optimized using the RMSE compared to the coefficient of determination</figcaption></figure>
+<figure class="figure"><p><img src="09-judging-model-effectiveness_files/figure-html/fig-performance-reg-metrics-1.png" class="img-fluid figure-img" alt="Gráficos de dispersión de valores numéricos observados versus valores predichos para modelos optimizados utilizando el RMSE y el coeficiente de determinación. El primero produce resultados cercanos a la línea de identidad de 45 grados, mientras que el segundo muestra resultados con una estrecha correlación lineal pero se aleja mucho de la línea de identidad." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;9.1: Valores observados versus valores predichos para modelos optimizados utilizando el RMSE en comparación con el coeficiente de determinación</figcaption></figure>
 </div>
 </div>
 </div>
-<p>A model optimized for RMSE has more variability but has relatively uniform accuracy across the range of the outcome. The right panel shows that there is a tighter correlation between the observed and predicted values but this model performs poorly in the tails.</p>
-<p>This chapter will demonstrate the <span class="pkg">yardstick</span> package, a core tidymodels packages with the focus of measuring model performance. Before illustrating syntax, let’s explore whether empirical validation using performance metrics is worthwhile when a model is focused on inference rather than prediction.</p>
-<section id="performance-metrics-and-inference" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="performance-metrics-and-inference">
-<span class="header-section-number">9.1</span> Performance Metrics and Inference</h2>
-<p>The effectiveness of any given model depends on how the model will be used. An inferential model is used primarily to understand relationships, and typically emphasizes the choice (and validity) of probabilistic distributions and other generative qualities that define the model. For a model used primarily for prediction, by contrast, predictive strength is of primary importance and other concerns about underlying statistical qualities may be less important. Predictive strength is usually determined by how close our predictions come to the observed data, i.e., fidelity of the model predictions to the actual results. This chapter focuses on functions that can be used to measure predictive strength. However, our advice for those developing inferential models is to use these techniques even when the model will not be used with the primary goal of prediction.</p>
-<p>A longstanding issue with the practice of inferential statistics is that, with a focus purely on inference, it is difficult to assess the credibility of a model. For example, consider the Alzheimer’s disease data from <span class="citation" data-cites="CraigSchapiro">Craig–Schapiro et al. (<a href="#ref-CraigSchapiro" role="doc-biblioref">2011</a>)</span> when 333 patients were studied to determine the factors that influence cognitive impairment. An analysis might take the known risk factors and build a logistic regression model where the outcome is binary (impaired/non-impaired). Let’s consider predictors for age, sex, and the Apolipoprotein E genotype. The latter is a categorical variable with the six possible combinations of the three main variants of this gene. Apolipoprotein E is known to have an association with dementia <span class="citation" data-cites="Kim:2009p4370">(<a href="#ref-Kim:2009p4370" role="doc-biblioref">Jungsu, Basak, and Holtzman 2009</a>)</span>.</p>
-<p>A superficial, but not uncommon, approach to this analysis would be to fit a large model with main effects and interactions, then use statistical tests to find the minimal set of model terms that are statistically significant at some pre-defined level. If a full model with the three factors and their two- and three-way interactions were used, an initial phase would be to test the interactions using sequential likelihood ratio tests <span class="citation" data-cites="HosmerLemeshow">(<a href="#ref-HosmerLemeshow" role="doc-biblioref">Hosmer and Lemeshow 2000</a>)</span>. Let’s step through this kind of approach for the example Alzheimer’s disease data:</p>
+<p>Un modelo optimizado para RMSE tiene más variabilidad pero tiene una precisión relativamente uniforme en todo el rango del resultado. El panel derecho muestra que existe una correlación más estrecha entre los valores observados y predichos, pero este modelo funciona mal en las colas.</p>
+<p>Este capítulo demostrará el paquete <span class="pkg">yardstick</span>, un paquete central de tidymodels cuyo objetivo es medir el rendimiento del modelo. Antes de ilustrar la sintaxis, exploremos si vale la pena la validación empírica mediante métricas de rendimiento cuando un modelo se centra en la inferencia en lugar de la predicción.</p>
+<section id="métricas-de-rendimiento-e-inferencia" class="level2" data-number="9.1"><h2 data-number="9.1" class="anchored" data-anchor-id="métricas-de-rendimiento-e-inferencia">
+<span class="header-section-number">9.1</span> Métricas de rendimiento e inferencia</h2>
+<p>La eficacia de cualquier modelo depende de cómo se utilizará. Un modelo inferencial se utiliza principalmente para comprender las relaciones y normalmente enfatiza la elección (y validez) de distribuciones probabilísticas y otras cualidades generativas que definen el modelo. Por el contrario, para un modelo utilizado principalmente para la predicción, la fuerza predictiva es de primordial importancia y otras preocupaciones sobre las cualidades estadísticas subyacentes pueden ser menos importantes. La fuerza predictiva generalmente está determinada por qué tan cerca están nuestras predicciones de los datos observados, es decir, la fidelidad de las predicciones del modelo a los resultados reales. Este capítulo se centra en funciones que se pueden utilizar para medir la fuerza predictiva. Sin embargo, nuestro consejo para quienes desarrollan modelos inferenciales es utilizar estas técnicas incluso cuando el modelo no se utilizará con el objetivo principal de predicción.</p>
+<p>Un problema de larga data con la práctica de la estadística inferencial es que, centrándose exclusivamente en la inferencia, es difícil evaluar la credibilidad de un modelo. Por ejemplo, considere los datos sobre la enfermedad de Alzheimer de <span class="citation" data-cites="CraigSchapiro">Craig–Schapiro et&nbsp;al. (<a href="references.html#ref-CraigSchapiro" role="doc-biblioref">2011</a>)</span> cuando se estudiaron pacientes con 333 para determinar los factores que influyen en el deterioro cognitivo. Un análisis podría tomar los factores de riesgo conocidos y construir un modelo de regresión logística donde el resultado sea binario (deteriorado/no deteriorado). Consideremos los predictores de edad, sexo y genotipo de apolipoproteína E. Esta última es una variable categórica con las seis combinaciones posibles de las tres variantes principales de este gen. Se sabe que la apolipoproteína E tiene una asociación con la demencia <span class="citation" data-cites="Kim:2009p4370">(<a href="references.html#ref-Kim:2009p4370" role="doc-biblioref">Jungsu, Basak, y Holtzman 2009</a>)</span>.</p>
+<p>Un enfoque superficial, pero no infrecuente, para este análisis sería ajustar un modelo grande con efectos e interacciones principales y luego utilizar pruebas estadísticas para encontrar el conjunto mínimo de términos del modelo que sean estadísticamente significativos en algún nivel predefinido. Si se utilizara un modelo completo con los tres factores y sus interacciones de dos y tres vías, una fase inicial sería probar las interacciones utilizando pruebas de índice de probabilidad secuencial <span class="citation" data-cites="HosmerLemeshow">(<a href="references.html#ref-HosmerLemeshow" role="doc-biblioref">Hosmer y Lemeshow 2000</a>)</span>. Analicemos este tipo de enfoque para el ejemplo de datos sobre la enfermedad de Alzheimer:</p>
 <ul>
-<li><p>When comparing the model with all two-way interactions to one with the additional three-way interaction, the likelihood ratio tests produces a p-value of 0.888. This implies that there is no evidence that the four additional model terms associated with the three-way interaction explain enough of the variation in the data to keep them in the model.</p></li>
-<li><p>Next, the two-way interactions are similarly evaluated against the model with no interactions. The p-value here is 0.0382. This is somewhat borderline, but, given the small sample size, it would be prudent to conclude that there is evidence that some of the 10 possible two-way interactions are important to the model.</p></li>
-<li><p>From here, we would build some explanation of the results. The interactions would be particularly important to discuss since they may spark interesting physiological or neurological hypotheses to be explored further.</p></li>
+<li><p>Al comparar el modelo con todas las interacciones de dos vías con uno con la interacción de tres vías adicional, las pruebas de razón de verosimilitud producen un valor p de 0.888. Esto implica que no hay evidencia de que los términos del modelo adicionales four asociados con la interacción de tres vías expliquen suficiente variación en los datos para mantenerlos en el modelo.</p></li>
+<li><p>A continuación, las interacciones bidireccionales se evalúan de manera similar con respecto al modelo sin interacciones. El valor p aquí es 0.0382. Esto es algo dudoso, pero, dado el pequeño tamaño de la muestra, sería prudente concluir que hay evidencia de que algunas de las posibles interacciones bidireccionales 10 son importantes para la modelo.</p></li>
+<li><p>A partir de aquí, construiríamos alguna explicación de los resultados. Sería particularmente importante discutir las interacciones, ya que pueden generar hipótesis fisiológicas o neurológicas interesantes que se explorarán más a fondo.</p></li>
 </ul>
-<p>While shallow, this analysis strategy is common in practice as well as in the literature. This is especially true if the practitioner has limited formal training in data analysis.</p>
-<p>One missing piece of information in this approach is how closely this model fits the actual data. Using resampling methods, discussed in <a href="#sec-resampling">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-resampling</span></a>, we can estimate the accuracy of this model to be about 73%. Accuracy is often a poor measure of model performance; we use it here because it is commonly understood. If the model has 73% fidelity to the data, should we trust conclusions it produces? We might think so until we realize that the baseline rate of nonimpaired patients in the data is 72.7%. This means that, despite our statistical analysis, the two-factor model appears to be only 0.3% better than a simple heuristic that always predicts patients to be unimpaired, regardless of the observed data.</p>
+<p>Si bien superficial, esta estrategia de análisis es común tanto en la práctica como en la literatura. Esto es especialmente cierto si el profesional tiene una formación formal limitada en análisis de datos.</p>
+<p>Un dato que falta en este enfoque es qué tan cerca se ajusta este modelo a los datos reales. Usando métodos de remuestreo, discutidos en el <a href="10-resampling.html">Capítulo&nbsp;<span>10</span></a>, podemos estimar que la precisión de este modelo es aproximadamente 73%. La precisión es a menudo una mala medida del rendimiento del modelo; Lo usamos aquí porque se entiende comúnmente. Si el modelo tiene 73% de fidelidad a los datos, ¿deberíamos confiar en las conclusiones que produce? Podríamos pensar así hasta que nos demos cuenta de que la tasa inicial de pacientes no deteriorados en los datos es 72.7%. Esto significa que, a pesar de nuestro análisis estadístico, el modelo de dos factores parece ser sólo 0.3% mejor que una simple heurística que siempre predice que los pacientes no sufrirán daños, independientemente de los datos observados.</p>
 <div class="rmdnote">
-<p>The point of this analysis is to demonstrate the idea that optimization of statistical characteristics of the model does not imply that the model fits the data well. Even for purely inferential models, some measure of fidelity to the data should accompany the inferential results. Using this, the consumers of the analyses can calibrate their expectations of the results.</p>
+<p>El objetivo de este análisis es demostrar la idea de que la optimización de las características estadísticas del modelo no implica que el modelo se ajuste bien a los datos. Incluso para modelos puramente inferenciales, alguna medida de fidelidad a los datos debería acompañar a los resultados inferenciales. Con esto, los consumidores de los análisis pueden calibrar sus expectativas sobre los resultados.</p>
 </div>
-<p>In the remainder of this chapter, we will discuss general approaches for evaluating models via empirical validation. These approaches are grouped by the nature of the outcome data: purely numeric, binary classes, and three or more class levels.</p>
-</section><section id="regression-metrics" class="level2" data-number="9.2"><h2 data-number="9.2" class="anchored" data-anchor-id="regression-metrics">
-<span class="header-section-number">9.2</span> Regression Metrics</h2>
-<p>Recall from <a href="#sec-parsnip-predictions"><span class="quarto-unresolved-ref">sec-parsnip-predictions</span></a> that tidymodels prediction functions produce tibbles with columns for the predicted values. These columns have consistent names, and the functions in the <span class="pkg">yardstick</span> package that produce performance metrics have consistent interfaces. The functions are data frame-based, as opposed to vector-based, with the general syntax of:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(data, truth, ...)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>where <code>data</code> is a data frame or tibble and <code>truth</code> is the column with the observed outcome values. The ellipses or other arguments are used to specify the column(s) containing the predictions.</p>
-<p>To illustrate, let’s take the model from <a href="#sec-recipes-summary"><span class="quarto-unresolved-ref">sec-recipes-summary</span></a>. This model <code>lm_wflow_fit</code> combines a linear regression model with a predictor set supplemented with an interaction and spline functions for longitude and latitude. It was created from a training set (named <code>ames_train</code>). Although we do not advise using the test set at this juncture of the modeling process, it will be used here to illustrate functionality and syntax. The data frame <code>ames_test</code> consists of 588 properties. To start, let’s produce predictions:</p>
-<div class="cell" data-layout-align="center">
+<p>En el resto de este capítulo, discutiremos enfoques generales para evaluar modelos mediante validación empírica. Estos enfoques se agrupan según la naturaleza de los datos de resultados: puramente numéricos, clases binarias y tres o más niveles de clase.</p>
+</section><section id="métricas-de-regresión" class="level2" data-number="9.2"><h2 data-number="9.2" class="anchored" data-anchor-id="métricas-de-regresión">
+<span class="header-section-number">9.2</span> Métricas de regresión</h2>
+<p>Recuerde de <a href="06-fitting-models.html#sec-parsnip-predictions"><span>Sección&nbsp;6.3</span></a> que las funciones de predicción de tidymodels producen tibbles con columnas para los valores predichos. Estas columnas tienen nombres consistentes y las funciones en el paquete <span class="pkg">yardstick</span> que producen métricas de rendimiento tienen interfaces consistentes. Las funciones están basadas en marcos de datos, a diferencia de vectores, con la sintaxis general de:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(data, truth, ...)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>donde <code>data</code> es un marco de datos o tibble y <code>truth</code> es la columna con los valores de resultados observados. Las elipses u otros argumentos se utilizan para especificar las columnas que contienen las predicciones.</p>
+<p>Para ilustrar, tomemos el modelo de <a href="08-feature-engineering.html#sec-recipes-summary"><span>Sección&nbsp;8.8</span></a>. Este modelo <code>lm_wflow_fit</code> combina un modelo de regresión lineal con un conjunto de predictores complementado con una interacción y funciones spline para longitud y latitud. Fue creado a partir de un conjunto de entrenamiento (llamado <code>ames_train</code>). Aunque no recomendamos utilizar el conjunto de pruebas en este punto del proceso de modelado, se utilizará aquí para ilustrar la funcionalidad y la sintaxis. El marco de datos <code>ames_test</code> consta de las propiedades 588. Para empezar, hagamos predicciones:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-predict-ames_12083a946a51b3078583dea7057543a1">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_test_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_fit</span>, new_data <span class="op">=</span> <span class="va">ames_test</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ames_test_res</span></span>
 <span><span class="co">## # A tibble: 588 × 1</span></span>
@@ -428,10 +441,10 @@ div.csl-indent {
 <span><span class="co">## 4  5.33</span></span>
 <span><span class="co">## 5  5.30</span></span>
 <span><span class="co">## 6  5.24</span></span>
-<span><span class="co">## # ℹ 582 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 582 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The predicted numeric outcome from the regression model is named <code>.pred</code>. Let’s match the predicted values with their corresponding observed outcome values:</p>
-<div class="cell" data-layout-align="center">
+<p>El resultado numérico previsto por el modelo de regresión se denomina <code>.pred</code>. Hagamos coincidir los valores predichos con sus correspondientes valores de resultado observados:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-ames-outcome_d218996d2524f6b61b93b56c5186c466">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_test_res</span> <span class="op">&lt;-</span> <span class="fu">bind_cols</span><span class="op">(</span><span class="va">ames_test_res</span>, <span class="va">ames_test</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">ames_test_res</span></span>
 <span><span class="co">## # A tibble: 588 × 2</span></span>
@@ -443,39 +456,39 @@ div.csl-indent {
 <span><span class="co">## 4  5.33       5.28</span></span>
 <span><span class="co">## 5  5.30       5.28</span></span>
 <span><span class="co">## 6  5.24       5.26</span></span>
-<span><span class="co">## # ℹ 582 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 582 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We see that these values mostly look close, but we don’t yet have a quantitative understanding of how the model is doing because we haven’t computed any performance metrics. Note that both the predicted and observed outcomes are in log-10 units. It is best practice to analyze the predictions on the transformed scale (if one were used) even if the predictions are reported using the original units.</p>
-<p>Let’s plot the data in <a href="#fig-ames-performance-plot">Figure&nbsp;<span class="quarto-unresolved-ref">fig-ames-performance-plot</span></a> before computing metrics:</p>
-<div class="cell" data-layout-align="center">
+<p>Vemos que estos valores en su mayoría parecen cercanos, pero aún no tenemos una comprensión cuantitativa de cómo funciona el modelo porque no hemos calculado ninguna métrica de rendimiento. Tenga en cuenta que tanto los resultados previstos como los observados están en unidades log-10. Es una buena práctica analizar las predicciones en la escala transformada (si se usara una), incluso si las predicciones se informan utilizando las unidades originales.</p>
+<p>Trazamos los datos en <a href="#fig-ames-performance-plot">Figura&nbsp;<span>9.2</span></a> antes de calcular las métricas:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-ames-plot_6a1fc9df51c96f989a173faa2f1a1ef3">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">ames_test_res</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">Sale_Price</span>, y <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="co"># Create a diagonal line:</span></span>
+<span>  <span class="co"># Crear una línea diagonal:</span></span>
 <span>  <span class="fu">geom_abline</span><span class="op">(</span>lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Predicted Sale Price (log10)"</span>, x <span class="op">=</span> <span class="st">"Sale Price (log10)"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="co"># Scale and size the x- and y-axis uniformly:</span></span>
-<span>  <span class="fu">coord_obs_pred</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Precio de Venta Predecido (log10)"</span>, x <span class="op">=</span> <span class="st">"Precio de Venta (log10)"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="co"># Escale y dimensione los ejes x e y de manera uniforme:</span></span>
+<span>  <span class="fu">coord_obs_pred</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/fig-ames-performance-plot_c9f38063a9cb53b38e9883f8b0cff727">
 <div class="cell-output-display">
 <div id="fig-ames-performance-plot" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-ames-performance-plot-1.png" class="img-fluid figure-img" alt="Scatter plots of numeric observed versus predicted values for an Ames regression model. Both axes use log-10 units. The model shows good concordance with some poorly fitting points at high and low prices." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;9.2: Observed versus predicted values for an Ames regression model, with log-10 units on both axes</figcaption></figure>
+<figure class="figure"><p><img src="09-judging-model-effectiveness_files/figure-html/fig-ames-performance-plot-1.png" class="img-fluid figure-img" alt="Gráficos de dispersión de valores numéricos observados versus valores predichos para un modelo de regresión de Ames. Ambos ejes utilizan unidades log-10. El modelo muestra una buena concordancia con algunos puntos que no se ajustan bien a precios altos y bajos." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;9.2: Valores observados versus valores predichos para un modelo de regresión de Ames, con unidades log-10 en ambos ejes</figcaption></figure>
 </div>
 </div>
 </div>
-<p>There is one low-price property that is substantially over-predicted, i.e., quite high above the dashed line.</p>
-<p>Let’s compute the root mean squared error for this model using the <code>rmse()</code> function:</p>
-<div class="cell" data-layout-align="center">
+<p>Hay una propiedad de bajo precio que está sustancialmente sobreestimada, es decir, bastante por encima de la línea discontinua.</p>
+<p>Calculemos la raíz del error cuadrático medio para este modelo usando la función <code>rmse()</code>:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-ames-rmse_291018087092374da50156468613fff1">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rmse</span><span class="op">(</span><span class="va">ames_test_res</span>, truth <span class="op">=</span> <span class="va">Sale_Price</span>, estimate <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   .metric .estimator .estimate</span></span>
 <span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 rmse    standard      0.0736</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 rmse    standard      0.0736</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This shows us the standard format of the output of <span class="pkg">yardstick</span> functions. Metrics for numeric outcomes usually have a value of “standard” for the <code>.estimator</code> column. Examples with different values for this column are shown in the next sections.</p>
-<p>To compute multiple metrics at once, we can create a <em>metric set</em>. Let’s add <span class="math inline">\(R^2\)</span> and the mean absolute error:</p>
-<div class="cell" data-layout-align="center">
+<p>Esto nos muestra el formato estándar de salida de las funciones <span class="pkg">yardstick</span>. Las métricas para resultados numéricos suelen tener un valor “estándar” para la columna <code>.estimator</code>. En las siguientes secciones se muestran ejemplos con diferentes valores para esta columna.</p>
+<p>Para calcular varias métricas a la vez, podemos crear un <em>conjunto de métricas</em>. Sumemos <span class="math inline">\(R^2\)</span> y el error absoluto medio:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-metric-set_9b75d2f08819ab9697de178c3ea6079b">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_metrics</span> <span class="op">&lt;-</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">rmse</span>, <span class="va">rsq</span>, <span class="va">mae</span><span class="op">)</span></span>
 <span><span class="fu">ames_metrics</span><span class="op">(</span><span class="va">ames_test_res</span>, truth <span class="op">=</span> <span class="va">Sale_Price</span>, estimate <span class="op">=</span> <span class="va">.pred</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 3 × 3</span></span>
@@ -483,16 +496,16 @@ div.csl-indent {
 <span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 rmse    standard      0.0736</span></span>
 <span><span class="co">## 2 rsq     standard      0.836 </span></span>
-<span><span class="co">## 3 mae     standard      0.0549</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 3 mae     standard      0.0549</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This tidy data format stacks the metrics vertically. The root mean squared error and mean absolute error metrics are both on the scale of the outcome (so <code>log10(Sale_Price)</code> for our example) and measure the difference between the predicted and observed values. The value for <span class="math inline">\(R^2\)</span> measures the squared correlation between the predicted and observed values, so values closer to one are better.</p>
+<p>Este formato de datos ordenado apila las métricas verticalmente. Las métricas del error cuadrático medio y del error absoluto medio están en la escala del resultado (por lo tanto, <code>log10(Sale_Price)</code> para nuestro ejemplo) y miden la diferencia entre los valores previstos y observados. El valor de <span class="math inline">\(R^2\)</span> mide la correlación al cuadrado entre los valores previstos y observados, por lo que los valores más cercanos a uno son mejores.</p>
 <div class="rmdwarning">
-<p>The <span class="pkg">yardstick</span> package does <em>not</em> contain a function for adjusted <span class="math inline">\(R^2\)</span>. This modification of the coefficient of determination is commonly used when the same data used to fit the model are used to evaluate the model. This metric is not fully supported in tidymodels because it is always a better approach to compute performance on a separate data set than the one used to fit the model.</p>
+<p>El paquete <span class="pkg">yardstick</span> <em>no</em> contiene una función para <span class="math inline">\(R^2\)</span> ajustado. Esta modificación del coeficiente de determinación se utiliza comúnmente cuando los mismos datos utilizados para ajustar el modelo se utilizan para evaluar el modelo. Esta métrica no es totalmente compatible con tidymodels porque siempre es un mejor enfoque para calcular el rendimiento en un conjunto de datos separado que el utilizado para ajustar el modelo.</p>
 </div>
-</section><section id="binary-classification-metrics" class="level2" data-number="9.3"><h2 data-number="9.3" class="anchored" data-anchor-id="binary-classification-metrics">
-<span class="header-section-number">9.3</span> Binary Classification Metrics</h2>
-<p>To illustrate other ways to measure model performance, we will switch to a different example. The <span class="pkg">modeldata</span> package (another one of the tidymodels packages) contains example predictions from a test data set with two classes (“Class1” and “Class2”):</p>
-<div class="cell" data-layout-align="center">
+</section><section id="métricas-de-clasificación-binaria" class="level2" data-number="9.3"><h2 data-number="9.3" class="anchored" data-anchor-id="métricas-de-clasificación-binaria">
+<span class="header-section-number">9.3</span> Métricas de clasificación binaria</h2>
+<p>Para ilustrar otras formas de medir el rendimiento del modelo, cambiaremos a un ejemplo diferente. El paquete <span class="pkg">modeldata</span> (otro de los paquetes tidymodels) contiene predicciones de ejemplo de un conjunto de datos de prueba con dos clases (“Class1” y “Class2”):</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-two-class-example_9625434ebca4ebc0532b3c0d238de87e">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">two_class_example</span><span class="op">)</span></span>
 <span><span class="fu">tibble</span><span class="op">(</span><span class="va">two_class_example</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 500 × 4</span></span>
@@ -504,40 +517,40 @@ div.csl-indent {
 <span><span class="co">## 4 Class1 0.735   0.265    Class1   </span></span>
 <span><span class="co">## 5 Class2 0.0162  0.984    Class2   </span></span>
 <span><span class="co">## 6 Class1 0.999   0.000725 Class1   </span></span>
-<span><span class="co">## # ℹ 494 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 494 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The second and third columns are the predicted class probabilities for the test set while <code>predicted</code> are the discrete predictions.</p>
-<p>For the hard class predictions, a variety of <span class="pkg">yardstick</span> functions are helpful:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># A confusion matrix: </span></span>
+<p>La segunda y tercera columnas son las probabilidades de clase predichas para el conjunto de prueba, mientras que <code>predicted</code> son las predicciones discretas.</p>
+<p>Para las predicciones de clases difíciles, una variedad de funciones <span class="pkg">yardstick</span> son útiles:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-class-metrics_fc40ecb98152779af052a9b5a20e1cfd">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Una matriz de confusión:</span></span>
 <span><span class="fu">conf_mat</span><span class="op">(</span><span class="va">two_class_example</span>, truth <span class="op">=</span> <span class="va">truth</span>, estimate <span class="op">=</span> <span class="va">predicted</span><span class="op">)</span></span>
 <span><span class="co">##           Truth</span></span>
 <span><span class="co">## Prediction Class1 Class2</span></span>
 <span><span class="co">##     Class1    227     50</span></span>
 <span><span class="co">##     Class2     31    192</span></span>
 <span></span>
-<span><span class="co"># Accuracy:</span></span>
+<span><span class="co"># Exactitud:</span></span>
 <span><span class="fu">accuracy</span><span class="op">(</span><span class="va">two_class_example</span>, <span class="va">truth</span>, <span class="va">predicted</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   .metric  .estimator .estimate</span></span>
 <span><span class="co">##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 accuracy binary         0.838</span></span>
 <span></span>
-<span><span class="co"># Matthews correlation coefficient:</span></span>
+<span><span class="co"># Coeficiente de correlación de Matthews:</span></span>
 <span><span class="fu">mcc</span><span class="op">(</span><span class="va">two_class_example</span>, <span class="va">truth</span>, <span class="va">predicted</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   .metric .estimator .estimate</span></span>
 <span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 mcc     binary         0.677</span></span>
 <span></span>
-<span><span class="co"># F1 metric:</span></span>
+<span><span class="co"># Métrica F1:</span></span>
 <span><span class="fu">f_meas</span><span class="op">(</span><span class="va">two_class_example</span>, <span class="va">truth</span>, <span class="va">predicted</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   .metric .estimator .estimate</span></span>
 <span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 f_meas  binary         0.849</span></span>
 <span></span>
-<span><span class="co"># Combining these three classification metrics together</span></span>
+<span><span class="co"># Combinando estas tres métricas de clasificación juntas</span></span>
 <span><span class="va">classification_metrics</span> <span class="op">&lt;-</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">accuracy</span>, <span class="va">mcc</span>, <span class="va">f_meas</span><span class="op">)</span></span>
 <span><span class="fu">classification_metrics</span><span class="op">(</span><span class="va">two_class_example</span>, truth <span class="op">=</span> <span class="va">truth</span>, estimate <span class="op">=</span> <span class="va">predicted</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 3 × 3</span></span>
@@ -545,24 +558,24 @@ div.csl-indent {
 <span><span class="co">##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 accuracy binary         0.838</span></span>
 <span><span class="co">## 2 mcc      binary         0.677</span></span>
-<span><span class="co">## 3 f_meas   binary         0.849</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 3 f_meas   binary         0.849</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The Matthews correlation coefficient and F1 score both summarize the confusion matrix, but compared to <code>mcc()</code>, which measures the quality of both positive and negative examples, the <code>f_meas()</code> metric emphasizes the positive class, i.e., the event of interest. For binary classification data sets like this example, <span class="pkg">yardstick</span> functions have a standard argument called <code>event_level</code> to distinguish positive and negative levels. The default (which we used in this code) is that the <em>first</em> level of the outcome factor is the event of interest.</p>
+<p>El coeficiente de correlación de Matthews y la puntuación F1 resumen la matriz de confusión, pero en comparación con <code>mcc()</code>, que mide la calidad de ejemplos tanto positivos como negativos, la métrica <code>f_meas()</code> enfatiza la clase positiva, es decir, el evento de interés. Para conjuntos de datos de clasificación binaria como este ejemplo, las funciones <span class="pkg">yardstick</span> tienen un argumento estándar llamado <code>event_level</code> para distinguir los niveles positivos y negativos. El valor predeterminado (que utilizamos en este código) es que el <em>primer</em> nivel del factor de resultado es el evento de interés.</p>
 <div class="rmdnote">
-<p>There is some heterogeneity in R functions in this regard; some use the first level and others the second to denote the event of interest. We consider it more intuitive that the first level is the most important. The second level logic is borne of encoding the outcome as 0/1 (in which case the second value is the event) and unfortunately remains in some packages. However, tidymodels (along with many other R packages) require a categorical outcome to be encoded as a factor and, for this reason, the legacy justification for the second level as the event becomes irrelevant.</p>
+<p>Existe cierta heterogeneidad en las funciones R a este respecto; algunos utilizan el primer nivel y otros el segundo para denotar el evento de interés. Consideramos más intuitivo que el primer nivel es el más importante. La lógica de segundo nivel surge de codificar el resultado como 0/1 (en cuyo caso el segundo valor es el evento) y desafortunadamente permanece en algunos paquetes. Sin embargo, tidymodels (junto con muchos otros paquetes de R) requieren que se codifique un resultado categórico como factor y, por esta razón, la justificación heredada para el segundo nivel como evento se vuelve irrelevante.</p>
 </div>
-<p>As an example where the second level is the event:</p>
-<div class="cell" data-layout-align="center">
+<p>Como ejemplo donde el segundo nivel es el evento:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-2nd-level_17ac2875da08a2bc84a2feed44e03448">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">f_meas</span><span class="op">(</span><span class="va">two_class_example</span>, <span class="va">truth</span>, <span class="va">predicted</span>, event_level <span class="op">=</span> <span class="st">"second"</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   .metric .estimator .estimate</span></span>
 <span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 f_meas  binary         0.826</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 f_meas  binary         0.826</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In this output, the <code>.estimator</code> value of “binary” indicates that the standard formula for binary classes will be used.</p>
-<p>There are numerous classification metrics that use the predicted probabilities as inputs rather than the hard class predictions. For example, the receiver operating characteristic (ROC) curve computes the sensitivity and specificity over a continuum of different event thresholds. The predicted class column is not used. There are two <span class="pkg">yardstick</span> functions for this method: <code>roc_curve()</code> computes the data points that make up the ROC curve and <code>roc_auc()</code> computes the area under the curve.</p>
-<p>The interfaces to these types of metric functions use the <code>...</code> argument placeholder to pass in the appropriate class probability column. For two-class problems, the probability column for the event of interest is passed into the function:</p>
-<div class="cell" data-layout-align="center">
+<p>En este resultado, el valor <code>.estimator</code> de “binario” indica que se utilizará la fórmula estándar para clases binarias.</p>
+<p>Existen numerosas métricas de clasificación que utilizan las probabilidades predichas como entradas en lugar de las predicciones de clase estrictas. Por ejemplo, la curva de características operativas del receptor (ROC) calcula la sensibilidad y la especificidad sobre un continuo de diferentes umbrales de eventos. La columna de clase prevista no se utiliza. Hay dos funciones <span class="pkg">yardstick</span> para este método: <code>roc_curve()</code> calcula los puntos de datos que forman la curva ROC y <code>roc_auc()</code> calcula el área bajo la curva.</p>
+<p>Las interfaces para estos tipos de funciones métricas utilizan el marcador de posición del argumento <code>...</code> para pasar la columna de probabilidad de clase apropiada. Para problemas de dos clases, la columna de probabilidad del evento de interés se pasa a la función:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-2class-roc_02229861c0b5d38079609db59fee547f">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">two_class_curve</span> <span class="op">&lt;-</span> <span class="fu">roc_curve</span><span class="op">(</span><span class="va">two_class_example</span>, <span class="va">truth</span>, <span class="va">Class1</span><span class="op">)</span></span>
 <span><span class="va">two_class_curve</span></span>
 <span><span class="co">## # A tibble: 502 × 3</span></span>
@@ -580,26 +593,26 @@ div.csl-indent {
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   .metric .estimator .estimate</span></span>
 <span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 roc_auc binary         0.939</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 roc_auc binary         0.939</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code>two_class_curve</code> object can be used in a <code>ggplot</code> call to visualize the curve, as shown in <a href="#fig-example-roc-curve">Figure&nbsp;<span class="quarto-unresolved-ref">fig-example-roc-curve</span></a>. There is an <code>autoplot()</code> method that will take care of the details:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">autoplot</span><span class="op">(</span><span class="va">two_class_curve</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>El objeto <code>two_class_curve</code> se puede usar en una llamada <code>ggplot</code> para visualizar la curva, como se muestra en <a href="#fig-example-roc-curve">Figura&nbsp;<span>9.3</span></a>. Existe un método <code>autoplot()</code> que se encargará de los detalles:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-2class-roc-curve_608b94d8f3abed5fdafa571ea700905e">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">autoplot</span><span class="op">(</span><span class="va">two_class_curve</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/fig-example-roc-curve_5a95360c4fa44a318532b01497ece211">
 <div class="cell-output-display">
 <div id="fig-example-roc-curve" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-example-roc-curve-1.png" class="img-fluid figure-img" alt="An example ROC curve. The x-axis is one minus specificity and the y-axis is sensitivity. The curve bows towards the upper left-hand side of the plot area." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;9.3: Example ROC curve</figcaption></figure>
+<figure class="figure"><p><img src="09-judging-model-effectiveness_files/figure-html/fig-example-roc-curve-1.png" class="img-fluid figure-img" alt="Un ejemplo de curva ROC. El eje x es uno menos la especificidad y el eje y es la sensibilidad. La curva se inclina hacia el lado superior izquierdo del área de la gráfica." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;9.3: Ejemplo de curva ROC</figcaption></figure>
 </div>
 </div>
 </div>
-<p>If the curve was close to the diagonal line, then the model’s predictions would be no better than random guessing. Since the curve is up in the top, left-hand corner, we see that our model performs well at different thresholds.</p>
-<p>There are a number of other functions that use probability estimates, including <code>gain_curve()</code>, <code>lift_curve()</code>, and <code>pr_curve()</code>.</p>
-</section><section id="multiclass-classification-metrics" class="level2" data-number="9.4"><h2 data-number="9.4" class="anchored" data-anchor-id="multiclass-classification-metrics">
-<span class="header-section-number">9.4</span> Multiclass Classification Metrics</h2>
-<p>What about data with three or more classes? To demonstrate, let’s explore a different example data set that has four classes:</p>
-<div class="cell" data-layout-align="center">
+<p>Si la curva estuviera cerca de la línea diagonal, entonces las predicciones del modelo no serían mejores que las conjeturas aleatorias. Dado que la curva está arriba en la esquina superior izquierda, vemos que nuestro modelo funciona bien en diferentes umbrales.</p>
+<p>Hay otras funciones que utilizan estimaciones de probabilidad, incluidas <code>gain_curve()</code>, <code>lift_curve()</code> y <code>pr_curve()</code>.</p>
+</section><section id="métricas-de-clasificación-multiclase" class="level2" data-number="9.4"><h2 data-number="9.4" class="anchored" data-anchor-id="métricas-de-clasificación-multiclase">
+<span class="header-section-number">9.4</span> Métricas de Clasificación Multiclase</h2>
+<p>¿Qué pasa con los datos con tres o más clases? Para demostrarlo, exploremos un conjunto de datos de ejemplo diferente que tiene cuatro clases:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-hpc-example_203c646e654f845208ffbc2044efe393">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">hpc_cv</span><span class="op">)</span></span>
 <span><span class="fu">tibble</span><span class="op">(</span><span class="va">hpc_cv</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 3,467 × 7</span></span>
@@ -611,11 +624,11 @@ div.csl-indent {
 <span><span class="co">## 4 VF    VF    0.929 0.0653 0.00579 0.0000156  Fold01  </span></span>
 <span><span class="co">## 5 VF    VF    0.942 0.0543 0.00381 0.00000729 Fold01  </span></span>
 <span><span class="co">## 6 VF    VF    0.951 0.0462 0.00272 0.00000384 Fold01  </span></span>
-<span><span class="co">## # ℹ 3,461 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 3,461 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>As before, there are factors for the observed and predicted outcomes along with four other columns of predicted probabilities for each class. (These data also include a <code>Resample</code> column. These <code>hpc_cv</code> results are for out-of-sample predictions associated with 10-fold cross-validation. For the time being, this column will be ignored and we’ll discuss resampling in depth in <a href="#sec-resampling">Chapter&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-resampling</span></a>.)</p>
-<p>The functions for metrics that use the discrete class predictions are identical to their binary counterparts:</p>
-<div class="cell" data-layout-align="center">
+<p>Como antes, hay factores para los resultados observados y previstos junto con otras cuatro columnas de probabilidades previstas para cada clase. (Estos datos también incluyen una columna <code>Resample</code>. Estos resultados <code>hpc_cv</code> son para predicciones fuera de muestra asociadas con una validación cruzada de 10 veces. Por el momento, esta columna se ignorará y discutiremos el remuestreo en profundidad en <a href="10-resampling.html">Capítulo&nbsp;<span>10</span></a>.)</p>
+<p>Las funciones para las métricas que utilizan predicciones de clases discretas son idénticas a sus contrapartes binarias:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-mutliclass-pred_21f11da1c3996ad31fef9438e62163b3">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">accuracy</span><span class="op">(</span><span class="va">hpc_cv</span>, <span class="va">obs</span>, <span class="va">pred</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   .metric  .estimator .estimate</span></span>
@@ -626,19 +639,19 @@ div.csl-indent {
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   .metric .estimator .estimate</span></span>
 <span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 mcc     multiclass     0.515</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 mcc     multiclass     0.515</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Note that, in these results, a “multiclass” <code>.estimator</code> is listed. Like “binary,” this indicates that the formula for outcomes with three or more class levels was used. The Matthews correlation coefficient was originally designed for two classes but has been extended to cases with more class levels.</p>
-<p>There are methods for taking metrics designed to handle outcomes with only two classes and extend them for outcomes with more than two classes. For example, a metric such as sensitivity measures the true positive rate which, by definition, is specific to two classes (i.e., “event” and “nonevent”). How can this metric be used in our example data?</p>
-<p>There are wrapper methods that can be used to apply sensitivity to our four-class outcome. These options are macro-averaging, macro-weighted averaging, and micro-averaging:</p>
+<p>Tenga en cuenta que, en estos resultados, aparece un <code>.estimator</code> “multiclase”. Al igual que “binario”, esto indica que se utilizó la fórmula para resultados con tres o más niveles de clase. El coeficiente de correlación de Matthews se diseñó originalmente para dos clases, pero se ha extendido a casos con más niveles de clase.</p>
+<p>Existen métodos para tomar métricas diseñadas para manejar resultados con solo dos clases y extenderlas para resultados con más de dos clases. Por ejemplo, una métrica como la sensibilidad mide la tasa de verdaderos positivos que, por definición, es específica de dos clases (es decir, “evento” y “no evento”). ¿Cómo se puede utilizar esta métrica en nuestros datos de ejemplo?</p>
+<p>Existen métodos contenedores que se pueden utilizar para aplicar sensibilidad a nuestro resultado de cuatro clases. Estas opciones son promedio macro, promedio macroponderado y micropromedio:</p>
 <ul>
-<li><p>Macro-averaging computes a set of one-versus-all metrics using the standard two-class statistics. These are averaged.</p></li>
-<li><p>Macro-weighted averaging does the same but the average is weighted by the number of samples in each class.</p></li>
-<li><p>Micro-averaging computes the contribution for each class, aggregates them, then computes a single metric from the aggregates.</p></li>
+<li><p>El promedio macro calcula un conjunto de métricas de uno contra todos utilizando las estadísticas estándar de dos clases. Estos están promediados.</p></li>
+<li><p>El promedio macroponderado hace lo mismo, pero el promedio se pondera según el número de muestras de cada clase.</p></li>
+<li><p>El micropromedio calcula la contribución de cada clase, las agrega y luego calcula una única métrica a partir de los agregados.</p></li>
 </ul>
-<p>See <span class="citation" data-cites="wu2017unified">Wu and Zhou (<a href="#ref-wu2017unified" role="doc-biblioref">2017</a>)</span> and <span class="citation" data-cites="OpitzBurst">Opitz and Burst (<a href="#ref-OpitzBurst" role="doc-biblioref">2019</a>)</span> for more on extending classification metrics to outcomes with more than two classes.</p>
-<p>Using sensitivity as an example, the usual two-class calculation is the ratio of the number of correctly predicted events divided by the number of true events. The manual calculations for these averaging methods are:</p>
-<div class="cell" data-layout-align="center">
+<p>Consulte <span class="citation" data-cites="wu2017unified">Wu y Zhou (<a href="references.html#ref-wu2017unified" role="doc-biblioref">2017</a>)</span> y <span class="citation" data-cites="OpitzBurst">Opitz y Burst (<a href="references.html#ref-OpitzBurst" role="doc-biblioref">2019</a>)</span> para obtener más información sobre cómo ampliar las métricas de clasificación a resultados con más de dos clases.</p>
+<p>Usando la sensibilidad como ejemplo, el cálculo habitual de dos clases es la relación entre el número de eventos predichos correctamente dividido por el número de eventos verdaderos. Los cálculos manuales para estos métodos de promediación son:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-sens-manual_3aa2f02a4c64dbbebd6cd1ee0d73eacf">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">class_totals</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">count</span><span class="op">(</span><span class="va">hpc_cv</span>, <span class="va">obs</span>, name <span class="op">=</span> <span class="st">"totals"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>class_wts <span class="op">=</span> <span class="va">totals</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">totals</span><span class="op">)</span><span class="op">)</span></span>
@@ -655,7 +668,7 @@ div.csl-indent {
 <span>  <span class="fu">count</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">ungroup</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Compute the four sensitivities using 1-vs-all</span></span>
+<span><span class="co"># Calcule las cuatro sensibilidades usando 1 contra todos</span></span>
 <span><span class="va">one_versus_all</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">cell_counts</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">obs</span> <span class="op">==</span> <span class="va">pred</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
@@ -670,7 +683,7 @@ div.csl-indent {
 <span><span class="co">## 3 M     M        79    412    0.119  0.192</span></span>
 <span><span class="co">## 4 L     L       111    208    0.0600 0.534</span></span>
 <span></span>
-<span><span class="co"># Three different estimates:</span></span>
+<span><span class="co"># Tres estimaciones diferentes:</span></span>
 <span><span class="va">one_versus_all</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">summarize</span><span class="op">(</span></span>
 <span>    macro <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">sens</span><span class="op">)</span>, </span>
@@ -680,10 +693,10 @@ div.csl-indent {
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   macro macro_wts micro</span></span>
 <span><span class="co">##   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 0.560     0.709 0.709</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 0.560     0.709 0.709</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Thankfully, there is no need to manually implement these averaging methods. Instead, <span class="pkg">yardstick</span> functions can automatically apply these methods via the <code>estimator</code> argument:</p>
-<div class="cell" data-layout-align="center">
+<p>Afortunadamente, no es necesario implementar manualmente estos métodos de promedio. En cambio, las funciones <span class="pkg">yardstick</span> pueden aplicar automáticamente estos métodos a través del argumento <code>estimator</code>:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-sens_cce961f074643e8f1b389934057929f1">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">sensitivity</span><span class="op">(</span><span class="va">hpc_cv</span>, <span class="va">obs</span>, <span class="va">pred</span>, estimator <span class="op">=</span> <span class="st">"macro"</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   .metric     .estimator .estimate</span></span>
@@ -698,26 +711,26 @@ div.csl-indent {
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   .metric     .estimator .estimate</span></span>
 <span><span class="co">##   &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 sensitivity micro          0.709</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 sensitivity micro          0.709</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>When dealing with probability estimates, there are some metrics with multiclass analogs. For example, <span class="citation" data-cites="HandTill">Hand and Till (<a href="#ref-HandTill" role="doc-biblioref">2001</a>)</span> determined a multiclass technique for ROC curves. In this case, <em>all</em> of the class probability columns must be given to the function:</p>
-<div class="cell" data-layout-align="center">
+<p>Cuando se trata de estimaciones de probabilidad, existen algunas métricas con análogos multiclase. Por ejemplo, <span class="citation" data-cites="HandTill">Hand y Till (<a href="references.html#ref-HandTill" role="doc-biblioref">2001</a>)</span> determinó una técnica multiclase para curvas ROC. En este caso, <em>todas</em> las columnas de probabilidad de clase deben asignarse a la función:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-multi-class-roc_504791ac22dcfe2e962839f37607c05b">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">roc_auc</span><span class="op">(</span><span class="va">hpc_cv</span>, <span class="va">obs</span>, <span class="va">VF</span>, <span class="cn">F</span>, <span class="va">M</span>, <span class="va">L</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   .metric .estimator .estimate</span></span>
 <span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 roc_auc hand_till      0.829</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 roc_auc hand_till      0.829</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Macro-weighted averaging is also available as an option for applying this metric to a multiclass outcome:</p>
-<div class="cell" data-layout-align="center">
+<p>El promedio macroponderado también está disponible como opción para aplicar esta métrica a un resultado multiclase:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-multi-class-roc-macro_0a7c177042351f5c4a30875bee3ea806">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">roc_auc</span><span class="op">(</span><span class="va">hpc_cv</span>, <span class="va">obs</span>, <span class="va">VF</span>, <span class="cn">F</span>, <span class="va">M</span>, <span class="va">L</span>, estimator <span class="op">=</span> <span class="st">"macro_weighted"</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 3</span></span>
 <span><span class="co">##   .metric .estimator     .estimate</span></span>
 <span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;              &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 roc_auc macro_weighted     0.868</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 roc_auc macro_weighted     0.868</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Finally, all of these performance metrics can be computed using <span class="pkg">dplyr</span> groupings. Recall that these data have a column for the resampling groups. We haven’t yet discussed resampling in detail, but notice how we can pass a grouped data frame to the metric function to compute the metrics for each group:</p>
-<div class="cell" data-layout-align="center">
+<p>Finalmente, todas estas métricas de rendimiento se pueden calcular utilizando agrupaciones <span class="pkg">dplyr</span>. Recuerde que estos datos tienen una columna para los grupos de remuestreo. Aún no hemos analizado el remuestreo en detalle, pero observe cómo podemos pasar un marco de datos agrupados a la función métrica para calcular las métricas para cada grupo:</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-multi-class-acc-grouped_aa08a7fd177fe4bc171f076de6b81e1b">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">hpc_cv</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">Resample</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">accuracy</span><span class="op">(</span><span class="va">obs</span>, <span class="va">pred</span><span class="op">)</span></span>
@@ -730,51 +743,118 @@ div.csl-indent {
 <span><span class="co">## 4 Fold04   accuracy multiclass     0.712</span></span>
 <span><span class="co">## 5 Fold05   accuracy multiclass     0.712</span></span>
 <span><span class="co">## 6 Fold06   accuracy multiclass     0.697</span></span>
-<span><span class="co">## # ℹ 4 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 4 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The groupings also translate to the <code>autoplot()</code> methods, with results shown in <a href="#fig-grouped-roc-curves">Figure&nbsp;<span class="quarto-unresolved-ref">fig-grouped-roc-curves</span></a>.</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Four 1-vs-all ROC curves for each fold</span></span>
+<p>Las agrupaciones también se traducen a los métodos <code>autoplot()</code>, y los resultados se muestran en <a href="#fig-grouped-roc-curves">Figura&nbsp;<span>9.4</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/performance-multi-class-roc-grouped_29d5bb6d7222c3f9cedfe84f8d0c32c9">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Cuatro curvas ROC 1 contra todos para cada pliegue</span></span>
 <span><span class="va">hpc_cv</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">Resample</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">roc_curve</span><span class="op">(</span><span class="va">obs</span>, <span class="va">VF</span>, <span class="cn">F</span>, <span class="va">M</span>, <span class="va">L</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">autoplot</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">autoplot</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center">
+<div class="cell" data-layout-align="center" data-hash="09-judging-model-effectiveness_cache/html/fig-grouped-roc-curves_d5a09b1b8f15fff4b136a4b4f9ce84af">
 <div class="cell-output-display">
 <div id="fig-grouped-roc-curves" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-grouped-roc-curves-1.png" class="img-fluid figure-img" alt="Resampled ROC curves for each of the four outcome classes. There are four panels for classes VF, F, M, and L. Each panel contains ten ROC curves for each of the resampled data sets." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;9.4: Resampled ROC curves for each of the four outcome classes</figcaption></figure>
+<figure class="figure"><p><img src="09-judging-model-effectiveness_files/figure-html/fig-grouped-roc-curves-1.png" class="img-fluid figure-img" alt="Curvas ROC remuestreadas para cada una de las cuatro clases de resultados. Hay cuatro paneles para las clases VF, F, M y L. Cada panel contiene diez curvas ROC para cada uno de los conjuntos de datos remuestreados." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;9.4: Curvas ROC remuestreadas para cada una de las cuatro clases de resultados.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>This visualization shows us that the different groups all perform about the same, but that the <code>VF</code> class is predicted better than the <code>F</code> or <code>M</code> classes, since the <code>VF</code> ROC curves are more in the top-left corner. This example uses resamples as the groups, but any grouping in your data can be used. This <code>autoplot()</code> method can be a quick visualization method for model effectiveness across outcome classes and/or groups.</p>
+<p>Esta visualización nos muestra que todos los diferentes grupos se desempeñan más o menos igual, pero que la clase <code>VF</code> se predice mejor que las clases <code>F</code> o <code>M</code>, ya que las curvas ROC <code>VF</code> están más en la esquina superior izquierda. . Este ejemplo utiliza remuestreos como grupos, pero se puede utilizar cualquier agrupación de sus datos. Este método <code>autoplot()</code> puede ser un método de visualización rápida para la efectividad del modelo en todas las clases y/o grupos de resultados.</p>
 </section><section id="sec-performance-summary" class="level2" data-number="9.5"><h2 data-number="9.5" class="anchored" data-anchor-id="sec-performance-summary">
-<span class="header-section-number">9.5</span> Chapter Summary</h2>
-<p>Different metrics measure different aspects of a model fit, e.g., RMSE measures accuracy while the <span class="math inline">\(R^2\)</span> measures correlation. Measuring model performance is important even when a given model will not be used primarily for prediction; predictive power is also important for inferential or descriptive models. Functions from the <span class="pkg">yardstick</span> package measure the effectiveness of a model using data. The primary tidymodels interface uses tidyverse principles and data frames (as opposed to having vector arguments). Different metrics are appropriate for regression and classification metrics and, within these, there are sometimes different ways to estimate the statistics, such as for multiclass outcomes.</p>
+<span class="header-section-number">9.5</span> Resumen del capítulo</h2>
+<p>Diferentes métricas miden diferentes aspectos del ajuste de un modelo, por ejemplo, RMSE mide la precisión mientras que <span class="math inline">\(R^2\)</span> mide la correlación. Medir el rendimiento del modelo es importante incluso cuando un modelo determinado no se utilizará principalmente para predicción; el poder predictivo también es importante para los modelos inferenciales o descriptivos. Las funciones del paquete <span class="pkg">yardstick</span> miden la efectividad de un modelo utilizando datos. La interfaz principal de tidymodels utiliza principios de tidyverse y marcos de datos (en lugar de tener argumentos vectoriales). Diferentes métricas son apropiadas para las métricas de regresión y clasificación y, dentro de ellas, a veces hay diferentes formas de estimar las estadísticas, como para resultados multiclase.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-CraigSchapiro" class="csl-entry" role="listitem">
-Craig–Schapiro, R, M Kuhn, C Xiong, E Pickering, J Liu, T Misko, R Perrin, et al. 2011. <span>“Multiplexed Immunoassay Panel Identifies Novel <span>CSF</span> Biomarkers for <span class="nocase">Alzheimer’s</span> Disease Diagnosis and Prognosis.”</span> <em>PLoS ONE</em> 6 (4): e18850.
+Craig–Schapiro, R, M Kuhn, C Xiong, E Pickering, J Liu, T Misko, R Perrin, et&nbsp;al. 2011. <span>«Multiplexed immunoassay panel identifies novel <span>CSF</span> biomarkers for <span>Alzheimer’s</span> disease diagnosis and prognosis»</span>. <em>PLoS ONE</em> 6 (4): e18850.
 </div>
 <div id="ref-HandTill" class="csl-entry" role="listitem">
-Hand, D, and R Till. 2001. <span>“A Simple Generalisation of the Area Under the <span>ROC</span> Curve for Multiple Class Classification Problems.”</span> <em>Machine Learning</em> 45 (August): 171–86.
+Hand, D, y R Till. 2001. <span>«A simple generalisation of the area under the <span>ROC</span> curve for multiple class classification problems»</span>. <em>Machine Learning</em> 45 (agosto): 171-86.
 </div>
 <div id="ref-HosmerLemeshow" class="csl-entry" role="listitem">
-Hosmer, D, and Sy Lemeshow. 2000. <em>Applied Logistic Regression</em>. New York: John Wiley; Sons.
+Hosmer, D, y Sy Lemeshow. 2000. <em>Applied Logistic Regression</em>. New York: John Wiley; Sons.
 </div>
 <div id="ref-Kim:2009p4370" class="csl-entry" role="listitem">
-Jungsu, K, D Basak, and D Holtzman. 2009. <span>“The Role of Apolipoprotein <span>E</span> in <span class="nocase">Alzheimer’s</span> Disease.”</span> <em>Neuron</em> 63 (3): 287–303.
+Jungsu, K, D Basak, y D Holtzman. 2009. <span>«The role of Apolipoprotein <span>E</span> in <span>Alzheimer’s</span> disease»</span>. <em>Neuron</em> 63 (3): 287-303.
 </div>
 <div id="ref-OpitzBurst" class="csl-entry" role="listitem">
-Opitz, J, and S Burst. 2019. <span>“Macro F1 and Macro F1.”</span> <a href="https://arxiv.org/abs/1911.03347">https://arxiv.org/abs/1911.03347</a>.
+Opitz, J, y S Burst. 2019. <span>«Macro F1 and Macro F1»</span>. <a href="https://arxiv.org/abs/1911.03347">https://arxiv.org/abs/1911.03347</a>.
 </div>
 <div id="ref-wu2017unified" class="csl-entry" role="listitem">
-Wu, X, and Z Zhou. 2017. <span>“A Unified View of Multi-Label Performance Measures.”</span> In <em>International Conference on Machine Learning</em>, 3780–88.
+Wu, X, y Z Zhou. 2017. <span>«A unified view of multi-label performance measures»</span>. En <em>International Conference on Machine Learning</em>, 3780-88.
 </div>
 </div>
-</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -828,12 +908,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copiado");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copiado");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
@@ -1008,7 +1088,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./08-feature-engineering.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Feature Engineering with recipes</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería de Características con recipes</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

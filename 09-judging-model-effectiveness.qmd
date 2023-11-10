@@ -11,21 +11,21 @@ set.seed(245)
 ad_folds <- vfold_cv(ad_data, repeats = 5)
 ```
 
-# Judging Model Effectiveness {#sec-performance}
+# Juzgar la Eficacia del Modelo {#sec-performance}
 
-Once we have a model, we need to know how well it works. A quantitative approach for estimating effectiveness allows us to understand the model, to compare different models, or to tweak the model to improve performance. Our focus in tidymodels is on empirical validation; this usually means using data that were not used to create the model as the substrate to measure effectiveness.
+Una vez que tenemos un modelo, necesitamos saber qué tan bien funciona. Un enfoque cuantitativo para estimar la efectividad nos permite comprender el modelo, comparar diferentes modelos o modificar el modelo para mejorar el rendimiento. Nuestro enfoque en tidymodels está en la validación empírica; Esto generalmente significa usar datos que no se usaron para crear el modelo como sustrato para medir la efectividad.
 
 ::: rmdwarning
-The best approach to empirical validation involves using *resampling* methods that will be introduced in [Chapter @sec-resampling]. In this chapter, we will motivate the need for empirical validation by using the test set. Keep in mind that the test set can only be used once, as explained in @sec-splitting-methods.
+El mejor enfoque para la validación empírica implica el uso de métodos de *resampling* que se presentarán en el [Capítulo @sec-resampling]. En este capítulo, motivaremos la necesidad de una validación empírica mediante el uso del conjunto de pruebas. Tenga en cuenta que el conjunto de prueba solo se puede utilizar una vez, como se explica en @sec-splitting-methods.
 :::
 
-When judging model effectiveness, your decision about which metrics to examine can be critical. In later chapters, certain model parameters will be empirically optimized and a primary performance metric will be used to choose the best sub-model. Choosing the wrong metric can easily result in unintended consequences. For example, two common metrics for regression models are the root mean squared error (RMSE) and the coefficient of determination (a.k.a. $R^2$). The former measures *accuracy* while the latter measures *correlation*. These are not necessarily the same thing. @fig-performance-reg-metrics demonstrates the difference between the two.
+Al juzgar la eficacia del modelo, su decisión sobre qué métricas examinar puede ser fundamental. En capítulos posteriores, se optimizarán empíricamente ciertos parámetros del modelo y se utilizará una métrica de rendimiento primaria para elegir el mejor submodelo. Elegir la métrica incorrecta puede fácilmente tener consecuencias no deseadas. Por ejemplo, dos métricas comunes para los modelos de regresión son la raíz del error cuadrático medio (RMSE) y el coeficiente de determinación (también conocido como $R^2$). El primero mide la *precisión* mientras que el segundo mide la *correlación*. Estos no son necesariamente lo mismo. @fig-Performance-reg-metrics demuestra la diferencia entre los dos.
 
 ```{r}
 #| label: fig-performance-reg-metrics
 #| echo: FALSE
-#| fig.cap: "Observed versus predicted values for models that are optimized using the RMSE compared to the coefficient of determination"
-#| fig.alt: "Scatter plots of numeric observed versus predicted values for models that are optimized using the RMSE and the coefficient of determination. The former results in results that are close to the 45 degree line of identity while the latter shows results with a tight linear correlation but falls well off of the line of identity."
+#| fig.cap: "Valores observados versus valores predichos para modelos optimizados utilizando el RMSE en comparación con el coeficiente de determinación"
+#| fig.alt: "Gráficos de dispersión de valores numéricos observados versus valores predichos para modelos optimizados utilizando el RMSE y el coeficiente de determinación. El primero produce resultados cercanos a la línea de identidad de 45 grados, mientras que el segundo muestra resultados con una estrecha correlación lineal pero se aleja mucho de la línea de identidad."
 
 set.seed(234)
 n <- 200
@@ -33,28 +33,28 @@ obs <- runif(n, min = 2, max = 20)
 
 reg_ex <- 
   tibble(
-    observed = c(obs, obs),
-    predicted = c(obs + rnorm(n, sd = 1.5), 5 + .5 * obs + rnorm(n, sd = .5)),
-    approach = rep(c("RMSE optimized", "R^2 optimized"), each = n)
+    observado = c(obs, obs),
+    predecido = c(obs + rnorm(n, sd = 1.5), 5 + .5 * obs + rnorm(n, sd = .5)),
+    enfoque = rep(c("RMSE optimizado", "R^2 optimizado"), each = n)
   ) %>% 
-  mutate(approach = factor(
-    approach, 
-    levels = c("RMSE optimized", "R^2 optimized"),
-    labels = c(expression(RMSE ~ optimized), expression(italic(R^2) ~ optimized)))
+  mutate(enfoque = factor(
+    enfoque, 
+    levels = c("RMSE optimizado", "R^2 optimizado"),
+    labels = c(expression(RMSE ~ optimizado), expression(italic(R^2) ~ optimizado)))
   )
 
-ggplot(reg_ex, aes(x = observed, y = predicted)) + 
+ggplot(reg_ex, aes(x = observado, y = predecido)) + 
   geom_abline(lty = 2) + 
   geom_point(alpha = 0.5) + 
   coord_obs_pred() + 
-  facet_wrap(~ approach, labeller = "label_parsed")
+  facet_wrap(~ enfoque, labeller = "label_parsed")
 ```
 
-A model optimized for RMSE has more variability but has relatively uniform accuracy across the range of the outcome. The right panel shows that there is a tighter correlation between the observed and predicted values but this model performs poorly in the tails.
+Un modelo optimizado para RMSE tiene más variabilidad pero tiene una precisión relativamente uniforme en todo el rango del resultado. El panel derecho muestra que existe una correlación más estrecha entre los valores observados y predichos, pero este modelo funciona mal en las colas.
 
-This chapter will demonstrate the `r pkg(yardstick)` package, a core tidymodels packages with the focus of measuring model performance. Before illustrating syntax, let's explore whether empirical validation using performance metrics is worthwhile when a model is focused on inference rather than prediction.
+Este capítulo demostrará el paquete `r pkg(yardstick)`, un paquete central de tidymodels cuyo objetivo es medir el rendimiento del modelo. Antes de ilustrar la sintaxis, exploremos si vale la pena la validación empírica mediante métricas de rendimiento cuando un modelo se centra en la inferencia en lugar de la predicción.
 
-## Performance Metrics and Inference
+## Métricas de rendimiento e inferencia
 
 ```{r performance ad-model, include = FALSE}
 ad_mod <- logistic_reg() %>% set_engine("glm") 
@@ -96,63 +96,63 @@ two_factor_res <-
   pull(mean)
 ```
 
-The effectiveness of any given model depends on how the model will be used. An inferential model is used primarily to understand relationships, and typically emphasizes the choice (and validity) of probabilistic distributions and other generative qualities that define the model. For a model used primarily for prediction, by contrast, predictive strength is of primary importance and other concerns about underlying statistical qualities may be less important. Predictive strength is usually determined by how close our predictions come to the observed data, i.e., fidelity of the model predictions to the actual results. This chapter focuses on functions that can be used to measure predictive strength. However, our advice for those developing inferential models is to use these techniques even when the model will not be used with the primary goal of prediction.
+La eficacia de cualquier modelo depende de cómo se utilizará. Un modelo inferencial se utiliza principalmente para comprender las relaciones y normalmente enfatiza la elección (y validez) de distribuciones probabilísticas y otras cualidades generativas que definen el modelo. Por el contrario, para un modelo utilizado principalmente para la predicción, la fuerza predictiva es de primordial importancia y otras preocupaciones sobre las cualidades estadísticas subyacentes pueden ser menos importantes. La fuerza predictiva generalmente está determinada por qué tan cerca están nuestras predicciones de los datos observados, es decir, la fidelidad de las predicciones del modelo a los resultados reales. Este capítulo se centra en funciones que se pueden utilizar para medir la fuerza predictiva. Sin embargo, nuestro consejo para quienes desarrollan modelos inferenciales es utilizar estas técnicas incluso cuando el modelo no se utilizará con el objetivo principal de predicción.
 
-A longstanding issue with the practice of inferential statistics is that, with a focus purely on inference, it is difficult to assess the credibility of a model. For example, consider the Alzheimer's disease data from @CraigSchapiro when `r nrow(ad_data)` patients were studied to determine the factors that influence cognitive impairment. An analysis might take the known risk factors and build a logistic regression model where the outcome is binary (impaired/non-impaired). Let's consider predictors for age, sex, and the Apolipoprotein E genotype. The latter is a categorical variable with the six possible combinations of the three main variants of this gene. Apolipoprotein E is known to have an association with dementia [@Kim:2009p4370].
+Un problema de larga data con la práctica de la estadística inferencial es que, centrándose exclusivamente en la inferencia, es difícil evaluar la credibilidad de un modelo. Por ejemplo, considere los datos sobre la enfermedad de Alzheimer de @CraigSchapiro cuando se estudiaron pacientes con `r nrow(ad_data)` para determinar los factores que influyen en el deterioro cognitivo. Un análisis podría tomar los factores de riesgo conocidos y construir un modelo de regresión logística donde el resultado sea binario (deteriorado/no deteriorado). Consideremos los predictores de edad, sexo y genotipo de apolipoproteína E. Esta última es una variable categórica con las seis combinaciones posibles de las tres variantes principales de este gen. Se sabe que la apolipoproteína E tiene una asociación con la demencia [@Kim:2009p4370].
 
-A superficial, but not uncommon, approach to this analysis would be to fit a large model with main effects and interactions, then use statistical tests to find the minimal set of model terms that are statistically significant at some pre-defined level. If a full model with the three factors and their two- and three-way interactions were used, an initial phase would be to test the interactions using sequential likelihood ratio tests [@HosmerLemeshow]. Let's step through this kind of approach for the example Alzheimer's disease data:
+Un enfoque superficial, pero no infrecuente, para este análisis sería ajustar un modelo grande con efectos e interacciones principales y luego utilizar pruebas estadísticas para encontrar el conjunto mínimo de términos del modelo que sean estadísticamente significativos en algún nivel predefinido. Si se utilizara un modelo completo con los tres factores y sus interacciones de dos y tres vías, una fase inicial sería probar las interacciones utilizando pruebas de índice de probabilidad secuencial [@HosmerLemeshow]. Analicemos este tipo de enfoque para el ejemplo de datos sobre la enfermedad de Alzheimer:
 
--   When comparing the model with all two-way interactions to one with the additional three-way interaction, the likelihood ratio tests produces a p-value of `r three_factor_test[2, "Pr(>Chi)"]`. This implies that there is no evidence that the `r xfun::numbers_to_words(abs(three_factor_test[2, "Df"]))` additional model terms associated with the three-way interaction explain enough of the variation in the data to keep them in the model.
+-   Al comparar el modelo con todas las interacciones de dos vías con uno con la interacción de tres vías adicional, las pruebas de razón de verosimilitud producen un valor p de `r three_factor_test[2, "Pr(>Chi)"]`. Esto implica que no hay evidencia de que los términos del modelo adicionales `r xfun::numbers_to_words(abs(three_factor_test[2, "Df"]))` asociados con la interacción de tres vías expliquen suficiente variación en los datos para mantenerlos en el modelo.
 
--   Next, the two-way interactions are similarly evaluated against the model with no interactions. The p-value here is `r two_factor_test[2, "Pr(>Chi)"]`. This is somewhat borderline, but, given the small sample size, it would be prudent to conclude that there is evidence that some of the `r abs(two_factor_test[2, "Df"])` possible two-way interactions are important to the model.
+-   A continuación, las interacciones bidireccionales se evalúan de manera similar con respecto al modelo sin interacciones. El valor p aquí es `r two_factor_test[2, "Pr(>Chi)"]`. Esto es algo dudoso, pero, dado el pequeño tamaño de la muestra, sería prudente concluir que hay evidencia de que algunas de las posibles interacciones bidireccionales `r abs(two_factor_test[2, "Df"])` son importantes para la modelo.
 
--   From here, we would build some explanation of the results. The interactions would be particularly important to discuss since they may spark interesting physiological or neurological hypotheses to be explored further.
+-   A partir de aquí, construiríamos alguna explicación de los resultados. Sería particularmente importante discutir las interacciones, ya que pueden generar hipótesis fisiológicas o neurológicas interesantes que se explorarán más a fondo.
 
-While shallow, this analysis strategy is common in practice as well as in the literature. This is especially true if the practitioner has limited formal training in data analysis.
+Si bien superficial, esta estrategia de análisis es común tanto en la práctica como en la literatura. Esto es especialmente cierto si el profesional tiene una formación formal limitada en análisis de datos.
 
-One missing piece of information in this approach is how closely this model fits the actual data. Using resampling methods, discussed in [Chapter @sec-resampling], we can estimate the accuracy of this model to be about `r round(two_factor_res * 100, 1)`%. Accuracy is often a poor measure of model performance; we use it here because it is commonly understood. If the model has `r round(two_factor_res * 100, 1)`% fidelity to the data, should we trust conclusions it produces? We might think so until we realize that the baseline rate of nonimpaired patients in the data is `r round(mean(ad_data$Class == "Control") * 100, 1)`%. This means that, despite our statistical analysis, the two-factor model appears to be only `r round((two_factor_res - mean(ad_data$Class == "Control")) * 100, 1)`% better than a simple heuristic that always predicts patients to be unimpaired, regardless of the observed data.
+Un dato que falta en este enfoque es qué tan cerca se ajusta este modelo a los datos reales. Usando métodos de remuestreo, discutidos en el [Capítulo @sec-resampling], podemos estimar que la precisión de este modelo es aproximadamente `r round(two_factor_res * 100, 1)`%. La precisión es a menudo una mala medida del rendimiento del modelo; Lo usamos aquí porque se entiende comúnmente. Si el modelo tiene `r round(two_factor_res * 100, 1)`% de fidelidad a los datos, ¿deberíamos confiar en las conclusiones que produce? Podríamos pensar así hasta que nos demos cuenta de que la tasa inicial de pacientes no deteriorados en los datos es `r round(mean(ad_data$Class == "Control") * 100, 1)`%. Esto significa que, a pesar de nuestro análisis estadístico, el modelo de dos factores parece ser sólo `r round((two_factor_res - mean(ad_data$Class == "Control")) * 100, 1)`% mejor que una simple heurística que siempre predice que los pacientes no sufrirán daños, independientemente de los datos observados.
 
 ::: rmdnote
-The point of this analysis is to demonstrate the idea that optimization of statistical characteristics of the model does not imply that the model fits the data well. Even for purely inferential models, some measure of fidelity to the data should accompany the inferential results. Using this, the consumers of the analyses can calibrate their expectations of the results.
+El objetivo de este análisis es demostrar la idea de que la optimización de las características estadísticas del modelo no implica que el modelo se ajuste bien a los datos. Incluso para modelos puramente inferenciales, alguna medida de fidelidad a los datos debería acompañar a los resultados inferenciales. Con esto, los consumidores de los análisis pueden calibrar sus expectativas sobre los resultados.
 :::
 
-In the remainder of this chapter, we will discuss general approaches for evaluating models via empirical validation. These approaches are grouped by the nature of the outcome data: purely numeric, binary classes, and three or more class levels.
+En el resto de este capítulo, discutiremos enfoques generales para evaluar modelos mediante validación empírica. Estos enfoques se agrupan según la naturaleza de los datos de resultados: puramente numéricos, clases binarias y tres o más niveles de clase.
 
-## Regression Metrics
+## Métricas de regresión
 
-Recall from @sec-parsnip-predictions that tidymodels prediction functions produce tibbles with columns for the predicted values. These columns have consistent names, and the functions in the `r pkg(yardstick)` package that produce performance metrics have consistent interfaces. The functions are data frame-based, as opposed to vector-based, with the general syntax of:
+Recuerde de @sec-parsnip-predictions que las funciones de predicción de tidymodels producen tibbles con columnas para los valores predichos. Estas columnas tienen nombres consistentes y las funciones en el paquete `r pkg(yardstick)` que producen métricas de rendimiento tienen interfaces consistentes. Las funciones están basadas en marcos de datos, a diferencia de vectores, con la sintaxis general de:
 
 ``` r
 function(data, truth, ...)
 ```
 
-where `data` is a data frame or tibble and `truth` is the column with the observed outcome values. The ellipses or other arguments are used to specify the column(s) containing the predictions.
+donde `data` es un marco de datos o tibble y `truth` es la columna con los valores de resultados observados. Las elipses u otros argumentos se utilizan para especificar las columnas que contienen las predicciones.
 
-To illustrate, let's take the model from @sec-recipes-summary. This model `lm_wflow_fit` combines a linear regression model with a predictor set supplemented with an interaction and spline functions for longitude and latitude. It was created from a training set (named `ames_train`). Although we do not advise using the test set at this juncture of the modeling process, it will be used here to illustrate functionality and syntax. The data frame `ames_test` consists of `r nrow(ames_test)` properties. To start, let's produce predictions:
+Para ilustrar, tomemos el modelo de @sec-recipes-summary. Este modelo `lm_wflow_fit` combina un modelo de regresión lineal con un conjunto de predictores complementado con una interacción y funciones spline para longitud y latitud. Fue creado a partir de un conjunto de entrenamiento (llamado `ames_train`). Aunque no recomendamos utilizar el conjunto de pruebas en este punto del proceso de modelado, se utilizará aquí para ilustrar la funcionalidad y la sintaxis. El marco de datos `ames_test` consta de las propiedades `r nrow(ames_test)`. Para empezar, hagamos predicciones:
 
 ```{r performance-predict-ames}
 ames_test_res <- predict(lm_fit, new_data = ames_test %>% select(-Sale_Price))
 ames_test_res
 ```
 
-The predicted numeric outcome from the regression model is named `.pred`. Let's match the predicted values with their corresponding observed outcome values:
+El resultado numérico previsto por el modelo de regresión se denomina `.pred`. Hagamos coincidir los valores predichos con sus correspondientes valores de resultado observados:
 
 ```{r performance-ames-outcome}
 ames_test_res <- bind_cols(ames_test_res, ames_test %>% select(Sale_Price))
 ames_test_res
 ```
 
-We see that these values mostly look close, but we don't yet have a quantitative understanding of how the model is doing because we haven't computed any performance metrics. Note that both the predicted and observed outcomes are in log-10 units. It is best practice to analyze the predictions on the transformed scale (if one were used) even if the predictions are reported using the original units.
+Vemos que estos valores en su mayoría parecen cercanos, pero aún no tenemos una comprensión cuantitativa de cómo funciona el modelo porque no hemos calculado ninguna métrica de rendimiento. Tenga en cuenta que tanto los resultados previstos como los observados están en unidades log-10. Es una buena práctica analizar las predicciones en la escala transformada (si se usara una), incluso si las predicciones se informan utilizando las unidades originales.
 
-Let's plot the data in @fig-ames-performance-plot before computing metrics:
+Trazamos los datos en @fig-ames-performance-plot antes de calcular las métricas:
 
 ```{r performance-ames-plot, eval=FALSE}
 ggplot(ames_test_res, aes(x = Sale_Price, y = .pred)) + 
-  # Create a diagonal line:
+  # Crear una línea diagonal:
   geom_abline(lty = 2) + 
   geom_point(alpha = 0.5) + 
-  labs(y = "Predicted Sale Price (log10)", x = "Sale Price (log10)") +
-  # Scale and size the x- and y-axis uniformly:
+  labs(y = "Precio de Venta Predecido (log10)", x = "Precio de Venta (log10)") +
+  # Escale y dimensione los ejes x e y de manera uniforme:
   coord_obs_pred()
 ```
 
@@ -160,81 +160,81 @@ ggplot(ames_test_res, aes(x = Sale_Price, y = .pred)) +
 #| label: fig-ames-performance-plot
 #| ref.label: "performance-ames-plot"
 #| echo: FALSE
-#| fig.cap: "Observed versus predicted values for an Ames regression model, with log-10 units on both axes"
-#| fig.alt: "Scatter plots of numeric observed versus predicted values for an Ames regression model. Both axes use log-10 units. The model shows good concordance with some poorly fitting points at high and low prices."
+#| fig.cap: "Valores observados versus valores predichos para un modelo de regresión de Ames, con unidades log-10 en ambos ejes"
+#| fig.alt: "Gráficos de dispersión de valores numéricos observados versus valores predichos para un modelo de regresión de Ames. Ambos ejes utilizan unidades log-10. El modelo muestra una buena concordancia con algunos puntos que no se ajustan bien a precios altos y bajos."
 ```
 
-There is one low-price property that is substantially over-predicted, i.e., quite high above the dashed line.
+Hay una propiedad de bajo precio que está sustancialmente sobreestimada, es decir, bastante por encima de la línea discontinua.
 
-Let's compute the root mean squared error for this model using the `rmse()` function:
+Calculemos la raíz del error cuadrático medio para este modelo usando la función `rmse()`:
 
 ```{r performance-ames-rmse}
 rmse(ames_test_res, truth = Sale_Price, estimate = .pred)
 ```
 
-This shows us the standard format of the output of `r pkg(yardstick)` functions. Metrics for numeric outcomes usually have a value of "standard" for the `.estimator` column. Examples with different values for this column are shown in the next sections.
+Esto nos muestra el formato estándar de salida de las funciones `r pkg(yardstick)`. Las métricas para resultados numéricos suelen tener un valor "estándar" para la columna `.estimator`. En las siguientes secciones se muestran ejemplos con diferentes valores para esta columna.
 
-To compute multiple metrics at once, we can create a *metric set*. Let's add $R^2$ and the mean absolute error:
+Para calcular varias métricas a la vez, podemos crear un *conjunto de métricas*. Sumemos $R^2$ y el error absoluto medio:
 
 ```{r performance-metric-set}
 ames_metrics <- metric_set(rmse, rsq, mae)
 ames_metrics(ames_test_res, truth = Sale_Price, estimate = .pred)
 ```
 
-This tidy data format stacks the metrics vertically. The root mean squared error and mean absolute error metrics are both on the scale of the outcome (so `log10(Sale_Price)` for our example) and measure the difference between the predicted and observed values. The value for $R^2$ measures the squared correlation between the predicted and observed values, so values closer to one are better.
+Este formato de datos ordenado apila las métricas verticalmente. Las métricas del error cuadrático medio y del error absoluto medio están en la escala del resultado (por lo tanto, `log10(Sale_Price)` para nuestro ejemplo) y miden la diferencia entre los valores previstos y observados. El valor de $R^2$ mide la correlación al cuadrado entre los valores previstos y observados, por lo que los valores más cercanos a uno son mejores.
 
 ::: rmdwarning
-The `r pkg(yardstick)` package does *not* contain a function for adjusted $R^2$. This modification of the coefficient of determination is commonly used when the same data used to fit the model are used to evaluate the model. This metric is not fully supported in tidymodels because it is always a better approach to compute performance on a separate data set than the one used to fit the model.
+El paquete `r pkg(yardstick)` *no* contiene una función para $R^2$ ajustado. Esta modificación del coeficiente de determinación se utiliza comúnmente cuando los mismos datos utilizados para ajustar el modelo se utilizan para evaluar el modelo. Esta métrica no es totalmente compatible con tidymodels porque siempre es un mejor enfoque para calcular el rendimiento en un conjunto de datos separado que el utilizado para ajustar el modelo.
 :::
 
-## Binary Classification Metrics
+## Métricas de clasificación binaria
 
-To illustrate other ways to measure model performance, we will switch to a different example. The `r pkg(modeldata)` package (another one of the tidymodels packages) contains example predictions from a test data set with two classes ("Class1" and "Class2"):
+Para ilustrar otras formas de medir el rendimiento del modelo, cambiaremos a un ejemplo diferente. El paquete `r pkg(modeldata)` (otro de los paquetes tidymodels) contiene predicciones de ejemplo de un conjunto de datos de prueba con dos clases ("Class1" y "Class2"):
 
 ```{r performance-two-class-example}
 data(two_class_example)
 tibble(two_class_example)
 ```
 
-The second and third columns are the predicted class probabilities for the test set while `predicted` are the discrete predictions.
+La segunda y tercera columnas son las probabilidades de clase predichas para el conjunto de prueba, mientras que `predicted` son las predicciones discretas.
 
-For the hard class predictions, a variety of `r pkg(yardstick)` functions are helpful:
+Para las predicciones de clases difíciles, una variedad de funciones `r pkg(yardstick)` son útiles:
 
 ```{r performance-class-metrics}
-# A confusion matrix: 
+# Una matriz de confusión:
 conf_mat(two_class_example, truth = truth, estimate = predicted)
 
-# Accuracy:
+# Exactitud:
 accuracy(two_class_example, truth, predicted)
 
-# Matthews correlation coefficient:
+# Coeficiente de correlación de Matthews:
 mcc(two_class_example, truth, predicted)
 
-# F1 metric:
+# Métrica F1:
 f_meas(two_class_example, truth, predicted)
 
-# Combining these three classification metrics together
+# Combinando estas tres métricas de clasificación juntas
 classification_metrics <- metric_set(accuracy, mcc, f_meas)
 classification_metrics(two_class_example, truth = truth, estimate = predicted)
 ```
 
-The Matthews correlation coefficient and F1 score both summarize the confusion matrix, but compared to `mcc()`, which measures the quality of both positive and negative examples, the `f_meas()` metric emphasizes the positive class, i.e., the event of interest. For binary classification data sets like this example, `r pkg(yardstick)` functions have a standard argument called `event_level` to distinguish positive and negative levels. The default (which we used in this code) is that the *first* level of the outcome factor is the event of interest.
+El coeficiente de correlación de Matthews y la puntuación F1 resumen la matriz de confusión, pero en comparación con `mcc()`, que mide la calidad de ejemplos tanto positivos como negativos, la métrica `f_meas()` enfatiza la clase positiva, es decir, el evento de interés. Para conjuntos de datos de clasificación binaria como este ejemplo, las funciones `r pkg(yardstick)` tienen un argumento estándar llamado `event_level` para distinguir los niveles positivos y negativos. El valor predeterminado (que utilizamos en este código) es que el *primer* nivel del factor de resultado es el evento de interés.
 
 ::: rmdnote
-There is some heterogeneity in R functions in this regard; some use the first level and others the second to denote the event of interest. We consider it more intuitive that the first level is the most important. The second level logic is borne of encoding the outcome as 0/1 (in which case the second value is the event) and unfortunately remains in some packages. However, tidymodels (along with many other R packages) require a categorical outcome to be encoded as a factor and, for this reason, the legacy justification for the second level as the event becomes irrelevant.
+Existe cierta heterogeneidad en las funciones R a este respecto; algunos utilizan el primer nivel y otros el segundo para denotar el evento de interés. Consideramos más intuitivo que el primer nivel es el más importante. La lógica de segundo nivel surge de codificar el resultado como 0/1 (en cuyo caso el segundo valor es el evento) y desafortunadamente permanece en algunos paquetes. Sin embargo, tidymodels (junto con muchos otros paquetes de R) requieren que se codifique un resultado categórico como factor y, por esta razón, la justificación heredada para el segundo nivel como evento se vuelve irrelevante.
 :::
 
-As an example where the second level is the event:
+Como ejemplo donde el segundo nivel es el evento:
 
 ```{r performance-2nd-level}
 f_meas(two_class_example, truth, predicted, event_level = "second")
 ```
 
-In this output, the `.estimator` value of "binary" indicates that the standard formula for binary classes will be used.
+En este resultado, el valor `.estimator` de "binario" indica que se utilizará la fórmula estándar para clases binarias.
 
-There are numerous classification metrics that use the predicted probabilities as inputs rather than the hard class predictions. For example, the receiver operating characteristic (ROC) curve computes the sensitivity and specificity over a continuum of different event thresholds. The predicted class column is not used. There are two `r pkg(yardstick)` functions for this method: `roc_curve()` computes the data points that make up the ROC curve and `roc_auc()` computes the area under the curve.
+Existen numerosas métricas de clasificación que utilizan las probabilidades predichas como entradas en lugar de las predicciones de clase estrictas. Por ejemplo, la curva de características operativas del receptor (ROC) calcula la sensibilidad y la especificidad sobre un continuo de diferentes umbrales de eventos. La columna de clase prevista no se utiliza. Hay dos funciones `r pkg(yardstick)` para este método: `roc_curve()` calcula los puntos de datos que forman la curva ROC y `roc_auc()` calcula el área bajo la curva.
 
-The interfaces to these types of metric functions use the `...` argument placeholder to pass in the appropriate class probability column. For two-class problems, the probability column for the event of interest is passed into the function:
+Las interfaces para estos tipos de funciones métricas utilizan el marcador de posición del argumento `...` para pasar la columna de probabilidad de clase apropiada. Para problemas de dos clases, la columna de probabilidad del evento de interés se pasa a la función:
 
 ```{r performance-2class-roc}
 two_class_curve <- roc_curve(two_class_example, truth, Class1)
@@ -243,7 +243,7 @@ two_class_curve
 roc_auc(two_class_example, truth, Class1)
 ```
 
-The `two_class_curve` object can be used in a `ggplot` call to visualize the curve, as shown in @fig-example-roc-curve. There is an `autoplot()` method that will take care of the details:
+El objeto `two_class_curve` se puede usar en una llamada `ggplot` para visualizar la curva, como se muestra en @fig-example-roc-curve. Existe un método `autoplot()` que se encargará de los detalles:
 
 ```{r performance-2class-roc-curve, eval=FALSE}
 autoplot(two_class_curve)
@@ -253,26 +253,26 @@ autoplot(two_class_curve)
 #| label: fig-example-roc-curve
 #| ref.label: "performance-2class-roc-curve"
 #| echo: FALSE
-#| fig.cap: "Example ROC curve"
-#| fig.alt: "An example ROC curve. The x-axis is one minus specificity and the y-axis is sensitivity. The curve bows towards the upper left-hand side of the plot area."
+#| fig.cap: "Ejemplo de curva ROC"
+#| fig.alt: "Un ejemplo de curva ROC. El eje x es uno menos la especificidad y el eje y es la sensibilidad. La curva se inclina hacia el lado superior izquierdo del área de la gráfica."
 ```
 
-If the curve was close to the diagonal line, then the model's predictions would be no better than random guessing. Since the curve is up in the top, left-hand corner, we see that our model performs well at different thresholds.
+Si la curva estuviera cerca de la línea diagonal, entonces las predicciones del modelo no serían mejores que las conjeturas aleatorias. Dado que la curva está arriba en la esquina superior izquierda, vemos que nuestro modelo funciona bien en diferentes umbrales.
 
-There are a number of other functions that use probability estimates, including `gain_curve()`, `lift_curve()`, and `pr_curve()`.
+Hay otras funciones que utilizan estimaciones de probabilidad, incluidas `gain_curve()`, `lift_curve()` y `pr_curve()`.
 
-## Multiclass Classification Metrics
+## Métricas de Clasificación Multiclase
 
-What about data with three or more classes? To demonstrate, let's explore a different example data set that has four classes:
+¿Qué pasa con los datos con tres o más clases? Para demostrarlo, exploremos un conjunto de datos de ejemplo diferente que tiene cuatro clases:
 
 ```{r performance-hpc-example}
 data(hpc_cv)
 tibble(hpc_cv)
 ```
 
-As before, there are factors for the observed and predicted outcomes along with four other columns of predicted probabilities for each class. (These data also include a `Resample` column. These `hpc_cv` results are for out-of-sample predictions associated with 10-fold cross-validation. For the time being, this column will be ignored and we'll discuss resampling in depth in [Chapter @sec-resampling].)
+Como antes, hay factores para los resultados observados y previstos junto con otras cuatro columnas de probabilidades previstas para cada clase. (Estos datos también incluyen una columna `Resample`. Estos resultados `hpc_cv` son para predicciones fuera de muestra asociadas con una validación cruzada de 10 veces. Por el momento, esta columna se ignorará y discutiremos el remuestreo en profundidad en [Capítulo @sec-resampling].)
 
-The functions for metrics that use the discrete class predictions are identical to their binary counterparts:
+Las funciones para las métricas que utilizan predicciones de clases discretas son idénticas a sus contrapartes binarias:
 
 ```{r performance-mutliclass-pred}
 accuracy(hpc_cv, obs, pred)
@@ -280,21 +280,21 @@ accuracy(hpc_cv, obs, pred)
 mcc(hpc_cv, obs, pred)
 ```
 
-Note that, in these results, a "multiclass" `.estimator` is listed. Like "binary," this indicates that the formula for outcomes with three or more class levels was used. The Matthews correlation coefficient was originally designed for two classes but has been extended to cases with more class levels.
+Tenga en cuenta que, en estos resultados, aparece un `.estimator` "multiclase". Al igual que "binario", esto indica que se utilizó la fórmula para resultados con tres o más niveles de clase. El coeficiente de correlación de Matthews se diseñó originalmente para dos clases, pero se ha extendido a casos con más niveles de clase.
 
-There are methods for taking metrics designed to handle outcomes with only two classes and extend them for outcomes with more than two classes. For example, a metric such as sensitivity measures the true positive rate which, by definition, is specific to two classes (i.e., "event" and "nonevent"). How can this metric be used in our example data?
+Existen métodos para tomar métricas diseñadas para manejar resultados con solo dos clases y extenderlas para resultados con más de dos clases. Por ejemplo, una métrica como la sensibilidad mide la tasa de verdaderos positivos que, por definición, es específica de dos clases (es decir, "evento" y "no evento"). ¿Cómo se puede utilizar esta métrica en nuestros datos de ejemplo?
 
-There are wrapper methods that can be used to apply sensitivity to our four-class outcome. These options are macro-averaging, macro-weighted averaging, and micro-averaging:
+Existen métodos contenedores que se pueden utilizar para aplicar sensibilidad a nuestro resultado de cuatro clases. Estas opciones son promedio macro, promedio macroponderado y micropromedio:
 
--   Macro-averaging computes a set of one-versus-all metrics using the standard two-class statistics. These are averaged.
+-   El promedio macro calcula un conjunto de métricas de uno contra todos utilizando las estadísticas estándar de dos clases. Estos están promediados.
 
--   Macro-weighted averaging does the same but the average is weighted by the number of samples in each class.
+-   El promedio macroponderado hace lo mismo, pero el promedio se pondera según el número de muestras de cada clase.
 
--   Micro-averaging computes the contribution for each class, aggregates them, then computes a single metric from the aggregates.
+-   El micropromedio calcula la contribución de cada clase, las agrega y luego calcula una única métrica a partir de los agregados.
 
-See @wu2017unified and @OpitzBurst for more on extending classification metrics to outcomes with more than two classes.
+Consulte @wu2017unified y @OpitzBurst para obtener más información sobre cómo ampliar las métricas de clasificación a resultados con más de dos clases.
 
-Using sensitivity as an example, the usual two-class calculation is the ratio of the number of correctly predicted events divided by the number of true events. The manual calculations for these averaging methods are:
+Usando la sensibilidad como ejemplo, el cálculo habitual de dos clases es la relación entre el número de eventos predichos correctamente dividido por el número de eventos verdaderos. Los cálculos manuales para estos métodos de promediación son:
 
 ```{r performance-sens-manual}
 class_totals <- 
@@ -308,7 +308,7 @@ cell_counts <-
   count() %>% 
   ungroup()
 
-# Compute the four sensitivities using 1-vs-all
+# Calcule las cuatro sensibilidades usando 1 contra todos
 one_versus_all <- 
   cell_counts %>% 
   filter(obs == pred) %>% 
@@ -316,7 +316,7 @@ one_versus_all <-
   mutate(sens = n / totals)
 one_versus_all
 
-# Three different estimates:
+# Tres estimaciones diferentes:
 one_versus_all %>% 
   summarize(
     macro = mean(sens), 
@@ -325,7 +325,7 @@ one_versus_all %>%
   )
 ```
 
-Thankfully, there is no need to manually implement these averaging methods. Instead, `r pkg(yardstick)` functions can automatically apply these methods via the `estimator` argument:
+Afortunadamente, no es necesario implementar manualmente estos métodos de promedio. En cambio, las funciones `r pkg(yardstick)` pueden aplicar automáticamente estos métodos a través del argumento `estimator`:
 
 ```{r performance-sens}
 sensitivity(hpc_cv, obs, pred, estimator = "macro")
@@ -333,19 +333,19 @@ sensitivity(hpc_cv, obs, pred, estimator = "macro_weighted")
 sensitivity(hpc_cv, obs, pred, estimator = "micro")
 ```
 
-When dealing with probability estimates, there are some metrics with multiclass analogs. For example, @HandTill determined a multiclass technique for ROC curves. In this case, *all* of the class probability columns must be given to the function:
+Cuando se trata de estimaciones de probabilidad, existen algunas métricas con análogos multiclase. Por ejemplo, @HandTill determinó una técnica multiclase para curvas ROC. En este caso, *todas* las columnas de probabilidad de clase deben asignarse a la función:
 
 ```{r performance-multi-class-roc}
 roc_auc(hpc_cv, obs, VF, F, M, L)
 ```
 
-Macro-weighted averaging is also available as an option for applying this metric to a multiclass outcome:
+El promedio macroponderado también está disponible como opción para aplicar esta métrica a un resultado multiclase:
 
 ```{r performance-multi-class-roc-macro}
 roc_auc(hpc_cv, obs, VF, F, M, L, estimator = "macro_weighted")
 ```
 
-Finally, all of these performance metrics can be computed using `r pkg(dplyr)` groupings. Recall that these data have a column for the resampling groups. We haven't yet discussed resampling in detail, but notice how we can pass a grouped data frame to the metric function to compute the metrics for each group:
+Finalmente, todas estas métricas de rendimiento se pueden calcular utilizando agrupaciones `r pkg(dplyr)`. Recuerde que estos datos tienen una columna para los grupos de remuestreo. Aún no hemos analizado el remuestreo en detalle, pero observe cómo podemos pasar un marco de datos agrupados a la función métrica para calcular las métricas para cada grupo:
 
 ```{r performance-multi-class-acc-grouped}
 hpc_cv %>% 
@@ -353,10 +353,10 @@ hpc_cv %>%
   accuracy(obs, pred)
 ```
 
-The groupings also translate to the `autoplot()` methods, with results shown in @fig-grouped-roc-curves.
+Las agrupaciones también se traducen a los métodos `autoplot()`, y los resultados se muestran en @fig-grouped-roc-curves.
 
 ```{r performance-multi-class-roc-grouped, eval=FALSE}
-# Four 1-vs-all ROC curves for each fold
+# Cuatro curvas ROC 1 contra todos para cada pliegue
 hpc_cv %>% 
   group_by(Resample) %>% 
   roc_curve(obs, VF, F, M, L) %>% 
@@ -367,12 +367,12 @@ hpc_cv %>%
 #| label: fig-grouped-roc-curves
 #| ref.label: "performance-multi-class-roc-grouped"
 #| echo: FALSE
-#| fig.cap: "Resampled ROC curves for each of the four outcome classes"
-#| fig.alt: "Resampled ROC curves for each of the four outcome classes. There are four panels for classes VF, F, M, and L. Each panel contains ten ROC curves for each of the resampled data sets."
+#| fig.cap: "Curvas ROC remuestreadas para cada una de las cuatro clases de resultados."
+#| fig.alt: "Curvas ROC remuestreadas para cada una de las cuatro clases de resultados. Hay cuatro paneles para las clases VF, F, M y L. Cada panel contiene diez curvas ROC para cada uno de los conjuntos de datos remuestreados."
 ```
 
-This visualization shows us that the different groups all perform about the same, but that the `VF` class is predicted better than the `F` or `M` classes, since the `VF` ROC curves are more in the top-left corner. This example uses resamples as the groups, but any grouping in your data can be used. This `autoplot()` method can be a quick visualization method for model effectiveness across outcome classes and/or groups.
+Esta visualización nos muestra que todos los diferentes grupos se desempeñan más o menos igual, pero que la clase `VF` se predice mejor que las clases `F` o `M`, ya que las curvas ROC `VF` están más en la esquina superior izquierda. . Este ejemplo utiliza remuestreos como grupos, pero se puede utilizar cualquier agrupación de sus datos. Este método `autoplot()` puede ser un método de visualización rápida para la efectividad del modelo en todas las clases y/o grupos de resultados.
 
-## Chapter Summary {#sec-performance-summary}
+## Resumen del capítulo {#sec-performance-summary}
 
-Different metrics measure different aspects of a model fit, e.g., RMSE measures accuracy while the $R^2$ measures correlation. Measuring model performance is important even when a given model will not be used primarily for prediction; predictive power is also important for inferential or descriptive models. Functions from the `r pkg(yardstick)` package measure the effectiveness of a model using data. The primary tidymodels interface uses tidyverse principles and data frames (as opposed to having vector arguments). Different metrics are appropriate for regression and classification metrics and, within these, there are sometimes different ways to estimate the statistics, such as for multiclass outcomes.
+Diferentes métricas miden diferentes aspectos del ajuste de un modelo, por ejemplo, RMSE mide la precisión mientras que $R^2$ mide la correlación. Medir el rendimiento del modelo es importante incluso cuando un modelo determinado no se utilizará principalmente para predicción; el poder predictivo también es importante para los modelos inferenciales o descriptivos. Las funciones del paquete `r pkg(yardstick)` miden la efectividad de un modelo utilizando datos. La interfaz principal de tidymodels utiliza principios de tidyverse y marcos de datos (en lugar de tener argumentos vectoriales). Diferentes métricas son apropiadas para las métricas de regresión y clasificación y, dentro de ellas, a veces hay diferentes formas de estimar las estadísticas, como para resultados multiclase.
