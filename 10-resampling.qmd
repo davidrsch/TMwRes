@@ -11,27 +11,27 @@ source("ames_snippets.R")
 load("RData/lm_fit.RData")
 ```
 
-# Resampling for Evaluating Performance {#sec-resampling}
+# Remuestrear para Evaluar el Rendimiento {#sec-resampling}
 
-We have already covered several pieces that must be put together to evaluate the performance of a model. [Chapter @sec-performance] described statistics for measuring model performance. [Chapter @sec-splitting] introduced the idea of data spending, and we recommended the test set for obtaining an unbiased estimate of performance. However, we usually need to understand the performance of a model or even multiple models *before using the test set*.
+Ya hemos cubierto varias piezas que se deben juntar para evaluar el desempeño de un modelo. El [Capítulo @sec-performance] describió estadísticas para medir el rendimiento del modelo. El [Capítulo @sec-splitting] introdujo la idea del gasto de datos y recomendamos el conjunto de pruebas para obtener una estimación imparcial del rendimiento. Sin embargo, normalmente necesitamos comprender el rendimiento de un modelo o incluso de varios modelos *antes de utilizar el conjunto de prueba*.
 
 ::: rmdwarning
-Typically we can't decide on which final model to use with the test set before first assessing model performance. There is a gap between our need to measure performance reliably and the data splits (training and testing) we have available.
+Normalmente no podemos decidir qué modelo final usar con el conjunto de pruebas antes de evaluar primero el rendimiento del modelo. Existe una brecha entre nuestra necesidad de medir el desempeño de manera confiable y las divisiones de datos (capacitación y pruebas) que tenemos disponibles.
 :::
 
-In this chapter, we describe an approach called resampling that can fill this gap. Resampling estimates of performance can generalize to new data in a similar way as estimates from a test set. The next chapter complements this one by demonstrating statistical methods that compare resampling results.
+En este capítulo, describimos un enfoque llamado remuestreo que puede llenar este vacío. Las estimaciones de rendimiento remuestreadas pueden generalizarse a nuevos datos de manera similar a las estimaciones de un conjunto de pruebas. El próximo capítulo complementa éste demostrando métodos estadísticos que comparan los resultados del remuestreo.
 
-In order to fully appreciate the value of resampling, let's first take a look the resubstitution approach, which can often fail.
+Para apreciar plenamente el valor del remuestreo, primero echemos un vistazo al enfoque de resustitución, que a menudo puede fallar.
 
-## The Resubstitution Approach {#sec-resampling-resubstition}
+## El Enfoque de la Resustitución {#sec-resampling-resubstition}
 
-When we measure performance on the same data that we used for training (as opposed to new data or testing data), we say we have *resubstituted* the data. Let's again use the Ames housing data to demonstrate these concepts. @sec-recipes-summary summarizes the current state of our Ames analysis. It includes a recipe object named `ames_rec`, a linear model, and a workflow using that recipe and model called `lm_wflow`. This workflow was fit on the training set, resulting in `lm_fit`.
+Cuando medimos el rendimiento con los mismos datos que utilizamos para el entrenamiento (a diferencia de datos nuevos o datos de prueba), decimos que hemos *resustituido* los datos. Utilicemos nuevamente los datos de vivienda de Ames para demostrar estos conceptos. @sec-recipes-summary resume el estado actual de nuestro análisis de Ames. Incluye un objeto de receta llamado `ames_rec`, un modelo lineal y un flujo de trabajo que usa esa receta y modelo llamado `lm_wflow`. Este flujo de trabajo se ajustó al conjunto de entrenamiento, lo que dio como resultado `lm_fit`.
 
-For a comparison to this linear model, we can also fit a different type of model. *Random forests* are a tree ensemble method that operates by creating a large number of decision trees from slightly different versions of the training set [@breiman2001random]. This collection of trees makes up the ensemble. When predicting a new sample, each ensemble member makes a separate prediction. These are averaged to create the final ensemble prediction for the new data point.
+Para comparar con este modelo lineal, también podemos ajustar un tipo diferente de modelo. Los *random forest* son un método de conjunto de árboles que opera creando una gran cantidad de árboles de decisión a partir de versiones ligeramente diferentes del conjunto de entrenamiento [@breiman2001random]. Esta colección de árboles conforma el conjunto. Al predecir una nueva muestra, cada miembro del conjunto realiza una predicción por separado. Estos se promedian para crear la predicción conjunta final para el nuevo punto de datos.
 
-Random forest models are very powerful, and they can emulate the underlying data patterns very closely. While this model can be computationally intensive, it is very low maintenance; very little preprocessing is required (as documented in [Appendix @sec-pre-proc-table]).
+Los modelos de random forest son muy potentes y pueden emular muy fielmente los patrones de datos subyacentes. Si bien este modelo puede requerir un uso intensivo de computación, requiere muy poco mantenimiento; se requiere muy poco preprocesamiento (como se documenta en [Apéndice @sec-pre-proc-table]).
 
-Using the same predictor set as the linear model (without the extra preprocessing steps), we can fit a random forest model to the training set via the `"ranger"` engine (which uses the `r pkg(ranger)` R package for computation). This model requires no preprocessing, so a simple formula can be used:
+Usando el mismo conjunto de predictores que el modelo lineal (sin los pasos de preprocesamiento adicionales), podemos ajustar un modelo de random forest al conjunto de entrenamiento a través del motor `"ranger"` (que usa el paquete R `r pkg(ranger)` para cálculo). Este modelo no requiere procesamiento previo, por lo que se puede utilizar una fórmula simple:
 
 ```{r resampling-rand-forest-spec}
 rf_model <- 
@@ -49,17 +49,17 @@ rf_wflow <-
 rf_fit <- rf_wflow %>% fit(data = ames_train)
 ```
 
-How should we compare the linear and random forest models? For demonstration, we will predict the training set to produce what is known as an *apparent metric* or *resubstitution metric*. This function creates predictions and formats the results:
+¿Cómo deberíamos comparar los modelos forestales lineales y aleatorios? A modo de demostración, predeciremos que el conjunto de entrenamiento producirá lo que se conoce como *métrica aparente* o *métrica de resustitución*. Esta función crea predicciones y formatea los resultados:
 
 ```{r resampling-eval-func}
 estimate_perf <- function(model, dat) {
-  # Capture the names of the `model` and `dat` objects
+  # Captura los nombres de los objetos `model` y `dat`
   cl <- match.call()
   obj_name <- as.character(cl$model)
   data_name <- as.character(cl$dat)
   data_name <- gsub("ames_", "", data_name)
   
-  # Estimate these metrics:
+  # Estima estas metricas
   reg_metrics <- metric_set(rmse, rsq)
   
   model %>%
@@ -71,7 +71,7 @@ estimate_perf <- function(model, dat) {
 }
 ```
 
-Both RMSE and $R^2$ are computed. The resubstitution statistics are:
+Se calculan tanto RMSE como $R^2$. Las estadísticas de resustitución son:
 
 ```{r resampling-eval-train}
 estimate_perf(rf_fit, ames_train)
@@ -94,117 +94,117 @@ all_res <-
 tr_ratio <- round(all_res$train[1]/all_res$train[2])
 ```
 
-Based on these results, the random forest is much more capable of predicting the sale prices; the RMSE estimate is `r xfun::numbers_to_words(tr_ratio)`-fold better than linear regression. If we needed to choose between these two models for this price prediction problem, we would probably chose the random forest because, on the log scale we are using, its RMSE is about half as large. The next step applies the random forest model to the test set for final verification:
+En base a estos resultados, el random forest es mucho más capaz de predecir los precios de venta; la estimación de RMSE es `r xfun::numbers_to_words(tr_ratio)`, veces mejor que la regresión lineal. Si tuviéramos que elegir entre estos dos modelos para este problema de predicción de precios, probablemente elegiríamos el random fores porque, en la escala logarítmica que estamos usando, su RMSE es aproximadamente la mitad. El siguiente paso aplica el modelo de random forest al conjunto de prueba para la verificación final:
 
 ```{r resampling-eval-test-rf}
 estimate_perf(rf_fit, ames_test)
 ```
 
-The test set RMSE estimate, `r all_res %>% filter(object == "rf_fit") %>% pull("test")`, is *much worse than the training set* value of `r all_res %>% filter(object == "rf_fit") %>% pull("train")`! Why did this happen?
+¡La estimación RMSE del conjunto de prueba, `r all_res %>% filter(object == "rf_fit") %>% pull("test")`, es *much worse than the training set* valor de `r all_res %>% filter(object == "rf_fit") %>% pull("train")`! ¿Por qué pasó esto?
 
-Many predictive models are capable of learning complex trends from the data. In statistics, these are commonly referred to as *low bias models*.
+Muchos modelos predictivos son capaces de aprender tendencias complejas a partir de los datos. En estadística, estos se conocen comúnmente como *modelos de bajo sesgo*.
 
 ::: rmdnote
-In this context, *bias* is the difference between the true pattern or relationships in data and the types of patterns that the model can emulate. Many black-box machine learning models have low bias, meaning they can reproduce complex relationships. Other models (such as linear/logistic regression, discriminant analysis, and others) are not as adaptable and are considered *high bias* models.[^10-resampling-1]
+En este contexto, *sesgo* es la diferencia entre el patrón o las relaciones verdaderas en los datos y los tipos de patrones que el modelo puede emular. Muchos modelos de aprendizaje automático de caja negra tienen un sesgo bajo, lo que significa que pueden reproducir relaciones complejas. Otros modelos (como la regresión lineal/logística, el análisis discriminante y otros) no son tan adaptables y se consideran modelos de *alto sesgo*.[^10-resampling-1]
 :::
 
-[^10-resampling-1]: See Section 1.2.5 of @fes for a discussion: <https://bookdown.org/max/FES/important-concepts.html#model-bias-and-variance>
+[^10-resampling-1]: Consulte la Sección 1.2.5 de @fes para una discusión: <https://bookdown.org/max/FES/important-concepts.html#model-bias-and-variance>
 
-For a low bias model, the high degree of predictive capacity can sometimes result in the model nearly memorizing the training set data. As an obvious example, consider a 1-nearest neighbor model. It will always provide perfect predictions for the training set no matter how well it truly works for other data sets. Random forest models are similar; repredicting the training set will always result in an artificially optimistic estimate of performance.
+Para un modelo de bajo sesgo, el alto grado de capacidad predictiva a veces puede hacer que el modelo casi memorice los datos del conjunto de entrenamiento. Como ejemplo obvio, considere un modelo de 1 vecino más cercano. Siempre proporcionará predicciones perfectas para el conjunto de entrenamiento, sin importar qué tan bien funcione para otros conjuntos de datos. Los modelos de random forest son similares; Repredecir el conjunto de entrenamiento siempre dará como resultado una estimación artificialmente optimista del rendimiento.
 
-For both models, @tbl-rmse-results summarizes the RMSE estimate for the training and test sets:
+Para ambos modelos, @tbl-rmse-results resume la estimación de RMSE para los conjuntos de entrenamiento y prueba:
 
 ```{r}
 #| label: tbl-rmse-results
 #| echo: FALSE
 #| results: "asis"
-#| tbl-cap: "Performance statistics for training and test sets."
+#| tbl-cap: "Estadísticas de rendimiento para conjuntos de entrenamiento y prueba."
 
 all_res %>% 
   mutate(object = paste0("<tt>", object, "</tt>")) %>% 
   kable(escape = FALSE) %>% 
   kable_styling(full_width = FALSE) %>% 
-  add_header_above(c(" ", "RMSE Estimates" = 2))
+  add_header_above(c(" ", "Estimaciones de RMSE" = 2))
 ```
 
-Notice that the linear regression model is consistent between training and testing, because of its limited complexity.[^10-resampling-2]
+Observe que el modelo de regresión lineal es consistente entre el entrenamiento y las pruebas, debido a su complejidad limitada.[^10-resampling-2]
 
-[^10-resampling-2]: It is possible for a linear model to nearly memorize the training set, like the random forest model did. In the `ames_rec` object, change the number of spline terms for `longitude` and `latitude` to a large number (say 1,000). This would produce a model fit with a very small resubstitution RMSE and a test set RMSE that is much larger.
+[^10-resampling-2]: Es posible que un modelo lineal casi memorice el conjunto de entrenamiento, como lo hizo el modelo de bosque aleatorio. En el objeto `ames_rec`, cambie el número de términos spline para `longitud` y `latitud` a un número grande (digamos 1000). Esto produciría un modelo ajustado con un RMSE de resustitución muy pequeño y un RMSE del conjunto de prueba que es mucho más grande.
 
 ::: rmdwarning
-The main takeaway from this example is that repredicting the training set will result in an artificially optimistic estimate of performance. It is a bad idea for most models.
+La principal conclusión de este ejemplo es que repredecir el conjunto de entrenamiento dará como resultado una estimación del rendimiento artificialmente optimista. Es una mala idea para la mayoría de los modelos.
 :::
 
-If the test set should not be used immediately, and repredicting the training set is a bad idea, what should be done? Resampling methods, such as cross-validation or validation sets, are the solution.
+Si el conjunto de prueba no se debe utilizar de inmediato y repredecir el conjunto de entrenamiento es una mala idea, ¿qué se debe hacer? Los métodos de remuestreo, como la validación cruzada o los conjuntos de validación, son la solución.
 
-## Resampling Methods
+## Métodos de Remuestreo
 
-Resampling methods are empirical simulation systems that emulate the process of using some data for modeling and different data for evaluation. Most resampling methods are iterative, meaning that this process is repeated multiple times. The diagram in @fig-resampling-scheme illustrates how resampling methods generally operate.
+Los métodos de remuestreo son sistemas de simulación empíricos que emulan el proceso de utilizar algunos datos para modelar y diferentes datos para evaluación. La mayoría de los métodos de remuestreo son iterativos, lo que significa que este proceso se repite varias veces. El diagrama en @fig-resampling-scheme ilustra cómo funcionan generalmente los métodos de remuestreo.
 
 ```{r}
 #| label: fig-resampling-scheme
 #| echo: FALSE
 #| out.width: '85%'
 #| warning: FALSE
-#| fig.cap: "Data splitting scheme from the initial data split to resampling"
-#| fig.alt: "A diagram of the data splitting scheme from the initial data split to resampling. The first level is the training/testing set partition. The second level of splitting takes the training set and splits it into multiple 'analysis' and 'assessment' sets (which are analogous to training and test)."
+#| fig.cap: "Esquema de división de datos desde la división de datos inicial hasta el remuestreo"
+#| fig.alt: "Un diagrama del esquema de división de datos desde la división de datos inicial hasta el remuestreo. El primer nivel es la partición del conjunto de entrenamiento/prueba. El segundo nivel de división toma el conjunto de entrenamiento y lo divide en múltiples conjuntos de `análisis` y `evaluación` (que son análogos al entrenamiento y la prueba)."
 
 knitr::include_graphics("premade/resampling.svg")
 ```
 
-Resampling is conducted only on the training set, as you see in @fig-resampling-scheme. The test set is not involved. For each iteration of resampling, the data are partitioned into two subsamples:
+El remuestreo se realiza solo en el conjunto de entrenamiento, como se ve en @fig-resampling-scheme. El equipo de prueba no está involucrado. Para cada iteración de remuestreo, los datos se dividen en dos submuestras:
 
--   The model is fit with the *analysis set*.
+-   El modelo se ajusta a la *conjunto de análisis*.
 
--   The model is evaluated with the *assessment set*.
+-   El modelo se evalúa con el *conjunto de evaluación*.
 
-These two subsamples are somewhat analogous to training and test sets. Our language of *analysis* and *assessment* avoids confusion with the initial split of the data. These data sets are mutually exclusive. The partitioning scheme used to create the analysis and assessment sets is usually the defining characteristic of the method.
+Estas dos submuestras son algo análogas a los conjuntos de entrenamiento y prueba. Nuestro lenguaje de *análisis* y *evaluación* evita confusiones con la división inicial de los datos. Estos conjuntos de datos son mutuamente excluyentes. El esquema de partición utilizado para crear los conjuntos de análisis y evaluación suele ser la característica definitoria del método.
 
-Suppose 20 iterations of resampling are conducted. This means that 20 separate models are fit on the analysis sets, and the corresponding assessment sets produce 20 sets of performance statistics. The final estimate of performance for a model is the average of the 20 replicates of the statistics. This average has very good generalization properties and is far better than the resubstitution estimates.
+Supongamos que se realizan 20 iteraciones de remuestreo. Esto significa que se ajustan 20 modelos separados a los conjuntos de análisis y los conjuntos de evaluación correspondientes producen 20 conjuntos de estadísticas de desempeño. La estimación final del rendimiento de un modelo es el promedio de las 20 réplicas de las estadísticas. Este promedio tiene muy buenas propiedades de generalización y es mucho mejor que las estimaciones de resustitución.
 
-The next section defines several commonly used resampling methods and discusses their pros and cons.
+La siguiente sección define varios métodos de remuestreo comúnmente utilizados y analiza sus ventajas y desventajas.
 
-### Cross-validation {#sec-cv}
+### Validación cruzada {#sec-cv}
 
-Cross-validation is a well established resampling method. While there are a number of variations, the most common cross-validation method is *V*-fold cross-validation. The data are randomly partitioned into *V* sets of roughly equal size (called the folds). For illustration, *V* = 3 is shown in @fig-cross-validation-allocation for a data set of 30 training set points with random fold allocations. The number inside the symbols is the sample number.
+La validación cruzada es un método de remuestreo bien establecido. Si bien existen varias variaciones, el método de validación cruzada más común es la validación cruzada *V*. Los datos se dividen aleatoriamente en *V* conjuntos de tamaño aproximadamente igual (llamados pliegues). A modo de ilustración, *V* = 3 se muestra en @fig-cross-validation-allocation para un conjunto de datos de 30 puntos de configuración de entrenamiento con asignaciones de pliegues aleatorios. El número dentro de los símbolos es el número de muestra.
 
 ```{r}
 #| label: fig-cross-validation-allocation
 #| echo: FALSE
 #| out.width: '50%' 
 #| warning: FALSE
-#| fig.cap: "V-fold cross-validation randomly assigns data to folds"
-#| fig.alt: "A diagram of how V-fold cross-validation randomly assigns data to folds (where V equals three). A set of thirty data points are assigned to three groups of roughly the same size."
+#| fig.cap: "La validación cruzada de pliegues en V asigna aleatoriamente datos a los pliegues"
+#| fig.alt: "Un diagrama de cómo la validación cruzada de pliegues en V asigna aleatoriamente datos a los pliegues (donde V es igual a tres). Se asigna un conjunto de treinta puntos de datos a tres grupos de aproximadamente el mismo tamaño."
 
 knitr::include_graphics("premade/three-CV.svg")
 ```
 
-The color of the symbols in @fig-cross-validation-allocation represents their randomly assigned folds. Stratified sampling is also an option for assigning folds (previously discussed in @sec-splitting-methods).
+El color de los símbolos en @fig-cross-validation-allocation representa sus pliegues asignados aleatoriamente. El muestreo estratificado también es una opción para asignar pliegues (analizado anteriormente en @sec-splitting-methods).
 
-For three-fold cross-validation, the three iterations of resampling are illustrated in @fig-cross-validation. For each iteration, one fold is held out for assessment statistics and the remaining folds are substrate for the model. This process continues for each fold so that three models produce three sets of performance statistics.
+Para una validación cruzada triple, las tres iteraciones de remuestreo se ilustran en @fig-cross-validation. Para cada iteración, se reserva un pliegue para las estadísticas de evaluación y los pliegues restantes son sustrato para el modelo. Este proceso continúa en cada pliegue, de modo que tres modelos producen tres conjuntos de estadísticas de rendimiento.
 
 ```{r}
 #| label: fig-cross-validation
 #| echo: FALSE
 #| out.width: '70%' 
 #| warning: FALSE
-#| fig.cap: "V-fold cross-validation data usage"
-#| fig.alt: "A diagram of V-fold cross-validation data usage (where V equals three). For each of the three groups, the data for the fold are held out for performance while the other two are used for modeling."
+#| fig.cap: "Uso de datos de validación cruzada V-fold"
+#| fig.alt: "Un diagrama del uso de datos de validación cruzada multiplicado por V (donde V es igual a tres). Para cada uno de los tres grupos, los datos del pliegue se reservan para el rendimiento, mientras que los otros dos se utilizan para modelar."
 
 knitr::include_graphics("premade/three-CV-iter.svg")
 ```
 
-When *V* = 3, the analysis sets are 2/3 of the training set and each assessment set is a distinct 1/3. The final resampling estimate of performance averages each of the *V* replicates.
+Cuando *V* = 3, los conjuntos de análisis son 2/3 del conjunto de entrenamiento y cada conjunto de evaluación es un 1/3 distinto. La estimación final del remuestreo del rendimiento promedia cada una de las *V* réplicas.
 
-Using *V* = 3 is a good choice to illustrate cross-validation, but it is a poor choice in practice because it is too low to generate reliable estimates. In practice, values of *V* are most often 5 or 10; we generally prefer 10-fold cross-validation as a default because it is large enough for good results in most situations.
+Usar *V* = 3 es una buena opción para ilustrar la validación cruzada, pero en la práctica es una mala opción porque es demasiado baja para generar estimaciones confiables. En la práctica, los valores de *V* suelen ser 5 o 10; Generalmente preferimos la validación cruzada 10 veces como valor predeterminado porque es lo suficientemente grande para obtener buenos resultados en la mayoría de las situaciones.
 
 ::: rmdnote
-What are the effects of changing *V*? Larger values result in resampling estimates with small bias but substantial variance. Smaller values of *V* have large bias but low variance. We prefer 10-fold since noise is reduced by replication, but bias is not.[^10-resampling-3]
+¿Cuáles son los efectos de cambiar *V*? Los valores más grandes dan como resultado estimaciones de remuestreo con un sesgo pequeño pero una varianza sustancial. Los valores más pequeños de *V* tienen un sesgo grande pero una varianza baja. Preferimos 10 veces, ya que la replicación reduce el ruido, pero no el sesgo.[^10-resampling-3]
 :::
 
-[^10-resampling-3]: See Section 3.4 of @fes for a longer description of the results of changing *V*: <https://bookdown.org/max/FES/resampling.html>
+[^10-resampling-3]: Consulte la Sección 3.4 de @fes para obtener una descripción más detallada de los resultados del cambio de *V*: <https://bookdown.org/max/FES/resampling.html>
 
-The primary input is the training set data frame as well as the number of folds (defaulting to 10):
+La entrada principal es el marco de datos del conjunto de entrenamiento, así como el número de pliegues (por defecto, 10):
 
 ```{r resampling-ames-cv}
 set.seed(1001)
@@ -216,43 +216,43 @@ ames_folds
 ames_first_split <- ames_folds$splits[[1]]
 ```
 
-The column named `splits` contains the information on how to split the data (similar to the object used to create the initial training/test partition). While each row of `splits` has an embedded copy of the entire training set, R is smart enough not to make copies of the data in memory.[^10-resampling-4] The print method inside of the tibble shows the frequency of each: `r glue::backtick(gsub("split ", "", obj_sum(ames_folds$splits[[1]])))` indicates that about two thousand samples are in the analysis set and `r nrow(assessment(ames_first_split))` are in that particular assessment set.
+La columna denominada `splits` contiene información sobre cómo dividir los datos (similar al objeto utilizado para crear la partición de entrenamiento/prueba inicial). Si bien cada fila de "divisiones" tiene una copia incrustada de todo el conjunto de entrenamiento, R es lo suficientemente inteligente como para no hacer copias de los datos en la memoria.[^10-resampling-4] El método de impresión dentro del tibble muestra la frecuencia de cada: `r glue::backtick(gsub("split ", "", obj_sum(ames_folds$splits[[1]])))` indica que alrededor de dos mil muestras están en el conjunto de análisis y `r nrow(assessment(ames_first_split))` están en ese conjunto de evaluación en particular.
 
-[^10-resampling-4]: To see this for yourself, try executing `lobstr::obj_size(ames_folds)` and `lobstr::obj_size(ames_train)`. The size of the resample object is much less than ten times the size of the original data.
+[^10-resampling-4]: Para comprobarlo usted mismo, intente ejecutar `lobstr::obj_size(ames_folds)` y `lobstr::obj_size(ames_train)`. El tamaño del objeto de remuestreo es mucho menor que diez veces el tamaño de los datos originales.
 
-These objects also always contain a character column called `id` that labels the partition.[^10-resampling-5]
+Estos objetos también contienen siempre una columna de caracteres llamada `id` que etiqueta la partición.[^10-resampling-5]
 
-[^10-resampling-5]: Some resampling methods require multiple `id` fields.
+[^10-resampling-5]: Algunos métodos de remuestreo requieren múltiples campos `id`.
 
-To manually retrieve the partitioned data, the `analysis()` and `assessment()` functions return the corresponding data frames:
+Para recuperar manualmente los datos particionados, las funciones `analysis()` y `assessment()` devuelven los marcos de datos correspondientes:
 
 ```{r resampling-analysis}
-# For the first fold:
+# Para el primer pliegue:
 ames_folds$splits[[1]] %>% analysis() %>% dim()
 ```
 
-The `r pkg(tidymodels)` packages, such as [`r pkg(tune)`](https://tune.tidymodels.org/), contain high-level user interfaces so that functions like `analysis()` are not generally needed for day-to-day work. @sec-resampling-performance demonstrates a function to fit a model over these resamples.
+Los paquetes `r pkg(tidymodels)`, como [`r pkg(tune)`](https://tune.tidymodels.org/), contienen interfaces de usuario de alto nivel para que funciones como `analysis()` no sean generalmente necesarias para el trabajo diario. @sec-resampling-performance demuestra una función para ajustar un modelo sobre estos remuestreos.
 
-There are a variety of cross-validation variations; we'll go through the most important ones.
+Existe una variedad de variaciones de validación cruzada; repasaremos los más importantes.
 
-### Repeated cross-validation {.unnumbered}
+### Validación cruzada repetida {.unnumbered}
 
-The most important variation on cross-validation is repeated *V*-fold cross-validation. Depending on data size or other characteristics, the resampling estimate produced by *V*-fold cross-validation may be excessively noisy.[^10-resampling-6] As with many statistical problems, one way to reduce noise is to gather more data. For cross-validation, this means averaging more than *V* statistics.
+La variación más importante de la validación cruzada es la validación cruzada repetida *V* veces. Dependiendo del tamaño de los datos u otras características, la estimación de remuestreo producida por la validación cruzada *V* veces puede ser excesivamente ruidosa.[^10-resampling-6] Como ocurre con muchos problemas estadísticos, una forma de reducir el ruido es recopilar más datos . Para la validación cruzada, esto significa promediar más de *V* estadísticas.
 
-[^10-resampling-6]: For more details, see Section 3.4.6 of @fes: <https://bookdown.org/max/FES/resampling.html#resample-var-bias>.
+[^10-resampling-6]: Para obtener más detalles, consulte la Sección 3.4.6 de @fes: <https://bookdown.org/max/FES/resampling.html#resample-var-bias>.
 
-To create *R* repeats of *V*-fold cross-validation, the same fold generation process is done *R* times to generate *R* collections of *V* partitions. Now, instead of averaging *V* statistics, $V \times R$ statistics produce the final resampling estimate. Due to the Central Limit Theorem, the summary statistics from each model tend toward a normal distribution, as long as we have a lot of data relative to $V \times R$.
+Para crear repeticiones *R* de validación cruzada de pliegues *V*, se realiza el mismo proceso de generación de pliegues *R* veces para generar colecciones *R* de particiones *V*. Ahora, en lugar de promediar las estadísticas *V*, las estadísticas $V \times R$ producen la estimación final del remuestreo. Debido al teorema del límite central, las estadísticas resumidas de cada modelo tienden a una distribución normal, siempre que tengamos muchos datos relativos a $V \times R$.
 
-Consider the Ames data. On average, 10-fold cross-validation uses assessment sets that contain roughly `r floor(nrow(ames_train) * .1)` properties. If RMSE is the statistic of choice, we can denote that estimate's standard deviation as $\sigma$. With simple 10-fold cross-validation, the standard error of the mean RMSE is $\sigma/\sqrt{10}$. If this is too noisy, repeats reduce the standard error to $\sigma/\sqrt{10R}$. For 10-fold cross-validation with $R$ replicates, the plot in @fig-variance-reduction shows how quickly the standard error[^10-resampling-7] decreases with replicates.
+Consideremos los datos de Ames. En promedio, la validación cruzada 10 veces utiliza conjuntos de evaluación que contienen aproximadamente propiedades `r floor(nrow(ames_train) * .1)`. Si RMSE es la estadística elegida, podemos denotar la desviación estándar de esa estimación como $\sigma$. Con una validación cruzada simple de 10 veces, el error estándar del RMSE medio es $\sigma/\sqrt{10}$. Si esto es demasiado ruidoso, las repeticiones reducen el error estándar a $\sigma/\sqrt{10R}$. Para una validación cruzada de 10 veces con réplicas de $R$, el gráfico en @fig-variance-reduction muestra qué tan rápido disminuye el error estándar[^10-resampling-7] con las réplicas.
 
-[^10-resampling-7]: These are *approximate* standard errors. As will be discussed in the next chapter, there is a within-replicate correlation that is typical of resampled results. By ignoring this extra component of variation, the simple calculations shown in this plot are overestimates of the reduction in noise in the standard errors.
+[^10-resampling-7]: Estos son errores estándar *aproximados*. Como se analizará en el próximo capítulo, existe una correlación dentro de las réplicas que es típica de los resultados remuestreados. Al ignorar este componente adicional de variación, los cálculos simples que se muestran en este gráfico son sobreestimaciones de la reducción del ruido en los errores estándar.
 
 ```{r}
 #| label: fig-variance-reduction
 #| echo: FALSE
 #| fig.height: 4
-#| fig.cap: "Relationship between the relative variance in performance estimates versus the number of cross-validation repeats"
-#| fig.alt: "The relationship between the relative variance in performance estimates versus the number of cross-validation repeats. As the repeats increase, the variance is reduced in a harmonically decreasing pattern with diminishing returns for large number of replicates."
+#| fig.cap: "Relación entre la varianza relativa en las estimaciones de desempeño versus el número de repeticiones de validación cruzada"
+#| fig.alt: "La relación entre la varianza relativa en las estimaciones de rendimiento versus el número de repeticiones de validación cruzada. A medida que aumentan las repeticiones, la varianza se reduce en un patrón armónicamente decreciente con rendimientos decrecientes para un gran número de repeticiones."
 
 y_lab <- expression(Multiplier ~ on ~ sigma)
 
@@ -265,140 +265,140 @@ ggplot(cv_info, aes(x = replicates, y = reduction)) +
   geom_point() + 
   labs(
     y = y_lab,
-    x = "Number of 10F-CV Replicates"
+    x = "Número de réplicas del 10F-CV"
   ) +
   theme_bw() + 
   scale_x_continuous(breaks = 1:10)
 ```
 
-Larger numbers of replicates tend to have less impact on the standard error. However, if the baseline value of $\sigma$ is impractically large, the diminishing returns on replication may still be worth the extra computational costs.
+Un mayor número de réplicas tiende a tener menos impacto en el error estándar. Sin embargo, si el valor de referencia de $\sigma$ es imprácticamente grande, los rendimientos decrecientes de la replicación aún pueden valer los costos computacionales adicionales.
 
-To create repeats, invoke `vfold_cv()` with an additional argument `repeats`:
+Para crear repeticiones, invoque `vfold_cv()` con un argumento adicional `repeats`:
 
 ```{r resampling-repeated}
 vfold_cv(ames_train, v = 10, repeats = 5)
 ```
 
-### Leave-one-out cross-validation {.unnumbered}
+### Validación cruzada de dejar uno fuera {.unnumbered}
 
-One variation of cross-validation is leave-one-out (LOO) cross-validation. If there are $n$ training set samples, $n$ models are fit using $n-1$ rows of the training set. Each model predicts the single excluded data point. At the end of resampling, the $n$ predictions are pooled to produce a single performance statistic.
+Una variación de la validación cruzada es la validación cruzada de dejar uno fuera (LOO). Si hay $n$ muestras de conjuntos de entrenamiento, $n$ modelos se ajustan usando $n-1$ filas del conjunto de entrenamiento. Cada modelo predice el único punto de datos excluido. Al final del remuestreo, las predicciones $n$ se combinan para producir una única estadística de rendimiento.
 
-Leave-one-out methods are deficient compared to almost any other method. For anything but pathologically small samples, LOO is computationally excessive, and it may not have good statistical properties. Although the `r pkg(rsample)` package contains a `loo_cv()` function, these objects are not generally integrated into the broader tidymodels frameworks.
+Los métodos de dejar uno fuera son deficientes en comparación con casi cualquier otro método. Para cualquier cosa que no sea una muestra patológicamente pequeña, LOO es computacionalmente excesivo y puede que no tenga buenas propiedades estadísticas. Aunque el paquete `r pkg(rsample)` contiene una función `loo_cv()`, estos objetos generalmente no están integrados en los marcos más amplios de tidymodels.
 
-### Monte Carlo cross-validation {.unnumbered}
+### Validación cruzada de Monte Carlo {.unnumbered}
 
-Another variant of *V*-fold cross-validation is Monte Carlo cross-validation (MCCV, @xu2001monte). Like *V*-fold cross-validation, it allocates a fixed proportion of data to the assessment sets. The difference between MCCV and regular cross-validation is that, for MCCV, this proportion of the data is randomly selected each time. This results in assessment sets that are not mutually exclusive. To create these resampling objects:
+Otra variante de la validación cruzada *V* es la validación cruzada de Monte Carlo (MCCV, @xu2001monte). Al igual que la validación cruzada *V* veces, asigna una proporción fija de datos a los conjuntos de evaluación. La diferencia entre MCCV y la validación cruzada regular es que, para MCCV, esta proporción de datos se selecciona aleatoriamente cada vez. Esto da como resultado conjuntos de evaluación que no son mutuamente excluyentes. Para crear estos objetos de remuestreo:
 
 ```{r resampling-mccv}
 mc_cv(ames_train, prop = 9/10, times = 20)
 ```
 
-### Validation sets {#sec-validation}
+### Conjuntos de validación {#sec-validation}
 
-In @sec-what-about-a-validation-set, we briefly discussed the use of a validation set, a single partition that is set aside to estimate performance separate from the test set. When using a validation set, the initial available data set is split into a training set, a validation set, and a test set (see @fig-three-way-split).
+En @sec-what-about-a-validation-set, analizamos brevemente el uso de un conjunto de validación, una única partición que se reserva para estimar el rendimiento separada del conjunto de prueba. Cuando se utiliza un conjunto de validación, el conjunto de datos inicial disponible se divide en un conjunto de entrenamiento, un conjunto de validación y un conjunto de prueba (consulte @fig-three-way-split).
 
 ```{r}
 #| label: fig-three-way-split
 #| echo: FALSE
 #| out.width: '50%'
 #| warning: FALSE
-#| fig.cap: "A three-way initial split into training, testing, and validation sets"
-#| fig.alt: "A three-way initial split into training, testing, and validation sets."
+#| fig.cap: "Una división inicial de tres vías en conjuntos de entrenamiento, pruebas y validación."
+#| fig.alt: "Una división inicial de tres vías en conjuntos de entrenamiento, pruebas y validación."
 
 knitr::include_graphics("premade/validation.svg")
 ```
 
-Validation sets are often used when the original pool of data is very large. In this case, a single large partition may be adequate to characterize model performance without having to do multiple resampling iterations.
+Los conjuntos de validación se utilizan a menudo cuando el conjunto de datos original es muy grande. En este caso, una única partición grande puede ser adecuada para caracterizar el rendimiento del modelo sin tener que realizar múltiples iteraciones de remuestreo.
 
-With the `r pkg(rsample)` package, a validation set is like any other resampling object; this type is different only in that it has a single iteration.[^10-resampling-8] @fig-validation-split shows this scheme.
+Con el paquete `r pkg(rsample)`, un conjunto de validación es como cualquier otro objeto de remuestreo; este tipo se diferencia únicamente en que tiene una única iteración.[^10-resampling-8] @fig-validation-split muestra este esquema.
 
-[^10-resampling-8]: In essence, a validation set can be considered a single iteration of Monte Carlo cross-validation.
+[^10-resampling-8]: En esencia, un conjunto de validación puede considerarse una iteración única de la validación cruzada de Monte Carlo.
 
 ```{r}
 #| label: fig-validation-split
 #| echo: FALSE
 #| out.width: '45%'
 #| warning: FALSE
-#| fig.cap: "A two-way initial split into training and testing with an additional validation set split on the training set"
-#| fig.alt: "A two-way initial split into training and testing with an additional validation set split on the training set."
+#| fig.cap: "Una división inicial bidireccional en entrenamiento y pruebas con un conjunto de validación adicional dividido en el conjunto de entrenamiento"
+#| fig.alt: "Una división inicial bidireccional en entrenamiento y prueba con un conjunto de validación adicional dividido en el conjunto de entrenamiento."
 
 knitr::include_graphics("premade/validation-alt.svg")
 ```
 
-To build on the code from @sec-what-about-a-validation-set, the function `validation_set()` can take the results of `initial_validation_split()` and convert it to an rset object that is similar to the ones produced by functions such as `vfold_cv()`:
+Para construir sobre el código de @sec-what-about-a-validation-set, la función `validation_set()` puede tomar los resultados de `initial_validation_split()` y convertirlos en un objeto rset similar a los producidos. mediante funciones como `vfold_cv()`:
 
 ```{r resampling-validation-split}
-# Previously:
+# Previamente:
 
 set.seed(52)
-# To put 60% into training, 20% in validation, and 20% in testing:
+# Para dedicar el 60 % al entrenamiento, el 20 % a la validación y el 20 % a las pruebas:
 ames_val_split <- initial_validation_split(ames, prop = c(0.6, 0.2))
 ames_val_split
 
-# Object used for resampling: 
+# Objeto utilizado para remuestreo: 
 val_set <- validation_set(ames_val_split)
 val_set
 ```
 
-As you'll see in @sec-resampling-performance, the `fit_resamples()` function will be used to compute correct estimates of performance using resampling. The `val_set` object can be used in in this and other functions even though it is a single "resample" of the data.
+Como verá en @sec-resampling-rendimiento, la función `fit_resamples()` se utilizará para calcular estimaciones correctas de rendimiento mediante el remuestreo. El objeto `val_set` se puede utilizar en esta y otras funciones aunque sea una única "muestra" de los datos.
 
 ### Bootstrapping {#sec-bootstrap}
 
-Bootstrap resampling was originally invented as a method for approximating the sampling distribution of statistics whose theoretical properties are intractable [@davison1997bootstrap]. Using it to estimate model performance is a secondary application of the method.
+El remuestreo Bootstrap se inventó originalmente como un método para aproximar la distribución muestral de estadísticas cuyas propiedades teóricas son intratables [@davison1997bootstrap]. Usarlo para estimar el desempeño del modelo es una aplicación secundaria del método.
 
-A bootstrap sample of the training set is a sample that is the same size as the training set but is drawn *with replacement*. This means that some training set data points are selected multiple times for the analysis set. Each data point has a `r round((1-exp(-1)) * 100, 1)`% chance of inclusion in the training set at least once. The assessment set contains all of the training set samples that were not selected for the analysis set (on average, with `r round((exp(-1)) * 100, 1)`% of the training set). When bootstrapping, the assessment set is often called the *out-of-bag* sample.
+Una muestra bootstrap del conjunto de entrenamiento es una muestra que tiene el mismo tamaño que el conjunto de entrenamiento pero que se extrae *con reemplazo*. Esto significa que algunos puntos de datos del conjunto de entrenamiento se seleccionan varias veces para el conjunto de análisis. Cada punto de datos tiene una probabilidad `r round((1-exp(-1)) * 100, 1)`% de ser incluido en el conjunto de entrenamiento al menos una vez. El conjunto de evaluación contiene todas las muestras del conjunto de entrenamiento que no fueron seleccionadas para el conjunto de análisis (en promedio, con `r round((exp(-1)) * 100, 1)`% del conjunto de entrenamiento). Al realizar el arranque, el conjunto de evaluación a menudo se denomina muestra *fuera de la bolsa*.
 
-For a training set of 30 samples, a schematic of three bootstrap samples is shown in @fig-bootstrapping.
+Para un conjunto de entrenamiento de 30 muestras, en la siguiente figura se muestra un esquema de tres muestras bootstrap @fig-bootstrapping.
 
 ```{r}
 #| label: fig-bootstrapping
 #| echo: FALSE
 #| out.width: '80%'
 #| warning: FALSE
-#| fig.cap: "Bootstrapping data usage"
-#| fig.alt: "A diagram of bootstrapping data usage. For each bootstrap resample, the analysis set is the same size as the training set (due to sampling with replacement) and the assessment set consists of samples not in the analysis set."
+#| fig.cap: "Uso de datos Bootstraping"
+#| fig.alt: "Un diagrama del uso de datos en bootstrapping. Para cada remuestreo de bootstrap, el conjunto de análisis es del mismo tamaño que el conjunto de entrenamiento (debido al muestreo con reemplazo) y el conjunto de evaluación consta de muestras que no están en el conjunto de análisis."
 
 knitr::include_graphics("premade/bootstraps.svg")
 ```
 
-Note that the sizes of the assessment sets vary.
+Tenga en cuenta que los tamaños de los conjuntos de evaluación varían.
 
-Using the `r pkg(rsample)` package, we can create such bootstrap resamples:
+Usando el paquete `r pkg(rsample)`, podemos crear tales remuestreos de bootstrap:
 
 ```{r resampling-boot-set}
 bootstraps(ames_train, times = 5)
 ```
 
-Bootstrap samples produce performance estimates that have very low variance (unlike cross-validation) but have significant pessimistic bias. This means that, if the true accuracy of a model is 90%, the bootstrap would tend to estimate the value to be less than 90%. The amount of bias cannot be empirically determined with sufficient accuracy. Additionally, the amount of bias changes over the scale of the performance metric. For example, the bias is likely to be different when the accuracy is 90% versus when it is 70%.
+Las muestras Bootstrap producen estimaciones de rendimiento que tienen una varianza muy baja (a diferencia de la validación cruzada) pero tienen un sesgo pesimista significativo. Esto significa que, si la precisión real de un modelo es del 90%, el bootstrap tendería a estimar que el valor es inferior al 90%. La cantidad de sesgo no se puede determinar empíricamente con suficiente precisión. Además, la cantidad de sesgo cambia a lo largo de la escala de la métrica de desempeño. Por ejemplo, es probable que el sesgo sea diferente cuando la precisión es del 90 % y cuando es del 70 %.
 
-The bootstrap is also used inside of many models. For example, the random forest model mentioned earlier contained 1,000 individual decision trees. Each tree was the product of a different bootstrap sample of the training set.
+El bootstrap también se utiliza en muchos modelos. Por ejemplo, el modelo de random forest mencionado anteriormente contenía 1000 árboles de decisión individuales. Cada árbol fue producto de una muestra de bootstrap diferente del conjunto de entrenamiento.
 
-### Rolling forecasting origin resampling {#sec-rolling}
+### Remuestreo continuo del origen de la previsión {#sec-rolling}
 
-When the data have a strong time component, a resampling method should support modeling to estimate seasonal and other temporal trends within the data. A technique that randomly samples values from the training set can disrupt the model's ability to estimate these patterns.
+Cuando los datos tienen un fuerte componente temporal, un método de remuestreo debería respaldar el modelado para estimar tendencias estacionales y otras tendencias temporales dentro de los datos. Una técnica que muestrea aleatoriamente valores del conjunto de entrenamiento puede alterar la capacidad del modelo para estimar estos patrones.
 
-Rolling forecast origin resampling [@hyndman2018forecasting] provides a method that emulates how time series data is often partitioned in practice, estimating the model with historical data and evaluating it with the most recent data. For this type of resampling, the size of the initial analysis and assessment sets are specified. The first iteration of resampling uses these sizes, starting from the beginning of the series. The second iteration uses the same data sizes but shifts over by a set number of samples.
+El remuestreo continuo del origen del pronóstico [@hyndman2018forecasting] proporciona un método que emula cómo los datos de series de tiempo a menudo se dividen en la práctica, estimando el modelo con datos históricos y evaluándolo con los datos más recientes. Para este tipo de remuestreo, se especifica el tamaño de los conjuntos de análisis y evaluación iniciales. La primera iteración de remuestreo utiliza estos tamaños, comenzando desde el principio de la serie. La segunda iteración utiliza los mismos tamaños de datos pero cambia en un número determinado de muestras.
 
-To illustrate, a training set of fifteen samples was resampled with an analysis size of eight samples and an assessment set size of three. The second iteration discards the first training set sample and both data sets shift forward by one. This configuration results in five resamples, as shown in @fig-rolling.
+A modo de ilustración, se volvió a muestrear un conjunto de entrenamiento de quince muestras con un tamaño de análisis de ocho muestras y un tamaño de conjunto de evaluación de tres. La segunda iteración descarta la primera muestra del conjunto de entrenamiento y ambos conjuntos de datos avanzan uno. Esta configuración da como resultado cinco remuestreos, como se muestra en @fig-rolling.
 
 ```{r}
 #| label: fig-rolling
 #| echo: FALSE
 #| out.width: '65%'
 #| warning: FALSE
-#| fig.cap: "Data usage for rolling forecasting origin resampling"
-#| fig.alt: "The data usage for rolling forecasting origin resampling. For each split, earlier data are used for modeling and a few subsequent instances are used to measure performance."
+#| fig.cap: "Uso de datos para el remuestreo continuo del origen de la previsión"
+#| fig.alt: "El uso de datos para el remuestreo continuo del origen de la previsión. Para cada división, se utilizan datos anteriores para modelar y algunas instancias posteriores se utilizan para medir el desempeño."
 
 knitr::include_graphics("premade/rolling.svg")
 ```
 
-Here are two different configurations of this method:
+Aquí hay dos configuraciones diferentes de este método:
 
--   The analysis set can cumulatively grow (as opposed to remaining the same size). After the first initial analysis set, new samples can accrue without discarding the earlier data.
+-   El conjunto de análisis puede crecer acumulativamente (en lugar de permanecer del mismo tamaño). Después del primer conjunto de análisis inicial, se pueden acumular nuevas muestras sin descartar los datos anteriores.
 
--   The resamples need not increment by one. For example, for large data sets, the incremental block could be a week or month instead of a day.
+-   Los remuestreos no necesitan incrementarse en uno. Por ejemplo, para conjuntos de datos grandes, el bloque incremental podría ser una semana o un mes en lugar de un día.
 
-For a year's worth of data, suppose that six sets of 30-day blocks define the analysis set. For assessment sets of 30 days with a 29-day skip, we can use the `r pkg(rsample)` package to specify:
+Para los datos de un año, supongamos que seis conjuntos de bloques de 30 días definen el conjunto de análisis. Para conjuntos de evaluación de 30 días con un salto de 29 días, podemos usar el paquete `r pkg(rsample)` para especificar:
 
 ```{r resampling-rolling-forcast}
 time_slices <- 
@@ -413,17 +413,17 @@ map_dfr(time_slices$splits, ~   analysis(.x) %>% data_range())
 map_dfr(time_slices$splits, ~ assessment(.x) %>% data_range())
 ```
 
-## Estimating Performance {#sec-resampling-performance}
+## Estimación del rendimiento {#sec-resampling-performance}
 
-Any of the resampling methods discussed in this chapter can be used to evaluate the modeling process (including preprocessing, model fitting, etc). These methods are effective because different groups of data are used to train the model and assess the model. To reiterate, the process to use resampling is:
+Cualquiera de los métodos de remuestreo discutidos en este capítulo se puede utilizar para evaluar el proceso de modelado (incluido el preprocesamiento, el ajuste del modelo, etc.). Estos métodos son eficaces porque se utilizan diferentes grupos de datos para entrenar el modelo y evaluarlo. Para reiterar, el proceso para utilizar el remuestreo es:
 
-1.  During resampling, the analysis set is used to preprocess the data, apply the preprocessing to itself, and use these processed data to fit the model.
+1.  Durante el remuestreo, el conjunto de análisis se utiliza para preprocesar los datos, aplicar el preprocesamiento a sí mismo y utilizar estos datos procesados para ajustarse al modelo.
 
-2.  The preprocessing statistics produced by the analysis set are applied to the assessment set. The predictions from the assessment set estimate performance on new data.
+2. Las estadísticas de preprocesamiento producidas por el conjunto de análisis se aplican al conjunto de evaluación. Las predicciones del conjunto de evaluación estiman el rendimiento con datos nuevos.
 
-This sequence repeats for every resample. If there are *B* resamples, there are *B* replicates of each of the performance metrics. The final resampling estimate is the average of these *B* statistics. If *B* = 1, as with a validation set, the individual statistics represent overall performance.
+Esta secuencia se repite para cada nuevo muestreo. Si hay *B* remuestreos, hay *B* réplicas de cada una de las métricas de rendimiento. La estimación final del remuestreo es el promedio de estas estadísticas *B*. Si *B* = 1, como ocurre con un conjunto de validación, las estadísticas individuales representan el rendimiento general.
 
-Let's reconsider the previous random forest model contained in the `rf_wflow` object. The `fit_resamples()` function is analogous to `fit()`, but instead of having a `data` argument, `fit_resamples()` has `resamples`, which expects an `rset` object like the ones shown in this chapter. The possible interfaces to the function are:
+Reconsideremos el modelo de random forest anterior contenido en el objeto `rf_wflow`. La función `fit_resamples()` es análoga a `fit()`, pero en lugar de tener un argumento `data`, `fit_resamples()` tiene `resamples`, que espera un objeto `rset` como los que se muestran en este capítulo Las posibles interfaces para la función son:
 
 ```{r resampling-usage, eval = FALSE}
 model_spec %>% fit_resamples(formula,  resamples, ...)
@@ -431,21 +431,21 @@ model_spec %>% fit_resamples(recipe,   resamples, ...)
 workflow   %>% fit_resamples(          resamples, ...)
 ```
 
-There are a number of other optional arguments, such as:
+Hay una serie de otros argumentos opcionales, como por ejemplo:
 
--   `metrics`: A metric set of performance statistics to compute. By default, regression models use RMSE and $R^2$ while classification models compute the area under the ROC curve and overall accuracy. Note that this choice also defines what predictions are produced during the evaluation of the model. For classification, if only accuracy is requested, class probability estimates are not generated for the assessment set (since they are not needed).
+-   `metrics`: Un conjunto de métricas de estadísticas de rendimiento para calcular. De forma predeterminada, los modelos de regresión utilizan RMSE y $R^2$, mientras que los modelos de clasificación calculan el área bajo la curva ROC y la precisión general. Tenga en cuenta que esta elección también define qué predicciones se producen durante la evaluación del modelo. Para la clasificación, si solo se solicita precisión, no se generan estimaciones de probabilidad de clase para el conjunto de evaluación (ya que no son necesarias).
 
--   `control`: A list created by `control_resamples()` with various options.
+-   `control`: Una lista creada por `control_resamples()` con varias opciones.
 
-The control arguments include:
+Los argumentos de control incluyen:
 
--   `verbose`: A logical for printing logging.
+-   `verbose`: Una lógica para imprimir el registro.
 
--   `extract`: A function for retaining objects from each model iteration (discussed later in this chapter).
+-   `extract`: Una función para retener objetos de cada iteración del modelo (que se analiza más adelante en este capítulo).
 
--   `save_pred`: A logical for saving the assessment set predictions.
+-   `save_pred`: Una lógica para guardar las predicciones del conjunto de evaluación.
 
-For our example, let's save the predictions in order to visualize the model fit and residuals:
+Para nuestro ejemplo, guardemos las predicciones para visualizar el ajuste y los residuos del modelo:
 
 ```{r resampling-cv-ames}
 keep_pred <- control_resamples(save_pred = TRUE, save_workflow = TRUE)
@@ -470,38 +470,38 @@ if (is_new_version(rf_res,   "RData/resampling.RData") |
 }
 ```
 
-The return value is a tibble similar to the input resamples, along with some extra columns:
+El valor de retorno es un tibble similar a las muestras de entrada, junto con algunas columnas adicionales:
 
--   `.metrics` is a list column of tibbles containing the assessment set performance statistics.
+-   `.metrics` es una columna de lista de tibbles que contiene las estadísticas de rendimiento del conjunto de evaluación.
 
--   `.notes` is another list column of tibbles cataloging any warnings or errors generated during resampling. Note that errors will not stop subsequent execution of resampling.
+-   `.notes` Hay otra columna de lista de tibbles que cataloga cualquier advertencia o error generado durante el remuestreo. Tenga en cuenta que los errores no detendrán la ejecución posterior del remuestreo.
 
--   `.predictions` is present when `save_pred = TRUE`. This list column contains tibbles with the out-of-sample predictions.
+-   `.predictions` está presente cuando `save_pred = TRUE`. Esta columna de lista contiene tibbles con predicciones fuera de muestra.
 
-While these list columns may look daunting, they can be easily reconfigured using `r pkg(tidyr)` or with convenience functions that tidymodels provides. For example, to return the performance metrics in a more usable format:
+Si bien estas columnas de lista pueden parecer desalentadoras, se pueden reconfigurar fácilmente usando `r pkg(tidyr)` o con las funciones convenientes que proporciona tidymodels. Por ejemplo, para devolver las métricas de rendimiento en un formato más utilizable:
 
 ```{r resampling-cv-stats}
 collect_metrics(rf_res)
 ```
 
-These are the resampling estimates averaged over the individual replicates. To get the metrics for each resample, use the option `summarize = FALSE`.
+Estas son las estimaciones de remuestreo promediadas sobre las réplicas individuales. Para obtener las métricas para cada remuestreo, use la opción `summarize = FALSE`.
 
-Notice how much more realistic the performance estimates are than the resubstitution estimates from @sec-resampling-resubstition!
+¡Observe cuánto más realistas son las estimaciones de rendimiento que las estimaciones de resustitución de @sec-resampling-resubstition!
 
-To obtain the assessment set predictions:
+Para obtener las predicciones del conjunto de evaluación:
 
 ```{r resampling-cv-pred}
 assess_res <- collect_predictions(rf_res)
 assess_res
 ```
 
-The prediction column names follow the conventions discussed for `r pkg(parsnip)` models in [Chapter @sec-models], for consistency and ease of use. The observed outcome column always uses the original column name from the source data. The `.row` column is an integer that matches the row of the original training set so that these results can be properly arranged and joined with the original data.
+Los nombres de las columnas de predicción siguen las convenciones analizadas para los modelos `r pkg(parsnip)` en el [Capítulo @sec-models], para mayor coherencia y facilidad de uso. La columna de resultados observados siempre utiliza el nombre de la columna original de los datos de origen. La columna `.row` es un número entero que coincide con la fila del conjunto de entrenamiento original para que estos resultados puedan organizarse y unirse adecuadamente con los datos originales.
 
 ::: rmdnote
-For some resampling methods, such as the bootstrap or repeated cross-validation, there will be multiple predictions per row of the original training set. To obtain summarized values (averages of the replicate predictions) use `collect_predictions(object, summarize = TRUE)`.
+Para algunos métodos de remuestreo, como el bootstrap o la validación cruzada repetida, habrá múltiples predicciones por fila del conjunto de entrenamiento original. Para obtener valores resumidos (promedios de las predicciones replicadas), utilice `collect_predictions(object, summarize = TRUE)`.
 :::
 
-Since this analysis used 10-fold cross-validation, there is one unique prediction for each training set sample. These data can generate helpful plots of the model to understand where it potentially failed. For example, @fig-ames-resampled-performance compares the observed and held-out predicted values (analogous to @fig-ames-performance-plot):
+Dado que este análisis utilizó una validación cruzada de 10 veces, existe una predicción única para cada muestra del conjunto de entrenamiento. Estos datos pueden generar gráficos útiles del modelo para comprender dónde potencialmente falló. Por ejemplo, @fig-ames-resampled-dance compara los valores observados y predichos retenidos (análogo a @fig-ames-rendimiento-plot):
 
 ```{r resampling-cv-pred-plot, eval=FALSE}
 assess_res %>% 
@@ -509,7 +509,8 @@ assess_res %>%
   geom_point(alpha = .15) +
   geom_abline(color = "red") + 
   coord_obs_pred() + 
-  ylab("Predicted")
+  ylab("Predichos") +
+  xlab("Precio de Venta")
 ```
 
 ```{r}
@@ -518,11 +519,11 @@ assess_res %>%
 #| fig.height: 5 
 #| fig.width: 5
 #| echo: FALSE
-#| fig.cap: "Out-of-sample observed versus predicted values for an Ames regression model, using log-10 units on both axes"
-#| fig.alt: "Scatter plots of out-of-sample observed versus predicted values for an Ames regression model. Both axes using log-10 units. The model shows good concordance with two outlying data points that are significantly over-predicted."
+#| fig.cap: "Valores observados versus predichos fuera de la muestra para un modelo de regresión de Ames, utilizando unidades log-10 en ambos ejes"
+#| fig.alt: "Gráficos de dispersión de valores observados versus valores predichos fuera de la muestra para un modelo de regresión de Ames. Ambos ejes utilizan unidades log-10. El modelo muestra una buena concordancia con dos puntos de datos periféricos que están significativamente sobreestimados."
 ```
 
-There are two houses in the training set with a low observed sale price that are significantly overpredicted by the model. Which houses are these? Let's find out from the `assess_res` result:
+Hay dos casas en el conjunto de entrenamiento con un precio de venta bajo observado que el modelo sobreestima significativamente. ¿Qué casas son estas? Averigüemos por el resultado de `assess_res`:
 
 ```{r resampling-investigate}
 over_predicted <- 
@@ -537,9 +538,9 @@ ames_train %>%
   select(Gr_Liv_Area, Neighborhood, Year_Built, Bedroom_AbvGr, Full_Bath)
 ```
 
-Identifying examples like these with especially poor performance can help us follow up and investigate why these specific predictions are so poor.
+Identificar ejemplos como estos con un desempeño especialmente pobre puede ayudarnos a realizar un seguimiento e investigar por qué estas predicciones específicas son tan pobres.
 
-Let's move back to the homes overall. How can we use a validation set instead of cross-validation? From our previous `r pkg(rsample)` object:
+Volvamos a las casas en general. ¿Cómo podemos utilizar un conjunto de validación en lugar de validación cruzada? De nuestro objeto anterior `r pkg(rsample)`:
 
 ```{r resampling-val-ames}
 val_res <- rf_wflow %>% fit_resamples(resamples = val_set)
@@ -548,79 +549,79 @@ val_res
 collect_metrics(val_res)
 ```
 
-These results are also much closer to the test set results than the resubstitution estimates of performance.
+Estos resultados también están mucho más cerca de los resultados del conjunto de pruebas que las estimaciones de rendimiento de resustitución.
 
 ::: rmdnote
-In these analyses, the resampling results are very close to the test set results. The two types of estimates tend to be well correlated. However, this could be from random chance. A seed value of `55` fixed the random numbers before creating the resamples. Try changing this value and re-running the analyses to investigate whether the resampled estimates match the test set results as well.
+En estos análisis, los resultados del remuestreo son muy cercanos a los resultados del conjunto de pruebas. Los dos tipos de estimaciones tienden a estar bien correlacionados. Sin embargo, esto podría deberse al azar. Un valor inicial de "55" fijó los números aleatorios antes de crear las nuevas muestras. Intente cambiar este valor y vuelva a ejecutar los análisis para investigar si las estimaciones remuestreadas también coinciden con los resultados del conjunto de pruebas.
 :::
 
-## Parallel Processing {#sec-parallel}
+## Procesamiento en paralelo {#sec-parallel}
 
-The models created during resampling are independent of one another. Computations of this kind are sometimes called *embarrassingly parallel*; each model could be fit simultaneously without issues.[^10-resampling-9] The `r pkg(tune)` package uses the [`r pkg(foreach)`](https://CRAN.R-project.org/package=foreach) package to facilitate parallel computations. These computations could be split across processors on the same computer or across different computers, depending on the chosen technology.
+Los modelos creados durante el remuestreo son independientes entre sí. Los cálculos de este tipo a veces se denominan *vergonzosamente paralelos*; cada modelo podría adaptarse simultáneamente sin problemas.[^10-resampling-9] El paquete `r pkg(tune)` usa [`r pkg(foreach)`](https://CRAN.R-project.org/ package=foreach) paquete para facilitar los cálculos paralelos. Estos cálculos podrían dividirse entre procesadores de la misma computadora o entre computadoras diferentes, según la tecnología elegida.
 
-[^10-resampling-9]: @parallel gives a technical overview of these technologies.
+[^10-resampling-9]: @parallel ofrece una descripción técnica de estas tecnologías.
 
-For computations conducted on a single computer, the number of possible worker processes is determined by the `r pkg(parallel)` package:
+Para cálculos realizados en una sola computadora, el número de procesos de trabajo posibles está determinado por el paquete `r pkg(parallel)`:
 
 ```{r resampling-find-cores}
-# The number of physical cores in the hardware:
+# La cantidad de núcleos físicos en el hardware:
 parallel::detectCores(logical = FALSE)
 
-# The number of possible independent processes that can 
-# be simultaneously used:  
+# El número de posibles procesadors independientes que pueden
+# ser utilizados simultáneamente:  
 parallel::detectCores(logical = TRUE)
 ```
 
-The difference between these two values is related to the computer's processor. For example, most Intel processors use hyperthreading, which creates two virtual cores for each physical core. While these extra resources can improve performance, most of the speed-ups produced by parallel processing occur when processing uses fewer than the number of physical cores.
+La diferencia entre estos dos valores está relacionada con el procesador de la computadora. Por ejemplo, la mayoría de los procesadores Intel utilizan hyperthreading, que crea dos núcleos virtuales para cada núcleo físico. Si bien estos recursos adicionales pueden mejorar el rendimiento, la mayoría de las aceleraciones producidas por el procesamiento paralelo ocurren cuando el procesamiento utiliza menos núcleos físicos.
 
-For `fit_resamples()` and other functions in `r pkg(tune)`, parallel processing occurs when the user registers a parallel backend package. These R packages define how to execute parallel processing. On Unix and macOS operating systems, one method of splitting computations is by forking threads. To enable this, load the `r pkg(doMC)` package and register the number of parallel cores with `r pkg(foreach)`:
+Para `fit_resamples()` y otras funciones en `r pkg(tune)`, el procesamiento paralelo ocurre cuando el usuario registra un paquete backend paralelo. Estos paquetes de R definen cómo ejecutar el procesamiento paralelo. En los sistemas operativos Unix y macOS, un método para dividir los cálculos es bifurcar subprocesos. Para habilitar esto, cargue el paquete `r pkg(doMC)` y registre el número de núcleos paralelos con `r pkg(foreach)`:
 
 ```{r resampling-mc, eval = FALSE}
-# Unix and macOS only
+# Solo Unix y macOS
 library(doMC)
 registerDoMC(cores = 2)
 
-# Now run fit_resamples()...
+# Ahora ejecute fit_resamples()...
 ```
 
-This instructs `fit_resamples()` to run half of the computations on each of two cores. To reset the computations to sequential processing:
+Esto indica a `fit_resamples()` que ejecute la mitad de los cálculos en cada uno de los dos núcleos. Para restablecer los cálculos al procesamiento secuencial:
 
 ```{r resampling-seq, eval = FALSE}
 registerDoSEQ()
 ```
 
-Alternatively, a different approach to parallelizing computations uses network sockets. The `r pkg(doParallel)` package enables this method (usable by all operating systems):
+Alternativamente, un enfoque diferente para paralelizar los cálculos utiliza sockets de red. El paquete `r pkg(doParallel)` habilita este método (utilizable en todos los sistemas operativos):
 
 ```{r resampling-psock, eval = FALSE}
-# All operating systems
+# Todos los sistemas operativos
 library(doParallel)
 
-# Create a cluster object and then register: 
+# Cree un objeto de clúster y luego regístrelo: 
 cl <- makePSOCKcluster(2)
 registerDoParallel(cl)
 
-# Now run fit_resamples()`...
+# Ahora ejecute fit_resamples()`...
 
 stopCluster(cl)
 ```
 
-Another R package that facilitates parallel processing is the [`r pkg(future)`](https://future.futureverse.org/) package. Like `r pkg(foreach)`, it provides a framework for parallelism. This package is used in conjunction with `r pkg(foreach)` via the `r pkg(doFuture)` package.
+Otro paquete de R que facilita el procesamiento paralelo es el paquete [`r pkg(future)`](https://future.futureverse.org/). Al igual que `r pkg(foreach)`, proporciona un marco para el paralelismo. Este paquete se usa junto con `r pkg(foreach)` a través del paquete `r pkg(doFuture)`.
 
 ::: rmdnote
-The R packages with parallel backends for `r pkg(foreach)` start with the prefix `"do"`.
+Los paquetes R con backends paralelos para `r pkg(foreach)` comienzan con el prefijo `"do"`.
 :::
 
-Parallel processing with the `r pkg(tune)` package tends to provide linear speed-ups for the first few cores. This means that, with two cores, the computations are twice as fast. Depending on the data and model type, the linear speed-up deteriorates after four to five cores. Using more cores will still reduce the time it takes to complete the task; there are just diminishing returns for the additional cores.
+El procesamiento paralelo con el paquete `r pkg(tune)` tiende a proporcionar aceleraciones lineales para los primeros núcleos. Esto significa que, con dos núcleos, los cálculos son el doble de rápidos. Dependiendo de los datos y del tipo de modelo, la aceleración lineal se deteriora después de cuatro o cinco núcleos. El uso de más núcleos seguirá reduciendo el tiempo necesario para completar la tarea; simplemente hay rendimientos decrecientes para los núcleos adicionales.
 
-Let's wrap up with one final note about parallelism. For each of these technologies, the memory requirements multiply for each additional core used. For example, if the current data set is 2 GB in memory and three cores are used, the total memory requirement is 8 GB (2 for each worker process plus the original). Using too many cores might cause the computations (and the computer) to slow considerably.
+Concluyamos con una nota final sobre el paralelismo. Para cada una de estas tecnologías, los requisitos de memoria se multiplican por cada núcleo adicional utilizado. Por ejemplo, si el conjunto de datos actual tiene 2 GB de memoria y se utilizan tres núcleos, el requisito total de memoria es de 8 GB (2 para cada proceso de trabajo más el original). El uso de demasiados núcleos puede hacer que los cálculos (y la computadora) se ralenticen considerablemente.
 
-## Saving the Resampled Objects {#sec-extract}
+## Guardar los objetos remuestreados {#sec-extract}
 
-The models created during resampling are not retained. These models are trained for the purpose of evaluating performance, and we typically do not need them after we have computed performance statistics. If a particular modeling approach does turn out to be the best option for our data set, then the best choice is to fit again to the whole training set so the model parameters can be estimated with more data.
+Los modelos creados durante el remuestreo no se conservan. Estos modelos se entrenan con el fin de evaluar el desempeño y, por lo general, no los necesitamos después de haber calculado las estadísticas de desempeño. Si un enfoque de modelado particular resulta ser la mejor opción para nuestro conjunto de datos, entonces la mejor opción es ajustar nuevamente todo el conjunto de entrenamiento para que los parámetros del modelo puedan estimarse con más datos.
 
-While these models created during resampling are not preserved, there is a method for keeping them or some of their components. The `extract` option of `control_resamples()` specifies a function that takes a single argument; we'll use `x`. When executed, `x` results in a fitted workflow object, regardless of whether you provided `fit_resamples()` with a workflow. Recall that the `r pkg(workflows)` package has functions that can pull the different components of the objects (e.g., the model, recipe, etc.).
+Si bien estos modelos creados durante el remuestreo no se conservan, existe un método para conservarlos o algunos de sus componentes. La opción `extract` de `control_resamples()` especifica una función que toma un solo argumento; Usaremos `x`. Cuando se ejecuta, `x` da como resultado un objeto de flujo de trabajo ajustado, independientemente de si proporcionó a `fit_resamples()` un flujo de trabajo. Recuerde que el paquete `r pkg(workflows)` tiene funciones que pueden extraer los diferentes componentes de los objetos (por ejemplo, el modelo, la receta, etc.).
 
-Let's fit a linear regression model using the recipe we developed in [Chapter @sec-recipes]:
+Ajustemos un modelo de regresión lineal usando la receta que desarrollamos en el [Capítulo @sec-recipes]:
 
 ```{r resampling-lm-ames}
 ames_rec <- 
@@ -638,22 +639,22 @@ lm_wflow <-
 
 lm_fit <- lm_wflow %>% fit(data = ames_train)
 
-# Select the recipe: 
+# Selecciona la receta:
 extract_recipe(lm_fit, estimated = TRUE)
 ```
 
-We can save the linear model coefficients for a fitted model object from a workflow:
+Podemos guardar los coeficientes del modelo lineal para un objeto de modelo ajustado desde un flujo de trabajo:
 
 ```{r resampling-extract-func}
 get_model <- function(x) {
   extract_fit_parsnip(x) %>% tidy()
 }
 
-# Test it using: 
+# Pruébelo usando:
 # get_model(lm_fit)
 ```
 
-Now let's apply this function to the ten resampled fits. The results of the extraction function is wrapped in a list object and returned in a tibble:
+Ahora apliquemos esta función a los diez ajustes remuestreados. Los resultados de la función de extracción se envuelven en un objeto de lista y se devuelven en un tibble:
 
 ```{r resampling-extract-all}
 ctrl <- control_resamples(extract = get_model)
@@ -662,34 +663,34 @@ lm_res <- lm_wflow %>%  fit_resamples(resamples = ames_folds, control = ctrl)
 lm_res
 ```
 
-Now there is a `.extracts` column with nested tibbles. What do these contain? Let's find out by subsetting.
+Ahora hay una columna `.extracts` con tibbles anidados. ¿Qué contienen estos? Averigüemos subconjuntos.
 
 ```{r resampling-extract-res}
 lm_res$.extracts[[1]]
 
-# To get the results
+# Para obtener los resultados
 lm_res$.extracts[[1]][[1]]
 ```
 
-This might appear to be a convoluted method for saving the model results. However, `extract` is flexible and does not assume that the user will only save a single tibble per resample. For example, the `tidy()` method might be run on the recipe as well as the model. In this case, a list of two tibbles will be returned.
+Esto podría parecer un método complicado para guardar los resultados del modelo. Sin embargo, `extract` es flexible y no supone que el usuario solo guardará un tibble por remuestreo. Por ejemplo, el método `tidy()` podría ejecutarse tanto en la receta como en el modelo. En este caso, se devolverá una lista de dos tibbles.
 
-For our more simple example, all of the results can be flattened and collected using:
+Para nuestro ejemplo más simple, todos los resultados se pueden aplanar y recopilar usando:
 
 ```{r resampling-extract-fraction}
 all_coef <- map_dfr(lm_res$.extracts, ~ .x[[1]][[1]])
-# Show the replicates for a single predictor:
+# Muestre las réplicas de un único predictor:
 filter(all_coef, term == "Year_Built")
 ```
 
-Chapters [-@sec-grid-search] and [-@sec-iterative-search] discuss a suite of functions for tuning models. Their interfaces are similar to `fit_resamples()` and many of the features described here apply to those functions.
+Los capítulos [-@sec-grid-search] y [-@sec-iterative-search] analizan un conjunto de funciones para ajustar modelos. Sus interfaces son similares a `fit_resamples()` y muchas de las características descritas aquí se aplican a esas funciones.
 
-## Chapter Summary {#sec-resampling-summary}
+## Resumen del capítulo {#sec-resampling-summary}
 
-This chapter describes one of the fundamental tools of data analysis, the ability to measure the performance and variation in model results. Resampling enables us to determine how well the model works without using the test set.
+Este capítulo describe una de las herramientas fundamentales del análisis de datos, la capacidad de medir el rendimiento y la variación en los resultados del modelo. El remuestreo nos permite determinar qué tan bien funciona el modelo sin utilizar el conjunto de prueba.
 
-An important function from the `r pkg(tune)` package, called `fit_resamples()`, was introduced. The interface for this function is also used in future chapters that describe model tuning tools.
+Se introdujo una función importante del paquete `r pkg(tune)`, llamada `fit_resamples()`. La interfaz para esta función también se utiliza en capítulos futuros que describen las herramientas de ajuste de modelos.
 
-The data analysis code, so far, for the Ames data is:
+El código de análisis de datos, hasta ahora, para los datos de Ames es:
 
 ```{r resampling-summary, eval = FALSE}
 library(tidymodels)
