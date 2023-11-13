@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 11&nbsp; Comparing Models with Resampling</title>
+<title>Modelado Ordenado con R - 11&nbsp; Comparación de Modelos con Remuestreo</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -121,7 +121,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">TOOLS FOR CREATING EFFECTIVE MODELS</a></li><li class="breadcrumb-item"><a href="./11-comparing-models.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparing Models with Resampling</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">TOOLS FOR CREATING EFFECTIVE MODELS</a></li><li class="breadcrumb-item"><a href="./11-comparing-models.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación de Modelos con Remuestreo</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -188,13 +188,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A Tidyverse Primer</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una introducción tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Review of R Modeling Fundamentals</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span></a>
   </div>
 </li>
       </ul>
@@ -202,7 +202,7 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">MODELING BASICS</span></a>
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -211,37 +211,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Ames Housing Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spending our Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fitting Models with parsnip</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A Model Workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo de Modelado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Feature Engineering with recipes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería de Características con recipes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Judging Model Effectiveness</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar la Eficacia del Modelo</span></span></a>
   </div>
 </li>
       </ul>
@@ -258,13 +258,13 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Resampling for Evaluating Performance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear para Evaluar el Rendimiento</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparing Models with Resampling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación de Modelos con Remuestreo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -371,22 +371,22 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-<li><a href="#sec-workflow-set" id="toc-sec-workflow-set" class="nav-link active" data-scroll-target="#sec-workflow-set"><span class="header-section-number">11.1</span> Creating Multiple Models with Workflow Sets</a></li>
-  <li><a href="#sec-resampled-stats" id="toc-sec-resampled-stats" class="nav-link" data-scroll-target="#sec-resampled-stats"><span class="header-section-number">11.2</span> Comparing Resampled Performance Statistics</a></li>
-  <li><a href="#simple-hypothesis-testing-methods" id="toc-simple-hypothesis-testing-methods" class="nav-link" data-scroll-target="#simple-hypothesis-testing-methods"><span class="header-section-number">11.3</span> Simple Hypothesis Testing Methods</a></li>
+<li><a href="#sec-workflow-set" id="toc-sec-workflow-set" class="nav-link active" data-scroll-target="#sec-workflow-set"><span class="header-section-number">11.1</span> Crear Múltiples Modelos con Conjuntos de Flujo de Trabajo</a></li>
+  <li><a href="#sec-resampled-stats" id="toc-sec-resampled-stats" class="nav-link" data-scroll-target="#sec-resampled-stats"><span class="header-section-number">11.2</span> Comparación de estadísticas de rendimiento remuestreadas</a></li>
+  <li><a href="#m%C3%A9todos-simples-de-prueba-de-hip%C3%B3tesis" id="toc-métodos-simples-de-prueba-de-hipótesis" class="nav-link" data-scroll-target="#m%C3%A9todos-simples-de-prueba-de-hip%C3%B3tesis"><span class="header-section-number">11.3</span> Métodos simples de prueba de hipótesis</a></li>
   <li>
-<a href="#sec-tidyposterior" id="toc-sec-tidyposterior" class="nav-link" data-scroll-target="#sec-tidyposterior"><span class="header-section-number">11.4</span> Bayesian Methods</a>
+<a href="#sec-tidyposterior" id="toc-sec-tidyposterior" class="nav-link" data-scroll-target="#sec-tidyposterior"><span class="header-section-number">11.4</span> Métodos bayesianos</a>
   <ul class="collapse">
-<li><a href="#a-random-intercept-model" id="toc-a-random-intercept-model" class="nav-link" data-scroll-target="#a-random-intercept-model">A random intercept model</a></li>
-  <li><a href="#the-effect-of-the-amount-of-resampling" id="toc-the-effect-of-the-amount-of-resampling" class="nav-link" data-scroll-target="#the-effect-of-the-amount-of-resampling">The effect of the amount of resampling</a></li>
+<li><a href="#un-modelo-de-intersecci%C3%B3n-aleatoria" id="toc-un-modelo-de-intersección-aleatoria" class="nav-link" data-scroll-target="#un-modelo-de-intersecci%C3%B3n-aleatoria">Un modelo de intersección aleatoria</a></li>
+  <li><a href="#el-efecto-de-la-cantidad-de-remuestreo." id="toc-el-efecto-de-la-cantidad-de-remuestreo." class="nav-link" data-scroll-target="#el-efecto-de-la-cantidad-de-remuestreo.">El efecto de la cantidad de remuestreo.</a></li>
   </ul>
 </li>
-  <li><a href="#sec-compare-summary" id="toc-sec-compare-summary" class="nav-link" data-scroll-target="#sec-compare-summary"><span class="header-section-number">11.5</span> Chapter Summary</a></li>
+  <li><a href="#sec-compare-summary" id="toc-sec-compare-summary" class="nav-link" data-scroll-target="#sec-compare-summary"><span class="header-section-number">11.5</span> Resumen del capítulo</a></li>
   </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-compare" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparing Models with Resampling</span></span></h1>
+<h1 class="title"><span id="sec-compare" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación de Modelos con Remuestreo</span></span></h1>
 </div>
 
 
@@ -399,12 +399,12 @@ div.csl-indent {
   </div>
   
 
-</header><p>Once we create two or more models, the next step is to compare them to understand which one is best. In some cases, comparisons might be <em>within-model</em>, where the same model might be evaluated with different features or preprocessing methods. Alternatively, <em>between-model</em> comparisons, such as when we compared linear regression and random forest models in <a href="10-resampling.html">Chapter&nbsp;<span>10</span></a>, are the more common scenario.</p>
-<p>In either case, the result is a collection of resampled summary statistics (e.g., RMSE, accuracy, etc.) for each model. In this chapter, we’ll first demonstrate how workflow sets can be used to fit multiple models. Then, we’ll discuss important aspects of resampling statistics. Finally, we’ll look at how to formally compare models (using either hypothesis testing or a Bayesian approach).</p>
+</header><p>Una vez que creamos dos o más modelos, el siguiente paso es compararlos para entender cuál es mejor. En algunos casos, las comparaciones pueden ser <em>dentro del modelo</em>, donde el mismo modelo puede evaluarse con diferentes características o métodos de preprocesamiento. Alternativamente, las comparaciones <em>entre modelos</em>, como cuando comparamos modelos de regresión lineal y de random forest en el <a href="10-resampling.html">Capítulo&nbsp;<span>10</span></a>, son el escenario más común.</p>
+<p>En cualquier caso, el resultado es una colección de estadísticas resumidas remuestreadas (por ejemplo, RMSE, precisión, etc.) para cada modelo. En este capítulo, primero demostraremos cómo se pueden usar conjuntos de flujos de trabajo para ajustarse a múltiples modelos. Luego, discutiremos aspectos importantes de las estadísticas de remuestreo. Finalmente, veremos cómo comparar modelos formalmente (usando pruebas de hipótesis o un enfoque bayesiano).</p>
 <section id="sec-workflow-set" class="level2" data-number="11.1"><h2 data-number="11.1" class="anchored" data-anchor-id="sec-workflow-set">
-<span class="header-section-number">11.1</span> Creating Multiple Models with Workflow Sets</h2>
-<p>In <a href="07-the-model-workflow.html#sec-workflow-sets-intro"><span>Sección&nbsp;7.5</span></a> we described the idea of a workflow set where different preprocessors and/or models can be combinatorially generated. In <a href="10-resampling.html">Chapter&nbsp;<span>10</span></a>, we used a recipe for the Ames data that included an interaction term as well as spline functions for longitude and latitude. To demonstrate more with workflow sets, let’s create three different linear models that add these preprocessing steps incrementally; we can test whether these additional terms improve the model results. We’ll create three recipes then combine them into a workflow set:</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-workflow-set_50030cef128071c5ea2f6ef793e99f93">
+<span class="header-section-number">11.1</span> Crear Múltiples Modelos con Conjuntos de Flujo de Trabajo</h2>
+<p>En <a href="07-the-model-workflow.html#sec-workflow-sets-intro"><span>Sección&nbsp;7.5</span></a> describimos la idea de un conjunto de flujo de trabajo donde se pueden generar combinatoriamente diferentes preprocesadores y/o modelos. En el <a href="10-resampling.html">Capítulo&nbsp;<span>10</span></a>, utilizamos una receta para los datos de Ames que incluía un término de interacción así como funciones spline para longitud y latitud. Para demostrar más con los conjuntos de flujos de trabajo, creemos tres modelos lineales diferentes que agreguen estos pasos de preprocesamiento de forma incremental; Podemos probar si estos términos adicionales mejoran los resultados del modelo. Crearemos tres recetas y luego las combinaremos en un conjunto de flujo de trabajo:</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-workflow-set_fecbe91d06c28cae65ae37384cfc0d0c">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -438,8 +438,8 @@ div.csl-indent {
 <span><span class="co">## 2 interact_lm &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
 <span><span class="co">## 3 splines_lm  &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We’d like to resample each of these models in turn. To do so, we will use a <span class="pkg">purrr</span>-like function called <code>workflow_map()</code>. This function takes an initial argument of the function to apply to the workflows, followed by options to that function. We also set a <code>verbose</code> argument that will print the progress as well as a <code>seed</code> argument that makes sure that each model uses the same random number stream as the others.</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-workflow-set-resample_875473351b94b8c83605e91077c50c4b">
+<p>Nos gustaría volver a muestrear cada uno de estos modelos por turno. Para hacerlo, usaremos una función similar a <span class="pkg">purrr</span> llamada <code>workflow_map()</code>. Esta función toma un argumento inicial de la función para aplicarlo a los flujos de trabajo, seguido de opciones para esa función. También configuramos un argumento <code>verbose</code> que imprimirá el progreso, así como un argumento <code>seed</code> que garantiza que cada modelo utilice el mismo flujo de números aleatorios que los demás.</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-workflow-set-resample_14b5c90df8001a6789e211048d3fd84a">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_models</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">lm_models</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">workflow_map</span><span class="op">(</span><span class="st">"fit_resamples"</span>, </span>
@@ -448,9 +448,9 @@ div.csl-indent {
 <span>               <span class="co"># Options to `fit_resamples()`: </span></span>
 <span>               resamples <span class="op">=</span> <span class="va">ames_folds</span>, control <span class="op">=</span> <span class="va">keep_pred</span><span class="op">)</span></span>
 <span><span class="co">## i 1 of 3 resampling: basic_lm</span></span>
-<span><span class="co">## ✔ 1 of 3 resampling: basic_lm (3s)</span></span>
+<span><span class="co">## ✔ 1 of 3 resampling: basic_lm (3.3s)</span></span>
 <span><span class="co">## i 2 of 3 resampling: interact_lm</span></span>
-<span><span class="co">## ✔ 2 of 3 resampling: interact_lm (3.6s)</span></span>
+<span><span class="co">## ✔ 2 of 3 resampling: interact_lm (3.3s)</span></span>
 <span><span class="co">## i 3 of 3 resampling: splines_lm</span></span>
 <span><span class="co">## ✔ 3 of 3 resampling: splines_lm (5.1s)</span></span>
 <span><span class="va">lm_models</span></span>
@@ -461,9 +461,9 @@ div.csl-indent {
 <span><span class="co">## 2 interact_lm &lt;tibble [1 × 4]&gt; &lt;opts[2]&gt; &lt;rsmp[+]&gt;</span></span>
 <span><span class="co">## 3 splines_lm  &lt;tibble [1 × 4]&gt; &lt;opts[2]&gt; &lt;rsmp[+]&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Notice that the <code>option</code> and <code>result</code> columns are now populated. The former includes the options to <code>fit_resamples()</code> that were given (for reproducibility), and the latter column contains the results produced by <code>fit_resamples()</code>.</p>
-<p>There are a few convenience functions for workflow sets, including <code>collect_metrics()</code> to collate the performance statistics. We can <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> to any specific metric we are interested in:</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-workflow-set-collect_9003b9655e85fb479b6e4d53502139f2">
+<p>Observe que las columnas <code>option</code> y <code>result</code> ahora están completas. La primera incluye las opciones para <code>fit_resamples()</code> que se dieron (para reproducibilidad), y la última columna contiene los resultados producidos por <code>fit_resamples()</code>.</p>
+<p>Hay algunas funciones convenientes para conjuntos de flujos de trabajo, incluida <code>collect_metrics()</code> para recopilar las estadísticas de rendimiento. Podemos <code>filtrar()</code> a cualquier métrica específica que nos interese:</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-workflow-set-collect_de804f90dbbea4cb7e928c5911a3e99c">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">collect_metrics</span><span class="op">(</span><span class="va">lm_models</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.metric</span> <span class="op">==</span> <span class="st">"rmse"</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 3 × 9</span></span>
@@ -473,8 +473,8 @@ div.csl-indent {
 <span><span class="co">## 2 interact_lm Preprocessor1_M… recipe  line… rmse    standard   0.0799    10 0.00272</span></span>
 <span><span class="co">## 3 splines_lm  Preprocessor1_M… recipe  line… rmse    standard   0.0785    10 0.00282</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>What about the random forest model from the previous chapter? We can add it to the set by first converting it to its own workflow set then binding rows. This requires that, when the model was resampled, the <code>save_workflow = TRUE</code> option was set in the control function.</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-workflow-set-four-models_a755a40e0ccc8790fb384fd6581f8592">
+<p>¿Qué pasa con el modelo de bosque aleatorio del capítulo anterior? Podemos agregarlo al conjunto convirtiéndolo primero a su propio conjunto de flujo de trabajo y luego vinculando filas. Esto requiere que, cuando se volvió a muestrear el modelo, se haya configurado la opción <code>save_workflow = TRUE</code> en la función de control.</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-workflow-set-four-models_376139e366fb41093ffaf151090bf901">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">four_models</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">as_workflow_set</span><span class="op">(</span>random_forest <span class="op">=</span> <span class="va">rf_res</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">bind_rows</span><span class="op">(</span><span class="va">lm_models</span><span class="op">)</span></span>
@@ -487,32 +487,32 @@ div.csl-indent {
 <span><span class="co">## 3 interact_lm   &lt;tibble [1 × 4]&gt; &lt;opts[2]&gt; &lt;rsmp[+]&gt;</span></span>
 <span><span class="co">## 4 splines_lm    &lt;tibble [1 × 4]&gt; &lt;opts[2]&gt; &lt;rsmp[+]&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method, with output in <a href="#fig-workflow-set-r-squared">Figura&nbsp;<span>11.1</span></a>, shows confidence intervals for each model in order of best to worst. In this chapter, we’ll focus on the coefficient of determination (a.k.a. <span class="math inline">\(R^2\)</span>) and use <code>metric = "rsq"</code> in the call to set up our plot:</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-workflow-set-rsq_c42e9efddd35402690cb5e7edaab6ebc">
+<p>El método <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code>, con salida en <a href="#fig-workflow-set-r-squared">Figura&nbsp;<span>11.1</span></a>, muestra intervalos de confianza para cada modelo en orden de mejor a peor. En este capítulo, nos centraremos en el coeficiente de determinación (también conocido como <span class="math inline">\(R^2\)</span>) y usaremos <code>metric = "rsq"</code> en la llamada para configurar nuestro gráfico:</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-workflow-set-rsq_dbfc425073b58cac2b9a7d49497e04f1">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/slowkow/ggrepel">ggrepel</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">four_models</span>, metric <span class="op">=</span> <span class="st">"rsq"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">wflow_id</span><span class="op">)</span>, nudge_x <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">8</span>, nudge_y <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">100</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-workflow-set-r-squared_cfe2278ed75ae779e1d91a4af2b35425">
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-workflow-set-r-squared_bc417e4bf54928ecc50fad71981612fb">
 <div class="cell-output-display">
 <div id="fig-workflow-set-r-squared" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-workflow-set-r-squared-1.png" class="img-fluid figure-img" alt="Confidence intervals for the coefficient of determination using four different models. The random forest model has the best results and its intervals do not overlap with the intervals of the other models. " width="672"></p>
-<figcaption class="figure-caption">Figura&nbsp;11.1: Confidence intervals for the coefficient of determination using four different models</figcaption></figure>
+<figure class="figure"><p><img src="11-comparing-models_files/figure-html/fig-workflow-set-r-squared-1.png" class="img-fluid figure-img" alt="Intervalos de confianza para el coeficiente de determinación utilizando cuatro modelos diferentes. El modelo de bosque aleatorio tiene los mejores resultados y sus intervalos no se superponen con los intervalos de los otros modelos." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;11.1: Intervalos de confianza para el coeficiente de determinación utilizando cuatro modelos diferentes</figcaption></figure>
 </div>
 </div>
 </div>
-<p>From this plot of <span class="math inline">\(R^2\)</span> confidence intervals, we can see that the random forest method is doing the best job and there are minor improvements in the linear models as we add more recipe steps.</p>
-<p>Now that we have 10 resampled performance estimates for each of the four models, these summary statistics can be used to make between-model comparisons.</p>
+<p>En este gráfico de intervalos de confianza <span class="math inline">\(R^2\)</span>, podemos ver que el método de random forest está funcionando mejor y hay mejoras menores en los modelos lineales a medida que agregamos más pasos a la receta.</p>
+<p>Ahora que tenemos 10 estimaciones de rendimiento remuestreadas para cada uno de los cuatro modelos, estas estadísticas resumidas se pueden utilizar para realizar comparaciones entre modelos.</p>
 </section><section id="sec-resampled-stats" class="level2" data-number="11.2"><h2 data-number="11.2" class="anchored" data-anchor-id="sec-resampled-stats">
-<span class="header-section-number">11.2</span> Comparing Resampled Performance Statistics</h2>
-<p>Considering the preceding results for the three linear models, it appears that the additional terms do not profoundly improve the mean RMSE or <span class="math inline">\(R^2\)</span> statistics for the linear models. The difference is small, but it might be larger than the experimental noise in the system, i.e., considered statistically significant. We can formally test the hypothesis that the additional terms increase <span class="math inline">\(R^2\)</span>.</p>
+<span class="header-section-number">11.2</span> Comparación de estadísticas de rendimiento remuestreadas</h2>
+<p>Teniendo en cuenta los resultados anteriores para los tres modelos lineales, parece que los términos adicionales no mejoran profundamente las estadísticas medias de RMSE o <span class="math inline">\(R^2\)</span> para los modelos lineales. La diferencia es pequeña, pero podría ser mayor que el ruido experimental en el sistema, es decir, considerarse estadísticamente significativa. Podemos probar formalmente la hipótesis de que los términos adicionales aumentan <span class="math inline">\(R^2\)</span>.</p>
 <div class="rmdnote">
-<p>Before making between-model comparisons, it is important for us to discuss the within-resample correlation for resampling statistics. Each model was measured with the same cross-validation folds, and results for the same resample tend to be similar.</p>
+<p>Antes de hacer comparaciones entre modelos, es importante para nosotros analizar la correlación dentro de la muestra para las estadísticas de remuestreo. Cada modelo se midió con los mismos pliegues de validación cruzada y los resultados para la misma nueva muestra tienden a ser similares.</p>
 </div>
-<p>In other words, there are some resamples where performance across models tends to be low and others where it tends to be high. In statistics, this is called a <em>resample-to-resample</em> component of variation.</p>
-<p>To illustrate, let’s gather the individual resampling statistics for the linear models and the random forest. We will focus on the <span class="math inline">\(R^2\)</span> statistic for each model, which measures correlation between the observed and predicted sale prices for each house. Let’s <code><a href="https://rdrr.io/r/stats/filter.html">filter()</a></code> to keep only the <span class="math inline">\(R^2\)</span> metrics, reshape the results, and compute how the metrics are correlated with each other.</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-collect_32c8549fa9e728ee1f4a5e94fba09394">
+<p>En otras palabras, hay algunos remuestreos en los que el rendimiento de todos los modelos tiende a ser bajo y otros en los que tiende a ser alto. En estadística, esto se denomina componente de variación <em>remuestreo a remuestreo</em>.</p>
+<p>Para ilustrar, recopilemos las estadísticas de remuestreo individuales para los modelos lineales y el bosque aleatorio. Nos centraremos en la estadística <span class="math inline">\(R^2\)</span> para cada modelo, que mide la correlación entre los precios de venta observados y previstos para cada casa. Vamos a <code>filtrar()</code> para mantener solo las métricas <span class="math inline">\(R^2\)</span>, remodelar los resultados y calcular cómo se correlacionan las métricas entre sí.</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-collect_b82c8c09c57226cda664c4fb9762f7f2">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rsq_indiv_estimates</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">collect_metrics</span><span class="op">(</span><span class="va">four_models</span>, summarize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.metric</span> <span class="op">==</span> <span class="st">"rsq"</span><span class="op">)</span> </span>
@@ -531,24 +531,24 @@ div.csl-indent {
 <span><span class="co">## 3 interact_lm           0.888    0.993      NA          0.987</span></span>
 <span><span class="co">## 4 splines_lm            0.889    0.997       0.987     NA</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>These correlations are high, and indicate that, across models, there are large within-resample correlations. To see this visually in <a href="#fig-rsquared-resamples">Figura&nbsp;<span>11.2</span></a>, the <span class="math inline">\(R^2\)</span> statistics are shown for each model with lines connecting the resamples:</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-rsq-plot_d19e796d6b85eb0c1d1fd8b299d4d3ee">
+<p>Estas correlaciones son altas e indican que, entre modelos, existen grandes correlaciones dentro de la muestra. Para ver esto visualmente en <a href="#fig-rsquared-resamples">Figura&nbsp;<span>11.2</span></a>, las estadísticas <span class="math inline">\(R^2\)</span> se muestran para cada modelo con líneas que conectan los remuestreos:</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-rsq-plot_58f622e64da7c0fff175f06ce398bb41">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rsq_indiv_estimates</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>wflow_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">wflow_id</span>, <span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">wflow_id</span>, y <span class="op">=</span> <span class="va">.estimate</span>, group <span class="op">=</span> <span class="va">id</span>, color <span class="op">=</span> <span class="va">id</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.5</span>, linewidth <span class="op">=</span> <span class="fl">1.25</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-rsquared-resamples_861606c3a0d4d89659c4a1ccc9c89d28">
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-rsquared-resamples_b24127e9b488b5830e6a7bb12957c9d5">
 <div class="cell-output-display">
 <div id="fig-rsquared-resamples" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-rsquared-resamples-1.png" class="img-fluid figure-img" alt="A plot connecting the resample statistics across models. The plot connects the results for each model with the same line. The performance metrics tend to be relatively similar across all model results. " width="672"></p>
-<figcaption class="figure-caption">Figura&nbsp;11.2: Resample statistics across models</figcaption></figure>
+<figure class="figure"><p><img src="11-comparing-models_files/figure-html/fig-rsquared-resamples-1.png" class="img-fluid figure-img" alt="Un gráfico que conecta las estadísticas de remuestreo entre modelos. La gráfica conecta los resultados de cada modelo con la misma línea. Las métricas de rendimiento tienden a ser relativamente similares en todos los resultados del modelo." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;11.2: Remuestrear estadísticas entre modelos</figcaption></figure>
 </div>
 </div>
 </div>
-<p>If the resample-to-resample effect was not real, there would not be any parallel lines. A statistical test for the correlations evaluates whether the magnitudes of these correlations are not simply noise. For the linear models:</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-resample-cor_a065aedfe3741c789e490fdb01beb9ef">
+<p>Si el efecto de remuestreo a remuestreo no fuera real, no habría líneas paralelas. Una prueba estadística de las correlaciones evalúa si las magnitudes de estas correlaciones no son simplemente ruido. Para los modelos lineales:</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-resample-cor_9f4acc7a1d8de92ce8925496efd91858">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rsq_wider</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html">cor.test</a></span><span class="op">(</span><span class="va">basic_lm</span>, <span class="va">splines_lm</span><span class="op">)</span> <span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">tidy</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
@@ -558,26 +558,26 @@ div.csl-indent {
 <span><span class="co">##      &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
 <span><span class="co">## 1    0.997    0.987     0.999</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The results of the correlation test (the <code>estimate</code> of the correlation and the confidence intervals) show us that the within-resample correlation appears to be real.</p>
-<p>What effect does the extra correlation have on our analysis? Consider the variance of a difference of two variables:</p>
+<p>Los resultados de la prueba de correlación (la “estimación”, <code>estimate</code>, de la correlación y los intervalos de confianza) nos muestran que la correlación dentro de la muestra parece ser real.</p>
+<p>¿Qué efecto tiene la correlación adicional en nuestro análisis? Considere la varianza de una diferencia de dos variables:</p>
 <p><span class="math display">\[\operatorname{Var}[X - Y] = \operatorname{Var}[X] + \operatorname{Var}[Y]  - 2 \operatorname{Cov}[X, Y]\]</span></p>
-<p>The last term is the covariance between two items. If there is a significant positive covariance, then any statistical test of this difference would be critically under-powered comparing the difference in two models. In other words, ignoring the resample-to-resample effect would bias our model comparisons towards finding no differences between models.</p>
+<p>El último término es la covarianza entre dos elementos. Si hay una covarianza positiva significativa, entonces cualquier prueba estadística de esta diferencia carecería de potencia crítica al comparar la diferencia en dos modelos. En otras palabras, ignorar el efecto de remuestreo a remuestreo sesgaría nuestras comparaciones de modelos hacia la ausencia de diferencias entre los modelos.</p>
 <div class="rmdwarning">
-<p>This characteristic of resampling statistics will come into play in the next two sections.</p>
+<p>Esta característica de las estadísticas de remuestreo entrará en juego en las dos secciones siguientes.</p>
 </div>
-<p>Before making model comparisons or looking at the resampling results, it can be helpful to define a relevant <em>practical effect size</em>. Since these analyses focus on the <span class="math inline">\(R^2\)</span> statistics, the practical effect size is the change in <span class="math inline">\(R^2\)</span> that we would consider to be a realistic difference that matters. For example, we might think that two models are not practically different if their <span class="math inline">\(R^2\)</span> values are within <span class="math inline">\(\pm 2\)</span>%. If this were the case, differences smaller than 2% are not deemed important even if they are statistically significant.</p>
-<p>Practical significance is subjective; two people can have very different ideas on the threshold for importance. However, we’ll show later that this consideration can be very helpful when deciding between models.</p>
-</section><section id="simple-hypothesis-testing-methods" class="level2" data-number="11.3"><h2 data-number="11.3" class="anchored" data-anchor-id="simple-hypothesis-testing-methods">
-<span class="header-section-number">11.3</span> Simple Hypothesis Testing Methods</h2>
-<p>We can use simple hypothesis testing to make formal comparisons between models. Consider the familiar linear statistical model:</p>
+<p>Antes de realizar comparaciones de modelos o observar los resultados del remuestreo, puede resultar útil definir un <em>tamaño del efecto práctico</em> relevante. Dado que estos análisis se centran en las estadísticas de <span class="math inline">\(R^2\)</span>, el tamaño del efecto práctico es el cambio en <span class="math inline">\(R^2\)</span> que consideraríamos una diferencia realista que importa. Por ejemplo, podríamos pensar que dos modelos no son prácticamente diferentes si sus valores de <span class="math inline">\(R^2\)</span> están dentro de <span class="math inline">\(\pm 2\)</span>%. Si este fuera el caso, las diferencias menores al 2% no se consideran importantes incluso si son estadísticamente significativas.</p>
+<p>La importancia práctica es subjetiva; dos personas pueden tener ideas muy diferentes en el umbral de la importancia. Sin embargo, más adelante mostraremos que esta consideración puede resultar muy útil a la hora de decidir entre modelos.</p>
+</section><section id="métodos-simples-de-prueba-de-hipótesis" class="level2" data-number="11.3"><h2 data-number="11.3" class="anchored" data-anchor-id="métodos-simples-de-prueba-de-hipótesis">
+<span class="header-section-number">11.3</span> Métodos simples de prueba de hipótesis</h2>
+<p>Podemos utilizar pruebas de hipótesis simples para hacer comparaciones formales entre modelos. Considere el conocido modelo estadístico lineal:</p>
 <p><span class="math display">\[y_{ij} = \beta_0 + \beta_1x_{i1} + \ldots + \beta_px_{ip} + \epsilon_{ij}\]</span></p>
-<p>This versatile model is used to create regression models as well as being the basis for the popular analysis of variance (ANOVA) technique for comparing groups. With the ANOVA model, the predictors (<span class="math inline">\(x_{ij}\)</span>) are binary dummy variables for different groups. From this, the <span class="math inline">\(\beta\)</span> parameters estimate whether two or more groups are different from one another using hypothesis testing techniques.</p>
-<p>In our specific situation, the ANOVA can also make model comparisons. Suppose the individual resampled <span class="math inline">\(R^2\)</span> statistics serve as the <em>outcome data</em> (i.e., the <span class="math inline">\(y_{ij}\)</span>) and the models as the <em>predictors</em> in the ANOVA model. A sampling of this data structure is shown in <a href="#tbl-model-anova-data">Tabla&nbsp;<span>11.1</span></a>.</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/tbl-model-anova-data_ea00c8831bcff62fe57c1ee9ea1346dc">
+<p>Este modelo versátil se utiliza para crear modelos de regresión, además de ser la base de la popular técnica de análisis de varianza (ANOVA) para comparar grupos. Con el modelo ANOVA, los predictores (<span class="math inline">\(x_{ij}\)</span>) son variables binarias ficticias para diferentes grupos. A partir de esto, los parámetros <span class="math inline">\(\beta\)</span> estiman si dos o más grupos son diferentes entre sí utilizando técnicas de prueba de hipótesis.</p>
+<p>En nuestra situación específica, el ANOVA también puede realizar comparaciones de modelos. Supongamos que las estadísticas individuales <span class="math inline">\(R^2\)</span> remuestreadas sirven como <em>datos de resultado</em> (es decir, <span class="math inline">\(y_{ij}\)</span>) y los modelos como <em>predictores</em> en el modelo ANOVA. Se muestra una muestra de esta estructura de datos en <a href="#tbl-model-anova-data">Tabla&nbsp;<span>11.1</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/tbl-model-anova-data_52bb1f917305b5ea6bfdea4f072f737a">
 <div class="cell-output-display">
 <div id="tbl-model-anova-data" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Tabla&nbsp;11.1: Model performance statistics as a data set for analysis.</caption>
+<caption>Tabla&nbsp;11.1: Modelar estadísticas de rendimiento como un conjunto de datos para análisis.</caption>
 <thead><tr class="header">
 <th style="text-align: right;" data-quarto-table-cell-role="th">Y = rsq</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
@@ -642,20 +642,20 @@ div.csl-indent {
 
 </div>
 </div>
-<p>The <code>X1</code>, <code>X2</code>, and <code>X3</code> columns in the table are indicators for the values in the <code>model</code> column. Their order was defined in the same way that R would define them, alphabetically ordered by <code>model</code>.</p>
-<p>For our model comparison, the specific ANOVA model is:</p>
+<p>Las columnas <code>X1</code>, <code>X2</code> y <code>X3</code> de la tabla son indicadores de los valores de la columna <code>modelo</code>. Su orden se definió de la misma manera que R los definiría, ordenados alfabéticamente por <code>modelo</code>.</p>
+<p>Para nuestra comparación de modelos, el modelo ANOVA específico es:</p>
 <p><span class="math display">\[y_{ij} = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \beta_3x_{i3} + \epsilon_{ij}\]</span></p>
-<p>where</p>
+<p>donde</p>
 <ul>
-<li><p><span class="math inline">\(\beta_0\)</span> is the estimate of the mean <span class="math inline">\(R^2\)</span> statistic for the basic linear models (i.e., without splines or interactions),</p></li>
-<li><p><span class="math inline">\(\beta_1\)</span> is the change in mean <span class="math inline">\(R^2\)</span> when interactions are added to the basic linear model,</p></li>
-<li><p><span class="math inline">\(\beta_2\)</span> is the change in mean <span class="math inline">\(R^2\)</span> between the basic linear model and the random forest model, and</p></li>
-<li><p><span class="math inline">\(\beta_3\)</span> is the change in mean <span class="math inline">\(R^2\)</span> between the basic linear model and one with interactions and splines.</p></li>
+<li><p><span class="math inline">\(\beta_0\)</span> es la estimación del estadístico <span class="math inline">\(R^2\)</span> medio para los modelos lineales básicos (es decir, sin splines ni interacciones),</p></li>
+<li><p><span class="math inline">\(\beta_1\)</span> es el cambio en la media <span class="math inline">\(R^2\)</span> cuando se agregan interacciones al modelo lineal básico,</p></li>
+<li><p><span class="math inline">\(\beta_2\)</span> es el cambio en la media <span class="math inline">\(R^2\)</span> entre el modelo lineal básico y el modelo de random forest, y</p></li>
+<li><p><span class="math inline">\(\beta_3\)</span> es el cambio en la media <span class="math inline">\(R^2\)</span> entre el modelo lineal básico y uno con interacciones y splines.</p></li>
 </ul>
-<p>From these model parameters, hypothesis tests and p-values are generated to statistically compare models, but we must contend with how to handle the resample-to-resample effect. Historically, the resample groups would be considered a <em>block effect</em> and an appropriate term was added to the model. Alternatively, the resample effect could be considered a <em>random effect</em> where these particular resamples were drawn at random from a larger population of possible resamples. However, we aren’t really interested in these effects; we only want to adjust for them in the model so that the variances of the interesting differences are properly estimated.</p>
-<p>Treating the resamples as random effects is theoretically appealing. Methods for fitting an ANOVA model with this type of random effect could include the linear mixed model <span class="citation" data-cites="faraway2016extending">(<a href="references.html#ref-faraway2016extending" role="doc-biblioref">Faraway 2016</a>)</span> or a Bayesian hierarchical model (shown in the next section).</p>
-<p>A simple and fast method for comparing two models at a time is to use the differences in <span class="math inline">\(R^2\)</span> values as the outcome data in the ANOVA model. Since the outcomes are matched by resample, the differences do not contain the resample-to-resample effect and, for this reason, the standard ANOVA model is appropriate. To illustrate, this call to <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> tests the difference between two of the linear regression models:</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-t-test_ae6c28bfab286895b925f8594b3427d3">
+<p>A partir de estos parámetros del modelo, se generan pruebas de hipótesis y valores p para comparar modelos estadísticamente, pero debemos lidiar con cómo manejar el efecto de remuestreo a remuestre. Históricamente, los grupos de remuestreo se consideraban un <em>efecto de bloque</em> y se agregaba un término apropiado al modelo. Alternativamente, el efecto de remuestreo podría considerarse un <em>efecto aleatorio</em> en el que estas remuestras particulares se extrajeron al azar de una población más grande de posibles remuestras. Sin embargo, no estamos realmente interesados en estos efectos; sólo queremos ajustarlos en el modelo para que las varianzas de las diferencias interesantes se estimen adecuadamente.</p>
+<p>Tratar las remuestras como efectos aleatorios es teóricamente atractivo. Los métodos para ajustar un modelo ANOVA con este tipo de efecto aleatorio podrían incluir el modelo lineal mixto <span class="citation" data-cites="faraway2016extending">(<a href="references.html#ref-faraway2016extending" role="doc-biblioref">Faraway 2016</a>)</span> o un modelo jerárquico bayesiano (que se muestra en la siguiente sección).</p>
+<p>Un método simple y rápido para comparar dos modelos a la vez es usar las diferencias en los valores de <span class="math inline">\(R^2\)</span> como datos de resultado en el modelo ANOVA. Dado que los resultados coinciden mediante remuestreo, las diferencias no contienen el efecto de remuestreo a remuestre y, por esta razón, el modelo ANOVA estándar es apropiado. Para ilustrar, esta llamada a <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> prueba la diferencia entre dos de los modelos de regresión lineal:</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-t-test_69841dd57afd82e5c38f208bf9cbe0cf">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">compare_lm</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">rsq_wider</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>difference <span class="op">=</span> <span class="va">splines_lm</span> <span class="op">-</span> <span class="va">basic_lm</span><span class="op">)</span></span>
@@ -668,7 +668,7 @@ div.csl-indent {
 <span><span class="co">##      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
 <span><span class="co">## 1  0.00913 0.0000256  0.00650    0.0118</span></span>
 <span></span>
-<span><span class="co"># Alternatively, a paired t-test could also be used: </span></span>
+<span><span class="co"># Alternativamente, también se podría utilizar una prueba t pareada: </span></span>
 <span><span class="va">rsq_wider</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span> <span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">splines_lm</span>, <span class="va">basic_lm</span>, paired <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">tidy</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
@@ -678,45 +678,45 @@ div.csl-indent {
 <span><span class="co">##      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
 <span><span class="co">## 1  0.00913 0.0000256  0.00650    0.0118</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We could evaluate each pair-wise difference in this way. Note that the p-value indicates a <em>statistically significant</em> signal; the collection of spline terms for longitude and latitude do appear to have an effect. However, the difference in <span class="math inline">\(R^2\)</span> is estimated at 0.91%. If our practical effect size were 2%, we might not consider these terms worth including in the model.</p>
+<p>Podríamos evaluar cada diferencia por pares de esta manera. Tenga en cuenta que el valor p indica una señal <em>estadísticamente significativa</em>; la colección de términos splines para longitud y latitud parece tener un efecto. Sin embargo, la diferencia en <span class="math inline">\(R^2\)</span> se estima en 0.91%. Si nuestro tamaño de efecto práctico fuera del 2%, es posible que no consideráramos que valga la pena incluir estos términos en el modelo.</p>
 <div class="rmdnote">
-<p>We’ve briefly mentioned p-values already, but what actually are they? From <span class="citation" data-cites="pvalue">Wasserstein y Lazar (<a href="references.html#ref-pvalue" role="doc-biblioref">2016</a>)</span>: “Informally, a p-value is the probability under a specified statistical model that a statistical summary of the data (e.g., the sample mean difference between two compared groups) would be equal to or more extreme than its observed value.”</p>
-<p>In other words, if this analysis were repeated a large number of times under the null hypothesis of no differences, the p-value reflects how extreme our observed results would be in comparison.</p>
+<p>Ya hemos mencionado brevemente los valores p, pero ¿qué son realmente? De <span class="citation" data-cites="pvalue">Wasserstein y Lazar (<a href="references.html#ref-pvalue" role="doc-biblioref">2016</a>)</span>: “Informalmente, un valor p es la probabilidad, según un modelo estadístico específico, de que un resumen estadístico de los datos (por ejemplo, la diferencia de medias muestrales entre dos grupos comparados) sea igual o más extremo que su valor observado.”</p>
+<p>En otras palabras, si este análisis se repitiera una gran cantidad de veces bajo la hipótesis nula de que no hay diferencias, el valor p refleja cuán extremos serían nuestros resultados observados en comparación.</p>
 </div>
 </section><section id="sec-tidyposterior" class="level2" data-number="11.4"><h2 data-number="11.4" class="anchored" data-anchor-id="sec-tidyposterior">
-<span class="header-section-number">11.4</span> Bayesian Methods</h2>
-<p>We just used hypothesis testing to formally compare models, but we can also take a more general approach to making these formal comparisons using random effects and Bayesian statistics <span class="citation" data-cites="mcelreath2020statistical">(<a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">McElreath 2020</a>)</span>. While the model is more complex than the ANOVA method, the interpretation is more simple and straight-forward than the p-value approach. The previous ANOVA model had the form:</p>
+<span class="header-section-number">11.4</span> Métodos bayesianos</h2>
+<p>Simplemente utilizamos pruebas de hipótesis para comparar modelos formalmente, pero también podemos adoptar un enfoque más general para realizar estas comparaciones formales utilizando efectos aleatorios y estadísticas bayesianas <span class="citation" data-cites="mcelreath2020statistical">(<a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">McElreath 2020</a>)</span>. Si bien el modelo es más complejo que el método ANOVA, la interpretación es más simple y directa que el método del valor p.&nbsp;El modelo ANOVA anterior tenía la forma:</p>
 <p><span class="math display">\[y_{ij} = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \beta_3x_{i3} + \epsilon_{ij}\]</span></p>
-<p>where the residuals <span class="math inline">\(\epsilon_{ij}\)</span> are assumed to be independent and follow a Gaussian distribution with zero mean and constant standard deviation of <span class="math inline">\(\sigma\)</span>. From this assumption, statistical theory shows that the estimated regression parameters follow a multivariate Gaussian distribution and, from this, p-values and confidence intervals are derived.</p>
-<p>A Bayesian linear model makes additional assumptions. In addition to specifying a distribution for the residuals, we require <em>prior distribution</em> specifications for the model parameters ( <span class="math inline">\(\beta_j\)</span> and <span class="math inline">\(\sigma\)</span> ). These are distributions for the parameters that the model assumes before being exposed to the observed data. For example, a simple set of prior distributions for our model might be:</p>
+<p>donde se supone que los residuales <span class="math inline">\(\epsilon_{ij}\)</span> son independientes y siguen una distribución gaussiana con media cero y desviación estándar constante de <span class="math inline">\(\sigma\)</span>. A partir de este supuesto, la teoría estadística muestra que los parámetros de regresión estimados siguen una distribución gaussiana multivariada y, de ahí, se derivan los valores p y los intervalos de confianza.</p>
+<p>Un modelo lineal bayesiano hace suposiciones adicionales. Además de especificar una distribución para los residuos, requerimos especificaciones de <em>distribución previa</em> para los parámetros del modelo ( <span class="math inline">\(\beta_j\)</span> y <span class="math inline">\(\sigma\)</span> ). Estas son distribuciones de los parámetros que asume el modelo antes de ser expuesto a los datos observados. Por ejemplo, un conjunto simple de distribuciones previas para nuestro modelo podría ser:</p>
 <span class="math display">\[\begin{align}
 \epsilon_{ij} &amp;\sim N(0, \sigma) \notag \\
 \beta_j &amp;\sim N(0, 10) \notag \\
 \sigma &amp;\sim \text{exponential}(1) \notag
 \end{align}\]</span>
-<p>These priors set the possible/probable ranges of the model parameters and have no unknown parameters. For example, the prior on <span class="math inline">\(\sigma\)</span> indicates that values must be larger than zero, are very right-skewed, and have values that are usually less than 3 or 4.</p>
-<p>Note that the regression parameters have a pretty wide prior distribution, with a standard deviation of 10. In many cases, we might not have a strong opinion about the prior beyond it being symmetric and bell shaped. The large standard deviation implies a fairly uninformative prior; it is not overly restrictive in terms of the possible values that the parameters might take on. This allows the data to have more of an influence during parameter estimation.</p>
-<p>Given the observed data and the prior distribution specifications, the model parameters can then be estimated. The final distributions of the model parameters are combinations of the priors and the likelihood estimates. These <em>posterior distributions</em> of the parameters are the key distributions of interest. They are a full probabilistic description of the model’s estimated parameters.</p>
-<section id="a-random-intercept-model" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="a-random-intercept-model">A random intercept model</h3>
-<p>To adapt our Bayesian ANOVA model so that the resamples are adequately modeled, we consider a <em>random intercept model</em>. Here, we assume that the resamples impact the model only by changing the intercept. Note that this constrains the resamples from having a differential impact on the regression parameters <span class="math inline">\(\beta_j\)</span>; these are assumed to have the same relationship across resamples. This model equation is:</p>
+<p>Estos antecedentes establecen los rangos posibles/probables de los parámetros del modelo y no tienen parámetros desconocidos. Por ejemplo, el valor anterior de <span class="math inline">\(\sigma\)</span> indica que los valores deben ser mayores que cero, están muy sesgados a la derecha y tienen valores que generalmente son menores que 3 o 4.</p>
+<p>Tenga en cuenta que los parámetros de regresión tienen una distribución a priori bastante amplia, con una desviación estándar de 10. En muchos casos, es posible que no tengamos una opinión sólida sobre el a priori más allá de que sea simétrico y tenga forma de campana. La gran desviación estándar implica un previo bastante poco informativo; no es demasiado restrictivo en términos de los posibles valores que podrían adoptar los parámetros. Esto permite que los datos tengan más influencia durante la estimación de parámetros.</p>
+<p>Dados los datos observados y las especificaciones de distribución previas, se pueden estimar los parámetros del modelo. Las distribuciones finales de los parámetros del modelo son combinaciones de las estimaciones previas y de probabilidad. Estas <em>distribuciones posteriores</em> de los parámetros son las distribuciones clave de interés. Son una descripción probabilística completa de los parámetros estimados del modelo.</p>
+<section id="un-modelo-de-intersección-aleatoria" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="un-modelo-de-intersección-aleatoria">Un modelo de intersección aleatoria</h3>
+<p>Para adaptar nuestro modelo ANOVA bayesiano de modo que las remuestras se modelen adecuadamente, consideramos un <em>modelo de intersección aleatoria</em>. Aquí, asumimos que los remuestreos impactan el modelo solo al cambiar la intersección. Tenga en cuenta que esto impide que los remuestreos tengan un impacto diferencial en los parámetros de regresión <span class="math inline">\(\beta_j\)</span>; Se supone que estos tienen la misma relación entre remuestreos. Esta ecuación modelo es:</p>
 <p><span class="math display">\[y_{ij} = (\beta_0 + b_{i}) + \beta_1x_{i1} + \beta_2x_{i2} + \beta_3x_{i3} + \epsilon_{ij}\]</span></p>
-<p>This is not an unreasonable model for resampled statistics which, when plotted across models as in <a href="#fig-rsquared-resamples">Figura&nbsp;<span>11.2</span></a>, tend to have fairly parallel effects across models (i.e., little cross-over of lines).</p>
-<p>For this model configuration, an additional assumption is made for the prior distribution of random effects. A reasonable assumption for this distribution is another symmetric distribution, such as another bell-shaped curve. Given the effective sample size of 10 in our summary statistic data, let’s use a prior that is wider than a standard normal distribution. We’ll use a t-distribution with a single degree of freedom (i.e.&nbsp;<span class="math inline">\(b_i \sim t(1)\)</span>), which has heavier tails than an analogous Gaussian distribution.</p>
-<p>The <span class="pkg">tidyposterior</span> package has functions to fit such Bayesian models for the purpose of comparing resampled models. The main function is called <code><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod()</a></code> and it is configured to “just work” for different types of objects:</p>
+<p>Este no es un modelo irrazonable para estadísticas remuestreadas que, cuando se trazan entre modelos como en <a href="#fig-rsquared-resamples">Figura&nbsp;<span>11.2</span></a>, tienden a tener efectos bastante paralelos entre modelos (es decir, poco cruce de líneas).</p>
+<p>Para la configuración de este modelo, se hace un supuesto adicional para la distribución previa de efectos aleatorios. Una suposición razonable para esta distribución es otra distribución simétrica, como otra curva en forma de campana. Dado el tamaño de muestra efectivo de 10 en nuestro resumen de datos estadísticos, usemos una distribución previa que sea más amplia que una distribución normal estándar. Usaremos una distribución t con un solo grado de libertad (es decir, <span class="math inline">\(b_i \sim t(1)\)</span>), que tiene colas más pesadas que una distribución gaussiana análoga.</p>
+<p>El paquete <span class="pkg">tidyposterior</span> tiene funciones para ajustarse a dichos modelos bayesianos con el fin de comparar modelos remuestreados. La función principal se llama <code><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod()</a></code> y está configurada para “simplemente funcionar” para diferentes tipos de objetos:</p>
 <ul>
-<li><p>For workflow sets, it creates an ANOVA model where the groups correspond to the workflows. Our existing models did not optimize any tuning parameters (see the next three chapters). If one of the workflows in the set had data on tuning parameters, the best tuning parameters set for each workflow is used in the Bayesian analysis. In other words, despite the presence of tuning parameters, <code><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod()</a></code> focuses on making <em>between-workflow comparisons</em>.</p></li>
-<li><p>For objects that contain a single model that has been tuned using resampling, <code><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod()</a></code> makes <em>within-model comparisons</em>. In this situation, the grouping variables tested in the Bayesian ANOVA model are the submodels defined by the tuning parameters.</p></li>
-<li><p>The <code><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod()</a></code> function can also take a data frame produced by <span class="pkg">rsample</span> that has columns of performance metrics associated with two or more model/workflow results. These could have been generated by nonstandard means.</p></li>
+<li><p>Para conjuntos de flujos de trabajo, crea un modelo ANOVA donde los grupos corresponden a los flujos de trabajo. Nuestros modelos existentes no optimizaron ningún parámetro de ajuste (consulte los siguientes tres capítulos). Si uno de los flujos de trabajo del conjunto tenía datos sobre parámetros de ajuste, en el análisis bayesiano se utilizan los mejores parámetros de ajuste establecidos para cada flujo de trabajo. En otras palabras, a pesar de la presencia de parámetros de ajuste, <code><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod()</a></code> se centra en hacer <em>comparaciones entre flujos de trabajo</em>.</p></li>
+<li><p>Para los objetos que contienen un único modelo que ha sido ajustado usando remuestreo, <code><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod()</a></code> hace <em>comparaciones dentro del modelo</em>. En esta situación, las variables de agrupación probadas en el modelo ANOVA bayesiano son los submodelos definidos por los parámetros de ajuste.</p></li>
+<li><p>La función <code><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod()</a></code> también puede tomar un marco de datos producido por <span class="pkg">rsample</span> que tiene columnas de métricas de rendimiento asociadas con dos o más resultados de modelo/flujo de trabajo. Estos podrían haberse generado por medios no estándar.</p></li>
 </ul>
-<p>From any of these types of objects, the <code><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod()</a></code> function determines an appropriate Bayesian model and fits it with the resampling statistics. For our example, it will model the four sets of <span class="math inline">\(R^2\)</span> statistics associated with the workflows.</p>
-<p>The <span class="pkg">tidyposterior</span> package uses the <a href="https://mc-stan.org/">Stan software</a> for specifying and fitting the models via the <span class="pkg">rstanarm</span> package. The functions within that package have default priors (see <code><a href="https://mc-stan.org/rstanarm/reference/priors.html">?priors</a></code> for more details). The following model uses the default priors for all parameters except for the random intercepts (which follow a <em>t</em>-distribution). The estimation process uses random numbers so the seed is set within the function call. The estimation process is iterative and replicated several times in collections called <em>chains</em>. The <code>iter</code> parameter tells the function how long to run the estimation process in each chain. When several chains are used, their results are combined (assume that this is validated by diagnostic assessments).</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-fit-stan_025b74747981325b3979ec28162f29e4">
+<p>A partir de cualquiera de estos tipos de objetos, la función <code><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod()</a></code> determina un modelo bayesiano apropiado y lo ajusta con las estadísticas de remuestreo. Para nuestro ejemplo, modelará los cuatro conjuntos de estadísticas <span class="math inline">\(R^2\)</span> asociadas con los flujos de trabajo.</p>
+<p>El paquete <span class="pkg">tidyposterior</span> utiliza el <a href="https://mc-stan.org/">software Stan</a> para especificar y ajustar los modelos a través del paquete <span class="pkg">rstanarm</span>. Las funciones dentro de ese paquete tienen prioridades predeterminadas (consulte <code><a href="https://mc-stan.org/rstanarm/reference/priors.html">?priors</a></code> para obtener más detalles). El siguiente modelo utiliza los valores previos predeterminados para todos los parámetros excepto para las intersecciones aleatorias (que siguen una distribución <em>t</em>). El proceso de estimación utiliza números aleatorios para que la semilla se establezca dentro de la llamada a la función. El proceso de estimación es iterativo y se replica varias veces en colecciones llamadas <em>cadenas</em>. El parámetro <code>iter</code> le dice a la función cuánto tiempo ejecutar el proceso de estimación en cada cadena. Cuando se utilizan varias cadenas, sus resultados se combinan (supongamos que esto está validado mediante evaluaciones diagnósticas).</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-fit-stan_d85d8c3178d8e1cae243f70434f67dfc">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyposterior.tidymodels.org">tidyposterior</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/rstanarm/">rstanarm</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># The rstanarm package creates copious amounts of output; those results</span></span>
-<span><span class="co"># are not shown here but are worth inspecting for potential issues. The</span></span>
-<span><span class="co"># option `refresh = 0` can be used to eliminate the logging. </span></span>
+<span><span class="co"># El paquete rstanarm genera grandes cantidades de producción; esos resultados</span></span>
+<span><span class="co"># no se muestran aquí, pero vale la pena inspeccionarlos para detectar posibles problemas. El</span></span>
+<span><span class="co"># opción `refresh = 0` se puede utilizar para eliminar el registro.. </span></span>
 <span><span class="va">rsq_anova</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod</a></span><span class="op">(</span></span>
 <span>    <span class="va">four_models</span>,</span>
@@ -727,12 +727,12 @@ div.csl-indent {
 <span>    seed <span class="op">=</span> <span class="fl">1102</span></span>
 <span>  <span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The resulting object has information on the resampling process as well as the Stan object embedded within (in an element called <code>stan</code>). We are most interested in the posterior distributions of the regression parameters. The <span class="pkg">tidyposterior</span> package has a <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> method that extracts these posterior distributions into a tibble:</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-group-posteriors-tidy_6f20dd9bf3db66bf2d5c56c23ce75647">
+<p>El objeto resultante tiene información sobre el proceso de remuestreo, así como el objeto Stan incrustado en él (en un elemento llamado “stan”). Lo que más nos interesa son las distribuciones posteriores de los parámetros de regresión. El paquete <span class="pkg">tidyposterior</span> tiene un método <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> que extrae estas distribuciones posteriores en un tibble:</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-group-posteriors-tidy_11a7ba44800e11a6c18902b8d92d645b">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_post</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">rsq_anova</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="co"># Take a random sample from the posterior distribution</span></span>
-<span>  <span class="co"># so set the seed again to be reproducible. </span></span>
+<span>  <span class="co"># Tomaa una muestra aleatoria de la distribución posterior</span></span>
+<span>  <span class="co"># así que se configura la semilla nuevamente para que sea reproducible. </span></span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span>seed <span class="op">=</span> <span class="fl">1103</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="fu">glimpse</span><span class="op">(</span><span class="va">model_post</span><span class="op">)</span></span>
@@ -741,40 +741,40 @@ div.csl-indent {
 <span><span class="co">## $ model     &lt;chr&gt; "random_forest", "basic_lm", "interact_lm", "splines_lm", "rando…</span></span>
 <span><span class="co">## $ posterior &lt;dbl&gt; 0.8342, 0.7916, 0.7988, 0.8015, 0.8393, 0.7976, 0.7981, 0.8089, …</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The four posterior distributions are visualized in <a href="#fig-four-posteriors">Figura&nbsp;<span>11.3</span></a>.</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-group-posteriors-res_2f501e6941e35587d1e625142b6bf649">
+<p>Las cuatro distribuciones posteriores se visualizan en <a href="#fig-four-posteriors">Figura&nbsp;<span>11.3</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-group-posteriors-res_d567c973bcd8850199bc757be82b5096">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_post</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>model <span class="op">=</span> <span class="fu">forcats</span><span class="fu">::</span><span class="fu"><a href="https://forcats.tidyverse.org/reference/fct_inorder.html">fct_inorder</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">posterior</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">50</span>, color <span class="op">=</span> <span class="st">"white"</span>, fill <span class="op">=</span> <span class="st">"blue"</span>, alpha <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span> <span class="va">model</span>, ncol <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-four-posteriors_39e6eb31aa6abfeab79a2114678308aa">
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-four-posteriors_fea19d9b3adbe6308f4bcd5a7fabdfe9">
 <div class="cell-output-display">
 <div id="fig-four-posteriors" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-four-posteriors-1.png" class="img-fluid figure-img" alt="Posterior distributions for the coefficient of determination using four different models. The distribution corresponding to random forest is largest and has little overlap with the other model's posteriors." width="672"></p>
-<figcaption class="figure-caption">Figura&nbsp;11.3: Posterior distributions for the coefficient of determination using four different models</figcaption></figure>
+<figure class="figure"><p><img src="11-comparing-models_files/figure-html/fig-four-posteriors-1.png" class="img-fluid figure-img" alt="Distribuciones posteriores del coeficiente de determinación utilizando cuatro modelos diferentes. La distribución correspondiente al random forest es la más grande y tiene poca superposición con las posteriores del otro modelo." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;11.3: Distribuciones posteriores del coeficiente de determinación utilizando cuatro modelos diferentes.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>These histograms describe the estimated probability distributions of the mean <span class="math inline">\(R^2\)</span> value for each model. There is some overlap, especially for the three linear models.</p>
-<p>There is also a basic <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method for the model results, shown in <a href="#fig-credible-intervals">Figura&nbsp;<span>11.4</span></a>, as well as the tidied object that shows overlaid density plots.</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-autoplot-intervals_5a2ad6d2668b050fdac9141c60526ca0">
+<p>Estos histogramas describen las distribuciones de probabilidad estimadas del valor medio <span class="math inline">\(R^2\)</span> para cada modelo. Existe cierta superposición, especialmente para los tres modelos lineales.</p>
+<p>También hay un método básico <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> para los resultados del modelo, que se muestra en <a href="#fig-credible-intervals">Figura&nbsp;<span>11.4</span></a>, así como el objeto ordenado que muestra gráficos de densidad superpuestos.</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-autoplot-intervals_395f3069e6d4ec17c35231c4a5720e15">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">rsq_anova</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">workflow</span><span class="op">)</span>, nudge_x <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">8</span>, nudge_y <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">100</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-credible-intervals_c59860eee95ca67902c13ab18741cff4">
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-credible-intervals_2e9f971be46ab2cfb8899b40d9eafddf">
 <div class="cell-output-display">
 <div id="fig-credible-intervals" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-credible-intervals-1.png" class="img-fluid figure-img" alt="Credible intervals derived from the model posterior distributions. Random forest shows the best results with no overlap with the other credible intervals. " width="672"></p>
-<figcaption class="figure-caption">Figura&nbsp;11.4: Credible intervals derived from the model posterior distributions</figcaption></figure>
+<figure class="figure"><p><img src="11-comparing-models_files/figure-html/fig-credible-intervals-1.png" class="img-fluid figure-img" alt="Intervalos creíbles derivados de las distribuciones posteriores del modelo. El random forest muestra los mejores resultados sin superposición con los otros intervalos creíbles." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;11.4: Intervalos creíbles derivados de las distribuciones posteriores del modelo.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>One wonderful aspect of using resampling with Bayesian models is that, once we have the posteriors for the parameters, it is trivial to get the posterior distributions for combinations of the parameters. For example, to compare the two linear regression models, we are interested in the difference in means. The posterior of this difference is computed by sampling from the individual posteriors and taking the differences. The <code><a href="https://tidyposterior.tidymodels.org/reference/contrast_models.html">contrast_models()</a></code> function can do this. To specify the comparisons to make, the <code>list_1</code> and <code>list_2</code> parameters take character vectors and compute the differences between the models in those lists (parameterized as <code>list_1 - list_2</code>).</p>
-<p>We can compare two of the linear models and visualize the results in <a href="#fig-posterior-difference">Figura&nbsp;<span>11.5</span></a>.</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-lm-difference-posterior_11dc8a41ca136286b1f8a44d6d86b9f3">
+<p>Un aspecto maravilloso del uso del remuestreo con modelos bayesianos es que, una vez que tenemos los parámetros posteriores, es trivial obtener las distribuciones posteriores para las combinaciones de los parámetros. Por ejemplo, para comparar los dos modelos de regresión lineal, nos interesa la diferencia de medias. La parte posterior de esta diferencia se calcula tomando muestras de las partes posteriores individuales y tomando las diferencias. La función <code><a href="https://tidyposterior.tidymodels.org/reference/contrast_models.html">contrast_models()</a></code> puede hacer esto. Para especificar las comparaciones a realizar, los parámetros <code>list_1</code> y <code>list_2</code> toman vectores de caracteres y calculan las diferencias entre los modelos en esas listas (parametrizados como <code>list_1 - list_2</code>).</p>
+<p>Podemos comparar dos de los modelos lineales y visualizar los resultados en <a href="#fig-posterior-difference">Figura&nbsp;<span>11.5</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-lm-difference-posterior_9209947f3c455299fcb9dc8f822f5ce7">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rqs_diff</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://tidyposterior.tidymodels.org/reference/contrast_models.html">contrast_models</a></span><span class="op">(</span><span class="va">rsq_anova</span>,</span>
 <span>                  list_1 <span class="op">=</span> <span class="st">"splines_lm"</span>,</span>
@@ -787,16 +787,16 @@ div.csl-indent {
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">0</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_histogram.html">geom_histogram</a></span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">50</span>, color <span class="op">=</span> <span class="st">"white"</span>, fill <span class="op">=</span> <span class="st">"red"</span>, alpha <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-posterior-difference_cac0c6355b4af80f6eeba9b39720f61b">
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-posterior-difference_491deec8609625a036515ce7179ac3ee">
 <div class="cell-output-display">
 <div id="fig-posterior-difference" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-posterior-difference-1.png" class="img-fluid figure-img" alt="The posterior distribution for the difference in the coefficient of determination. The distribution has almost no overlap with zero." width="672"></p>
-<figcaption class="figure-caption">Figura&nbsp;11.5: Posterior distribution for the difference in the coefficient of determination</figcaption></figure>
+<figure class="figure"><p><img src="11-comparing-models_files/figure-html/fig-posterior-difference-1.png" class="img-fluid figure-img" alt="La distribución posterior de la diferencia en el coeficiente de determinación. La distribución casi no se superpone con cero." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;11.5: Distribución posterior de la diferencia en el coeficiente de determinación.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The posterior shows that the center of the distribution is greater than zero (indicating that the model with splines typically had larger values) but does overlap with zero to a degree. The <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> method for this object computes the mean of the distribution as well as credible intervals, the Bayesian analog to confidence intervals.</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-lm-summary_a3b44d2a61b7dde9195f7f3602fda01d">
+<p>La parte posterior muestra que el centro de la distribución es mayor que cero (lo que indica que el modelo con splines normalmente tenía valores más grandes) pero se superpone con cero hasta cierto punto. El método <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> para este objeto calcula la media de la distribución así como los intervalos creíbles, el análogo bayesiano de los intervalos de confianza.</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-lm-summary_6ff56ea2993aa910efe76612e52d3471">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">rqs_diff</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"pract"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 6</span></span>
@@ -804,9 +804,9 @@ div.csl-indent {
 <span><span class="co">##   &lt;chr&gt;                        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 splines_lm vs basic_lm        1.00 0.00919 0.00510 0.0132     0</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code>probability</code> column reflects the proportion of the posterior that is greater than zero. This is the probability that the positive difference is real. The value is not close to zero, providing a strong case for statistical significance, i.e., the idea that statistically the actual difference is not zero.</p>
-<p>However, the estimate of the mean difference is fairly close to zero. Recall that the practical effect size we suggested previously is 2%. With a posterior distribution, we can also compute the probability of being practically significant. In Bayesian analysis, this is a <em>ROPE estimate</em> (for Region Of Practical Equivalence, <span class="citation" data-cites="kruschke2018bayesian">Kruschke y Liddell (<a href="references.html#ref-kruschke2018bayesian" role="doc-biblioref">2018</a>)</span>). To estimate this, the <code>size</code> option to the summary function is used:</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-lm-pract_4cfe3ca411c5c88a84cc95d3f1bc5ba9">
+<p>La columna <code>probability</code> refleja la proporción del posterior que es mayor que cero. Ésta es la probabilidad de que la diferencia positiva sea real. El valor no es cercano a cero, lo que proporciona un fuerte argumento a favor de la significancia estadística, es decir, la idea de que estadísticamente la diferencia real no es cero.</p>
+<p>Sin embargo, la estimación de la diferencia de medias es bastante cercana a cero. Recuerde que el tamaño del efecto práctico que sugerimos anteriormente es del 2%. Con una distribución posterior, también podemos calcular la probabilidad de que sea prácticamente significativo. En el análisis bayesiano, esta es una <em>estimación ROPE</em> (para Región de equivalencia práctica, <span class="citation" data-cites="kruschke2018bayesian">Kruschke y Liddell (<a href="references.html#ref-kruschke2018bayesian" role="doc-biblioref">2018</a>)</span>). Para estimar esto, se utiliza la opción <code>size</code> de la función de <code>summary</code>:</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-lm-pract_859b0a2a6497f5f600d912a49148d8f4">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">rqs_diff</span>, size <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">contrast</span>, <span class="fu">starts_with</span><span class="op">(</span><span class="st">"pract"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 4</span></span>
@@ -814,43 +814,43 @@ div.csl-indent {
 <span><span class="co">##   &lt;chr&gt;                      &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 splines_lm vs basic_lm         0        1.00    0.0001</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code>pract_equiv</code> column is the proportion of the posterior that is within <code>[-size, size]</code> (the columns <code>pract_neg</code> and <code>pract_pos</code> are the proportions that are below and above this interval). This large value indicates that, for our effect size, there is an overwhelming probability that the two models are practically the same. Even though the previous plot showed that our difference is likely nonzero, the equivalence test suggests that it is small enough to not be practically meaningful.</p>
-<p>The same process could be used to compare the random forest model to one or both of the linear regressions that were resampled. In fact, when <code><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod()</a></code> is used with a workflow set, the <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> method can show the <code>pract_equiv</code> results that compare each workflow to the current best (the random forest model, in this case).</p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-rope-plot_6ce4a1928a04a0db7b548f58ac464059">
+<p>La columna <code>pract_equiv</code> es la proporción del posterior que está dentro de <code>[-size, size]</code> (las columnas <code>pract_neg</code> y <code>pract_pos</code> son las proporciones que están debajo y encima de este intervalo). Este gran valor indica que, para nuestro tamaño del efecto, existe una probabilidad abrumadora de que los dos modelos sean prácticamente iguales. Aunque el gráfico anterior mostró que nuestra diferencia probablemente sea distinta de cero, la prueba de equivalencia sugiere que es lo suficientemente pequeña como para no ser significativa en la práctica.</p>
+<p>Se podría utilizar el mismo proceso para comparar el modelo de random forest con una o ambas regresiones lineales que se volvieron a muestrear. De hecho, cuando se usa <code><a href="https://tidyposterior.tidymodels.org/reference/perf_mod.html">perf_mod()</a></code> con un conjunto de flujo de trabajo, el método <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> puede mostrar los resultados de <code>pract_equiv</code> que comparan cada flujo de trabajo con el mejor actual (el modelo de bosque aleatorio, en este caso).</p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-rope-plot_8a4df6de8a5daad85dd5bc775db63a69">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">rsq_anova</span>, type <span class="op">=</span> <span class="st">"ROPE"</span>, size <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>label <span class="op">=</span> <span class="va">workflow</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-practical-equivalence_219d6e80c82ae5e2ef12ab1ecbcbd3c8">
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-practical-equivalence_cec7420887cee76d801a6b778bfbe5f9">
 <div class="cell-output-display">
 <div id="fig-practical-equivalence" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-practical-equivalence-1.png" class="img-fluid figure-img" alt="Probability of practical equivalence for an effect size of 2%. No other models have a nonzero change of matching the random forest results." width="672"></p>
-<figcaption class="figure-caption">Figura&nbsp;11.6: Probability of practical equivalence for an effect size of 2%</figcaption></figure>
+<figure class="figure"><p><img src="11-comparing-models_files/figure-html/fig-practical-equivalence-1.png" class="img-fluid figure-img" alt="Probabilidad de equivalencia práctica para un tamaño del efecto del 2%. Ningún otro modelo tiene un cambio distinto de cero al coincidir con los resultados del random forest." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;11.6: Probabilidad de equivalencia práctica para un tamaño del efecto del 2%</figcaption></figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-practical-equivalence">Figura&nbsp;<span>11.6</span></a> shows us that none of the linear models comes close to the random forest model when a 2% practical effect size is used.</p>
-</section><section id="the-effect-of-the-amount-of-resampling" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="the-effect-of-the-amount-of-resampling">The effect of the amount of resampling</h3>
-<p>How does the number of resamples affect these types of formal Bayesian comparisons? More resamples increases the precision of the overall resampling estimate; that precision propagates to this type of analysis. For illustration, additional resamples were added using repeated cross-validation. How did the posterior distribution change? <a href="#fig-intervals-over-replicates">Figura&nbsp;<span>11.7</span></a> shows the 90% credible intervals with up to 100 resamples (generated from 10 repeats of 10-fold cross-validation).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-cred-int_f980c88c345374f2e0f1e3e76380d108">
+<p><a href="#fig-practical-equivalence">Figura&nbsp;<span>11.6</span></a> nos muestra que ninguno de los modelos lineales se acerca al modelo de random forest cuando se utiliza un tamaño de efecto práctico del 2%.</p>
+</section><section id="el-efecto-de-la-cantidad-de-remuestreo." class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="el-efecto-de-la-cantidad-de-remuestreo.">El efecto de la cantidad de remuestreo.</h3>
+<p>¿Cómo afecta el número de remuestreos a estos tipos de comparaciones bayesianas formales? Más remuestreos aumentan la precisión de la estimación general del remuestreo; esa precisión se propaga a este tipo de análisis. A modo de ilustración, se agregaron nuevas muestras adicionales mediante validación cruzada repetida. ¿Cómo cambió la distribución posterior? <a href="#fig-intervals-over-replicates">Figura&nbsp;<span>11.7</span></a> muestra los intervalos de credibilidad del 90% con hasta 100 remuestreos (generados a partir de 10 repeticiones de validación cruzada 10 veces).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/compare-cred-int_e7aa77afd7d0e4a0d550d56d61044514">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">intervals</span>,</span>
 <span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">resamples</span>, y <span class="op">=</span> <span class="va">mean</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_path</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_ribbon</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>ymin <span class="op">=</span> <span class="va">lower</span>, ymax <span class="op">=</span> <span class="va">upper</span><span class="op">)</span>, fill <span class="op">=</span> <span class="st">"red"</span>, alpha <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Number of Resamples (repeated 10-fold cross-validation)"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Número de remuestras (validación cruzada repetida 10 veces)"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-intervals-over-replicates_a9ec58ac12b77e056dc0429ba5f32ddd">
+<div class="cell" data-layout-align="center" data-hash="11-comparing-models_cache/html/fig-intervals-over-replicates_9aaf5c8731265e39b36cb01feeb04a81">
 <div class="cell-output-display">
 <div id="fig-intervals-over-replicates" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-intervals-over-replicates-1.png" class="img-fluid figure-img" alt="The probability of practical equivalence to the random forest model." width="672"></p>
-<figcaption class="figure-caption">Figura&nbsp;11.7: Probability of practical equivalence to the random forest model</figcaption></figure>
+<figure class="figure"><p><img src="11-comparing-models_files/figure-html/fig-intervals-over-replicates-1.png" class="img-fluid figure-img" alt="La probabilidad de equivalencia práctica con el modelo de bosque aleatorio." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;11.7: Probabilidad de equivalencia práctica con el modelo de bosque aleatorio.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The width of the intervals decreases as more resamples are added. Clearly, going from ten resamples to thirty has a larger impact than going from eighty to 100. There are diminishing returns for using a “large” number of resamples (“large” will be different for different data sets).</p>
+<p>El ancho de los intervalos disminuye a medida que se agregan más muestras. Claramente, pasar de diez remuestreos a treinta tiene un impacto mayor que pasar de ochenta a 100. Hay rendimientos decrecientes por utilizar un número “grande” de remuestreos (“grande” será diferente para diferentes conjuntos de datos).</p>
 </section></section><section id="sec-compare-summary" class="level2" data-number="11.5"><h2 data-number="11.5" class="anchored" data-anchor-id="sec-compare-summary">
-<span class="header-section-number">11.5</span> Chapter Summary</h2>
-<p>This chapter described formal statistical methods for testing differences in performance between models. We demonstrated the within-resample effect, where results for the same resample tend to be similar; this aspect of resampled summary statistics requires appropriate analysis in order for valid model comparisons. Further, although statistical significance and practical significance are both important concepts for model comparisons, they are different.</p>
+<span class="header-section-number">11.5</span> Resumen del capítulo</h2>
+<p>Este capítulo describió métodos estadísticos formales para probar diferencias en el rendimiento entre modelos. Demostramos el efecto dentro de la nueva muestra, donde los resultados para la misma nueva muestra tienden a ser similares; este aspecto de las estadísticas resumidas remuestreadas requiere un análisis apropiado para realizar comparaciones de modelos válidas. Además, aunque la significación estadística y la significancia práctica son conceptos importantes para las comparaciones de modelos, son diferentes.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
@@ -869,7 +869,7 @@ Wasserstein, R, y N Lazar. 2016. <span>«The <span>ASA</span> statement on p-val
 </div>
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
-<li id="fn1"><p>The code to generate <code>intervals</code> is available at <a href="https://github.com/tidymodels/TMwR/blob/main/extras/ames_posterior_intervals.R" class="uri">https://github.com/tidymodels/TMwR/blob/main/extras/ames_posterior_intervals.R</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>El código para generar <code>intervalos</code> está disponible en <a href="https://github.com/tidymodels/TMwR/blob/main/extras/ames_posterior_intervals.R" class="uri">https://github.com/tidymodels/TMwR/blob/main/extras/ames_posterior_intervals.R</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script>
 
   // Chapter name
@@ -1171,7 +1171,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./10-resampling.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Resampling for Evaluating Performance</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear para Evaluar el Rendimiento</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

@@ -50,7 +50,7 @@ book:
         - 08-feature-engineering.qmd
         - 09-judging-model-effectiveness.qmd
 
-    - part: "TOOLS FOR CREATING EFFECTIVE MODELS"
+    - part: "HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS"
       chapters:
         - 10-resampling.qmd
         - 11-comparing-models.qmd

@@ -19,15 +19,15 @@ load("RData/post_intervals.RData")
 keep_pred <- control_resamples(save_pred = TRUE)
 ```
 
-# Comparing Models with Resampling {#sec-compare}
+# Comparación de Modelos con Remuestreo {#sec-compare}
 
-Once we create two or more models, the next step is to compare them to understand which one is best. In some cases, comparisons might be *within-model*, where the same model might be evaluated with different features or preprocessing methods. Alternatively, *between-model* comparisons, such as when we compared linear regression and random forest models in [Chapter @sec-resampling], are the more common scenario.
+Una vez que creamos dos o más modelos, el siguiente paso es compararlos para entender cuál es mejor. En algunos casos, las comparaciones pueden ser *dentro del modelo*, donde el mismo modelo puede evaluarse con diferentes características o métodos de preprocesamiento. Alternativamente, las comparaciones *entre modelos*, como cuando comparamos modelos de regresión lineal y de random forest en el [Capítulo @sec-resampling], son el escenario más común.
 
-In either case, the result is a collection of resampled summary statistics (e.g., RMSE, accuracy, etc.) for each model. In this chapter, we'll first demonstrate how workflow sets can be used to fit multiple models. Then, we'll discuss important aspects of resampling statistics. Finally, we'll look at how to formally compare models (using either hypothesis testing or a Bayesian approach).
+En cualquier caso, el resultado es una colección de estadísticas resumidas remuestreadas (por ejemplo, RMSE, precisión, etc.) para cada modelo. En este capítulo, primero demostraremos cómo se pueden usar conjuntos de flujos de trabajo para ajustarse a múltiples modelos. Luego, discutiremos aspectos importantes de las estadísticas de remuestreo. Finalmente, veremos cómo comparar modelos formalmente (usando pruebas de hipótesis o un enfoque bayesiano).
 
-## Creating Multiple Models with Workflow Sets {#sec-workflow-set}
+## Crear Múltiples Modelos con Conjuntos de Flujo de Trabajo {#sec-workflow-set}
 
-In @sec-workflow-sets-intro we described the idea of a workflow set where different preprocessors and/or models can be combinatorially generated. In [Chapter @sec-resampling], we used a recipe for the Ames data that included an interaction term as well as spline functions for longitude and latitude. To demonstrate more with workflow sets, let's create three different linear models that add these preprocessing steps incrementally; we can test whether these additional terms improve the model results. We'll create three recipes then combine them into a workflow set:
+En @sec-workflow-sets-intro describimos la idea de un conjunto de flujo de trabajo donde se pueden generar combinatoriamente diferentes preprocesadores y/o modelos. En el [Capítulo @sec-resampling], utilizamos una receta para los datos de Ames que incluía un término de interacción así como funciones spline para longitud y latitud. Para demostrar más con los conjuntos de flujos de trabajo, creemos tres modelos lineales diferentes que agreguen estos pasos de preprocesamiento de forma incremental; Podemos probar si estos términos adicionales mejoran los resultados del modelo. Crearemos tres recetas y luego las combinaremos en un conjunto de flujo de trabajo:
 
 ```{r compare-workflow-set}
 library(tidymodels)
@@ -58,7 +58,7 @@ lm_models <- workflow_set(preproc, list(lm = linear_reg()), cross = FALSE)
 lm_models
 ```
 
-We'd like to resample each of these models in turn. To do so, we will use a `r pkg(purrr)`-like function called `workflow_map()`. This function takes an initial argument of the function to apply to the workflows, followed by options to that function. We also set a `verbose` argument that will print the progress as well as a `seed` argument that makes sure that each model uses the same random number stream as the others.
+Nos gustaría volver a muestrear cada uno de estos modelos por turno. Para hacerlo, usaremos una función similar a `r pkg(purrr)` llamada `workflow_map()`. Esta función toma un argumento inicial de la función para aplicarlo a los flujos de trabajo, seguido de opciones para esa función. También configuramos un argumento `verbose` que imprimirá el progreso, así como un argumento `seed` que garantiza que cada modelo utilice el mismo flujo de números aleatorios que los demás.
 
 ```{r compare-workflow-set-resample}
 lm_models <- 
@@ -71,16 +71,16 @@ lm_models <-
 lm_models
 ```
 
-Notice that the `option` and `result` columns are now populated. The former includes the options to `fit_resamples()` that were given (for reproducibility), and the latter column contains the results produced by `fit_resamples()`.
+Observe que las columnas `option` y `result` ahora están completas. La primera incluye las opciones para `fit_resamples()` que se dieron (para reproducibilidad), y la última columna contiene los resultados producidos por `fit_resamples()`.
 
-There are a few convenience functions for workflow sets, including `collect_metrics()` to collate the performance statistics. We can `filter()` to any specific metric we are interested in:
+Hay algunas funciones convenientes para conjuntos de flujos de trabajo, incluida `collect_metrics()` para recopilar las estadísticas de rendimiento. Podemos `filtrar()` a cualquier métrica específica que nos interese:
 
 ```{r compare-workflow-set-collect}
 collect_metrics(lm_models) %>% 
   filter(.metric == "rmse")
 ```
 
-What about the random forest model from the previous chapter? We can add it to the set by first converting it to its own workflow set then binding rows. This requires that, when the model was resampled, the `save_workflow = TRUE` option was set in the control function.
+¿Qué pasa con el modelo de bosque aleatorio del capítulo anterior? Podemos agregarlo al conjunto convirtiéndolo primero a su propio conjunto de flujo de trabajo y luego vinculando filas. Esto requiere que, cuando se volvió a muestrear el modelo, se haya configurado la opción `save_workflow = TRUE` en la función de control.
 
 ```{r compare-workflow-set-four-models}
 four_models <- 
@@ -89,7 +89,7 @@ four_models <-
 four_models
 ```
 
-The `autoplot()` method, with output in @fig-workflow-set-r-squared, shows confidence intervals for each model in order of best to worst. In this chapter, we'll focus on the coefficient of determination (a.k.a. $R^2$) and use `metric = "rsq"` in the call to set up our plot:
+El método `autoplot()`, con salida en @fig-workflow-set-r-squared, muestra intervalos de confianza para cada modelo en orden de mejor a peor. En este capítulo, nos centraremos en el coeficiente de determinación (también conocido como $R^2$) y usaremos `metric = "rsq"` en la llamada para configurar nuestro gráfico:
 
 ```{r compare-workflow-set-rsq, eval=FALSE}
 library(ggrepel)
@@ -102,25 +102,25 @@ autoplot(four_models, metric = "rsq") +
 #| label: fig-workflow-set-r-squared
 #| ref.label: "compare-workflow-set-rsq"
 #| echo: FALSE
-#| fig.cap: "Confidence intervals for the coefficient of determination using four different models"
-#| fig.alt: "Confidence intervals for the coefficient of determination using four different models. The random forest model has the best results and its intervals do not overlap with the intervals of the other models. "
+#| fig.cap: "Intervalos de confianza para el coeficiente de determinación utilizando cuatro modelos diferentes"
+#| fig.alt: "Intervalos de confianza para el coeficiente de determinación utilizando cuatro modelos diferentes. El modelo de bosque aleatorio tiene los mejores resultados y sus intervalos no se superponen con los intervalos de los otros modelos."
 ```
 
-From this plot of $R^2$ confidence intervals, we can see that the random forest method is doing the best job and there are minor improvements in the linear models as we add more recipe steps.
+En este gráfico de intervalos de confianza $R^2$, podemos ver que el método de random forest está funcionando mejor y hay mejoras menores en los modelos lineales a medida que agregamos más pasos a la receta.
 
-Now that we have 10 resampled performance estimates for each of the four models, these summary statistics can be used to make between-model comparisons.
+Ahora que tenemos 10 estimaciones de rendimiento remuestreadas para cada uno de los cuatro modelos, estas estadísticas resumidas se pueden utilizar para realizar comparaciones entre modelos.
 
-## Comparing Resampled Performance Statistics {#sec-resampled-stats}
+## Comparación de estadísticas de rendimiento remuestreadas {#sec-resampled-stats}
 
-Considering the preceding results for the three linear models, it appears that the additional terms do not profoundly improve the mean RMSE or $R^2$ statistics for the linear models. The difference is small, but it might be larger than the experimental noise in the system, i.e., considered statistically significant. We can formally test the hypothesis that the additional terms increase $R^2$.
+Teniendo en cuenta los resultados anteriores para los tres modelos lineales, parece que los términos adicionales no mejoran profundamente las estadísticas medias de RMSE o $R^2$ para los modelos lineales. La diferencia es pequeña, pero podría ser mayor que el ruido experimental en el sistema, es decir, considerarse estadísticamente significativa. Podemos probar formalmente la hipótesis de que los términos adicionales aumentan $R^2$.
 
 ::: rmdnote
-Before making between-model comparisons, it is important for us to discuss the within-resample correlation for resampling statistics. Each model was measured with the same cross-validation folds, and results for the same resample tend to be similar.
+Antes de hacer comparaciones entre modelos, es importante para nosotros analizar la correlación dentro de la muestra para las estadísticas de remuestreo. Cada modelo se midió con los mismos pliegues de validación cruzada y los resultados para la misma nueva muestra tienden a ser similares.
 :::
 
-In other words, there are some resamples where performance across models tends to be low and others where it tends to be high. In statistics, this is called a *resample-to-resample* component of variation.
+En otras palabras, hay algunos remuestreos en los que el rendimiento de todos los modelos tiende a ser bajo y otros en los que tiende a ser alto. En estadística, esto se denomina componente de variación *remuestreo a remuestreo*.
 
-To illustrate, let's gather the individual resampling statistics for the linear models and the random forest. We will focus on the $R^2$ statistic for each model, which measures correlation between the observed and predicted sale prices for each house. Let's `filter()` to keep only the $R^2$ metrics, reshape the results, and compute how the metrics are correlated with each other.
+Para ilustrar, recopilemos las estadísticas de remuestreo individuales para los modelos lineales y el bosque aleatorio. Nos centraremos en la estadística $R^2$ para cada modelo, que mide la correlación entre los precios de venta observados y previstos para cada casa. Vamos a `filtrar()` para mantener solo las métricas $R^2$, remodelar los resultados y calcular cómo se correlacionan las métricas entre sí.
 
 ```{r compare-collect}
 rsq_indiv_estimates <- 
@@ -135,7 +135,7 @@ rsq_wider <-
 corrr::correlate(rsq_wider %>% select(-id), quiet = TRUE)
 ```
 
-These correlations are high, and indicate that, across models, there are large within-resample correlations. To see this visually in @fig-rsquared-resamples, the $R^2$ statistics are shown for each model with lines connecting the resamples:
+Estas correlaciones son altas e indican que, entre modelos, existen grandes correlaciones dentro de la muestra. Para ver esto visualmente en @fig-rsquared-resamples, las estadísticas $R^2$ se muestran para cada modelo con líneas que conectan los remuestreos:
 
 ```{r compare-rsq-plot, eval=FALSE}
 rsq_indiv_estimates %>% 
@@ -149,8 +149,8 @@ rsq_indiv_estimates %>%
 #| label: fig-rsquared-resamples
 #| fig.height: 4
 #| echo: FALSE
-#| fig.cap: "Resample statistics across models"
-#| fig.alt: "A plot connecting the resample statistics across models. The plot connects the results for each model with the same line. The performance metrics tend to be relatively similar across all model results. "
+#| fig.cap: "Remuestrear estadísticas entre modelos"
+#| fig.alt: "Un gráfico que conecta las estadísticas de remuestreo entre modelos. La gráfica conecta los resultados de cada modelo con la misma línea. Las métricas de rendimiento tienden a ser relativamente similares en todos los resultados del modelo."
 
 y_lab <- expression(R^2 ~ statistics)
 
@@ -162,7 +162,7 @@ rsq_indiv_estimates %>%
   labs(x = NULL, y = y_lab)
 ```
 
-If the resample-to-resample effect was not real, there would not be any parallel lines. A statistical test for the correlations evaluates whether the magnitudes of these correlations are not simply noise. For the linear models:
+Si el efecto de remuestreo a remuestreo no fuera real, no habría líneas paralelas. Una prueba estadística de las correlaciones evalúa si las magnitudes de estas correlaciones no son simplemente ruido. Para los modelos lineales:
 
 ```{r compare-resample-cor}
 rsq_wider %>% 
@@ -171,37 +171,37 @@ rsq_wider %>%
   select(estimate, starts_with("conf"))
 ```
 
-The results of the correlation test (the `estimate` of the correlation and the confidence intervals) show us that the within-resample correlation appears to be real.
+Los resultados de la prueba de correlación (la "estimación", `estimate`, de la correlación y los intervalos de confianza) nos muestran que la correlación dentro de la muestra parece ser real.
 
-What effect does the extra correlation have on our analysis? Consider the variance of a difference of two variables:
+¿Qué efecto tiene la correlación adicional en nuestro análisis? Considere la varianza de una diferencia de dos variables:
 
 $$\operatorname{Var}[X - Y] = \operatorname{Var}[X] + \operatorname{Var}[Y]  - 2 \operatorname{Cov}[X, Y]$$
 
-The last term is the covariance between two items. If there is a significant positive covariance, then any statistical test of this difference would be critically under-powered comparing the difference in two models. In other words, ignoring the resample-to-resample effect would bias our model comparisons towards finding no differences between models.
+El último término es la covarianza entre dos elementos. Si hay una covarianza positiva significativa, entonces cualquier prueba estadística de esta diferencia carecería de potencia crítica al comparar la diferencia en dos modelos. En otras palabras, ignorar el efecto de remuestreo a remuestreo sesgaría nuestras comparaciones de modelos hacia la ausencia de diferencias entre los modelos.
 
 ::: rmdwarning
-This characteristic of resampling statistics will come into play in the next two sections.
+Esta característica de las estadísticas de remuestreo entrará en juego en las dos secciones siguientes.
 :::
 
-Before making model comparisons or looking at the resampling results, it can be helpful to define a relevant *practical effect size*. Since these analyses focus on the $R^2$ statistics, the practical effect size is the change in $R^2$ that we would consider to be a realistic difference that matters. For example, we might think that two models are not practically different if their $R^2$ values are within $\pm 2$%. If this were the case, differences smaller than 2% are not deemed important even if they are statistically significant.
+Antes de realizar comparaciones de modelos o observar los resultados del remuestreo, puede resultar útil definir un *tamaño del efecto práctico* relevante. Dado que estos análisis se centran en las estadísticas de $R^2$, el tamaño del efecto práctico es el cambio en $R^2$ que consideraríamos una diferencia realista que importa. Por ejemplo, podríamos pensar que dos modelos no son prácticamente diferentes si sus valores de $R^2$ están dentro de $\pm 2$%. Si este fuera el caso, las diferencias menores al 2% no se consideran importantes incluso si son estadísticamente significativas.
 
-Practical significance is subjective; two people can have very different ideas on the threshold for importance. However, we'll show later that this consideration can be very helpful when deciding between models.
+La importancia práctica es subjetiva; dos personas pueden tener ideas muy diferentes en el umbral de la importancia. Sin embargo, más adelante mostraremos que esta consideración puede resultar muy útil a la hora de decidir entre modelos.
 
-## Simple Hypothesis Testing Methods
+## Métodos simples de prueba de hipótesis
 
-We can use simple hypothesis testing to make formal comparisons between models. Consider the familiar linear statistical model:
+Podemos utilizar pruebas de hipótesis simples para hacer comparaciones formales entre modelos. Considere el conocido modelo estadístico lineal:
 
 $$y_{ij} = \beta_0 + \beta_1x_{i1} + \ldots + \beta_px_{ip} + \epsilon_{ij}$$
 
-This versatile model is used to create regression models as well as being the basis for the popular analysis of variance (ANOVA) technique for comparing groups. With the ANOVA model, the predictors ($x_{ij}$) are binary dummy variables for different groups. From this, the $\beta$ parameters estimate whether two or more groups are different from one another using hypothesis testing techniques.
+Este modelo versátil se utiliza para crear modelos de regresión, además de ser la base de la popular técnica de análisis de varianza (ANOVA) para comparar grupos. Con el modelo ANOVA, los predictores ($x_{ij}$) son variables binarias ficticias para diferentes grupos. A partir de esto, los parámetros $\beta$ estiman si dos o más grupos son diferentes entre sí utilizando técnicas de prueba de hipótesis.
 
-In our specific situation, the ANOVA can also make model comparisons. Suppose the individual resampled $R^2$ statistics serve as the *outcome data* (i.e., the $y_{ij}$) and the models as the *predictors* in the ANOVA model. A sampling of this data structure is shown in @tbl-model-anova-data.
+En nuestra situación específica, el ANOVA también puede realizar comparaciones de modelos. Supongamos que las estadísticas individuales $R^2$ remuestreadas sirven como *datos de resultado* (es decir, $y_{ij}$) y los modelos como *predictores* en el modelo ANOVA. Se muestra una muestra de esta estructura de datos en @tbl-model-anova-data.
 
 ```{r}
 #| label: tbl-model-anova-data
 #| echo: FALSE
 #| results: "asis"
-#| tbl-cap: "Model performance statistics as a data set for analysis."
+#| tbl-cap: "Modelar estadísticas de rendimiento como un conjunto de datos para análisis."
 
 rsq_indiv_estimates %>% 
   select(id, rsq = .estimate, model = wflow_id) %>% 
@@ -218,27 +218,27 @@ rsq_indiv_estimates %>%
   kable_styling(full_width = FALSE) 
 ```
 
-The `X1`, `X2`, and `X3` columns in the table are indicators for the values in the `model` column. Their order was defined in the same way that R would define them, alphabetically ordered by `model`.
+Las columnas `X1`, `X2` y `X3` de la tabla son indicadores de los valores de la columna `modelo`. Su orden se definió de la misma manera que R los definiría, ordenados alfabéticamente por `modelo`.
 
-For our model comparison, the specific ANOVA model is:
+Para nuestra comparación de modelos, el modelo ANOVA específico es:
 
 $$y_{ij} = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \beta_3x_{i3} + \epsilon_{ij}$$
 
-where
+donde
 
--   $\beta_0$ is the estimate of the mean $R^2$ statistic for the basic linear models (i.e., without splines or interactions),
+-   $\beta_0$ es la estimación del estadístico $R^2$ medio para los modelos lineales básicos (es decir, sin splines ni interacciones),
 
--   $\beta_1$ is the change in mean $R^2$ when interactions are added to the basic linear model,
+-   $\beta_1$ es el cambio en la media $R^2$ cuando se agregan interacciones al modelo lineal básico,
 
--   $\beta_2$ is the change in mean $R^2$ between the basic linear model and the random forest model, and
+-   $\beta_2$ es el cambio en la media $R^2$ entre el modelo lineal básico y el modelo de random forest, y
 
--   $\beta_3$ is the change in mean $R^2$ between the basic linear model and one with interactions and splines.
+-   $\beta_3$ es el cambio en la media $R^2$ entre el modelo lineal básico y uno con interacciones y splines.
 
-From these model parameters, hypothesis tests and p-values are generated to statistically compare models, but we must contend with how to handle the resample-to-resample effect. Historically, the resample groups would be considered a *block effect* and an appropriate term was added to the model. Alternatively, the resample effect could be considered a *random effect* where these particular resamples were drawn at random from a larger population of possible resamples. However, we aren't really interested in these effects; we only want to adjust for them in the model so that the variances of the interesting differences are properly estimated.
+A partir de estos parámetros del modelo, se generan pruebas de hipótesis y valores p para comparar modelos estadísticamente, pero debemos lidiar con cómo manejar el efecto de remuestreo a remuestre. Históricamente, los grupos de remuestreo se consideraban un *efecto de bloque* y se agregaba un término apropiado al modelo. Alternativamente, el efecto de remuestreo podría considerarse un *efecto aleatorio* en el que estas remuestras particulares se extrajeron al azar de una población más grande de posibles remuestras. Sin embargo, no estamos realmente interesados en estos efectos; sólo queremos ajustarlos en el modelo para que las varianzas de las diferencias interesantes se estimen adecuadamente.
 
-Treating the resamples as random effects is theoretically appealing. Methods for fitting an ANOVA model with this type of random effect could include the linear mixed model [@faraway2016extending] or a Bayesian hierarchical model (shown in the next section).
+Tratar las remuestras como efectos aleatorios es teóricamente atractivo. Los métodos para ajustar un modelo ANOVA con este tipo de efecto aleatorio podrían incluir el modelo lineal mixto [@faraway2016extending] o un modelo jerárquico bayesiano (que se muestra en la siguiente sección).
 
-A simple and fast method for comparing two models at a time is to use the differences in $R^2$ values as the outcome data in the ANOVA model. Since the outcomes are matched by resample, the differences do not contain the resample-to-resample effect and, for this reason, the standard ANOVA model is appropriate. To illustrate, this call to `lm()` tests the difference between two of the linear regression models:
+Un método simple y rápido para comparar dos modelos a la vez es usar las diferencias en los valores de $R^2$ como datos de resultado en el modelo ANOVA. Dado que los resultados coinciden mediante remuestreo, las diferencias no contienen el efecto de remuestreo a remuestre y, por esta razón, el modelo ANOVA estándar es apropiado. Para ilustrar, esta llamada a `lm()` prueba la diferencia entre dos de los modelos de regresión lineal:
 
 ```{r compare-t-test}
 compare_lm <- 
@@ -249,7 +249,7 @@ lm(difference ~ 1, data = compare_lm) %>%
   tidy(conf.int = TRUE) %>% 
   select(estimate, p.value, starts_with("conf"))
 
-# Alternatively, a paired t-test could also be used: 
+# Alternativamente, también se podría utilizar una prueba t pareada: 
 rsq_wider %>% 
   with( t.test(splines_lm, basic_lm, paired = TRUE) ) %>%
   tidy() %>% 
@@ -266,23 +266,23 @@ lm_t <-
   tidy()
 ```
 
-We could evaluate each pair-wise difference in this way. Note that the p-value indicates a *statistically significant* signal; the collection of spline terms for longitude and latitude do appear to have an effect. However, the difference in $R^2$ is estimated at `r round(lm_t$estimate * 100, 2)`%. If our practical effect size were 2%, we might not consider these terms worth including in the model.
+Podríamos evaluar cada diferencia por pares de esta manera. Tenga en cuenta que el valor p indica una señal *estadísticamente significativa*; la colección de términos splines para longitud y latitud parece tener un efecto. Sin embargo, la diferencia en $R^2$ se estima en `r round(lm_t$estimate * 100, 2)`%. Si nuestro tamaño de efecto práctico fuera del 2%, es posible que no consideráramos que valga la pena incluir estos términos en el modelo.
 
 ::: rmdnote
-We've briefly mentioned p-values already, but what actually are they? From @pvalue: "Informally, a p-value is the probability under a specified statistical model that a statistical summary of the data (e.g., the sample mean difference between two compared groups) would be equal to or more extreme than its observed value."
+Ya hemos mencionado brevemente los valores p, pero ¿qué son realmente? De @pvalue: "Informalmente, un valor p es la probabilidad, según un modelo estadístico específico, de que un resumen estadístico de los datos (por ejemplo, la diferencia de medias muestrales entre dos grupos comparados) sea igual o más extremo que su valor observado. "
 
-In other words, if this analysis were repeated a large number of times under the null hypothesis of no differences, the p-value reflects how extreme our observed results would be in comparison.
+En otras palabras, si este análisis se repitiera una gran cantidad de veces bajo la hipótesis nula de que no hay diferencias, el valor p refleja cuán extremos serían nuestros resultados observados en comparación.
 :::
 
-## Bayesian Methods {#sec-tidyposterior}
+## Métodos bayesianos {#sec-tidyposterior}
 
-We just used hypothesis testing to formally compare models, but we can also take a more general approach to making these formal comparisons using random effects and Bayesian statistics [@mcelreath2020statistical]. While the model is more complex than the ANOVA method, the interpretation is more simple and straight-forward than the p-value approach. The previous ANOVA model had the form:
+Simplemente utilizamos pruebas de hipótesis para comparar modelos formalmente, pero también podemos adoptar un enfoque más general para realizar estas comparaciones formales utilizando efectos aleatorios y estadísticas bayesianas [@mcelreath2020statistical]. Si bien el modelo es más complejo que el método ANOVA, la interpretación es más simple y directa que el método del valor p. El modelo ANOVA anterior tenía la forma:
 
 $$y_{ij} = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \beta_3x_{i3} + \epsilon_{ij}$$
 
-where the residuals $\epsilon_{ij}$ are assumed to be independent and follow a Gaussian distribution with zero mean and constant standard deviation of $\sigma$. From this assumption, statistical theory shows that the estimated regression parameters follow a multivariate Gaussian distribution and, from this, p-values and confidence intervals are derived.
+donde se supone que los residuales $\epsilon_{ij}$ son independientes y siguen una distribución gaussiana con media cero y desviación estándar constante de $\sigma$. A partir de este supuesto, la teoría estadística muestra que los parámetros de regresión estimados siguen una distribución gaussiana multivariada y, de ahí, se derivan los valores p y los intervalos de confianza.
 
-A Bayesian linear model makes additional assumptions. In addition to specifying a distribution for the residuals, we require *prior distribution* specifications for the model parameters ( $\beta_j$ and $\sigma$ ). These are distributions for the parameters that the model assumes before being exposed to the observed data. For example, a simple set of prior distributions for our model might be:
+Un modelo lineal bayesiano hace suposiciones adicionales. Además de especificar una distribución para los residuos, requerimos especificaciones de *distribución previa* para los parámetros del modelo ( $\beta_j$ y $\sigma$ ). Estas son distribuciones de los parámetros que asume el modelo antes de ser expuesto a los datos observados. Por ejemplo, un conjunto simple de distribuciones previas para nuestro modelo podría ser:
 
 ```{=tex}
 \begin{align}
@@ -291,41 +291,41 @@ A Bayesian linear model makes additional assumptions. In addition to specifying 
 \sigma &\sim \text{exponential}(1) \notag
 \end{align}
 ```
-These priors set the possible/probable ranges of the model parameters and have no unknown parameters. For example, the prior on $\sigma$ indicates that values must be larger than zero, are very right-skewed, and have values that are usually less than 3 or 4.
+Estos antecedentes establecen los rangos posibles/probables de los parámetros del modelo y no tienen parámetros desconocidos. Por ejemplo, el valor anterior de $\sigma$ indica que los valores deben ser mayores que cero, están muy sesgados a la derecha y tienen valores que generalmente son menores que 3 o 4.
 
-Note that the regression parameters have a pretty wide prior distribution, with a standard deviation of 10. In many cases, we might not have a strong opinion about the prior beyond it being symmetric and bell shaped. The large standard deviation implies a fairly uninformative prior; it is not overly restrictive in terms of the possible values that the parameters might take on. This allows the data to have more of an influence during parameter estimation.
+Tenga en cuenta que los parámetros de regresión tienen una distribución a priori bastante amplia, con una desviación estándar de 10. En muchos casos, es posible que no tengamos una opinión sólida sobre el a priori más allá de que sea simétrico y tenga forma de campana. La gran desviación estándar implica un previo bastante poco informativo; no es demasiado restrictivo en términos de los posibles valores que podrían adoptar los parámetros. Esto permite que los datos tengan más influencia durante la estimación de parámetros.
 
-Given the observed data and the prior distribution specifications, the model parameters can then be estimated. The final distributions of the model parameters are combinations of the priors and the likelihood estimates. These *posterior distributions* of the parameters are the key distributions of interest. They are a full probabilistic description of the model's estimated parameters.
+Dados los datos observados y las especificaciones de distribución previas, se pueden estimar los parámetros del modelo. Las distribuciones finales de los parámetros del modelo son combinaciones de las estimaciones previas y de probabilidad. Estas *distribuciones posteriores* de los parámetros son las distribuciones clave de interés. Son una descripción probabilística completa de los parámetros estimados del modelo.
 
-### A random intercept model {.unnumbered}
+### Un modelo de intersección aleatoria {.unnumbered}
 
-To adapt our Bayesian ANOVA model so that the resamples are adequately modeled, we consider a *random intercept model*. Here, we assume that the resamples impact the model only by changing the intercept. Note that this constrains the resamples from having a differential impact on the regression parameters $\beta_j$; these are assumed to have the same relationship across resamples. This model equation is:
+Para adaptar nuestro modelo ANOVA bayesiano de modo que las remuestras se modelen adecuadamente, consideramos un *modelo de intersección aleatoria*. Aquí, asumimos que los remuestreos impactan el modelo solo al cambiar la intersección. Tenga en cuenta que esto impide que los remuestreos tengan un impacto diferencial en los parámetros de regresión $\beta_j$; Se supone que estos tienen la misma relación entre remuestreos. Esta ecuación modelo es:
 
 $$y_{ij} = (\beta_0 + b_{i}) + \beta_1x_{i1} + \beta_2x_{i2} + \beta_3x_{i3} + \epsilon_{ij}$$
 
-This is not an unreasonable model for resampled statistics which, when plotted across models as in @fig-rsquared-resamples, tend to have fairly parallel effects across models (i.e., little cross-over of lines).
+Este no es un modelo irrazonable para estadísticas remuestreadas que, cuando se trazan entre modelos como en @fig-rsquared-resamples, tienden a tener efectos bastante paralelos entre modelos (es decir, poco cruce de líneas).
 
-For this model configuration, an additional assumption is made for the prior distribution of random effects. A reasonable assumption for this distribution is another symmetric distribution, such as another bell-shaped curve. Given the effective sample size of 10 in our summary statistic data, let's use a prior that is wider than a standard normal distribution. We'll use a t-distribution with a single degree of freedom (i.e. $b_i \sim t(1)$), which has heavier tails than an analogous Gaussian distribution.
+Para la configuración de este modelo, se hace un supuesto adicional para la distribución previa de efectos aleatorios. Una suposición razonable para esta distribución es otra distribución simétrica, como otra curva en forma de campana. Dado el tamaño de muestra efectivo de 10 en nuestro resumen de datos estadísticos, usemos una distribución previa que sea más amplia que una distribución normal estándar. Usaremos una distribución t con un solo grado de libertad (es decir, $b_i \sim t(1)$), que tiene colas más pesadas que una distribución gaussiana análoga.
 
-The `r pkg(tidyposterior)` package has functions to fit such Bayesian models for the purpose of comparing resampled models. The main function is called `perf_mod()` and it is configured to "just work" for different types of objects:
+El paquete `r pkg(tidyposterior)` tiene funciones para ajustarse a dichos modelos bayesianos con el fin de comparar modelos remuestreados. La función principal se llama `perf_mod()` y está configurada para "simplemente funcionar" para diferentes tipos de objetos:
 
--   For workflow sets, it creates an ANOVA model where the groups correspond to the workflows. Our existing models did not optimize any tuning parameters (see the next three chapters). If one of the workflows in the set had data on tuning parameters, the best tuning parameters set for each workflow is used in the Bayesian analysis. In other words, despite the presence of tuning parameters, `perf_mod()` focuses on making *between-workflow comparisons*.
+-   Para conjuntos de flujos de trabajo, crea un modelo ANOVA donde los grupos corresponden a los flujos de trabajo. Nuestros modelos existentes no optimizaron ningún parámetro de ajuste (consulte los siguientes tres capítulos). Si uno de los flujos de trabajo del conjunto tenía datos sobre parámetros de ajuste, en el análisis bayesiano se utilizan los mejores parámetros de ajuste establecidos para cada flujo de trabajo. En otras palabras, a pesar de la presencia de parámetros de ajuste, `perf_mod()` se centra en hacer *comparaciones entre flujos de trabajo*.
 
--   For objects that contain a single model that has been tuned using resampling, `perf_mod()` makes *within-model comparisons*. In this situation, the grouping variables tested in the Bayesian ANOVA model are the submodels defined by the tuning parameters.
+-   Para los objetos que contienen un único modelo que ha sido ajustado usando remuestreo, `perf_mod()` hace *comparaciones dentro del modelo*. En esta situación, las variables de agrupación probadas en el modelo ANOVA bayesiano son los submodelos definidos por los parámetros de ajuste.
 
--   The `perf_mod()` function can also take a data frame produced by `r pkg(rsample)` that has columns of performance metrics associated with two or more model/workflow results. These could have been generated by nonstandard means.
+-   La función `perf_mod()` también puede tomar un marco de datos producido por `r pkg(rsample)` que tiene columnas de métricas de rendimiento asociadas con dos o más resultados de modelo/flujo de trabajo. Estos podrían haberse generado por medios no estándar.
 
-From any of these types of objects, the `perf_mod()` function determines an appropriate Bayesian model and fits it with the resampling statistics. For our example, it will model the four sets of $R^2$ statistics associated with the workflows.
+A partir de cualquiera de estos tipos de objetos, la función `perf_mod()` determina un modelo bayesiano apropiado y lo ajusta con las estadísticas de remuestreo. Para nuestro ejemplo, modelará los cuatro conjuntos de estadísticas $R^2$ asociadas con los flujos de trabajo.
 
-The `r pkg(tidyposterior)` package uses the [Stan software](https://mc-stan.org/) for specifying and fitting the models via the `r pkg(rstanarm)` package. The functions within that package have default priors (see `?priors` for more details). The following model uses the default priors for all parameters except for the random intercepts (which follow a *t*-distribution). The estimation process uses random numbers so the seed is set within the function call. The estimation process is iterative and replicated several times in collections called *chains*. The `iter` parameter tells the function how long to run the estimation process in each chain. When several chains are used, their results are combined (assume that this is validated by diagnostic assessments).
+El paquete `r pkg(tidyposterior)` utiliza el [software Stan](https://mc-stan.org/) para especificar y ajustar los modelos a través del paquete `r pkg(rstanarm)`. Las funciones dentro de ese paquete tienen prioridades predeterminadas (consulte `?priors` para obtener más detalles). El siguiente modelo utiliza los valores previos predeterminados para todos los parámetros excepto para las intersecciones aleatorias (que siguen una distribución *t*). El proceso de estimación utiliza números aleatorios para que la semilla se establezca dentro de la llamada a la función. El proceso de estimación es iterativo y se replica varias veces en colecciones llamadas *cadenas*. El parámetro `iter` le dice a la función cuánto tiempo ejecutar el proceso de estimación en cada cadena. Cuando se utilizan varias cadenas, sus resultados se combinan (supongamos que esto está validado mediante evaluaciones diagnósticas).
 
 ```{r compare-fit-stan, results = "hide"}
 library(tidyposterior)
 library(rstanarm)
 
-# The rstanarm package creates copious amounts of output; those results
-# are not shown here but are worth inspecting for potential issues. The
-# option `refresh = 0` can be used to eliminate the logging. 
+# El paquete rstanarm genera grandes cantidades de producción; esos resultados
+# no se muestran aquí, pero vale la pena inspeccionarlos para detectar posibles problemas. El
+# opción `refresh = 0` se puede utilizar para eliminar el registro.. 
 rsq_anova <-
   perf_mod(
     four_models,
@@ -337,19 +337,19 @@ rsq_anova <-
   )
 ```
 
-The resulting object has information on the resampling process as well as the Stan object embedded within (in an element called `stan`). We are most interested in the posterior distributions of the regression parameters. The `r pkg(tidyposterior)` package has a `tidy()` method that extracts these posterior distributions into a tibble:
+El objeto resultante tiene información sobre el proceso de remuestreo, así como el objeto Stan incrustado en él (en un elemento llamado "stan"). Lo que más nos interesa son las distribuciones posteriores de los parámetros de regresión. El paquete `r pkg(tidyposterior)` tiene un método `tidy()` que extrae estas distribuciones posteriores en un tibble:
 
 ```{r compare-group-posteriors-tidy}
 model_post <- 
   rsq_anova %>% 
-  # Take a random sample from the posterior distribution
-  # so set the seed again to be reproducible. 
+  # Tomaa una muestra aleatoria de la distribución posterior
+  # así que se configura la semilla nuevamente para que sea reproducible. 
   tidy(seed = 1103) 
 
 glimpse(model_post)
 ```
 
-The four posterior distributions are visualized in @fig-four-posteriors.
+Las cuatro distribuciones posteriores se visualizan en @fig-four-posteriors.
 
 ```{r compare-group-posteriors-res, eval=FALSE}
 model_post %>% 
@@ -362,8 +362,8 @@ model_post %>%
 ```{r}
 #| label: fig-four-posteriors
 #| echo: FALSE
-#| fig.cap: "Posterior distributions for the coefficient of determination using four different models"
-#| fig.alt: "Posterior distributions for the coefficient of determination using four different models. The distribution corresponding to random forest is largest and has little overlap with the other model's posteriors."
+#| fig.cap: "Distribuciones posteriores del coeficiente de determinación utilizando cuatro modelos diferentes."
+#| fig.alt: "Distribuciones posteriores del coeficiente de determinación utilizando cuatro modelos diferentes. La distribución correspondiente al random forest es la más grande y tiene poca superposición con las posteriores del otro modelo."
 
 x_lab <- expression(Posterior ~ "for" ~ mean ~ italic(R^2))
 
@@ -375,9 +375,9 @@ model_post %>%
   labs(x = x_lab)
 ```
 
-These histograms describe the estimated probability distributions of the mean $R^2$ value for each model. There is some overlap, especially for the three linear models.
+Estos histogramas describen las distribuciones de probabilidad estimadas del valor medio $R^2$ para cada modelo. Existe cierta superposición, especialmente para los tres modelos lineales.
 
-There is also a basic `autoplot()` method for the model results, shown in @fig-credible-intervals, as well as the tidied object that shows overlaid density plots.
+También hay un método básico `autoplot()` para los resultados del modelo, que se muestra en @fig-credible-intervals, así como el objeto ordenado que muestra gráficos de densidad superpuestos.
 
 ```{r compare-autoplot-intervals, eval=FALSE}
 autoplot(rsq_anova) +
@@ -389,13 +389,13 @@ autoplot(rsq_anova) +
 #| label: fig-credible-intervals
 #| ref.label: "compare-autoplot-intervals"
 #| echo: FALSE
-#| fig.cap: "Credible intervals derived from the model posterior distributions"
-#| fig.alt: "Credible intervals derived from the model posterior distributions. Random forest shows the best results with no overlap with the other credible intervals. "
+#| fig.cap: "Intervalos creíbles derivados de las distribuciones posteriores del modelo."
+#| fig.alt: "Intervalos creíbles derivados de las distribuciones posteriores del modelo. El random forest muestra los mejores resultados sin superposición con los otros intervalos creíbles."
 ```
 
-One wonderful aspect of using resampling with Bayesian models is that, once we have the posteriors for the parameters, it is trivial to get the posterior distributions for combinations of the parameters. For example, to compare the two linear regression models, we are interested in the difference in means. The posterior of this difference is computed by sampling from the individual posteriors and taking the differences. The `contrast_models()` function can do this. To specify the comparisons to make, the `list_1` and `list_2` parameters take character vectors and compute the differences between the models in those lists (parameterized as `list_1 - list_2`).
+Un aspecto maravilloso del uso del remuestreo con modelos bayesianos es que, una vez que tenemos los parámetros posteriores, es trivial obtener las distribuciones posteriores para las combinaciones de los parámetros. Por ejemplo, para comparar los dos modelos de regresión lineal, nos interesa la diferencia de medias. La parte posterior de esta diferencia se calcula tomando muestras de las partes posteriores individuales y tomando las diferencias. La función `contrast_models()` puede hacer esto. Para especificar las comparaciones a realizar, los parámetros `list_1` y `list_2` toman vectores de caracteres y calculan las diferencias entre los modelos en esas listas (parametrizados como `list_1 - list_2`).
 
-We can compare two of the linear models and visualize the results in @fig-posterior-difference.
+Podemos comparar dos de los modelos lineales y visualizar los resultados en @fig-posterior-difference.
 
 ```{r compare-lm-difference-posterior, eval=FALSE}
 rqs_diff <-
@@ -415,8 +415,8 @@ rqs_diff %>%
 #| label: fig-posterior-difference
 #| echo: FALSE
 #| fig.height: 3
-#| fig.cap: "Posterior distribution for the difference in the coefficient of determination"
-#| fig.alt: "The posterior distribution for the difference in the coefficient of determination. The distribution has almost no overlap with zero."
+#| fig.cap: "Distribución posterior de la diferencia en el coeficiente de determinación."
+#| fig.alt: "La distribución posterior de la diferencia en el coeficiente de determinación. La distribución casi no se superpone con cero."
 
 rqs_diff <-
   contrast_models(rsq_anova,
@@ -434,25 +434,25 @@ rqs_diff %>%
   labs(x = x_lab)
 ```
 
-The posterior shows that the center of the distribution is greater than zero (indicating that the model with splines typically had larger values) but does overlap with zero to a degree. The `summary()` method for this object computes the mean of the distribution as well as credible intervals, the Bayesian analog to confidence intervals.
+La parte posterior muestra que el centro de la distribución es mayor que cero (lo que indica que el modelo con splines normalmente tenía valores más grandes) pero se superpone con cero hasta cierto punto. El método `summary()` para este objeto calcula la media de la distribución así como los intervalos creíbles, el análogo bayesiano de los intervalos de confianza.
 
 ```{r compare-lm-summary}
 summary(rqs_diff) %>% 
   select(-starts_with("pract"))
 ```
 
-The `probability` column reflects the proportion of the posterior that is greater than zero. This is the probability that the positive difference is real. The value is not close to zero, providing a strong case for statistical significance, i.e., the idea that statistically the actual difference is not zero.
+La columna `probability` refleja la proporción del posterior que es mayor que cero. Ésta es la probabilidad de que la diferencia positiva sea real. El valor no es cercano a cero, lo que proporciona un fuerte argumento a favor de la significancia estadística, es decir, la idea de que estadísticamente la diferencia real no es cero.
 
-However, the estimate of the mean difference is fairly close to zero. Recall that the practical effect size we suggested previously is 2%. With a posterior distribution, we can also compute the probability of being practically significant. In Bayesian analysis, this is a *ROPE estimate* (for Region Of Practical Equivalence, @kruschke2018bayesian). To estimate this, the `size` option to the summary function is used:
+Sin embargo, la estimación de la diferencia de medias es bastante cercana a cero. Recuerde que el tamaño del efecto práctico que sugerimos anteriormente es del 2%. Con una distribución posterior, también podemos calcular la probabilidad de que sea prácticamente significativo. En el análisis bayesiano, esta es una *estimación ROPE* (para Región de equivalencia práctica, @kruschke2018bayesian). Para estimar esto, se utiliza la opción `size` de la función de `summary`:
 
 ```{r compare-lm-pract}
 summary(rqs_diff, size = 0.02) %>% 
   select(contrast, starts_with("pract"))
 ```
 
-The `pract_equiv` column is the proportion of the posterior that is within `[-size, size]` (the columns `pract_neg` and `pract_pos` are the proportions that are below and above this interval). This large value indicates that, for our effect size, there is an overwhelming probability that the two models are practically the same. Even though the previous plot showed that our difference is likely nonzero, the equivalence test suggests that it is small enough to not be practically meaningful.
+La columna `pract_equiv` es la proporción del posterior que está dentro de `[-size, size]` (las columnas `pract_neg` y `pract_pos` son las proporciones que están debajo y encima de este intervalo). Este gran valor indica que, para nuestro tamaño del efecto, existe una probabilidad abrumadora de que los dos modelos sean prácticamente iguales. Aunque el gráfico anterior mostró que nuestra diferencia probablemente sea distinta de cero, la prueba de equivalencia sugiere que es lo suficientemente pequeña como para no ser significativa en la práctica.
 
-The same process could be used to compare the random forest model to one or both of the linear regressions that were resampled. In fact, when `perf_mod()` is used with a workflow set, the `autoplot()` method can show the `pract_equiv` results that compare each workflow to the current best (the random forest model, in this case).
+Se podría utilizar el mismo proceso para comparar el modelo de random forest con una o ambas regresiones lineales que se volvieron a muestrear. De hecho, cuando se usa `perf_mod()` con un conjunto de flujo de trabajo, el método `autoplot()` puede mostrar los resultados de `pract_equiv` que comparan cada flujo de trabajo con el mejor actual (el modelo de bosque aleatorio, en este caso).
 
 ```{r compare-rope-plot, eval=FALSE}
 autoplot(rsq_anova, type = "ROPE", size = 0.02) +
@@ -464,32 +464,32 @@ autoplot(rsq_anova, type = "ROPE", size = 0.02) +
 #| label: fig-practical-equivalence
 #| ref.label: "compare-rope-plot"
 #| echo: FALSE
-#| fig.cap: "Probability of practical equivalence for an effect size of 2%"
-#| fig.alt: "Probability of practical equivalence for an effect size of 2%. No other models have a nonzero change of matching the random forest results."
+#| fig.cap: "Probabilidad de equivalencia práctica para un tamaño del efecto del 2%"
+#| fig.alt: "Probabilidad de equivalencia práctica para un tamaño del efecto del 2%. Ningún otro modelo tiene un cambio distinto de cero al coincidir con los resultados del random forest."
 ```
 
-@fig-practical-equivalence shows us that none of the linear models comes close to the random forest model when a 2% practical effect size is used.
+@fig-practical-equivalence nos muestra que ninguno de los modelos lineales se acerca al modelo de random forest cuando se utiliza un tamaño de efecto práctico del 2%.
 
-### The effect of the amount of resampling {.unnumbered}
+### El efecto de la cantidad de remuestreo. {.unnumbered}
 
-How does the number of resamples affect these types of formal Bayesian comparisons? More resamples increases the precision of the overall resampling estimate; that precision propagates to this type of analysis. For illustration, additional resamples were added using repeated cross-validation. How did the posterior distribution change? @fig-intervals-over-replicates shows the 90% credible intervals with up to 100 resamples (generated from 10 repeats of 10-fold cross-validation).[^11-comparing-models-1]
+¿Cómo afecta el número de remuestreos a estos tipos de comparaciones bayesianas formales? Más remuestreos aumentan la precisión de la estimación general del remuestreo; esa precisión se propaga a este tipo de análisis. A modo de ilustración, se agregaron nuevas muestras adicionales mediante validación cruzada repetida. ¿Cómo cambió la distribución posterior? @fig-intervals-over-replicates muestra los intervalos de credibilidad del 90% con hasta 100 remuestreos (generados a partir de 10 repeticiones de validación cruzada 10 veces).[^11-comparing-models-1]
 
-[^11-comparing-models-1]: The code to generate `intervals` is available at <https://github.com/tidymodels/TMwR/blob/main/extras/ames_posterior_intervals.R>.
+[^11-comparing-models-1]: El código para generar `intervalos` está disponible en <https://github.com/tidymodels/TMwR/blob/main/extras/ames_posterior_intervals.R>.
 
 ```{r compare-cred-int, eval = FALSE}
 ggplot(intervals,
        aes(x = resamples, y = mean)) +
   geom_path() +
   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "red", alpha = .1) +
-  labs(x = "Number of Resamples (repeated 10-fold cross-validation)")
+  labs(x = "Número de remuestras (validación cruzada repetida 10 veces)")
 ```
 
 ```{r}
 #| label: fig-intervals-over-replicates
 #| fig.height: 3
 #| echo: FALSE
-#| fig.cap: "Probability of practical equivalence to the random forest model"
-#| fig.alt: "The probability of practical equivalence to the random forest model."
+#| fig.cap: "Probabilidad de equivalencia práctica con el modelo de bosque aleatorio."
+#| fig.alt: "La probabilidad de equivalencia práctica con el modelo de bosque aleatorio."
 
 y_lab <- expression(Mean ~ difference ~ "in" ~ italic(R^2))
 
@@ -498,11 +498,11 @@ ggplot(intervals,
   geom_path() +
   geom_ribbon(aes(ymin = lower, ymax = upper), fill = "red", alpha = .1) +
   labs(y = y_lab,
-       x = "Number of Resamples (repeated 10-fold cross-validation)")
+       x = "Número de remuestras (validación cruzada repetida 10 veces)")
 ```
 
-The width of the intervals decreases as more resamples are added. Clearly, going from ten resamples to thirty has a larger impact than going from eighty to 100. There are diminishing returns for using a "large" number of resamples ("large" will be different for different data sets).
+El ancho de los intervalos disminuye a medida que se agregan más muestras. Claramente, pasar de diez remuestreos a treinta tiene un impacto mayor que pasar de ochenta a 100. Hay rendimientos decrecientes por utilizar un número "grande" de remuestreos ("grande" será diferente para diferentes conjuntos de datos).
 
-## Chapter Summary {#sec-compare-summary}
+## Resumen del capítulo {#sec-compare-summary}
 
-This chapter described formal statistical methods for testing differences in performance between models. We demonstrated the within-resample effect, where results for the same resample tend to be similar; this aspect of resampled summary statistics requires appropriate analysis in order for valid model comparisons. Further, although statistical significance and practical significance are both important concepts for model comparisons, they are different.
+Este capítulo describió métodos estadísticos formales para probar diferencias en el rendimiento entre modelos. Demostramos el efecto dentro de la nueva muestra, donde los resultados para la misma nueva muestra tienden a ser similares; este aspecto de las estadísticas resumidas remuestreadas requiere un análisis apropiado para realizar comparaciones de modelos válidas. Además, aunque la significación estadística y la significancia práctica son conceptos importantes para las comparaciones de modelos, son diferentes.
