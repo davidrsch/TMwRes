@@ -1,4 +1,4 @@
-```{r tuning-setup, include = FALSE}
+```{r tuning-setup, include = FALSE, cache=FALSE}
 knitr::opts_chunk$set(fig.path = "figures/")
 library(tidymodels)
 library(patchwork)
@@ -23,81 +23,81 @@ data_grid <- crossing(A = seq(0.4, 4, length = 200), B = seq(.14, 3.9, length = 
 load("RData/search_examples.RData")
 ```
 
-# Model Tuning and the Dangers of Overfitting {#sec-tuning}
+# Ajuste de Modelos y los Peligros del Sobreajuste {#sec-tuning}
 
-In order to use a model for prediction, the parameters for that model must be estimated. Some of these parameters can be estimated directly from the training data, but other parameters, called *tuning parameters* or *hyperparameters*, must be specified ahead of time and can't be directly found from training data. These are unknown structural or other kind of values that have significant impact on the model but cannot be directly estimated from the data. This chapter will provide examples of tuning parameters and show how we use tidymodels functions to create and handle tuning parameters. We'll also demonstrate how poor choices of these values lead to overfitting and introduce several tactics for finding optimal tuning parameters values. Chapters [-@sec-grid-search] and [-@sec-iterative-search] go into more detail on specific optimization methods for tuning.
+Para utilizar un modelo de predicción, se deben estimar los parámetros de ese modelo. Algunos de estos parámetros se pueden estimar directamente a partir de los datos de entrenamiento, pero otros parámetros, llamados *parámetros de ajuste* o *hiperparámetros*, deben especificarse con anticipación y no se pueden encontrar directamente a partir de los datos de entrenamiento. Se trata de valores estructurales o de otro tipo desconocidos que tienen un impacto significativo en el modelo pero que no pueden estimarse directamente a partir de los datos. Este capítulo proporcionará ejemplos de parámetros de ajuste y mostrará cómo usamos las funciones de tidymodels para crear y manejar parámetros de ajuste. También demostraremos cómo una mala elección de estos valores conduce a un sobreajuste e introduciremos varias tácticas para encontrar valores óptimos de los parámetros de ajuste. Los capítulos [-@sec-grid-search] y [-@sec-iterative-search] detallan más métodos de optimización específicos para el ajuste.
 
-## Model Parameters
+## Parámetros del modelo
 
-In ordinary linear regression, there are two parameters $\beta_0$ and $\beta_1$ of the model:
+En la regresión lineal ordinaria, hay dos parámetros $\beta_0$ y $\beta_1$ del modelo:
 
 $$ y_i = \beta_0 + \beta_1 x_i + \epsilon_i$$
 
-When we have the outcome ($y$) and predictor ($x$) data, we can estimate the two parameters $\beta_0$ and $\beta_1$:
+Cuando tenemos los datos del resultado ($y$) y del predictor ($x$), podemos estimar los dos parámetros $\beta_0$ y $\beta_1$:
 
 $$\hat \beta_1 = \frac{\sum_i (y_i-\bar{y})(x_i-\bar{x})}{\sum_i(x_i-\bar{x})^2}$$
 
-and
+y
 
 $$\hat \beta_0 = \bar{y}-\hat \beta_1 \bar{x}.$$
 
-We can directly estimate these values from the data for this example model because they are analytically tractable; if we have the data, then we can estimate these model parameters.
+Podemos estimar directamente estos valores a partir de los datos de este modelo de ejemplo porque son analíticamente manejables; si tenemos los datos, entonces podemos estimar estos parámetros del modelo.
 
 ::: rmdnote
-There are many situations where a model has parameters that *can't* be directly estimated from the data.
+Hay muchas situaciones en las que un modelo tiene parámetros que *no* pueden estimarse directamente a partir de los datos.
 :::
 
-For the KNN model, the prediction equation for a new value $x_0$ is
+Para el modelo KNN, la ecuación de predicción para un nuevo valor $x_0$ es
 
 $$\hat y = \frac{1}{K}\sum_{\ell = 1}^K x_\ell^*$$
 
-where $K$ is the number of neighbors and the $x_\ell^*$ are the $K$ closest values to $x_0$ in the training set. The model itself is not defined by a model equation; the previous prediction equation instead defines it. This characteristic, along with the possible intractability of the distance measure, makes it impossible to create a set of equations that can be solved for $K$ (iteratively or otherwise). The number of neighbors has a profound impact on the model; it governs the flexibility of the class boundary. For small values of $K$, the boundary is very elaborate while for large values, it might be quite smooth.
+donde $K$ es el número de vecinos y $x_\ell^*$ son los valores de $K$ más cercanos a $x_0$ en el conjunto de entrenamiento. El modelo en sí no está definido por una ecuación modelo; en cambio, la ecuación de predicción anterior lo define. Esta característica, junto con la posible intratabilidad de la medida de distancia, hace imposible crear un conjunto de ecuaciones que puedan resolverse para $K$ (de forma iterativa o no). El número de vecinos tiene un profundo impacto en el modelo; gobierna la flexibilidad de la frontera de clase. Para valores pequeños de $K$, el límite es muy elaborado, mientras que para valores grandes, puede ser bastante suave.
 
-The number of nearest neighbors is a good example of a tuning parameter or hyperparameter that cannot be directly estimated from the data.
+El número de vecinos más cercanos es un buen ejemplo de parámetro de ajuste o hiperparámetro que no se puede estimar directamente a partir de los datos.
 
-## Tuning Parameters for Different Types of Models {#sec-tuning-parameter-examples}
+## Parámetros de ajuste para diferentes tipos de modelos {#sec-tuning-parameter-examples}
 
-There are many examples of tuning parameters or hyperparameters in different statistical and machine learning models:
+Hay muchos ejemplos de ajuste de parámetros o hiperparámetros en diferentes modelos estadísticos y de aprendizaje automático:
 
--   Boosting is an ensemble method that combines a series of base models, each of which is created sequentially and depends on the previous models. The number of boosting iterations is an important tuning parameter that usually requires optimization.
+-   Boosting es un método conjunto que combina una serie de modelos base, cada uno de los cuales se crea secuencialmente y depende de los modelos anteriores. El número de iteraciones de impulso es un parámetro de ajuste importante que normalmente requiere optimización.
 
--   In the classic single-layer artificial neural network (a.k.a. the multilayer perceptron), the predictors are combined using two or more hidden units. The hidden units are linear combinations of the predictors that are captured in an *activation function* (typically a nonlinear function, such as a sigmoid). The hidden units are then connected to the outcome units; one outcome unit is used for regression models, and multiple outcome units are required for classification. The number of hidden units and the type of activation function are important structural tuning parameters.
+-   En la clásica red neuronal artificial de una sola capa (también conocida como perceptrón multicapa), los predictores se combinan utilizando dos o más unidades ocultas. Las unidades ocultas son combinaciones lineales de los predictores que se capturan en una *función de activación* (normalmente una función no lineal, como una sigmoidea). Las unidades ocultas se conectan luego con las unidades resultantes; se utiliza una unidad de resultado para los modelos de regresión y se requieren múltiples unidades de resultado para la clasificación. El número de unidades ocultas y el tipo de función de activación son parámetros de ajuste estructural importantes.
 
--   Modern gradient descent methods are improved by finding the right optimization parameters. Examples of such hyperparameters are learning rates, momentum, and the number of optimization iterations/epochs [@Goodfellow]. Neural networks and some ensemble models use gradient descent to estimate the model parameters. While the tuning parameters associated with gradient descent are not structural parameters, they often require tuning.
+-   Los métodos modernos de descenso de gradientes se mejoran al encontrar los parámetros de optimización adecuados. Ejemplos de tales hiperparámetros son las tasas de aprendizaje, el impulso y el número de iteraciones/épocas de optimización [@Goodfellow]. Las redes neuronales y algunos modelos de conjuntos utilizan el descenso de gradiente para estimar los parámetros del modelo. Si bien los parámetros de ajuste asociados con el descenso del gradiente no son parámetros estructurales, a menudo requieren ajuste.
 
-In some cases, preprocessing techniques require tuning:
+En algunos casos, las técnicas de preprocesamiento requieren ajustes:
 
--   In principal component analysis, or its supervised cousin called partial least squares, the predictors are replaced with new, artificial features that have better properties related to collinearity. The number of extracted components can be tuned.
+-   En el análisis de componentes principales, o su primo supervisado llamado mínimos cuadrados parciales, los predictores se reemplazan con características nuevas y artificiales que tienen mejores propiedades relacionadas con la colinealidad. Se puede ajustar el número de componentes extraídos.
 
--   Imputation methods estimate missing predictor values using the complete values of one or more predictors. One effective imputation tool uses $K$-nearest neighbors of the complete columns to predict the missing value. The number of neighbors modulates the amount of averaging and can be tuned.
+-   Los métodos de imputación estiman los valores predictivos faltantes utilizando los valores completos de uno o más predictores. Una herramienta de imputación eficaz utiliza $K$ vecinos más cercanos de las columnas completas para predecir el valor faltante. El número de vecinos modula la cantidad de promedio y se puede ajustar.
 
-Some classical statistical models also have structural parameters:
+Algunos modelos estadísticos clásicos también tienen parámetros estructurales:
 
--   In binary regression, the logit link is commonly used (i.e., logistic regression). Other link functions, such as the probit and complementary log-log, are also available [@Dobson99]. This example is described in more detail in the @sec-what-to-optimize.
+-   En la regresión binaria, el enlace logit se usa comúnmente (es decir, regresión logística). También están disponibles otras funciones de enlace, como probit y log-log complementario [@Dobson99]. Este ejemplo se describe con más detalle en @sec-what-to-optimize.
 
--   Non-Bayesian longitudinal and repeated measures models require a specification for the covariance or correlation structure of the data. Options include compound symmetric (a.k.a. exchangeable), autoregressive, Toeplitz, and others [@littell2000modelling].
+-   Los modelos de medidas repetidas y longitudinales no bayesianos requieren una especificación para la estructura de covarianza o correlación de los datos. Las opciones incluyen compuesto simétrico (también conocido como intercambiable), autorregresivo, Toeplitz y otros [@littell2000modelling].
 
-A counterexample where it is inappropriate to tune a parameter is the prior distribution required for Bayesian analysis. The prior encapsulates the analyst's belief about the distribution of a quantity before evidence or data are taken into account. For example, in @sec-tidyposterior, we used a Bayesian ANOVA model, and we were unclear about what the prior should be for the regression parameters (beyond being a symmetric distribution). We chose a t-distribution with one degree of freedom for the prior since it has heavier tails; this reflects our added uncertainty. Our prior beliefs should not be subject to optimization. Tuning parameters are typically optimized for performance whereas priors should not be tweaked to get "the right results."
+Un contraejemplo en el que no es apropiado ajustar un parámetro es la distribución previa requerida para el análisis bayesiano. Lo anterior resume la creencia del analista sobre la distribución de una cantidad antes de que se tengan en cuenta la evidencia o los datos. Por ejemplo, en @sec-tidyposterior, utilizamos un modelo ANOVA bayesiano y no teníamos claro cuál debería ser el valor previo para los parámetros de regresión (más allá de ser una distribución simétrica). Elegimos una distribución t con un grado de libertad para la anterior ya que tiene colas más pesadas; esto refleja nuestra incertidumbre adicional. Nuestras creencias previas no deberían estar sujetas a optimización. Los parámetros de ajuste generalmente se optimizan para el rendimiento, mientras que los anteriores no deben modificarse para obtener "los resultados correctos".
 
 ::: rmdwarning
-Another (perhaps more debatable) counterexample of a parameter that does *not* need to be tuned is the number of trees in a random forest or bagging model. This value should instead be chosen to be large enough to ensure numerical stability in the results; tuning it cannot improve performance as long as the value is large enough to produce reliable results. For random forests, this value is typically in the thousands while the number of trees needed for bagging is around 50 to 100.
+Otro contraejemplo (quizás más discutible) de un parámetro que *no* necesita ser ajustado es el número de árboles en un randm forest o en un modelo de embolsado. En cambio, este valor debe elegirse para que sea lo suficientemente grande como para garantizar la estabilidad numérica en los resultados; ajustarlo no puede mejorar el rendimiento siempre que el valor sea lo suficientemente grande como para producir resultados confiables. Para random forest, este valor suele ser de miles, mientras que la cantidad de árboles necesarios para el embolsado es de alrededor de 50 a 100.
 :::
 
-## What do we Optimize? {#sec-what-to-optimize}
+## ¿Qué Optimizamos? {#sec-what-to-optimize}
 
-How should we evaluate models when we optimize tuning parameters? It depends on the model and the purpose of the model.
+¿Cómo debemos evaluar los modelos cuando optimizamos los parámetros de ajuste? Depende del modelo y del propósito del modelo.
 
-For cases where the statistical properties of the tuning parameter are tractable, common statistical properties can be used as the objective function. For example, in the case of binary logistic regression, the link function can be chosen by maximizing the likelihood or information criteria. However, these statistical properties may not align with the results achieved using accuracy-oriented properties. As an example, @FriedmanGFA optimized the number of trees in a boosted tree ensemble and found different results when maximizing the likelihood and accuracy:
+Para los casos en los que las propiedades estadísticas del parámetro de ajuste son manejables, se pueden utilizar propiedades estadísticas comunes como función objetivo. Por ejemplo, en el caso de la regresión logística binaria, la función de enlace se puede elegir maximizando la probabilidad o los criterios de información. Sin embargo, es posible que estas propiedades estadísticas no se alineen con los resultados obtenidos utilizando propiedades orientadas a la precisión. Como ejemplo, @FriedmanGFA optimizó la cantidad de árboles en un conjunto de árboles mejorado y encontró resultados diferentes al maximizar la probabilidad y la precisión:
 
-> degrading the likelihood by overfitting actually improves misclassification error rate. Although perhaps counterintuitive, this is not a contradiction; likelihood and error rate measure different aspects of fit quality.
+> degradar la probabilidad mediante el sobreajuste en realidad mejora la tasa de error de clasificación errónea. Aunque quizás sea contradictorio, esto no es una contradicción; la probabilidad y la tasa de error miden diferentes aspectos de la calidad del ajuste.
 
-To demonstrate, consider the classification data shown in @fig-two-class-dat with two predictors, two classes, and a training set of `r nrow(training_set)` data points.
+Para demostrarlo, considere los datos de clasificación que se muestran en @fig-two-class-dat con dos predictores, dos clases y un conjunto de entrenamiento de puntos de datos `r nrow(training_set)`.
 
 ```{r}
 #| label: fig-two-class-dat
 #| echo: FALSE
-#| fig.cap: "An example two-class classification data set with two predictors"
-#| fig.alt: "An example two-class classification data set with two predictors. The two predictors have a moderate correlation and there is some locations of separation between the classes."
+#| fig.cap: "Un ejemplo de conjunto de datos de clasificación de dos clases con dos predictores"
+#| fig.alt: "Un ejemplo de conjunto de datos de clasificación de dos clases con dos predictores. Los dos predictores tienen una correlación moderada y existen algunos puntos de separación entre las clases."
 
 ggplot(training_set, aes(x = A, y = B, color = Class, pch = Class)) + 
   geom_point(alpha = 0.7) + 
@@ -106,21 +106,21 @@ ggplot(training_set, aes(x = A, y = B, color = Class, pch = Class)) +
   scale_color_manual(values = c("#CC6677", "#88CCEE"))
 ```
 
-We could start by fitting a linear class boundary to these data. The most common method for doing this is to use a generalized linear model in the form of *logistic regression*. This model relates the *log odds* of a sample being Class 1 using the *logit* transformation:
+Podríamos comenzar ajustando un límite de clase lineal a estos datos. El método más común para hacer esto es utilizar un modelo lineal generalizado en forma de *regresión logística*. Este modelo relaciona las *log odds* de que una muestra sea Clase 1 usando la transformación *logit*:
 
 $$ \log\left(\frac{\pi}{1 - \pi}\right) = \beta_0 + \beta_1x_1 + \ldots + \beta_px_p$$
 
-In the context of generalized linear models, the logit function is the *link function* between the outcome ($\pi$) and the predictors. There are other link functions that include the *probit* model:
+En el contexto de los modelos lineales generalizados, la función logit es la *función de enlace* entre el resultado ($\pi$) y los predictores. Hay otras funciones de enlace que incluyen el modelo *probit*:
 
 $$\Phi^{-1}(\pi) = \beta_0 + \beta_1x_1 + \ldots + \beta_px_p$$
 
-where $\Phi$ is the cumulative standard normal function, as well as the *complementary log-log* model:
+donde $\Phi$ es la función normal estándar acumulativa, así como el modelo *log-log* complementario:
 
 $$\log(-\log(1-\pi)) = \beta_0 + \beta_1x_1 + \ldots + \beta_px_p$$
 
-Each of these models results in linear class boundaries. Which one should we use? Since, for these data, the number of model parameters does not vary, the statistical approach is to compute the (log) likelihood for each model and determine the model with the largest value. Traditionally, the likelihood is computed using the same data that were used to estimate the parameters, not using approaches like data splitting or resampling from Chapters [-@sec-splitting] and [-@sec-resampling].
+Cada uno de estos modelos da como resultado límites de clase lineales. ¿Cuál deberíamos usar? Dado que, para estos datos, el número de parámetros del modelo no varía, el enfoque estadístico es calcular la probabilidad (logaritmo) de cada modelo y determinar el modelo con el valor más grande. Tradicionalmente, la probabilidad se calcula utilizando los mismos datos que se utilizaron para estimar los parámetros, sin utilizar enfoques como la división de datos o el remuestreo de los Capítulos [-@sec-splitting] y [-@sec-resampling].
 
-For a data frame `training_set`, let's create a function to compute the different models and extract the likelihood statistics for the training set (using `broom::glance()`):
+Para un marco de datos `training_set`, creemos una función para calcular los diferentes modelos y extraer las estadísticas de probabilidad para el conjunto de entrenamiento (usando `broom::glance()`):
 
 ```{r tuning-likelihood}
 library(tidymodels)
@@ -143,15 +143,15 @@ bind_rows(
   arrange(desc(logLik))
 ```
 
-According to these results, the logistic model has the best statistical properties.
+Según estos resultados, el modelo logístico tiene las mejores propiedades estadísticas.
 
-From the scale of the log-likelihood values, it is difficult to understand if these differences are important or negligible. One way of improving this analysis is to resample the statistics and separate the modeling data from the data used for performance estimation. With this small data set, repeated 10-fold cross-validation is a good choice for resampling. In the `r pkg(yardstick)` package, the `mn_log_loss()` function is used to estimate the negative log-likelihood, with our results shown in @fig-resampled-log-lhood.
+A partir de la escala de los valores de probabilidad logarítmica, es difícil entender si estas diferencias son importantes o insignificantes. Una forma de mejorar este análisis es volver a muestrear las estadísticas y separar los datos del modelado de los datos utilizados para la estimación del desempeño. Con este pequeño conjunto de datos, la validación cruzada repetida 10 veces es una buena opción para el remuestreo. En el paquete `r pkg(yardstick)`, la función `mn_log_loss()` se usa para estimar la probabilidad logarítmica negativa, y nuestros resultados se muestran en @fig-resampled-log-lhood.
 
 ```{r tuning-resampled-log-lhood, eval=FALSE}
 set.seed(1201)
 rs <- vfold_cv(training_set, repeats = 10)
 
-# Return the individual resampled performance estimates:
+# Devuelva las estimaciones de rendimiento individuales remuestreadas:
 lloss <- function(...) {
   perf_meas <- metric_set(roc_auc, mn_log_loss)
     
@@ -168,7 +168,7 @@ resampled_res <-
     lloss(family = binomial(link = "probit"))  %>% mutate(model = "probit"),
     lloss(family = binomial(link = "cloglog")) %>% mutate(model = "c-log-log")     
   ) %>%
-  # Convert log-loss to log-likelihood:
+  # Convierta la pérdida logarítmica en probabilidad logarítmica:
   mutate(.estimate = ifelse(.metric == "mn_log_loss", -.estimate, .estimate)) %>% 
   group_by(model, .metric) %>% 
   summarize(
@@ -191,24 +191,24 @@ resampled_res %>%
 #| ref.label: "tuning-resampled-log-lhood"
 #| echo: FALSE
 #| fig.height: 3
-#| fig.cap: "Means and approximate 90% confidence intervals for the resampled binomial log-likelihood with three different link functions"
-#| fig.alt: "Means and approximate 90% confidence intervals for the resampled binomial log-likelihood with three different link functions. The logit link has the largest value, followed by the probit link. The complementary log log link has far lower values."
+#| fig.cap: "Medias e intervalos de confianza aproximados del 90% para la probabilidad logarítmica binomial remuestreada con tres funciones de enlace diferentes"
+#| fig.alt: "Medias e intervalos de confianza aproximados del 90% para la probabilidad logarítmica binomial remuestreada con tres funciones de enlace diferentes. El enlace logit tiene el valor más grande, seguido del enlace probit. El enlace de registro complementario tiene valores mucho más bajos."
 ```
 
 ::: rmdnote
-The scale of these values is different than the previous values since they are computed on a smaller data set; the value produced by `broom::glance()` is a sum while `yardstick::mn_log_loss()` is an average.
+La escala de estos valores es diferente a los valores anteriores ya que se calculan en un conjunto de datos más pequeño; el valor producido por `broom::glance()` es una suma mientras que `yardstick::mn_log_loss()` es un promedio.
 :::
 
-These results exhibit evidence that the choice of the link function matters somewhat. Although there is an overlap in the confidence intervals, the logistic model has the best results.
+Estos resultados muestran evidencia de que la elección de la función de enlace es algo importante. Aunque existe una superposición en los intervalos de confianza, el modelo logístico tiene los mejores resultados.
 
-What about a different metric? We also calculated the area under the ROC curve for each resample. These results, which reflect the discriminative ability of the models across numerous probability thresholds, show a lack of difference in @fig-resampled-roc.
+¿Qué tal una métrica diferente? También calculamos el área bajo la curva ROC para cada remuestreo. Estos resultados, que reflejan la capacidad discriminativa de los modelos a través de numerosos umbrales de probabilidad, muestran una falta de diferencia en @fig-resampled-roc.
 
 ```{r}
 #| label: fig-resampled-roc
 #| echo: FALSE
 #| fig.height: 3
-#| fig.cap: "Means and approximate 90% confidence intervals for the resampled area under the ROC curve with three different link functions"
-#| fig.alt: "Means and approximate 90% confidence intervals for the resampled area under the ROC curve with three different link functions. The logit link has the largest value, followed by the probit link. The confidence intervals show a large amount of overlap between the two methods."
+#| fig.cap: "Medias e intervalos de confianza aproximados del 90% para el área remuestreada bajo la curva ROC con tres funciones de enlace diferentes"
+#| fig.alt: "Medias e intervalos de confianza aproximados del 90% para el área remuestreada bajo la curva ROC con tres funciones de enlace diferentes. El enlace logit tiene el valor más grande, seguido del enlace probit. Los intervalos de confianza muestran una gran superposición entre los dos métodos."
 
 resampled_res %>% 
   filter(.metric == "roc_auc") %>% 
@@ -216,16 +216,16 @@ resampled_res %>%
   geom_point() + 
   geom_errorbar(aes(xmin = mean - 1.64 * std_err, xmax = mean+ 1.64 * std_err),
                 width = .1) + 
-  labs(y = NULL, x = "area under the ROC curve")
+  labs(y = NULL, x = "área bajo la curva ROC")
 ```
 
-Given the overlap of the intervals, as well as the scale of the x-axis, any of these options could be used. We see this again when the class boundaries for the three models are overlaid on the test set of `r nrow(testing_set)` data points in @fig-three-link-fits.
+Dada la superposición de los intervalos, así como la escala del eje x, se podría utilizar cualquiera de estas opciones. Vemos esto nuevamente cuando los límites de clase para los tres modelos se superponen en el conjunto de prueba de puntos de datos `r nrow(testing_set)` en @fig-three-link-fits.
 
 ```{r}
 #| label: fig-three-link-fits
 #| echo: FALSE
-#| fig.cap: "The linear class boundary fits for three link functions"
-#| fig.alt: "The linear class boundary fits for three link functions. The lines have very similar slopes with the complementary log log having a slightly different intercept than the other two links."
+#| fig.cap: "El límite de clase lineal se ajusta a tres funciones de enlace."
+#| fig.alt: "El límite de clase lineal se ajusta a tres funciones de enlace. Las líneas tienen pendientes muy similares y el registro complementario tiene una intersección ligeramente diferente a la de los otros dos enlaces."
 
 logit_pred <- 
   logistic_reg() %>% 
@@ -266,26 +266,26 @@ link_grids %>%
 ```
 
 ::: rmdwarning
-This exercise emphasizes that different metrics might lead to different decisions about the choice of tuning parameter values. In this case, one metric indicates the models are somewhat different while another metric shows no difference at all.
+Este ejercicio enfatiza que diferentes métricas pueden conducir a diferentes decisiones sobre la elección de los valores de los parámetros de ajuste. En este caso, una métrica indica que los modelos son algo diferentes mientras que otra métrica no muestra ninguna diferencia.
 :::
 
-Metric optimization is thoroughly discussed by @thomas2020problem who explore several issues, including the gaming of metrics. They warn that:
+@thomas2020problem analiza exhaustivamente la optimización de métricas y explora varios temas, incluido el juego de métricas. Advierten que:
 
-> The unreasonable effectiveness of metric optimization in current AI approaches is a fundamental challenge to the field, and yields an inherent contradiction: solely optimizing metrics leads to far from optimal outcomes.
+> La eficacia irrazonable de la optimización de métricas en los enfoques actuales de IA es un desafío fundamental para el campo y genera una contradicción inherente: la optimización exclusiva de las métricas conduce a resultados que distan mucho de ser óptimos.
 
-## The consequences of poor parameter estimates {#sec-overfitting-bad}
+## Las consecuencias de las malas estimaciones de parámetros {#sec-overfitting-bad}
 
-Many tuning parameters modulate the amount of model complexity. More complexity often implies more malleability in the patterns that a model can emulate. For example, as shown in @sec-spline-functions, adding degrees of freedom in a spline function increases the intricacy of the prediction equation. While this is an advantage when the underlying motifs in the data are complex, it can also lead to overinterpretation of chance patterns that would not reproduce in new data. *Overfitting* is the situation where a model adapts too much to the training data; it performs well for the data used to build the model but poorly for new data.
+Muchos parámetros de ajuste modulan la cantidad de complejidad del modelo. Una mayor complejidad a menudo implica una mayor maleabilidad en los patrones que un modelo puede emular. Por ejemplo, como se muestra en @sec-spline-functions, agregar grados de libertad en una función spline aumenta la complejidad de la ecuación de predicción. Si bien esto es una ventaja cuando los motivos subyacentes de los datos son complejos, también puede conducir a una sobreinterpretación de patrones aleatorios que no se reproducirían en datos nuevos. *Sobreajuste* es la situación en la que un modelo se adapta demasiado a los datos de entrenamiento; funciona bien con los datos utilizados para construir el modelo, pero mal con datos nuevos.
 
 ::: rmdwarning
-Since tuning model parameters can increase model complexity, poor choices can lead to overfitting.
+Dado que ajustar los parámetros del modelo puede aumentar la complejidad del modelo, las malas elecciones pueden provocar un sobreajuste.
 :::
 
-Recall the single layer neural network model described in @sec-tuning-parameter-examples. With a single hidden unit and sigmoidal activation functions, a neural network for classification is, for all intents and purposes, just logistic regression. However, as the number of hidden units increases, so does the complexity of the model. In fact, when the network model uses sigmoidal activation units, @cybenko1989approximation showed that the model is a universal function approximator as long as there are enough hidden units.
+Recuerde el modelo de red neuronal de una sola capa descrito en @sec-tuning-parameter-examples. Con una única unidad oculta y funciones de activación sigmoideas, una red neuronal para clasificación es, para todos los efectos, solo una regresión logística. Sin embargo, a medida que aumenta el número de unidades ocultas, también aumenta la complejidad del modelo. De hecho, cuando el modelo de red utiliza unidades de activación sigmoidales, @cybenko1989approximation demostró que el modelo es un aproximador de función universal siempre que haya suficientes unidades ocultas.
 
-We fit neural network classification models to the same two-class data from the previous section, varying the number of hidden units. Using the area under the ROC curve as a performance metric, the effectiveness of the model on the training set increases as more hidden units are added. The network model thoroughly and meticulously learns the training set. If the model judges itself on the training set ROC value, it prefers many hidden units so that it can nearly eliminate errors.
+Ajustamos modelos de clasificación de redes neuronales a los mismos datos de dos clases de la sección anterior, variando el número de unidades ocultas. Utilizando el área bajo la curva ROC como métrica de rendimiento, la efectividad del modelo en el conjunto de entrenamiento aumenta a medida que se agregan más unidades ocultas. El modelo de red aprende completa y meticulosamente el conjunto de entrenamiento. Si el modelo se juzga a sí mismo por el valor ROC del conjunto de entrenamiento, prefiere muchas unidades ocultas para poder casi eliminar los errores.
 
-Chapters [-@sec-splitting] and [-@sec-resampling] demonstrated that simply repredicting the training set is a poor approach to model evaluation. Here, the neural network very quickly begins to overinterpret patterns that it sees in the training set. Compare these three example class boundaries (developed with the training set) overlaid on training and test sets in [@fig-two-class-boundaries].
+Los capítulos [-@sec-splitting] y [-@sec-resampling] demostraron que simplemente repredecir el conjunto de entrenamiento es un enfoque deficiente para la evaluación de modelos. Aquí, la red neuronal muy rápidamente comienza a sobreinterpretar los patrones que ve en el conjunto de entrenamiento. Compare estos tres límites de clase de ejemplo (desarrollados con el conjunto de entrenamiento) superpuestos en los conjuntos de entrenamiento y prueba en [@fig-two-class-boundaries].
 
 ```{r tuning-two-class-comps, include = FALSE}
 two_class_rec <-
@@ -327,8 +327,8 @@ for(i in 1:nrow(mlp_res)) {
 #| label: fig-two-class-boundaries
 #| echo: FALSE
 #| fig.height: 8
-#| fig.cap: "Class boundaries for three models with increasing numbers of hidden units. The boundaries are fit on the training set and shown for the training and test sets."
-#| fig.alt: "Class boundaries for three models with increasing numbers of hidden units. The boundaries are fit on the training set and shown for the training and test sets. After a single hidden unit, the boundaries become wildly complex. The test set plots show that the more complex models do not conform to the data that was not used to fit the model."
+#| fig.cap: "Límites de clase para tres modelos con un número creciente de unidades ocultas. Los límites se ajustan al conjunto de entrenamiento y se muestran para los conjuntos de entrenamiento y prueba."
+#| fig.alt: "Límites de clase para tres modelos con un número creciente de unidades ocultas. Los límites se ajustan al conjunto de entrenamiento y se muestran para los conjuntos de entrenamiento y prueba. Después de una única unidad oculta, los límites se vuelven tremendamente complejos. Los gráficos del conjunto de pruebas muestran que los modelos más complejos no se ajustan a los datos que no se utilizaron para ajustar el modelo."
 
 te_plot <- 
   mlp_res %>% 
@@ -371,7 +371,7 @@ tr_plot <-
   scale_color_manual(values = c("#CC6677", "#88CCEE")) + 
   facet_wrap(~ label, nrow = 1) + 
   coord_equal() + 
-  ggtitle("Training Set") + 
+  ggtitle("Conjunto de Entranamiento") + 
   labs(x = "Predictor A", y = "Predictor B")
 
 tr_plot / te_plot
@@ -379,37 +379,37 @@ tr_plot / te_plot
 
 ```
 
-The single unit model does not adapt very flexibly to the data (since it is constrained to be linear). A model with four hidden units begins to show signs of overfitting with an unrealistic boundary for values away from the data mainstream. This is caused by a single data point from the first class in the upper-right corner of the data. By 20 hidden units, the model is beginning to memorize the training set, creating small islands around those data to minimize the resubstitution error rate. These patterns do not repeat in the test set. This last panel is the best illustration of how tuning parameters that control complexity must be modulated so that the model is effective. For a 20-unit model, the training set ROC AUC is `r round(mlp_res$train[20], 3)` but the test set value is `r round(mlp_res$test[20], 3)`.
+El modelo unitario no se adapta con mucha flexibilidad a los datos (ya que está obligado a ser lineal). Un modelo con cuatro unidades ocultas comienza a mostrar signos de sobreajuste con un límite poco realista para valores alejados de la corriente principal de datos. Esto se debe a un único punto de datos de la primera clase en la esquina superior derecha de los datos. Con 20 unidades ocultas, el modelo comienza a memorizar el conjunto de entrenamiento, creando pequeñas islas alrededor de esos datos para minimizar la tasa de error de resustitución. Estos patrones no se repiten en el conjunto de prueba. Este último panel es la mejor ilustración de cómo se deben modular los parámetros de ajuste que controlan la complejidad para que el modelo sea efectivo. Para un modelo de 20 unidades, el conjunto de entrenamiento ROC AUC es `r round(mlp_res$train[20], 3)` pero el valor del conjunto de prueba es `r round(mlp_res$test[20], 3)`.
 
-This occurrence of overfitting is obvious with two predictors that we can plot. However, in general, we must use a quantitative approach for detecting overfitting.
+Esta ocurrencia de sobreajuste es obvia con dos predictores que podemos trazar. Sin embargo, en general, debemos utilizar un enfoque cuantitativo para detectar el sobreajuste.
 
 ::: rmdnote
-The solution for detecting when a model is overemphasizing the training set is using out-of-sample data.
+La solución para detectar cuándo un modelo está exagerando el conjunto de entrenamiento es utilizar datos fuera de la muestra.
 :::
 
-Rather than using the test set, some form of resampling is required. This could mean an iterative approach (e.g., 10-fold cross-validation) or a single data source (e.g., a validation set).
+En lugar de utilizar el conjunto de prueba, se requiere algún tipo de remuestreo. Esto podría significar un enfoque iterativo (por ejemplo, una validación cruzada de 10 veces) o una única fuente de datos (por ejemplo, un conjunto de validación).
 
-## Two general strategies for optimization
+## Dos estrategias generales para la optimización.
 
-Tuning parameter optimization usually falls into one of two categories: grid search and iterative search.
+La optimización de los parámetros de ajuste generalmente se divide en una de dos categorías: búsqueda en cuadrícula y búsqueda iterativa.
 
-*Grid search* is when we predefine a set of parameter values to evaluate. The main choices involved in grid search are how to make the grid and how many parameter combinations to evaluate. Grid search is often judged as inefficient since the number of grid points required to cover the parameter space can become unmanageable with the curse of dimensionality. There is truth to this concern, but it is most true when the process is not optimized. This is discussed more in [Chapter @sec-grid-search].
+*Búsqueda de cuadrícula* es cuando predefinimos un conjunto de valores de parámetros para evaluar. Las principales opciones involucradas en la búsqueda de cuadrículas son cómo hacer la cuadrícula y cuántas combinaciones de parámetros evaluar. La búsqueda de cuadrícula a menudo se considera ineficiente ya que la cantidad de puntos de cuadrícula necesarios para cubrir el espacio de parámetros puede volverse inmanejable debido a la maldición de la dimensionalidad. Hay algo de verdad en esta preocupación, pero es más cierta cuando el proceso no está optimizado. Esto se analiza con más detalle en el [Capítulo @sec-grid-search].
 
-*Iterative search* or sequential search is when we sequentially discover new parameter combinations based on previous results. Almost any nonlinear optimization method is appropriate, although some are more efficient than others. In some cases, an initial set of results for one or more parameter combinations is required to start the optimization process. Iterative search is discussed more in [Chapter @sec-iterative-search].
+*Búsqueda iterativa* o búsqueda secuencial es cuando descubrimos secuencialmente nuevas combinaciones de parámetros en función de resultados anteriores. Casi cualquier método de optimización no lineal es apropiado, aunque algunos son más eficientes que otros. En algunos casos, se requiere un conjunto inicial de resultados para una o más combinaciones de parámetros para iniciar el proceso de optimización. La búsqueda iterativa se analiza con más detalle en el [Capítulo @sec-iterative-search].
 
-@fig-tuning-strategies shows two panels that demonstrate these two approaches for a situation with two tuning parameters that range between zero and one. In each, a set of contours shows the true (simulated) relationship between the parameters and the outcome. The optimal results are in the upper-right-hand corners.
+@fig-tuning-strategies muestra dos paneles que demuestran estos dos enfoques para una situación con dos parámetros de ajuste que oscilan entre cero y uno. En cada uno, un conjunto de contornos muestra la relación verdadera (simulada) entre los parámetros y el resultado. Los resultados óptimos se encuentran en las esquinas superiores derechas.
 
 ```{r}
 #| label: fig-tuning-strategies
 #| echo: FALSE
-#| fig.cap: "Examples of pre-defined grid tuning and an iterative search method. The lines represent contours of a performance metric; it is best in the upper-right-hand side of the plot."
-#| fig.alt: "Examples of pre-defined grid tuning and an iterative search method. The lines represent contours of some performance metric that is best in the upper-right-hand side of the plot. The grid search shows points that cover the space well and has one point near the optimum. The iterative search method has many more points and meanders to the optimum where many points zero in on the best value."
+#| fig.cap: "Ejemplos de ajuste de cuadrícula predefinido y método de búsqueda iterativo. Las líneas representan contornos de una métrica de desempeño; es mejor en el lado superior derecho de la trama."
+#| fig.alt: "Ejemplos de ajuste de cuadrícula predefinido y método de búsqueda iterativo. Las líneas representan contornos de alguna métrica de desempeño que es mejor en el lado superior derecho del gráfico. La búsqueda de cuadrícula muestra puntos que cubren bien el espacio y tiene un punto cerca del óptimo. El método de búsqueda iterativa tiene muchos más puntos y serpentea hacia el óptimo, donde muchos puntos se concentran en el mejor valor."
 
 grid_plot <-
   ggplot(sfd_grid, aes(x = x, y = y)) +
   geom_point() +
   lims(x = 0:1, y = 0:1) +
-  labs(x = "Parameter 1", y = "Parameter 2", title = "Space-Filling Grid") +
+  labs(x = "Parámetro 1", y = "Parámetro 2", title = "Cuadrícula que llena el espacio") +
   geom_contour(data = grid_contours,
                aes(z = obj),
                alpha = .3,
@@ -423,7 +423,7 @@ search_plot <-
   ggplot(nm_res, aes(x = x, y = y)) +
   geom_point(size = .7)  +
   lims(x = 0:1, y = 0:1) +
-  labs(x = "Parameter 1", y = "Parameter 2", title = "Global Search") +
+  labs(x = "Parámetro 1", y = "Parámetro 2", title = "Búsqueda Global") +
   coord_equal()  +
   geom_contour(data = grid_contours,
                aes(x = x, y = y, z = obj),
@@ -436,42 +436,42 @@ search_plot <-
 grid_plot + search_plot
 ```
 
-The left-hand panel of @fig-tuning-strategies shows a type of grid called a space-filling design. This is a type of experimental design devised for covering the parameter space such that tuning parameter combinations are not close to one another. The results for this design do not place any points exactly at the truly optimal location. However, one point is in the general vicinity and would probably have performance metric results that are within the noise of the most optimal value.
+El panel izquierdo de @fig-tuning-strategies muestra un tipo de cuadrícula llamada diseño de relleno de espacio. Este es un tipo de diseño experimental diseñado para cubrir el espacio de parámetros de manera que las combinaciones de parámetros de ajuste no estén cercanas entre sí. Los resultados de este diseño no colocan ningún punto exactamente en la ubicación verdaderamente óptima. Sin embargo, un punto está en la vecindad general y probablemente tendría resultados de métricas de rendimiento que estén dentro del ruido del valor más óptimo.
 
-The right-hand panel of @fig-tuning-strategies illustrates the results of a global search method: the Nelder-Mead simplex method [@Olsson:1975p3609]. The starting point is in the lower-left part of the parameter space. The search meanders across the space until it reaches the optimum location, where it strives to come as close as possible to the numerically best value. This particular search method, while effective, is not known for its efficiency; it requires many function evaluations, especially near the optimal values. [Chapter @sec-iterative-search] discusses more efficient search algorithms.
+El panel derecho de @fig-tuning-strategies ilustra los resultados de un método de búsqueda global: el método simplex de Nelder-Mead [@Olsson:1975p3609]. El punto de partida está en la parte inferior izquierda del espacio de parámetros. La búsqueda serpentea por el espacio hasta llegar a la ubicación óptima, donde se esfuerza por acercarse lo más posible al mejor valor numérico. Este método de búsqueda en particular, aunque eficaz, no es conocido por su eficiencia; requiere muchas evaluaciones de funciones, especialmente cerca de los valores óptimos. El [Capítulo @sec-iterative-search] analiza algoritmos de búsqueda más eficientes.
 
 ::: rmdnote
-Hybrid strategies are also an option and can work well. After an initial grid search, a sequential optimization can start from the best grid combination.
+Las estrategias híbridas también son una opción y pueden funcionar bien. Después de una búsqueda inicial de cuadrícula, puede comenzar una optimización secuencial a partir de la mejor combinación de cuadrícula.
 :::
 
-Examples of these strategies are discussed in detail in the next two chapters. Before moving on, let's learn how to work with tuning parameter objects in tidymodels, using the `r pkg(dials)` package.
+En los dos capítulos siguientes se analizan en detalle ejemplos de estas estrategias. Antes de continuar, aprendamos cómo trabajar con objetos de parámetros de ajuste en tidymodels, usando el paquete `r pkg(dials)`.
 
-## Tuning Parameters in tidymodels {#sec-tuning-params-tidymodels}
+## Ajuste de parámetros en tidymodels {#sec-tuning-params-tidymodels}
 
-We've already dealt with quite a number of arguments that correspond to tuning parameters for recipe and model specifications in previous chapters. It is possible to tune:
+Ya hemos tratado un buen número de argumentos que corresponden a parámetros de ajuste para especificaciones de recetas y modelos en capítulos anteriores. Es posible sintonizar:
 
--   the threshold for combining neighborhoods into an "other" category (with argument name `threshold`) discussed in @sec-dummies
+-   el umbral para combinar vecindarios en una categoría "otra" (con el nombre de argumento `threshold`) discutido en @sec-dummies
 
--   the number of degrees of freedom in a natural spline (`deg_free`, @sec-spline-functions)
+-   el número de grados de libertad en un spline natural (`deg_free`, @sec-spline-functions)
 
--   the number of data points required to execute a split in a tree-based model (`min_n`, @sec-create-a-model)
+-   el número de puntos de datos necesarios para ejecutar una división en un modelo basado en árbol (`min_n`, @sec-create-a-model)
 
--   the amount of regularization in penalized models (`penalty`, @sec-create-a-model)
+-   el importe de la regularización en los modelos penalizados (`penalty`, @sec-create-a-model)
 
-For `r pkg(parsnip)` model specifications, there are two kinds of parameter arguments. *Main arguments* are those that are most often optimized for performance and are available in multiple engines. The main tuning parameters are top-level arguments to the model specification function. For example, the `rand_forest()` function has main arguments `trees`, `min_n`, and `mtry` since these are most frequently specified or optimized.
+Para las especificaciones del modelo `r pkg(parsnip)`, hay dos tipos de argumentos de parámetros. *Los argumentos principales* son aquellos que con mayor frecuencia están optimizados para el rendimiento y están disponibles en múltiples motores. Los principales parámetros de ajuste son argumentos de nivel superior para la función de especificación del modelo. Por ejemplo, la función `rand_forest()` tiene argumentos principales `trees`, `min_n` y `mtry`, ya que estos se especifican u optimizan con mayor frecuencia.
 
-A secondary set of tuning parameters are *engine specific*. These are either infrequently optimized or are specific only to certain engines. Again using random forests as an example, the `r pkg(ranger)` package contains some arguments that are not used by other packages. One example is gain penalization, which regularizes the predictor selection in the tree induction process. This parameter can help modulate the trade-off between the number of predictors used in the ensemble and performance [@wundervald2020generalizing]. The name of this argument in `ranger()` is `regularization.factor`. To specify a value via a `r pkg(parsnip)` model specification, it is added as a supplemental argument to `set_engine()`:
+Un conjunto secundario de parámetros de ajuste son *específicos del motor*. Estos se optimizan con poca frecuencia o son específicos solo para ciertos motores. Nuevamente usando random forest como ejemplo, el paquete `r pkg(ranger)` contiene algunos argumentos que no son utilizados por otros paquetes. Un ejemplo es la penalización de ganancia, que regulariza la selección de predictores en el proceso de inducción del árbol. Este parámetro puede ayudar a modular el equilibrio entre la cantidad de predictores utilizados en el conjunto y el rendimiento [@wundervald2020generalizing]. El nombre de este argumento en `ranger()` es `regularization.factor`. Para especificar un valor mediante una especificación de modelo `r pkg(parsnip)`, se agrega como argumento complementario a `set_engine()`:
 
 ```{r tuning-args, eval = FALSE}
-rand_forest(trees = 2000, min_n = 10) %>%                   # <- main arguments
-  set_engine("ranger", regularization.factor = 0.5)         # <- engine-specific
+rand_forest(trees = 2000, min_n = 10) %>%                   # <- argumentos principales
+  set_engine("ranger", regularization.factor = 0.5)         # <- específico del motor
 ```
 
 ::: rmdwarning
-The main arguments use a harmonized naming system to remove inconsistencies across engines while engine-specific arguments do not.
+Los argumentos principales utilizan un sistema de nombres armonizado para eliminar inconsistencias entre motores, mientras que los argumentos específicos del motor no lo hacen.
 :::
 
-How can we signal to tidymodels functions which arguments should be optimized? Parameters are marked for tuning by assigning them a value of `tune()`. For the single layer neural network used in @sec-overfitting-bad, the number of hidden units is designated for tuning using:
+¿Cómo podemos indicar a las funciones de tidymodels qué argumentos deben optimizarse? Los parámetros se marcan para su ajuste asignándoles un valor de `tune()`. Para la red neuronal de una sola capa utilizada en @sec-overfitting-bad, la cantidad de unidades ocultas se designa para ajustar usando:
 
 ```{r tuning-mlp-units}
 neural_net_spec <- 
@@ -480,23 +480,23 @@ neural_net_spec <-
   set_engine("keras")
 ```
 
-The `tune()` function doesn't execute any particular parameter value; it only returns an expression:
+La función `tune()` no ejecuta ningún valor de parámetro en particular; solo devuelve una expresión:
 
 ```{r tuning-tune-exprs}
 tune()
 ```
 
-Embedding this `tune()` value in an argument will tag the parameter for optimization. The model tuning functions shown in the next two chapters parse the model specification and/or recipe to discover the tagged parameters. These functions can automatically configure and process these parameters since they understand their characteristics (e.g., the range of possible values, etc.).
+Incrustar este valor `tune()` en un argumento etiquetará el parámetro para su optimización. Las funciones de ajuste del modelo que se muestran en los dos capítulos siguientes analizan la especificación y/o receta del modelo para descubrir los parámetros etiquetados. Estas funciones pueden configurar y procesar automáticamente estos parámetros ya que comprenden sus características (por ejemplo, el rango de valores posibles, etc.).
 
-To enumerate the tuning parameters for an object, use the `extract_parameter_set_dials()` function:
+Para enumerar los parámetros de ajuste de un objeto, utilice la función `extract_parameter_set_dials()`:
 
 ```{r tuning-mlp-units-param}
 extract_parameter_set_dials(neural_net_spec)
 ```
 
-The results show a value of `nparam[+]`, indicating that the number of hidden units is a numeric parameter.
+Los resultados muestran un valor de `nparam[+]`, lo que indica que el número de unidades ocultas es un parámetro numérico.
 
-There is an optional identification argument that associates a name with the parameters. This can come in handy when the same kind of parameter is being tuned in different places. For example, with the Ames housing data from @sec-resampling-summary, the recipe encoded both longitude and latitude with spline functions. If we want to tune the two spline functions to potentially have different levels of smoothness, we call `step_ns()` twice, once for each predictor. To make the parameters identifiable, the identification argument can take any character string:
+Hay un argumento de identificación opcional que asocia un nombre con los parámetros. Esto puede resultar útil cuando se ajusta el mismo tipo de parámetro en diferentes lugares. Por ejemplo, con los datos de vivienda de Ames de @sec-resampling-summary, la receta codificó tanto la longitud como la latitud con funciones spline. Si queremos ajustar las dos funciones spline para que potencialmente tengan diferentes niveles de suavidad, llamamos a `step_ns()` dos veces, una para cada predictor. Para que los parámetros sean identificables, el argumento de identificación puede tomar cualquier cadena de caracteres:
 
 ```{r tuning-id}
 ames_rec <- 
@@ -513,9 +513,9 @@ recipes_param <- extract_parameter_set_dials(ames_rec)
 recipes_param
 ```
 
-Note that the `identifier` and `type` columns are not the same for both of the spline parameters.
+Tenga en cuenta que las columnas `identifier` y `type` no son las mismas para ambos parámetros de spline.
 
-When a recipe and model specification are combined using a workflow, both sets of parameters are shown:
+Cuando se combinan una receta y una especificación de modelo mediante un flujo de trabajo, se muestran ambos conjuntos de parámetros:
 
 ```{r tuning-mlp-rec}
 wflow_param <- 
@@ -527,43 +527,43 @@ wflow_param
 ```
 
 ::: rmdwarning
-Neural networks are exquisitely capable of emulating nonlinear patterns. Adding spline terms to this type of model is unnecessary; we combined this model and recipe for illustration only.
+Las redes neuronales son exquisitamente capaces de emular patrones no lineales. No es necesario agregar términos splines a este tipo de modelo; combinamos este modelo y receta solo con fines ilustrativos.
 :::
 
-Each tuning parameter argument has a corresponding function in the `r pkg(dials)` package. In the vast majority of the cases, the function has the same name as the parameter argument:
+Cada argumento de parámetro de ajuste tiene una función correspondiente en el paquete `r pkg(dials)`. En la gran mayoría de los casos, la función tiene el mismo nombre que el argumento del parámetro:
 
 ```{r tuning-dials-unit}
 hidden_units()
 threshold()
 ```
 
-The `deg_free` parameter is a counterexample; the notion of degrees of freedom comes up in a variety of different contexts. When used with splines, there is a specialized `r pkg(dials)` function called `spline_degree()` that is, by default, invoked for splines:
+El parámetro `deg_free` es un contraejemplo; la noción de grados de libertad surge en una variedad de contextos diferentes. Cuando se usa con splines, hay una función especializada `r pkg(dials)` llamada `spline_title()` que, de forma predeterminada, se invoca para splines:
 
 ```{r tuning-spline-df}
 spline_degree()
 ```
 
-The `r pkg(dials)` package also has a convenience function for extracting a particular parameter object:
+El paquete `r pkg(dials)` también tiene una función conveniente para extraer un objeto de parámetro particular:
 
 ```{r tuning-extract}
-# identify the parameter using the id value:
+# identifique el parámetro usando el valor de id:
 wflow_param %>% extract_parameter_dials("threshold")
 ```
 
-Inside the parameter set, the range of the parameters can also be updated in place:
+Dentro del conjunto de parámetros, el rango de parámetros también se puede actualizar en el lugar:
 
 ```{r tuning-update}
 extract_parameter_set_dials(ames_rec) %>% 
   update(threshold = threshold(c(0.8, 1.0)))
 ```
 
-The *parameter sets* created by `extract_parameter_set_dials()` are consumed by the tidymodels tuning functions (when needed). If the defaults for the tuning parameter objects require modification, a modified parameter set is passed to the appropriate tuning function.
+Los *conjuntos de parámetros* creados por `extract_parameter_set_dials()` son consumidos por las funciones de ajuste de tidymodels (cuando sea necesario). Si los valores predeterminados de los objetos de parámetros de ajuste requieren modificación, se pasa un conjunto de parámetros modificado a la función de ajuste adecuada.
 
 ::: rmdnote
-Some tuning parameters depend on the dimensions of the data. For example, the number of nearest neighbors must be between one and the number of rows in the data.
+Algunos parámetros de ajuste dependen de las dimensiones de los datos. Por ejemplo, el número de vecinos más cercanos debe estar entre uno y el número de filas de los datos.
 :::
 
-In some cases, it is easy to have reasonable defaults for the range of possible values. In other cases, the parameter range is critical and cannot be assumed. The primary tuning parameter for random forest models is the number of predictor columns that are randomly sampled for each split in the tree, usually denoted as `mtry()`. Without knowing the number of predictors, this parameter range cannot be preconfigured and requires finalization.
+En algunos casos, es fácil tener valores predeterminados razonables para el rango de valores posibles. En otros casos, el rango de parámetros es crítico y no se puede asumir. El principal parámetro de ajuste para los modelos de random forest es el número de columnas predictoras que se muestrean aleatoriamente para cada división del árbol, normalmente denominada "mtry()". Sin conocer la cantidad de predictores, este rango de parámetros no se puede preconfigurar y requiere finalización.
 
 ```{r tuning-rf}
 rf_spec <- 
@@ -575,22 +575,22 @@ rf_param <- extract_parameter_set_dials(rf_spec)
 rf_param
 ```
 
-Complete parameter objects have `[+]` in their summary; a value of `[?]` indicates that at least one end of the possible range is missing. There are two methods for handling this. The first is to use `update()`, to add a range based on what you know about the data dimensions:
+Los objetos de parámetros completos tienen `[+]` en su resumen; un valor de `[?]` indica que falta al menos un extremo del rango posible. Hay dos métodos para manejar esto. La primera es usar `update()`, para agregar un rango basado en lo que sabes sobre las dimensiones de datos:
 
 ```{r tuning-rfupdate}
 rf_param %>% 
   update(mtry = mtry(c(1, 70)))
 ```
 
-However, this approach might not work if a recipe is attached to a workflow that uses steps that either add or subtract columns. If those steps are not slated for tuning, the `finalize()` function can execute the recipe once to obtain the dimensions:
+Sin embargo, es posible que este enfoque no funcione si se adjunta una receta a un flujo de trabajo que utiliza pasos que suman o restan columnas. Si esos pasos no están programados para ajustarse, la función `finalize()` puede ejecutar la receta una vez para obtener las dimensiones:
 
 ```{r tuning-finalize}
 pca_rec <- 
   recipe(Sale_Price ~ ., data = ames_train) %>% 
-  # Select the square-footage predictors and extract their PCA components:
+  # Seleccione los predictores de pies cuadrados y extraiga sus componentes PCA:
   step_normalize(contains("SF")) %>% 
-  # Select the number of components needed to capture 95% of
-  # the variance in the predictors. 
+  # Seleccione el número de componentes necesarios para capturar el 95% de
+  # la varianza en los predictores. 
   step_pca(contains("SF"), threshold = .95)
   
 updated_param <- 
@@ -603,37 +603,37 @@ updated_param
 updated_param %>% extract_parameter_dials("mtry")
 ```
 
-When the recipe is prepared, the `finalize()` function learns to set the upper range of `mtry` to `r updated_param %>% extract_parameter_dials("mtry") %>% range_get() %>% pluck("upper")` predictors.
+Cuando se prepara la receta, la función `finalize()` aprende a establecer el rango superior de `mtry` en `r updated_param |> extract_parameter_dials("mtry") |> range_get() |> pluck("upper")` predictores.
 
-Additionally, the results of `extract_parameter_set_dials()` will include engine-specific parameters (if any). They are discovered in the same way as the main arguments and included in the parameter set. The `r pkg(dials)` package contains parameter functions for all potentially tunable engine-specific parameters:
+Además, los resultados de `extract_parameter_set_dials()` incluirán parámetros específicos del motor (si los hay). Se descubren de la misma manera que los argumentos principales y se incluyen en el conjunto de parámetros. El paquete `r pkg(dials)` contiene funciones de parámetros para todos los parámetros específicos del motor potencialmente ajustables:
 
 ```{r tuning-engine-param-set}
 rf_param
 regularization_factor()
 ```
 
-Finally, some tuning parameters are best associated with transformations. A good example of this is the penalty parameter associated with many regularized regression models. This parameter is nonnegative and it is common to vary its values in log units. The primary `r pkg(dials)` parameter object indicates that a transformation is used by default:
+Finalmente, algunos parámetros de ajuste se asocian mejor con las transformaciones. Un buen ejemplo de esto es el parámetro de penalización asociado con muchos modelos de regresión regularizados. Este parámetro no es negativo y es común variar sus valores en unidades logarítmicas. El objeto de parámetro principal `r pkg(dials)` indica que se utiliza una transformación de forma predeterminada:
 
 ```{r tuning-penalty}
 penalty()
 ```
 
-This is important to know, especially when altering the range. New range values must be in the transformed units:
+Es importante saber esto, especialmente al modificar el rango. Los valores del nuevo rango deben estar en las unidades transformadas:
 
 ```{r tuning-penalty-set}
-# correct method to have penalty values between 0.1 and 1.0
+# método correcto para tener valores de penalización entre 0,1 y 1,0
 penalty(c(-1, 0)) %>% value_sample(1000) %>% summary()
 
-# incorrect:
+# incorrecto:
 penalty(c(0.1, 1.0)) %>% value_sample(1000) %>% summary()
 ```
 
-The scale can be changed if desired with the `trans` argument. You can use natural units but the same range:
+La escala se puede cambiar si se desea con el argumento `trans`. Puedes usar unidades naturales pero del mismo rango:
 
 ```{r tuning-penalty-natural}
 penalty(trans = NULL, range = 10^c(-10, 0))
 ```
 
-## Chapter Summary
+## Resumen del capítulo
 
-This chapter introduced the process of tuning model hyperparameters that cannot be directly estimated from the data. Tuning such parameters can lead to overfitting, often by allowing a model to grow overly complex, so using resampled data sets together with appropriate metrics for evaluation is important. There are two general strategies for determining the right values, grid search and iterative search, which we will explore in depth in the next two chapters. In tidymodels, the `tune()` function is used to identify parameters for optimization, and functions from the `r pkg(dials)` package can extract and interact with tuning parameters objects.
+Este capítulo presentó el proceso de ajuste de los hiperparámetros del modelo que no se pueden estimar directamente a partir de los datos. Ajustar dichos parámetros puede conducir a un sobreajuste, a menudo al permitir que un modelo se vuelva demasiado complejo, por lo que es importante utilizar conjuntos de datos remuestreados junto con métricas apropiadas para la evaluación. Hay dos estrategias generales para determinar los valores correctos, la búsqueda en cuadrícula y la búsqueda iterativa, que exploraremos en profundidad en los dos capítulos siguientes. En tidymodels, la función `tune()` se usa para identificar parámetros para optimización, y las funciones del paquete `r pkg(dials)` pueden extraer e interactuar con objetos de parámetros de ajuste.
