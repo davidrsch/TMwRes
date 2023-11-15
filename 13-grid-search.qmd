@@ -19,29 +19,29 @@ tidymodels_prefer()
 load("RData/mlp_times.RData")
 ```
 
-# Grid Search {#sec-grid-search}
+# Búsqueda de cuadrícula {#sec-grid-search}
 
-In [Chapter @sec-tuning] we demonstrated how users can mark or tag arguments in preprocessing recipes and/or model specifications for optimization using the `tune()` function. Once we know what to optimize, it's time to address the question of how to optimize the parameters. This chapter describes *grid search* methods that specify the possible values of the parameters *a priori*. [Chapter @sec-iterative-search] will continue the discussion by describing iterative search methods.)
+En el [Capítulo @sec-tuning] demostramos cómo los usuarios pueden marcar o etiquetar argumentos en recetas de preprocesamiento y/o especificaciones de modelo para optimización usando la función `tune()`. Una vez que sabemos qué optimizar, es hora de abordar la cuestión de cómo optimizar los parámetros. Este capítulo describe los métodos de *búsqueda en cuadrícula* que especifican los posibles valores de los parámetros *a priori*. [Capítulo @sec-iterative-search] continuará la discusión describiendo los métodos de búsqueda iterativa).
 
-Let's start by looking at two main approaches for assembling a grid.
+Comencemos viendo dos enfoques principales para ensamblar una cuadrícula.
 
-## Regular and Nonregular Grids {#sec-grids}
+## Cuadrículas regulares y no regulares {#sec-grids}
 
-There are two main types of grids. A regular grid combines each parameter (with its corresponding set of possible values) factorially, i.e., by using all combinations of the sets. Alternatively, a nonregular grid is one where the parameter combinations are not formed from a small set of points.
+Hay dos tipos principales de cuadrículas. Una cuadrícula regular combina cada parámetro (con su correspondiente conjunto de valores posibles) factorialmente, es decir, utilizando todas las combinaciones de los conjuntos. Alternativamente, una cuadrícula no regular es aquella en la que las combinaciones de parámetros no se forman a partir de un pequeño conjunto de puntos.
 
-Before we look at each type in more detail, let's consider an example model: the multilayer perceptron model (a.k.a. single layer artificial neural network). The parameters marked for tuning are:
+Antes de analizar cada tipo con más detalle, consideremos un modelo de ejemplo: el modelo de perceptrón multicapa (también conocido como red neuronal artificial de una sola capa). Los parámetros marcados para tuning son:
 
--   the number of hidden units
+-   el número de unidades ocultas
 
--   the number of fitting epochs/iterations in model training
+-   el número de épocas/iteraciones de ajuste en el entrenamiento del modelo
 
--   the amount of weight decay penalization
+-   la cantidad de penalización por pérdida de peso
 
 ::: rmdnote
-Historically, the number of epochs was determined by early stopping; a separate validation set determined the length of training based on the error rate, since re-predicting the training set led to overfitting. In our case, the use of a weight decay penalty should prohibit overfitting, and there is little harm in tuning the penalty and the number of epochs.
+Históricamente, el número de épocas estuvo determinado por la detención temprana; un conjunto de validación separado determinó la duración del entrenamiento en función de la tasa de error, ya que volver a predecir el conjunto de entrenamiento conducía a un sobreajuste. En nuestro caso, el uso de una penalización por disminución de peso debería prohibir el sobreajuste, y hay poco daño en ajustar la penalización y el número de épocas.
 :::
 
-Using `r pkg(parsnip)`, the specification for a classification model fit using the `r pkg(nnet)` package is:
+Usando `r pkg(parsnip)`, la especificación para un modelo de clasificación que se ajusta usando el paquete `r pkg(nnet)` es:
 
 ```{r grid-mlp}
 library(tidymodels)
@@ -53,7 +53,7 @@ mlp_spec <-
   set_mode("classification")
 ```
 
-The argument `trace = 0` prevents extra logging of the training process. As shown in @sec-tuning-params-tidymodels, the `extract_parameter_set_dials()` function can extract the set of arguments with unknown values and sets their `r pkg(dials)` objects:
+El argumento `trace = 0` evita el registro adicional del proceso de entrenamiento. Como se muestra en @sec-tuning-params-tidymodels, la función `extract_parameter_set_dials()` puede extraer el conjunto de argumentos con valores desconocidos y establece sus objetos `r pkg(dials)`:
 
 ```{r grid-mlp-param}
 mlp_param <- extract_parameter_set_dials(mlp_spec)
@@ -62,11 +62,11 @@ mlp_param %>% extract_parameter_dials("penalty")
 mlp_param %>% extract_parameter_dials("epochs")
 ```
 
-This output indicates that the parameter objects are complete and prints their default ranges. These values will be used to demonstrate how to create different types of parameter grids.
+Esta salida indica que los objetos de parámetros están completos e imprime sus rangos predeterminados. Estos valores se utilizarán para demostrar cómo crear diferentes tipos de cuadrículas de parámetros.
 
-### Regular grids {.unnumbered}
+### Cuadrículas regulares {.unnumbered}
 
-Regular grids are combinations of separate sets of parameter values. First, the user creates a distinct set of values for each parameter. The number of possible values need not be the same for each parameter. The `r pkg(tidyr)` function `crossing()` is one way to create a regular grid:
+Las cuadrículas regulares son combinaciones de conjuntos separados de valores de parámetros. Primero, el usuario crea un conjunto distinto de valores para cada parámetro. El número de valores posibles no tiene por qué ser el mismo para cada parámetro. La función `r pkg(tidyr)` `crossing()` es una forma de crear una cuadrícula regular:
 
 ```{r grid-crossing}
 crossing(
@@ -76,55 +76,55 @@ crossing(
 )
 ```
 
-The parameter object knows the ranges of the parameters. The `r pkg(dials)` package contains a set of `grid_*()` functions that take the parameter object as input to produce different types of grids. For example:
+El objeto de parámetro conoce los rangos de los parámetros. El paquete `r pkg(dials)` contiene un conjunto de funciones `grid_*()` que toman el objeto parámetro como entrada para producir diferentes tipos de cuadrículas. Por ejemplo:
 
 ```{r grid-reg}
 grid_regular(mlp_param, levels = 2)
 ```
 
-The `levels` argument is the number of levels per parameter to create. It can also take a named vector of values:
+El argumento `levels` es el número de niveles por parámetro a crear. También puede tomar un vector de valores con nombre:
 
 ```{r grid-reg-lvls}
 mlp_param %>% 
   grid_regular(levels = c(hidden_units = 3, penalty = 2, epochs = 2))
 ```
 
-There are techniques for creating regular grids that do not use all possible values of each parameter set. These *fractional factorial designs* [@BHH] could also be used. To learn more, consult the CRAN Task View for experimental design.[^13-grid-search-1]
+Existen técnicas para crear cuadrículas regulares que no utilizan todos los valores posibles de cada conjunto de parámetros. Estos *diseños factoriales fraccionales* [@BHH] también podrían usarse. Para obtener más información, consulte la Vista de tareas de CRAN para el diseño experimental.[^13-grid-search-1]
 
 [^13-grid-search-1]: <https://CRAN.R-project.org/view=ExperimentalDesign>
 
 ::: rmdwarning
-Regular grids can be computationally expensive to use, especially when there are a medium-to-large number of tuning parameters. This is true for many models but not all. As discussed in @sec-efficient-grids below, there are many models whose tuning time *decreases* with a regular grid!
+El uso de cuadrículas regulares puede ser costoso desde el punto de vista computacional, especialmente cuando hay una cantidad media a grande de parámetros de ajuste. Esto es cierto para muchos modelos pero no para todos. Como se analiza en @sec-ficient-grids a continuación, ¡hay muchos modelos cuyo tiempo de ajuste *disminuye* con una cuadrícula normal!
 :::
 
-One advantage to using a regular grid is that the relationships and patterns between the tuning parameters and the model metrics are easily understood. The factorial nature of these designs allows for examination of each parameter separately with little confounding between parameters.
+Una ventaja de utilizar una cuadrícula regular es que las relaciones y patrones entre los parámetros de ajuste y las métricas del modelo se entienden fácilmente. La naturaleza factorial de estos diseños permite examinar cada parámetro por separado con poca confusión entre los parámetros.
 
-### Irregular grids {.unnumbered}
+### Rejillas irregulares {.unnumbered}
 
-There are several options for creating non-regular grids. The first is to use random sampling across the range of parameters. The `grid_random()` function generates independent uniform random numbers across the parameter ranges. If the parameter object has an associated transformation (such as we have for `penalty`), the random numbers are generated on the transformed scale. Let's create a random grid for the parameters from our example neural network:
+Hay varias opciones para crear cuadrículas no regulares. La primera es utilizar un muestreo aleatorio en toda la gama de parámetros. La función `grid_random()` genera números aleatorios uniformes independientes en todos los rangos de parámetros. Si el objeto parámetro tiene una transformación asociada (como la que tenemos para "penalización", `penalty`), los números aleatorios se generan en la escala transformada. Creemos una cuadrícula aleatoria para los parámetros de nuestra red neuronal de ejemplo:
 
 ```{r grid-rand}
 set.seed(1301)
 mlp_param %>% 
-  grid_random(size = 1000) %>% # 'size' is the number of combinations
+  grid_random(size = 1000) %>% # 'size' es el número de combinaciones
   summary()
 ```
 
-For `penalty`, the random numbers are uniform on the log (base-10) scale but the values in the grid are in the natural units.
+Para la "penalización", `penalty`, los números aleatorios son uniformes en la escala logarítmica (base-10), pero los valores en la cuadrícula están en unidades naturales.
 
-The issue with random grids is that, with small-to-medium grids, random values can result in overlapping parameter combinations. Also, the random grid needs to cover the whole parameter space, but the likelihood of good coverage increases with the number of grid values. Even for a sample of 15 candidate points, @fig-random-grid shows some overlap between points for our example multilayer perceptron.
+El problema con las cuadrículas aleatorias es que, en las cuadrículas pequeñas y medianas, los valores aleatorios pueden dar como resultado combinaciones de parámetros superpuestos. Además, la cuadrícula aleatoria debe cubrir todo el espacio de parámetros, pero la probabilidad de una buena cobertura aumenta con el número de valores de la cuadrícula. Incluso para una muestra de 15 puntos candidatos, @fig-random-grid muestra cierta superposición entre puntos para nuestro perceptrón multicapa de ejemplo.
 
 ```{r grid-random-matrix, eval = FALSE}
 library(ggforce)
 set.seed(1302)
 mlp_param %>% 
-  # The 'original = FALSE' option keeps penalty in log10 units
+  # La opción 'original = FALSE' mantiene la penalización en log10 unidades
   grid_random(size = 20, original = FALSE) %>% 
   ggplot(aes(x = .panel_x, y = .panel_y)) + 
   geom_point() +
   geom_blank() +
   facet_matrix(vars(hidden_units, penalty, epochs), layer.diag = 2) + 
-  labs(title = "Random design with 20 candidates")
+  labs(title = "Diseño aleatorio con 20 candidatos")
 ```
 
 ```{r}
@@ -133,13 +133,13 @@ mlp_param %>%
 #| fig-height: 6
 #| fig-width: 6
 #| echo: FALSE
-#| fig-cap: "Three tuning parameters with 15 points generated at random"
-#| fig-alt: "A scatter plot matrix for three tuning parameters with 20 points generated at random. There are significant gaps in the parameter space."
+#| fig-cap: "Tres parámetros de ajuste con 15 puntos generados al azar"
+#| fig-alt: "Una matriz de diagrama de dispersión para tres parámetros de ajuste con 20 puntos generados al azar. Existen lagunas importantes en el espacio de parámetros."
 ```
 
-A much better approach is to use a set of experimental designs called *space-filling designs*. While different design methods have slightly different goals, they generally find a configuration of points that cover the parameter space with the smallest chance of overlapping or redundant values. Examples of such designs are Latin hypercubes [@lhd], maximum entropy designs [@maxent], maximum projection designs [@maxproj], and others. See @santner2003design for an overview.
+Un enfoque mucho mejor es utilizar un conjunto de diseños experimentales llamados *diseños de relleno de espacio*. Si bien los diferentes métodos de diseño tienen objetivos ligeramente diferentes, generalmente encuentran una configuración de puntos que cubre el espacio de parámetros con la menor posibilidad de superposición o valores redundantes. Ejemplos de tales diseños son los hipercubos latinos [@lhd], los diseños de máxima entropía [@maxent], los diseños de máxima proyección [@maxproj] y otros. Consulte @santner2003design para obtener una descripción general.
 
-The `r pkg(dials)` package contains functions for Latin hypercube and maximum entropy designs. As with `grid_random()`, the primary inputs are the number of parameter combinations and a parameter object. Let's compare a random design with a Latin hypercube design for 20 candidate parameter values in @fig-space-filling-design.
+El paquete `r pkg(dials)` contiene funciones para diseños de hipercubo latino y de máxima entropía. Al igual que con `grid_random()`, las entradas principales son el número de combinaciones de parámetros y un objeto de parámetro. Comparemos un diseño aleatorio con un diseño de hipercubo latino para 20 valores de parámetros candidatos en @fig-space-filling-design.
 
 ```{r grid-sfd-compare, eval = FALSE}
 set.seed(1303)
@@ -149,7 +149,7 @@ mlp_param %>%
   geom_point() +
   geom_blank() +
   facet_matrix(vars(hidden_units, penalty, epochs), layer.diag = 2) + 
-  labs(title = "Latin Hypercube design with 20 candidates")
+  labs(title = "Diseño de Hipercubo Latino con 20 candidatos")
 ```
 
 ```{r}
@@ -158,25 +158,25 @@ mlp_param %>%
 #| fig.height: 6
 #| fig.width: 6
 #| echo: FALSE
-#| fig.cap: "Three tuning parameters with 20 points generated using a space-filling design"
-#| fig.alt: "A scatter plot matrix for three tuning parameters with 15 points generated using a space-filling design. There are fewer gaps in the parameter space when compared to the random grid."
+#| fig.cap: "Tres parámetros de ajuste con 20 puntos generados mediante un diseño que llena el espacio"
+#| fig.alt: "Una matriz de diagrama de dispersión para tres parámetros de ajuste con 15 puntos generados mediante un diseño de relleno de espacio. Hay menos espacios en el espacio de parámetros en comparación con la cuadrícula aleatoria."
 ```
 
-While not perfect, this Latin hypercube design spaces the points farther away from one another and allows a better exploration of the hyperparameter space.
+Si bien no es perfecto, este diseño de hipercubo latino aleja los puntos entre sí y permite una mejor exploración del espacio de hiperparámetros.
 
-Space-filling designs can be very effective at representing the parameter space. The default design used by the `r pkg(tune)` package is the maximum entropy design. These tend to produce grids that cover the candidate space well and drastically increase the chances of finding good results.
+Los diseños que llenan el espacio pueden ser muy eficaces para representar el espacio de parámetros. El diseño predeterminado utilizado por el paquete `r pkg(tune)` es el diseño de máxima entropía. Estos tienden a producir cuadrículas que cubren bien el espacio candidato y aumentan drásticamente las posibilidades de encontrar buenos resultados.
 
-## Evaluating the Grid {#sec-evaluating-grid}
+## Evaluación de la cuadrícula {#sec-evaluating-grid}
 
-To choose the best tuning parameter combination, each candidate set is assessed using data that were not used to train that model. Resampling methods or a single validation set work well for this purpose. The process (and syntax) closely resembles the approach in @sec-resampling-performance that used the `fit_resamples()` function from the `r pkg(tune)` package.
+Para elegir la mejor combinación de parámetros de ajuste, cada conjunto candidato se evalúa utilizando datos que no se utilizaron para entrenar ese modelo. Los métodos de remuestreo o un único conjunto de validación funcionan bien para este propósito. El proceso (y la sintaxis) se parece mucho al enfoque en @sec-resampling-performance que utilizó la función `fit_resamples()` del paquete `r pkg(tune)`.
 
-After resampling, the user selects the most appropriate candidate parameter set. It might make sense to choose the empirically best parameter combination or bias the choice towards other aspects of the model fit, such as simplicity.
+Después del remuestreo, el usuario selecciona el conjunto de parámetros candidatos más apropiado. Podría tener sentido elegir la mejor combinación de parámetros empíricamente o sesgar la elección hacia otros aspectos del ajuste del modelo, como la simplicidad.
 
-We use a classification data set to demonstrate model tuning in this and the next chapter. The data come from @Hill, who developed an automated microscopy laboratory tool for cancer research. The data consists of 56 imaging measurements on 2019 human breast cancer cells. These predictors represent shape and intensity characteristics of different parts of the cells (e.g., the nucleus, the cell boundary, etc.). There is a high degree of correlation between the predictors. For example, there are several different predictors that measure the size and shape of the nucleus and cell boundary. Also, individually, many predictors have skewed distributions.
+Usamos un conjunto de datos de clasificación para demostrar el ajuste del modelo en este y el próximo capítulo. Los datos provienen de @Hill, quien desarrolló una herramienta de laboratorio de microscopía automatizada para la investigación del cáncer. Los datos consisten en 56 mediciones de imágenes de 2019 células de cáncer de mama humano. Estos predictores representan características de forma e intensidad de diferentes partes de las células (por ejemplo, el núcleo, el límite celular, etc.). Existe un alto grado de correlación entre los predictores. Por ejemplo, existen varios predictores diferentes que miden el tamaño y la forma del núcleo y el límite celular. Además, individualmente, muchos predictores tienen distribuciones sesgadas.
 
-Each cell belongs to one of two classes. Since this is part of an automated lab test, the focus was on prediction capability rather than inference.
+Cada celda pertenece a una de dos clases. Dado que esto es parte de una prueba de laboratorio automatizada, la atención se centró en la capacidad de predicción en lugar de la inferencia.
 
-The data are included in the `r pkg(modeldata)` package. Let's remove one column not needed for analysis (`case`):
+Los datos están incluidos en el paquete `r pkg(modeldata)`. Eliminemos una columna que no es necesaria para el análisis (`caso`):
 
 ```{r grid-cells}
 library(tidymodels)
@@ -184,20 +184,20 @@ data(cells)
 cells <- cells %>% select(-case)
 ```
 
-Given the dimensions of the data, we can compute performance metrics using 10-fold cross-validation:
+Dadas las dimensiones de los datos, podemos calcular métricas de rendimiento utilizando una validación cruzada de 10 veces:
 
 ```{r grid-cells-folds}
 set.seed(1304)
 cell_folds <- vfold_cv(cells)
 ```
 
-Because of the high degree of correlation between predictors, it makes sense to use PCA feature extraction to decorrelate the predictors. The following recipe contains steps to transform the predictors to increase symmetry, normalize them to be on the same scale, then conduct feature extraction. The number of PCA components to retain is also tuned, along with the model parameters.
+Debido al alto grado de correlación entre los predictores, tiene sentido utilizar la extracción de características PCA para descorrelacionar los predictores. La siguiente receta contiene pasos para transformar los predictores para aumentar la simetría, normalizarlos para que estén en la misma escala y luego realizar la extracción de características. También se ajusta la cantidad de componentes PCA que se conservarán, junto con los parámetros del modelo.
 
 ::: rmdwarning
-While the resulting PCA components are technically on the same scale, the lower-rank components tend to have a wider range than the higher-rank components. For this reason, we normalize again to coerce the predictors to have the same mean and variance.
+Si bien los componentes PCA resultantes están técnicamente en la misma escala, los componentes de rango inferior tienden a tener un rango más amplio que los componentes de rango superior. Por esta razón, volvemos a normalizar para obligar a los predictores a tener la misma media y varianza.
 :::
 
-Many of the predictors have skewed distributions. Since PCA is variance based, extreme values can have a detrimental effect on these calculations. To counter this, let's add a recipe step estimating a Yeo-Johnson transformation for each predictor [@yeo2000new]. While originally intended as a transformation of the outcome, it can also be used to estimate transformations that encourage more symmetric distributions. This step `step_YeoJohnson()` occurs in the recipe just prior to the initial normalization via `step_normalize()`. Then, let's combine this feature engineering recipe with our neural network model specification `mlp_spec`.
+Muchos de los predictores tienen distribuciones sesgadas. Dado que el PCA se basa en la varianza, los valores extremos pueden tener un efecto perjudicial en estos cálculos. Para contrarrestar esto, agreguemos un paso de receta que estime una transformación de Yeo-Johnson para cada predictor [@yeo2000new]. Si bien originalmente se pensó como una transformación del resultado, también se puede utilizar para estimar transformaciones que fomentan distribuciones más simétricas. Este paso `step_YeoJohnson()` ocurre en la receta justo antes de la normalización inicial mediante `step_normalize()`. Luego, combinemos esta receta de ingeniería de características con nuestra especificación de modelo de red neuronal `mlp_spec`.
 
 ```{r grid-cells-objects}
 mlp_rec <-
@@ -213,7 +213,7 @@ mlp_wflow <-
   add_recipe(mlp_rec)
 ```
 
-Let's create a parameter object `mlp_param` to adjust a few of the default ranges. We can change the number of epochs to have a smaller range (50 to 200 epochs). Also, the default range for `num_comp()` defaults to a very narrow range (one to four components); we can increase the range to 40 components and set the minimum value to zero:
+Creemos un objeto de parámetro `mlp_param` para ajustar algunos de los rangos predeterminados. Podemos cambiar el número de épocas para tener un rango más pequeño (50 a 200 épocas). Además, el rango predeterminado para `num_comp()` es un rango muy estrecho (de uno a cuatro componentes); podemos aumentar el rango a 40 componentes y establecer el valor mínimo en cero:
 
 ```{r grid-cells-workflow}
 mlp_param <- 
@@ -226,18 +226,18 @@ mlp_param <-
 ```
 
 ::: rmdnote
-In `step_pca()`, using zero PCA components is a shortcut to skip the feature extraction. In this way, the original predictors can be directly compared to the results that include PCA components.
+En `step_pca()`, usar cero componentes PCA es un atajo para omitir la extracción de funciones. De esta manera, los predictores originales se pueden comparar directamente con los resultados que incluyen componentes PCA.
 :::
 
-The `tune_grid()` function is the primary function for conducting grid search. Its functionality is very similar to `fit_resamples()` from @sec-resampling-performance, although it has additional arguments related to the grid:
+La función `tune_grid()` es la función principal para realizar búsquedas en la cuadrícula. Su funcionalidad es muy similar a `fit_resamples()` de @sec-resampling-performance, aunque tiene argumentos adicionales relacionados con la cuadrícula:
 
--   `grid`: An integer or data frame. When an integer is used, the function creates a space-filling design with `grid` number of candidate parameter combinations. If specific parameter combinations exist, the `grid` parameter is used to pass them to the function.
+-   `grid`: Un número entero o marco de datos. Cuando se utiliza un número entero, la función crea un diseño que llena el espacio con un número de `grid` de combinaciones de parámetros candidatos. Si existen combinaciones de parámetros específicas, el parámetro `grid` se utiliza para pasarlas a la función.
 
--   `param_info`: An optional argument for defining the parameter ranges. The argument is most useful when `grid` is an integer.
+-   `param_info`: Un argumento opcional para definir los rangos de parámetros. El argumento es más útil cuando `grid` es un número entero.
 
-Otherwise, the interface to `tune_grid()` is the same as `fit_resamples()`. The first argument is either a model specification or workflow. When a model is given, the second argument can be either a recipe or formula. The other required argument is an `r pkg(rsample)` resampling object (such as `cell_folds`). The following call also passes a metric set so that the area under the ROC curve is measured during resampling.
+De lo contrario, la interfaz para `tune_grid()` es la misma que `fit_resamples()`. El primer argumento es una especificación del modelo o un flujo de trabajo. Cuando se da un modelo, el segundo argumento puede ser una receta o una fórmula. El otro argumento requerido es un objeto de remuestreo `r pkg(rsample)` (como `cell_folds`). La siguiente llamada también pasa un conjunto de métricas para que el área bajo la curva ROC se mida durante el remuestreo.
 
-To start, let's evaluate a regular grid with three levels across the resamples:
+Para comenzar, evaluemos una cuadrícula regular con tres niveles en los remuestreos:
 
 ```{r grid-cells-regular}
 roc_res <- metric_set(roc_auc)
@@ -252,7 +252,7 @@ mlp_reg_tune <-
 mlp_reg_tune
 ```
 
-There are high-level convenience functions we can use to understand the results. First, the `autoplot()` method for regular grids shows the performance profiles across tuning parameters in @fig-regular-grid-plot.
+Existen funciones de conveniencia de alto nivel que podemos utilizar para comprender los resultados. Primero, el método `autoplot()` para cuadrículas regulares muestra los perfiles de rendimiento en todos los parámetros de ajuste en @fig-regular-grid-plot.
 
 ```{r grid-cells-reg-plot, eval = FALSE}
 autoplot(mlp_reg_tune) + 
@@ -265,19 +265,19 @@ autoplot(mlp_reg_tune) +
 #| ref.label: "grid-cells-reg-plot"
 #| fig.height: 7
 #| echo: FALSE
-#| fig.cap: "The regular grid results"
-#| fig.alt: "A line plot of the regular grid results. The x axis shows the number of hidden units and the y axis is the resampled ROC AUC. There are separate lines for the amount of regularization. There are nine panels for three values for the number of PCA components and the number of epochs. On average, the amount of regularization is important where more is better. Also, on average, the increasing the number of hidden units decreases model effectiveness."
+#| fig.cap: "Los resultados regulares de la cuadrícula."
+#| fig.alt: "Un gráfico de líneas de los resultados de la cuadrícula regular. El eje x muestra el número de unidades ocultas y el eje y es el AUC ROC remuestreado. Hay líneas separadas para el monto de la regularización. Hay nueve paneles para tres valores para la cantidad de componentes PCA y la cantidad de épocas. En promedio, la cantidad de regularización es importante cuando más es mejor. Además, en promedio, el aumento del número de unidades ocultas disminuye la eficacia del modelo."
 ```
 
-For these data, the amount of penalization has the largest impact on the area under the ROC curve. The number of epochs doesn't appear to have a pronounced effect on performance. The change in the number of hidden units appears to matter most when the amount of regularization is low (and harms performance). There are several parameter configurations that have roughly equivalent performance, as seen using the function `show_best()`:
+Según estos datos, el monto de la penalización tiene el mayor impacto en el área bajo la curva ROC. El número de épocas no parece tener un efecto pronunciado en el rendimiento. El cambio en el número de unidades ocultas parece ser más importante cuando la cantidad de regularización es baja (y perjudica el rendimiento). Hay varias configuraciones de parámetros que tienen un rendimiento aproximadamente equivalente, como se ve usando la función `show_best()`:
 
 ```{r grid-cells-reg-best}
 show_best(mlp_reg_tune) %>% select(-.estimator)
 ```
 
-Based on these results, it would make sense to conduct another run of grid search with larger values of the weight decay penalty.
+Con base en estos resultados, tendría sentido realizar otra ejecución de búsqueda de cuadrícula con valores mayores de penalización por disminución de peso.
 
-To use a space-filling design, either the `grid` argument can be given an integer or one of the `grid_*()` functions can produce a data frame. To evaluate the same range using a maximum entropy design with 20 candidate values:
+Para utilizar un diseño que llene el espacio, al argumento `grid` se le puede dar un número entero o una de las funciones `grid_*()` puede producir un marco de datos. Para evaluar el mismo rango utilizando un diseño de máxima entropía con 20 valores candidatos:
 
 ```{r grid-cells-sdf}
 set.seed(1306)
@@ -286,58 +286,58 @@ mlp_sfd_tune <-
   tune_grid(
     cell_folds,
     grid = 20,
-    # Pass in the parameter object to use the appropriate range: 
+    # Pase el objeto de parámetro para usar el rango apropiado: 
     param_info = mlp_param,
     metrics = roc_res
   )
 mlp_sfd_tune
 ```
 
-The `autoplot()` method will also work with these designs, although the format of the results will be different. @fig-sfd-plot was produced using `autoplot(mlp_sfd_tune)`.
+El método `autoplot()` también funcionará con estos diseños, aunque el formato de los resultados será diferente. @fig-sfd-plot se produjo usando `autoplot(mlp_sfd_tune)`.
 
 ```{r}
 #| label: fig-sfd-plot
 #| echo: FALSE
-#| fig.cap: "The `autoplot()` method results when used with a space-filling design"
-#| fig.alt: "The `autoplot()` method results when used with a space-filling design. The trends show decreasing performance with the number of PCA components as well as the number of hidden units."
+#| fig.cap: "El método `autoplot()` resulta cuando se usa con un diseño que llena el espacio"
+#| fig.alt: "El método `autoplot()` resulta cuando se usa con un diseño que llena el espacio. Las tendencias muestran un rendimiento decreciente con la cantidad de componentes PCA, así como con la cantidad de unidades ocultas."
 
 autoplot(mlp_sfd_tune)
 ```
 
-This marginal effects plot (@fig-sfd-plot) shows the relationship of each parameter with the performance metric.
+Este gráfico de efectos marginales (@fig-sfd-plot) muestra la relación de cada parámetro con la métrica de rendimiento.
 
 ::: rmdwarning
-Take care when examining this plot; since a regular grid is not used, the values of the other tuning parameters can affect each panel.
+Tenga cuidado al examinar esta trama; dado que no se utiliza una cuadrícula normal, los valores de los demás parámetros de ajuste pueden afectar a cada panel.
 :::
 
-The penalty parameter appears to result in better performance with smaller amounts of weight decay. This is the opposite of the results from the regular grid. Since each point in each panel is shared with the other three tuning parameters, the trends in one panel can be affected by the others. Using a regular grid, each point in each panel is equally averaged over the other parameters. For this reason, the effect of each parameter is better isolated with regular grids.
+El parámetro de penalización parece dar como resultado un mejor rendimiento con menores cantidades de pérdida de peso. Esto es lo opuesto a los resultados de la cuadrícula normal. Dado que cada punto de cada panel se comparte con los otros tres parámetros de ajuste, las tendencias de un panel pueden verse afectadas por los demás. Utilizando una cuadrícula regular, cada punto de cada panel se promedia por igual con respecto a los demás parámetros. Por esta razón, el efecto de cada parámetro se aísla mejor con cuadrículas regulares.
 
-As with the regular grid, `show_best()` can report on the numerically best results:
+Al igual que con la cuadrícula normal, `show_best()` puede informar sobre los mejores resultados numéricamente:
 
 ```{r grid-cells-sdf-best}
 show_best(mlp_sfd_tune) %>% select(-.estimator)
 ```
 
-Generally, it is a good idea to evaluate the models over multiple metrics so that different aspects of the model fit are taken into account. Also, it often makes sense to choose a slightly suboptimal parameter combination that is associated with a simpler model. For this model, simplicity corresponds to larger penalty values and/or fewer hidden units.
+Generalmente, es una buena idea evaluar los modelos según múltiples métricas para tener en cuenta diferentes aspectos del ajuste del modelo. Además, a menudo tiene sentido elegir una combinación de parámetros ligeramente subóptima asociada con un modelo más simple. Para este modelo, la simplicidad corresponde a valores de penalización mayores y/o menos unidades ocultas.
 
-As with the results from `fit_resamples()`, there is usually no value in retaining the intermediary model fits across the resamples and tuning parameters. However, as before, the `extract` option to `control_grid()` allows the retention of the fitted models and/or recipes. Also, setting the `save_pred` option to `TRUE` retains the assessment set predictions and these can be accessed using `collect_predictions()`.
+Al igual que con los resultados de `fit_resamples()`, normalmente no tiene ningún valor conservar los ajustes del modelo intermediario entre los remuestreos y los parámetros de ajuste. Sin embargo, como antes, la opción `extraer` de `control_grid()` permite conservar los modelos y/o recetas ajustados. Además, configurar la opción `save_pred` en `TRUE` conserva las predicciones del conjunto de evaluación y se puede acceder a ellas usando `collect_predictions()`.
 
-## Finalizing the Model
+## Finalizando el modelo
 
-If one of the sets of possible model parameters found via `show_best()` were an attractive final option for these data, we might wish to evaluate how well it does on the test set. However, the results of `tune_grid()` only provide the substrate to choose appropriate tuning parameters. The function *does not fit* a final model.
+Si uno de los conjuntos de posibles parámetros del modelo encontrados mediante `show_best()` fuera una opción final atractiva para estos datos, es posible que deseemos evaluar qué tan bien funciona en el conjunto de prueba. Sin embargo, los resultados de `tune_grid()` solo proporcionan el sustrato para elegir los parámetros de ajuste apropiados. La función *no se ajusta* a un modelo final.
 
-To fit a final model, a final set of parameter values must be determined. There are two methods to do so:
+Para ajustar un modelo final, se debe determinar un conjunto final de valores de parámetros. Hay dos métodos para hacerlo:
 
--   manually pick values that appear appropriate or
--   use a `select_*()` function.
+-   seleccionar manualmente los valores que parezcan apropiados o
+-   utilice una función `select_*()`.
 
-For example, `select_best()` will choose the parameters with the numerically best results. Let's go back to our regular grid results and see which one is best:
+Por ejemplo, `select_best()` elegirá los parámetros con los mejores resultados numéricamente. Volvamos a nuestros resultados habituales de la cuadrícula y veamos cuál es mejor:
 
 ```{r grid-select}
 select_best(mlp_reg_tune, metric = "roc_auc")
 ```
 
-Looking back at @fig-regular-grid-plot, we can see that a model with a single hidden unit trained for 125 epochs on the original predictors with a large amount of penalization has performance competitive with this option, and is simpler. This is basically penalized logistic regression! To manually specify these parameters, we can create a tibble with these values and then use a *finalization* function to splice the values back into the workflow:
+Mirando hacia atrás en @fig-regular-grid-plot, podemos ver que un modelo con una sola unidad oculta entrenada durante 125 épocas en los predictores originales con una gran cantidad de penalización tiene un rendimiento competitivo con esta opción y es más simple. ¡Esto es básicamente una regresión logística penalizada! Para especificar manualmente estos parámetros, podemos crear un tibble con estos valores y luego usar una función de *finalización* para unir los valores nuevamente en el flujo de trabajo:
 
 ```{r grid-finalize-manual}
 logistic_param <- 
@@ -354,7 +354,7 @@ final_mlp_wflow <-
 final_mlp_wflow
 ```
 
-No more values of `tune()` are included in this finalized workflow. Now the model can be fit to the entire training set:
+No se incluyen más valores de `tune()` en este flujo de trabajo finalizado. Ahora el modelo se puede ajustar a todo el conjunto de entrenamiento:
 
 ```{r grid-final-model}
 final_mlp_fit <- 
@@ -362,15 +362,15 @@ final_mlp_fit <-
   fit(cells)
 ```
 
-This object can now be used to make future predictions on new data.
+Este objeto ahora se puede utilizar para hacer predicciones futuras sobre nuevos datos.
 
-If you did not use a workflow, finalization of a model and/or recipe is done using `finalize_model()` and `finalize_recipe()`.
+Si no usó un flujo de trabajo, la finalización de un modelo y/o receta se realiza usando `finalize_model()` y `finalize_recipe()`.
 
-## Tools for Creating Tuning Specifications {#sec-tuning-usemodels}
+## Herramientas para crear especificaciones de ajuste {#sec-tuning-usemodels}
 
-The `r pkg(usemodels)` package can take a data frame and model formula, then write out R code for tuning the model. The code also creates an appropriate recipe whose steps depend on the requested model as well as the predictor data.
+El paquete `r pkg(usemodels)` puede tomar un marco de datos y una fórmula de modelo, luego escribir código R para ajustar el modelo. El código también crea una receta adecuada cuyos pasos dependen del modelo solicitado, así como de los datos del predictor.
 
-For example, for the Ames housing data, `xgboost` modeling code could be created with:
+Por ejemplo, para los datos de vivienda de Ames, el código de modelado `xgboost` podría crearse con:
 
 ```{r models-use-models-code, eval = FALSE}
 library(usemodels)
@@ -378,23 +378,24 @@ library(usemodels)
 use_xgboost(Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type + 
               Latitude + Longitude, 
             data = ames_train,
-            # Add comments explaining some of the code:
+            # Agregue comentarios que expliquen parte del código:
             verbose = TRUE)
 ```
 
-The resulting code is as follows:
+El código resultante es el siguiente:
 
 ```{r models-use-models-res, eval = FALSE}
 xgboost_recipe <- 
   recipe(formula = Sale_Price ~ Neighborhood + Gr_Liv_Area + Year_Built + Bldg_Type + 
     Latitude + Longitude, data = ames_train) %>% 
   step_novel(all_nominal_predictors()) %>% 
-  ## This model requires the predictors to be numeric. The most common 
-  ## method to convert qualitative predictors to numeric is to create 
-  ## binary indicator variables (aka dummy variables) from these 
-  ## predictors. However, for this model, binary indicator variables can be 
-  ## made for each of the levels of the factors (known as 'one-hot 
-  ## encoding'). 
+  ## Este modelo requiere que los predictores sean numéricos. 
+  ## El método más común para convertir predictores cualitativos 
+  ## en numéricos es crear variables indicadoras binarias 
+  ## (también conocidas como variables ficticias) a partir de estos 
+  ## predictores. Sin embargo, para este modelo, se pueden crear 
+  ## variables indicadoras binarias para cada uno de los niveles de 
+  ## los factores (lo que se conoce como "codificación one-hot").
   step_dummy(all_nominal_predictors(), one_hot = TRUE) %>% 
   step_zv(all_predictors()) 
 
@@ -412,37 +413,37 @@ xgboost_workflow <-
 set.seed(69305)
 xgboost_tune <-
   tune_grid(xgboost_workflow, 
-            resamples = stop("add your rsample object"), 
-            grid = stop("add number of candidate points"))
+            resamples = stop("agregue su objeto rsample"), 
+            grid = stop("agregar número de puntos candidatos"))
 ```
 
-Based on what `r pkg(usemodels)` understands about the data, this code is the minimal preprocessing required. For other models, operations like `step_normalize()` are added to fulfill the basic needs of the model. Notice that it is our responsibility, as the modeling practitioner, to choose what `resamples` to use for tuning, as well as what kind of `grid`.
+Según lo que entiende `r pkg(usemodels)` sobre los datos, este código es el preprocesamiento mínimo requerido. Para otros modelos, se agregan operaciones como `step_normalize()` para satisfacer las necesidades básicas del modelo. Tenga en cuenta que es nuestra responsabilidad, como practicante del modelado, elegir qué remuestras, `resamples`, usar para la afinación, así como qué tipo de cuadrícula, `grid`.
 
 ::: rmdnote
-The `r pkg(usemodels)` package can also be used to create model fitting code with no tuning by setting the argument `tune = FALSE`.
+El paquete `r pkg(usemodels)` también se puede utilizar para crear código de ajuste de modelo sin ajuste estableciendo el argumento `tune = FALSE`.
 :::
 
-## Tools for Efficient Grid Search {#sec-efficient-grids}
+## Herramientas para una búsqueda eficiente en la cuadrícula {#sec-efficient-grids}
 
-It is possible to make grid search more computationally efficient by applying a few different tricks and optimizations. This section describes several techniques.
+Es posible hacer que la búsqueda en cuadrícula sea más eficiente desde el punto de vista computacional aplicando algunos trucos y optimizaciones diferentes. Esta sección describe varias técnicas.
 
-### Submodel optimization {#sec-submodel-trick}
+### Optimización del submodelo {#sec-submodel-trick}
 
-There are types of models where, from a single model fit, multiple tuning parameters can be evaluated without refitting.
+Hay tipos de modelos en los que, a partir de un único ajuste de modelo, se pueden evaluar múltiples parámetros de ajuste sin necesidad de reajustarlos.
 
-For example, partial least squares (PLS) is a supervised version of principal component analysis [@Geladi:1986]. It creates components that maximize the variation in the predictors (like PCA) but simultaneously tries to maximize the correlation between these predictors and the outcome. We'll explore PLS more in [Chapter @sec-dimensionality]. One tuning parameter is the number of PLS components to retain. Suppose that a data set with 100 predictors is fit using PLS. The number of possible components to retain can range from one to fifty. However, in many implementations, a single model fit can compute predicted values across many values of `num_comp`. As a result, a PLS model created with 100 components can also make predictions for any `num_comp <= 100`. This saves time since, instead of creating redundant model fits, a single fit can be used to evaluate many submodels.
+Por ejemplo, los mínimos cuadrados parciales (PLS) son una versión supervisada del análisis de componentes principales [@Geladi:1986]. Crea componentes que maximizan la variación en los predictores (como PCA) pero simultáneamente intenta maximizar la correlación entre estos predictores y el resultado. Exploraremos más PLS en el [Capítulo @sec-dimensionality]. Un parámetro de ajuste es el número de componentes PLS que se conservarán. Supongamos que un conjunto de datos con 100 predictores se ajusta mediante PLS. El número de posibles componentes a conservar puede oscilar entre uno y cincuenta. Sin embargo, en muchas implementaciones, un único ajuste de modelo puede calcular valores predichos en muchos valores de `num_comp`. Como resultado, un modelo PLS creado con 100 componentes también puede hacer predicciones para cualquier `num_comp <= 100`. Esto ahorra tiempo ya que, en lugar de crear ajustes de modelo redundantes, se puede utilizar un ajuste único para evaluar muchos submodelos.
 
-While not all models can exploit this feature, many broadly used ones do.
+Si bien no todos los modelos pueden aprovechar esta característica, muchos de los más utilizados sí lo hacen.
 
--   Boosting models can typically make predictions across multiple values for the number of boosting iterations.
+-   Los modelos de impulso normalmente pueden hacer predicciones en múltiples valores para el número de iteraciones de impulso.
 
--   Regularization methods, such as the `r pkg(glmnet)` model, can make simultaneous predictions across the amount of regularization used to fit the model.
+-   Los métodos de regularización, como el modelo `r pkg(glmnet)`, pueden realizar predicciones simultáneas sobre la cantidad de regularización utilizada para ajustar el modelo.
 
--   Multivariate adaptive regression splines (MARS) adds a set of nonlinear features to linear regression models [@Friedman:1991p109]. The number of terms to retain is a tuning parameter, and it is computationally fast to make predictions across many values of this parameter from a single model fit.
+-   Los splines de regresión adaptativa multivariada (MARS) añaden un conjunto de características no lineales a los modelos de regresión lineal [@Friedman:1991p109]. El número de términos a retener es un parámetro de ajuste y es computacionalmente rápido hacer predicciones sobre muchos valores de este parámetro a partir de un único ajuste de modelo.
 
-The `r pkg(tune)` package automatically applies this type of optimization whenever an applicable model is tuned.
+El paquete `r pkg(tune)` aplica automáticamente este tipo de optimización cada vez que se ajusta un modelo aplicable.
 
-For example, if a boosted C5.0 classification model [@apm] was fit to the cell data, we can tune the number of boosting iterations (`trees`). With all other parameters set at their default values, we can evaluate iterations from 1 to 100 on the same resamples as used previously:
+Por ejemplo, si se ajustó un modelo de clasificación C5.0 mejorado [@apm] a los datos de la celda, podemos ajustar el número de iteraciones de refuerzo ("árboles"). Con todos los demás parámetros establecidos en sus valores predeterminados, podemos evaluar iteraciones de 1 a 100 en las mismas muestras utilizadas anteriormente:
 
 ```{r grid-c5, eval = FALSE}
 c5_spec <- 
@@ -460,40 +461,40 @@ c5_spec %>%
   )
 ```
 
-Without the submodel optimization, the call to `tune_grid()` used `r round(3734.249/60, 1)` minutes to resample 100 submodels. With the optimization, the same call took 100 *seconds* (a `r round(3734.249/100.147, 0)`-fold speed-up). The reduced time is the difference in `tune_grid()` fitting 1000 models versus 10 models.
+Sin la optimización del submodelo, la llamada a `tune_grid()` usó `r round(3734.249/60, 1)` minutos para volver a muestrear 100 submodelos. Con la optimización, la misma llamada tomó 100 *segundos* (una aceleración de `r round(3734.249/100.147, 0)`). El tiempo reducido es la diferencia entre `tune_grid()` que ajusta 1000 modelos frente a 10 modelos.
 
 ::: rmdnote
-Even though we fit the model with and without the submodel prediction trick, this optimization is automatically applied by `r pkg(parsnip)`.
+Aunque ajustamos el modelo con y sin el truco de predicción del submodelo, esta optimización se aplica automáticamente mediante `r pkg(parsnip)`.
 :::
 
-### Parallel processing
+### Procesamiento en paralelo
 
-As previously mentioned in @sec-parallel, parallel processing is an effective method for decreasing execution time when resampling models. This advantage conveys to model tuning via grid search, although there are additional considerations.
+Como se mencionó anteriormente en @sec-parallel, el procesamiento paralelo es un método eficaz para disminuir el tiempo de ejecución al volver a muestrear modelos. Esta ventaja se transmite al ajuste del modelo mediante búsqueda en cuadrícula, aunque existen consideraciones adicionales.
 
-Let's consider two different parallel processing schemes.
+Consideremos dos esquemas de procesamiento paralelo diferentes.
 
-When tuning models via grid search, there are two distinct loops: one over resamples and another over the unique tuning parameter combinations. In pseudocode, this process would look like:
+Al ajustar modelos mediante búsqueda de cuadrícula, hay dos bucles distintos: uno sobre remuestreos y otro sobre combinaciones únicas de parámetros de ajuste. En pseudocódigo, este proceso se vería así:
 
 ```{r grid-resamples-algo, eval = FALSE}
 for (rs in resamples) {
-  # Create analysis and assessment sets
-  # Preprocess data (e.g. formula or recipe)
+  # Crear conjuntos de análisis y evaluación.
+  # Preprocesar datos (por ejemplo, fórmula o receta)
   for (mod in configurations) {
-    # Fit model {mod} to the {rs} analysis set
-    # Predict the {rs} assessment set
+    # Ajustar el modelo {mod} al conjunto de análisis {rs}
+    # Predecir el conjunto de evaluación {rs}
   }
 }
 ```
 
-By default, the `r pkg(tune)` package parallelizes only over resamples (the outer loop), as opposed to both the outer and inner loops.
+De forma predeterminada, el paquete `r pkg(tune)` paraleliza solo sobre remuestreos (el bucle externo), a diferencia de los bucles externo e interno.
 
-This is the optimal scenario when the preprocessing method is expensive. However, there are two potential downsides to this approach:
+Este es el escenario óptimo cuando el método de preprocesamiento es costoso. Sin embargo, este enfoque tiene dos posibles desventajas:
 
--   It limits the achievable speed-ups when the preprocessing is not expensive.
+-   Limita las aceleraciones alcanzables cuando el preprocesamiento no es caro.
 
--   The number of parallel workers is limited by the number of resamples. For example, with 10-fold cross-validation you can use only 10 parallel workers even when the computer has more than 10 cores.
+-   El número de trabajadores paralelos está limitado por el número de remuestras. Por ejemplo, con una validación cruzada de 10 veces, puede utilizar solo 10 trabajadores paralelos incluso cuando la computadora tiene más de 10 núcleos.
 
-To illustrate how the parallel processing works, we'll use a case where there are 7 model tuning parameter values, with 5-fold cross-validation. @fig-one-resample-per-worker shows how the tasks are allocated to the worker processes.
+Para ilustrar cómo funciona el procesamiento paralelo, usaremos un caso en el que hay 7 valores de parámetros de ajuste del modelo, con validación cruzada quíntuple. @fig-one-resample-per-worker muestra cómo se asignan las tareas a los procesos de trabajo.
 
 ```{r}
 #| label: fig-one-resample-per-worker
@@ -502,8 +503,8 @@ To illustrate how the parallel processing works, we'll use a case where there ar
 #| fig.width: 5 
 #| fig.height: 4 
 #| out.width: "50%"
-#| fig.cap: "Worker processes when parallel processing matches resamples to a specific worker process"
-#| fig.alt: "A diagram of the worker processes when parallel processing matches resamples to a specific worker process. After the preprocess operations are finished, each model fit is executed on the same worker process."
+#| fig.cap: "Procesos de trabajo cuando el procesamiento paralelo hace coincidir los remuestreos con un proceso de trabajo específico"
+#| fig.alt: "Un diagrama de los procesos de trabajo cuando el procesamiento paralelo coincide con los remuestreos de un proceso de trabajo específico. Una vez finalizadas las operaciones de preproceso, cada ajuste de modelo se ejecuta en el mismo proceso de trabajo."
 
 load("extras/parallel_times/resamples_times.RData")
 
@@ -511,33 +512,33 @@ resamples_times %>%
   dplyr::rename(operation = label) %>% 
   ggplot(aes(y = id_alt, x = duration, fill = operation)) +
   geom_bar(stat = "identity", color = "black") +
-  labs(y = NULL, x = "Elapsed Time") + 
+  labs(y = NULL, x = "Tiempo Transcurrido") + 
   scale_fill_brewer(palette = "Paired") +
   theme(legend.position = "top")
 ```
 
-Note that each fold is assigned to its own worker process and, since only model parameters are being tuned, the preprocessing is conducted once per fold/worker. If fewer than five worker processes were used, some workers would receive multiple folds.
+Tenga en cuenta que cada pliegue se asigna a su propio proceso de trabajo y, dado que solo se están ajustando los parámetros del modelo, el preprocesamiento se realiza una vez por pliegue/trabajador. Si se utilizaran menos de cinco procesos de trabajo, algunos trabajadores recibirían múltiples pliegues.
 
-In the control functions for the `tune_*()` functions, the argument `parallel_over` controls how the process is executed. To use the previous parallelization strategy, the argument is `parallel_over = "resamples"`.
+En las funciones de control para las funciones `tune_*()`, el argumento `parallel_over` controla cómo se ejecuta el proceso. Para utilizar la estrategia de paralelización anterior, el argumento es `parallel_over = "resamples"`.
 
-Instead of parallel processing the resamples, an alternate scheme combines the loops over resamples and models into a single loop. In pseudocode, this process would look like:
+En lugar de procesar los remuestreos en paralelo, un esquema alternativo combina los bucles sobre los remuestreos y los modelos en un solo bucle. En pseudocódigo, este proceso se vería así:
 
 ```{r grid-everything-algo, eval = FALSE}
 all_tasks <- crossing(resamples, configurations)
 
 for (iter in all_tasks) {                           
-  # Create analysis and assessment sets for {iter}
-  # Preprocess data (e.g. formula or recipe)
-  # Fit model {iter} to the {iter} analysis set
-  # Predict the {iter} assessment set
+  # Crear conjuntos de análisis y evaluación para {iter}
+  # Preprocesar datos (e.j. formula or recipe)
+  # Ajustar el modelo {iter} al conjunto de análisis {iter}
+  # Predecir el conjunto de evaluación {iter}
 }
 ```
 
-In this case, parallelization now occurs over the single loop. For example, if we use 5-fold cross-validation with $M$ tuning parameter values, the loop is executed over $5\times M$ iterations. This increases the number of potential workers that can be used. However, the work related to data preprocessing is repeated multiple times. If those steps are expensive, this approach will be inefficient.
+En este caso, la paralelización se produce ahora en un bucle único. Por ejemplo, si utilizamos validación cruzada quíntuple con valores de parámetros de ajuste $M$, el bucle se ejecuta en $5\times M$ iteraciones. Esto aumenta el número de trabajadores potenciales que se pueden utilizar. Sin embargo, el trabajo relacionado con el preprocesamiento de datos se repite varias veces. Si esas medidas son costosas, este enfoque será ineficiente.
 
-In tidymodels, validation sets are treated as a single resample. In these cases, this parallelization scheme would be best.
+En tidymodels, los conjuntos de validación se tratan como un único remuestreo. En estos casos, este esquema de paralelización sería el mejor.
 
-@fig-distributed-tasks illustrates the delegation of tasks to the workers in this scheme; the same example is used but with 10 workers.
+@fig-distributed-tasks ilustra la delegación de tareas a los trabajadores en este plan; se utiliza el mismo ejemplo pero con 10 trabajadores.
 
 ```{r}
 #| label: fig-distributed-tasks
@@ -545,8 +546,8 @@ In tidymodels, validation sets are treated as a single resample. In these cases,
 #| message: FALSE 
 #| fig.height: 7 
 #| out.width: "70%"
-#| fig.cap: "Worker processes when preprocessing and modeling tasks are distributed to many workers"
-#| fig.alt: "A diagram of the worker processes when preprocessing and modeling tasks are distributed to many workers. In this instance, more comprehensive parallelization is used but some preprocessing tasks are repeated across worker processes."
+#| fig.cap: "Procesos de trabajo cuando las tareas de preprocesamiento y modelado se distribuyen a muchos trabajadores"
+#| fig.alt: "Un diagrama de los procesos de los trabajadores cuando las tareas de preprocesamiento y modelado se distribuyen a muchos trabajadores. En este caso, se utiliza una paralelización más completa, pero algunas tareas de preprocesamiento se repiten en todos los procesos de trabajo."
 
 load("extras/parallel_times/everything_times.RData")
 
@@ -628,30 +629,30 @@ start_stop_dat %>%
   color = "black"
  ) +
  facet_wrap(~ pid, nrow = 2) +
- labs(y = NULL, x = "Elapsed Time") + 
+ labs(y = NULL, x = "Tiempo Transcurrido") + 
  scale_fill_brewer(palette = "Paired") +
  scale_y_continuous(breaks = 1:5, labels = paste("Fold", 1:5)) +
  theme_bw() +
  theme(legend.position = "top", panel.grid.minor = element_blank())
 ```
 
-Here, each worker process handles multiple folds, and the preprocessing is needlessly repeated. For example, for the first fold, the preprocessing was computed `r xfun::numbers_to_words(repeats)` times instead of once.
+Aquí, cada proceso de trabajo maneja múltiples pliegues y el preprocesamiento se repite innecesariamente. Por ejemplo, para el primer pliegue, el preprocesamiento se calculó `r xfun::numbers_to_words(repeats)` veces en lugar de una vez.
 
-For this scheme, the control function argument is `parallel_over = "everything"`.
+Para este esquema, el argumento de la función de control es `parallel_over = "everything"`.
 
-### Benchmarking boosted trees
+### Evaluación comparativa de árboles potenciados
 
-To compare different possible parallelization schemes, we tuned a boosted tree with the `r pkg(xgboost)` engine using a data set of 4,000 samples, with 5-fold cross-validation and 10 candidate models. These data required some baseline preprocessing that did not require any estimation. The preprocessing was handled three different ways:
+Para comparar diferentes esquemas de paralelización posibles, ajustamos un árbol potenciado con el motor `r pkg(xgboost)` utilizando un conjunto de datos de 4000 muestras, con validación cruzada quíntuple y 10 modelos candidatos. Estos datos requirieron algún procesamiento previo de referencia que no requirió ninguna estimación. El preprocesamiento se manejó de tres maneras diferentes:
 
-1.  Preprocess the data prior to modeling using a `r pkg(dplyr)` pipeline (labeled as "none" in the later plots).
-2.  Conduct the same preprocessing via a recipe (shown as "light" preprocessing).
-3.  With a recipe, add an additional step that has a high computational cost (labeled as "expensive").
+1.  Preprocese los datos antes de modelar utilizando una canalización `r pkg(dplyr)` (etiquetada como "ninguna" en los gráficos posteriores).
+2.  Realice el mismo preprocesamiento mediante una receta (que se muestra como preprocesamiento "ligero").
+3.  Con una receta, agregar un paso adicional que tenga un alto costo computacional (etiquetado como "caro").
 
-The first and second preprocessing options are designed for comparison, to measure the computational cost of the recipe in the second option. The third option measures the cost of performing redundant computations with `parallel_over = "everything"`.
+La primera y segunda opciones de preprocesamiento están diseñadas para comparar, para medir el costo computacional de la receta en la segunda opción. La tercera opción mide el costo de realizar cálculos redundantes con `parallel_over = "everything"`.
 
-We evaluated this process using variable numbers of worker processes and using the two `parallel_over` options, on a computer with 10 physical cores and 20 virtual cores (via hyper-threading).
+Evaluamos este proceso usando números variables de procesos de trabajo y usando las dos opciones `parallel_over`, en una computadora con 10 núcleos físicos y 20 núcleos virtuales (mediante hyper-threading).
 
-First, let's consider the raw execution times in @fig-parallel-times.
+Primero, consideremos los tiempos de ejecución sin procesar en @fig-parallel-times.
 
 ```{r}
 #| label: fig-parallel-times
@@ -659,32 +660,32 @@ First, let's consider the raw execution times in @fig-parallel-times.
 #| message: FALSE 
 #| fig.height: 4 
 #| out.width: "70%"
-#| fig.cap: "Execution times for model tuning versus the number of workers using different delegation schemes"
-#| fig.alt: "Execution times for model tuning versus the number of workers using different delegation schemes."
+#| fig.cap: "Tiempos de ejecución para el ajuste del modelo versus la cantidad de trabajadores que utilizan diferentes esquemas de delegación"
+#| fig.alt: "Tiempos de ejecución para el ajuste del modelo versus la cantidad de trabajadores que utilizan diferentes esquemas de delegación."
 
 load("extras/parallel_times/xgb_times.RData")
 ggplot(times, aes(x = num_cores, y = elapsed, color = parallel_over, shape = parallel_over)) + 
   geom_point(size = 2) + 
   geom_line() +
   facet_wrap(~ preprocessing) + 
-  labs(x = "Number of Workers", y = "Execution Time (s)") + 
+  labs(x = "Numero de Trabajadores", y = "Tiempo de Ejecución") + 
   scale_y_log10() + 
   scale_color_manual(values = c("#7FC97F", "#386CB0")) +
   theme_bw() + 
   theme(legend.position = "top")
 ```
 
-Since there were only five resamples, the number of cores used when `parallel_over = "resamples"` is limited to five.
+Dado que solo hubo cinco remuestreos, el número de núcleos utilizados cuando `parallel_over = "resamples"` está limitado a cinco.
 
-Comparing the curves in the first two panels for "none" and "light":
+Comparando las curvas en los dos primeros paneles para "none" y "light":
 
--   There is little difference in the execution times between the panels. This indicates, for these data, there is no real computational penalty for doing the preprocessing steps in a recipe.
+-   Hay poca diferencia en los tiempos de ejecución entre los paneles. Esto indica que, para estos datos, no existe una penalización computacional real por realizar los pasos de preprocesamiento en una receta.
 
--   There is some benefit for using `parallel_over = "everything"` with many cores. However, as shown in the figure, the majority of the benefit of parallel processing occurs in the first five workers.
+-   Hay algunos beneficios al usar `parallel_over = "everything"` con muchos núcleos. Sin embargo, como se muestra en la figura, la mayor parte del beneficio del procesamiento paralelo ocurre en los primeros cinco trabajadores.
 
-With the expensive preprocessing step, there is a considerable difference in execution times. Using `parallel_over = "everything"` is problematic since, even using all cores, it never achieves the execution time that `parallel_over = "resamples"` attains with just five cores. This is because the costly preprocessing step is unnecessarily repeated in the computational scheme.
+Con el costoso paso de preprocesamiento, existe una diferencia considerable en los tiempos de ejecución. Usar `parallel_over = "everything"` es problemático ya que, incluso usando todos los núcleos, nunca alcanza el tiempo de ejecución que `parallel_over = "resamples"` logra con solo cinco núcleos. Esto se debe a que el costoso paso de preprocesamiento se repite innecesariamente en el esquema computacional.
 
-We can also view these data in terms of speed-ups in @fig-parallel-speedups.
+También podemos ver estos datos en términos de aceleraciones en @fig-parallel-speedups.
 
 ```{r}
 #| label: fig-parallel-speedups
@@ -692,8 +693,8 @@ We can also view these data in terms of speed-ups in @fig-parallel-speedups.
 #| message: FALSE 
 #| fig.height: 4 
 #| out.width: "70%"
-#| fig.cap: "Speed-ups for model tuning versus the number of workers using different delegation schemes. The diagonal black line indicates a linear speedup where the addition of a new worker process has maximal effect."
-#| fig.alt: "Speed-ups for model tuning versus the number of workers using different delegation schemes. The diagonal black line indicates a linear speedup where the addition of a new worker process has maximal effect. The 'everything' scheme shows that the benefits decrease after three or four workers, especially when there is expensive preprocessing. The 'resamples' scheme has almost linear speedups across all tasks."
+#| fig.cap: "Aceleraciones en el ajuste del modelo frente al número de trabajadores que utilizan diferentes esquemas de delegación. La línea negra diagonal indica una aceleración lineal donde la adición de un nuevo proceso de trabajo tiene el máximo efecto."
+#| fig.alt: "Aceleraciones en el ajuste del modelo frente al número de trabajadores que utilizan diferentes esquemas de delegación. La línea negra diagonal indica una aceleración lineal donde la adición de un nuevo proceso de trabajo tiene el máximo efecto. El esquema 'todo' muestra que los beneficios disminuyen después de tres o cuatro trabajadores, especialmente cuando hay un procesamiento previo costoso. El esquema de 'nuevas muestras' tiene aceleraciones casi lineales en todas las tareas."
 
 ggplot(times, aes(x = num_cores, y = speed_up, color = parallel_over, shape = parallel_over)) + 
   geom_abline(lty = 1) + 
@@ -702,27 +703,27 @@ ggplot(times, aes(x = num_cores, y = speed_up, color = parallel_over, shape = pa
   facet_wrap(~ preprocessing) + 
   coord_obs_pred() + 
   scale_color_manual(values = c("#7FC97F", "#386CB0")) +
-  labs(x = "Number of Workers", y = "Speed-up")  +
+  labs(x = "Numero de Trabajadores", y = "Aceleraciones")  +
   theme(legend.position = "top")
 ```
 
-The best speed-ups, for these data, occur when `parallel_over = "resamples"` and when the computations are expensive. However, in the latter case, remember that the previous analysis indicates that the overall model fits are slower.
+Las mejores aceleraciones, para estos datos, ocurren cuando `parallel_over = "resamples"` y cuando los cálculos son costosos. Sin embargo, en este último caso, recuerde que el análisis anterior indica que los ajustes generales del modelo son más lentos.
 
-What is the benefit of using the submodel optimization method in conjunction with parallel processing? The C5.0 classification model shown in @sec-submodel-trick was also run in parallel with ten workers. The parallel computations took 13.3 seconds for a `r round(100.147/13.265, 1)`-fold speed-up (both runs used the submodel optimization trick). Between the submodel optimization trick and parallel processing, there was a total `r round(3734.249/13.265, 0)`-fold speed-up over the most basic grid search code.
+¿Cuál es el beneficio de utilizar el método de optimización de submodelos junto con el procesamiento paralelo? El modelo de clasificación C5.0 que se muestra en @sec-submodel-trick también se ejecutó en paralelo con diez trabajadores. Los cálculos paralelos tomaron 13,3 segundos para acelerar `r round(100.147/13.265, 1)` (ambas ejecuciones utilizaron el truco de optimización del submodelo). Entre el truco de optimización del submodelo y el procesamiento paralelo, hubo una aceleración total de `r round(3734.249/13.265, 0)` sobre el código de búsqueda de cuadrícula más básico.
 
 ::: rmdwarning
-Overall, note that the increased computational savings will vary from model to model and are also affected by the size of the grid, the number of resamples, etc. A very computationally efficient model may not benefit as much from parallel processing.
+En general, tenga en cuenta que el aumento de los ahorros computacionales variará de un modelo a otro y también se verá afectado por el tamaño de la cuadrícula, la cantidad de remuestreos, etc. Es posible que un modelo muy eficiente desde el punto de vista computacional no se beneficie tanto del procesamiento paralelo.
 :::
 
-### Access to global variables
+### Acceso a variables globales
 
-When using tidymodels, it is possible to use values in your local environment (usually the global environment) in model objects.
+Cuando se utilizan tidymodels, es posible utilizar valores en su entorno local (normalmente el entorno global) en los objetos del modelo.
 
 ::: rmdnote
-What do we mean by "environment" here? Think of an environment in R as a place to store variables that you can work with. See the "Environments" chapter of @wickham2019advanced to learn more.
+¿Qué entendemos aquí por "medio ambiente"? Piense en un entorno en R como un lugar para almacenar variables con las que puede trabajar. Consulte el capítulo "Entornos" de @wickham2019advanced para obtener más información.
 :::
 
-If we define a variable to use as a model parameter and then pass it to a function like `linear_reg()`, the variable is typically defined in the global environment.
+Si definimos una variable para usar como parámetro del modelo y luego la pasamos a una función como `linear_reg()`, la variable normalmente se define en el entorno global.
 
 ```{r grid-spec-global}
 coef_penalty <- 0.1
@@ -730,26 +731,26 @@ spec <- linear_reg(penalty = coef_penalty) %>% set_engine("glmnet")
 spec
 ```
 
-Models created with the parsnip package save arguments like these as *quosures*; these are objects that track both the name of the object as well as the environment where it lives:
+Los modelos creados con el paquete parsnip guardan argumentos como estos como *quosures*; se trata de objetos que rastrean tanto el nombre del objeto como el entorno donde vive:
 
 ```{r grid-spec-quo}
 spec$args$penalty
 ```
 
-Notice that we have `env:  global` because this variable was created in the global environment. The model specification defined by `spec` works correctly when run in a user's regular session because that session is also using the global environment; R can easily find the object `coef_penalty`.
+Observe que tenemos `env: global` porque esta variable se creó en el entorno global. La especificación del modelo definida por `spec` funciona correctamente cuando se ejecuta en la sesión normal de un usuario porque esa sesión también utiliza el entorno global; R puede encontrar fácilmente el objeto `coef_penalty`.
 
 ::: rmdwarning
-When such a model is evaluated with parallel workers, it may fail. Depending on the particular technology that is used for parallel processing, the workers may not have access to the global environment.
+Cuando un modelo de este tipo se evalúa con trabajadores paralelos, puede fallar. Dependiendo de la tecnología particular que se utilice para el procesamiento paralelo, es posible que los trabajadores no tengan acceso al entorno global.
 :::
 
-When writing code that will be run in parallel, it is a good idea to insert the actual data into the objects rather than the reference to the object. The `r pkg(rlang)` and `r pkg(dplyr)` packages can be very helpful for this. For example, the `!!` operator can splice a single value into an object:
+Al escribir código que se ejecutará en paralelo, es una buena idea insertar los datos reales en los objetos en lugar de la referencia al objeto. Los paquetes `r pkg(rlang)` y `r pkg(dplyr)` pueden resultar muy útiles para esto. Por ejemplo, el operador `!!` puede unir un único valor en un objeto:
 
 ```{r grid-spec-bang-bang}
 spec <- linear_reg(penalty = !!coef_penalty) %>% set_engine("glmnet")
 spec$args$penalty
 ```
 
-Now the output is `^0.1`, indicating that the value is there instead of the reference to the object. When you have multiple external values to insert into an object, the `!!!` operator can help:
+Ahora la salida es `^0.1`, lo que indica que el valor está ahí en lugar de la referencia al objeto. Cuando tiene varios valores externos para insertar en un objeto, el operador `!!!` puede ayudar:
 
 ```{r grid-spec-bang-bang-bang}
 mcmc_args <- list(chains = 3, iter = 1000, cores = 3)
@@ -757,7 +758,7 @@ mcmc_args <- list(chains = 3, iter = 1000, cores = 3)
 linear_reg() %>% set_engine("stan", !!!mcmc_args)
 ```
 
-Recipe selectors are another place where you might want access to global variables. Suppose you have a recipe step that should use all of the predictors in the cell data that were measured using the second optical channel. We can create a vector of these column names:
+Los selectores de recetas son otro lugar donde es posible que desees acceder a variables globales. Suponga que tiene un paso de receta que debería utilizar todos los predictores en los datos de la celda que se midieron utilizando el segundo canal óptico. Podemos crear un vector de estos nombres de columnas:
 
 ```{r grid-ch-2}
 library(stringr)
@@ -765,25 +766,25 @@ ch_2_vars <- str_subset(names(cells), "ch_2")
 ch_2_vars
 ```
 
-We could hard-code these into a recipe step but it would be better to reference them programmatically in case the data change. Two ways to do this are:
+Podríamos codificarlos en un paso de receta, pero sería mejor hacer referencia a ellos mediante programación en caso de que los datos cambien. Dos formas de hacer esto son:
 
 ```{r grid-ch-2-rec}
-# Still uses a reference to global data (~_~;)
+# Todavía utiliza una referencia a datos globales. (~_~;)
 recipe(class ~ ., data = cells) %>% 
   step_spatialsign(all_of(ch_2_vars))
 
-# Inserts the values into the step ヽ(•‿•)ノ
+# Inserta los valores en el paso. ヽ(•‿•)ノ
 recipe(class ~ ., data = cells) %>% 
   step_spatialsign(!!!ch_2_vars)
 ```
 
-The latter is better for parallel processing because all of the needed information is embedded in the recipe object.
+Este último es mejor para el procesamiento paralelo porque toda la información necesaria está integrada en el objeto de receta.
 
-### Racing methods {#sec-racing}
+### Métodos de carrera {#sec-racing}
 
-One issue with grid search is that all models need to be fit across all resamples before any tuning parameters can be evaluated. It would be helpful if instead, at some point during tuning, an interim analysis could be conducted to eliminate any truly awful parameter candidates. This would be akin to *futility analysis* in clinical trials. If a new drug is performing excessively poorly (or well), it is potentially unethical to wait until the trial finishes to make a decision.
+Un problema con la búsqueda de cuadrícula es que todos los modelos deben ajustarse en todas las muestras antes de poder evaluar cualquier parámetro de ajuste. Sería útil si, en cambio, en algún momento durante el ajuste, se pudiera realizar un análisis intermedio para eliminar cualquier parámetro candidato realmente terrible. Esto sería similar al *análisis de inutilidad* en ensayos clínicos. Si un nuevo fármaco tiene un rendimiento excesivamente malo (o bueno), es potencialmente poco ético esperar hasta que finalice el ensayo para tomar una decisión.
 
-In machine learning, the set of techniques called *racing methods* provide a similar function [@maron1994hoeffding]. Here, the tuning process evaluates all models on an initial subset of resamples. Based on their current performance metrics, some parameter sets are not considered in subsequent resamples.
+En el aprendizaje automático, el conjunto de técnicas llamadas *métodos de carrera* proporcionan una función similar [@maron1994hoeffding]. Aquí, el proceso de ajuste evalúa todos los modelos en un subconjunto inicial de remuestreos. Según sus métricas de rendimiento actuales, algunos conjuntos de parámetros no se consideran en remuestreos posteriores.
 
 ```{r grid-cells-race, include = FALSE}
 set.seed(1308)
@@ -792,7 +793,7 @@ mlp_sfd_race <-
   tune_race_anova(
     cell_folds,
     grid = 20,
-    # Pass in the parameter object to use the appropriate range: 
+    # Pase el objeto de parámetro para usar el rango apropiado: 
     param_info = mlp_param,
     metrics = roc_res
   )
@@ -802,7 +803,7 @@ remaining <-
   dplyr::filter(n == 10)
 ```
 
-As an example, in the multilayer perceptron tuning process with a regular grid explored in this chapter, what would the results look like after only the first three folds? Using techniques similar to those shown in [Chapter @sec-compare], we can fit a model where the outcome is the resampled area under the ROC curve and the predictor is an indicator for the parameter combination. The model takes the resample-to-resample effect into account and produces point and interval estimates for each parameter setting. The results of the model are one-sided 95% confidence intervals that measure the loss of the ROC value relative to the currently best performing parameters, as shown in @fig-racing-process.
+Como ejemplo, en el proceso de ajuste del perceptrón multicapa con una cuadrícula regular explorado en este capítulo, ¿cómo se verían los resultados después de solo los primeros tres pliegues? Usando técnicas similares a las que se muestran en el [Capítulo @sec-compare], podemos ajustar un modelo donde el resultado es el área remuestreada bajo la curva ROC y el predictor es un indicador para la combinación de parámetros. El modelo tiene en cuenta el efecto de remuestreo a remuestreo y produce estimaciones puntuales y de intervalo para cada configuración de parámetro. Los resultados del modelo son intervalos de confianza unilaterales del 95% que miden la pérdida del valor ROC en relación con los parámetros de mejor rendimiento actualmente, como se muestra en @fig-racing-process.
 
 ```{r}
 #| label: fig-racing-process
@@ -811,8 +812,8 @@ As an example, in the multilayer perceptron tuning process with a regular grid e
 #| warning: FALSE
 #| fig.height: 5 
 #| out.width: "80%"
-#| fig.cap: "The racing process for 20 tuning parameters and 10 resamples"
-#| fig.alt: "An illustration of the racing process for 20 tuning parameters and 10 resamples. The analysis is conducted at the first, third, and last resample. As the number of resamples increases, the confidence intervals show some model configurations that do not have confidence intervals that overlap with zero. These are excluded from subsequent resamples."
+#| fig.cap: "El proceso de carrera para 20 parámetros de afinación y 10 resampleos."
+#| fig.alt: "Una ilustración del proceso de carrera para 20 parámetros de ajuste y 10 remuestreos. El análisis se realiza en la primera, tercera y última muestra. A medida que aumenta el número de remuestras, los intervalos de confianza muestran algunas configuraciones del modelo que no tienen intervalos de confianza que se superpongan con cero. Estos quedan excluidos de remuestreos posteriores."
 
 full_att <- attributes(mlp_sfd_race)
 
@@ -857,11 +858,11 @@ iter_three %>%
   geom_vline(xintercept = 0, lty = 2, color = "green") +
   geom_point(size = 2, aes(color = decision)) +
   geom_errorbarh(aes(xmin = -estimate, xmax = -upper, color = decision), height = .3, show.legend = FALSE) + 
-  labs(x = "Loss of ROC AUC", y = NULL) + 
+  labs(x = "Pérdida de AUC de ROC", y = NULL) + 
   scale_colour_manual(values = race_cols)
 ```
 
-Any parameter set whose confidence interval includes zero would lack evidence that its performance is statistically different from the best results. We retain `r sum(iter_three$upper >= 0)` settings; these are resampled more. The remaining `r sum(iter_three$upper < 0)` submodels are no longer considered.
+Cualquier conjunto de parámetros cuyo intervalo de confianza incluya cero carecería de evidencia de que su desempeño sea estadísticamente diferente de los mejores resultados. Mantenemos la configuración de `r sum(iter_three$upper >= 0)`; estos se vuelven a muestrear más. Los submodelos restantes `r sum(iter_three$upper < 0)` ya no se consideran.
 
 ```{r grid-mlp-racing-anim, include = FALSE, dev = 'png'}
 race_ci_plots <- function(x, iters = max(x$iter)) {
@@ -870,9 +871,9 @@ race_ci_plots <- function(x, iters = max(x$iter)) {
   
   for (i in 1:iters) {
     if (i < 3) {
-      ttl <- paste0("Iteration ", i, ": burn-in")
+      ttl <- paste0("Iteración ", i, ": burn-in")
     } else {
-      ttl <- paste0("Iteration ", i, ": testing")
+      ttl <- paste0("Iteración ", i, ": testing")
     }
     p <-
       x %>% 
@@ -880,7 +881,7 @@ race_ci_plots <- function(x, iters = max(x$iter)) {
       ggplot(aes(x = -estimate, y = .config, color = decision)) +
       geom_vline(xintercept = 0, color = "green", lty = 2) +
       geom_point(size = 2) +
-      labs(title = ttl, y = "", x = "Loss of ROC AUC") +
+      labs(title = ttl, y = "", x = "Pérdida de AUC de ROC") +
       scale_color_manual(values = c(best = "blue", retain = "black", discard = "grey"), 
                          drop = FALSE) +
       scale_y_discrete(drop = FALSE) +
@@ -912,15 +913,15 @@ av_capture_graphics(
 
 </video>
 
-The process continues for each resample; after the next set of performance metrics, a new model is fit to these statistics, and more submodels are potentially discarded.[^13-grid-search-2]
+El proceso continúa para cada nueva muestra; después del siguiente conjunto de métricas de rendimiento, se ajusta un nuevo modelo a estas estadísticas y potencialmente se descartan más submodelos.[^13-grid-search-2]
 
-[^13-grid-search-2]: See @kuhn2014futility for more details on the computational aspects of this approach.
+[^13-grid-search-2]: Consulte @kuhn2014futility para obtener más detalles sobre los aspectos computacionales de este enfoque.
 
 ::: rmdwarning
-Racing methods can be more efficient than basic grid search as long as the interim analysis is fast and some parameter settings have poor performance. It also is most helpful when the model does *not* have the ability to exploit submodel predictions.
+Los métodos de carrera pueden ser más eficientes que la búsqueda básica en la cuadrícula siempre que el análisis intermedio sea rápido y algunas configuraciones de parámetros tengan un rendimiento deficiente. También es más útil cuando el modelo *no* tiene la capacidad de explotar las predicciones del submodelo.
 :::
 
-The `r pkg(finetune)` package contains functions for racing. The `tune_race_anova()` function conducts an ANOVA model to test for statistical significance of the different model configurations. The syntax to reproduce the filtering shown previously is:
+El paquete `r pkg(finetune)` contiene funciones para carreras. La función `tune_race_anova()` realiza un modelo ANOVA para probar la significancia estadística de las diferentes configuraciones del modelo. La sintaxis para reproducir el filtrado mostrado anteriormente es:
 
 ```{r grid-cells-race-code, eval = FALSE}
 library(finetune)
@@ -937,21 +938,21 @@ mlp_sfd_race <-
   )
 ```
 
-The arguments mirror those of `tune_grid()`. The function `control_race()` has options for the elimination procedure.
+Los argumentos reflejan los de `tune_grid()`. La función `control_race()` tiene opciones para el procedimiento de eliminación.
 
-As shown in the animation above, there were `r xfun::numbers_to_words(nrow(remaining))` tuning parameter combinations under consideration once the full set of resamples were evaluated. `show_best()` returns the best models (ranked by performance) but returns only the configurations that were never eliminated:
+Como se muestra en la animación anterior, se estaban considerando combinaciones de parámetros de ajuste `r xfun::numbers_to_words(nrow(remaining))` una vez que se evaluó el conjunto completo de remuestreos. `show_best()` devuelve los mejores modelos (clasificados por rendimiento) pero solo devuelve las configuraciones que nunca fueron eliminadas:
 
 ```{r grid-race-best}
 show_best(mlp_sfd_race, n = 10)
 ```
 
-There are other interim analysis techniques for discarding settings. For example, @krueger15a use traditional sequential analysis methods whereas @kuhn2014futility treats the data as a sports competition and uses the Bradley-Terry model [@bradley1952rank] to measure the winning ability of parameter settings.
+Existen otras técnicas de análisis intermedio para descartar configuraciones. Por ejemplo, @krueger15a usa métodos de análisis secuencial tradicionales, mientras que @kuhn2014futility trata los datos como una competencia deportiva y usa el modelo Bradley-Terry [@bradley1952rank] para medir la capacidad ganadora de la configuración de parámetros.
 
-## Chapter Summary {#sec-grid-summary}
+## Resumen del capítulo {#sec-grid-summary}
 
-This chapter discussed the two main classes of grid search (regular and non-regular) that can be used for model tuning and demonstrated how to construct these grids, either manually or using the family of `grid_*()` functions. The `tune_grid()` function can evaluate these candidate sets of model parameters using resampling. The chapter also showed how to finalize a model, recipe, or workflow to update the parameter values for the final fit. Grid search can be computationally expensive, but thoughtful choices in the experimental design of such searches can make them tractable.
+Este capítulo analizó las dos clases principales de búsqueda de cuadrículas (regular y no regular) que se pueden usar para ajustar el modelo y demostró cómo construir estas cuadrículas, ya sea manualmente o usando la familia de funciones `grid_*()`. La función `tune_grid()` puede evaluar estos conjuntos candidatos de parámetros del modelo mediante remuestreo. El capítulo también mostró cómo finalizar un modelo, receta o flujo de trabajo para actualizar los valores de los parámetros para el ajuste final. La búsqueda en cuadrícula puede ser costosa desde el punto de vista computacional, pero las decisiones bien pensadas en el diseño experimental de dichas búsquedas pueden hacerlas manejables.
 
-The data analysis code that will be reused in the next chapter is:
+El código de análisis de datos que se reutilizará en el próximo capítulo es:
 
 ```{r resampling-summary, eval = FALSE}
 library(tidymodels)
