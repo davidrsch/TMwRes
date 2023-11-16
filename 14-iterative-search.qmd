@@ -1,4 +1,4 @@
-```{r iterative-setup, include = FALSE}
+```{r iterative-setup, include = FALSE, cache=FALSE}
 knitr::opts_chunk$set(fig.path = "figures/")
 library(tidymodels)
 library(finetune)
@@ -22,25 +22,25 @@ cell_folds <- vfold_cv(cells)
 roc_res <- metric_set(roc_auc)
 ```
 
-# Iterative Search {#sec-iterative-search}
+# Búsqueda iterativa {#sec-iterative-search}
 
-[Chapter @sec-grid-search] demonstrated how grid search takes a pre-defined set of candidate values, evaluates them, then chooses the best settings. Iterative search methods pursue a different strategy. During the search process, they predict which values to test next.
+El [Capítulo @sec-grid-search] demostró cómo la búsqueda en cuadrícula toma un conjunto predefinido de valores candidatos, los evalúa y luego elige la mejor configuración. Los métodos de búsqueda iterativos siguen una estrategia diferente. Durante el proceso de búsqueda, predicen qué valores probar a continuación.
 
 ::: rmdnote
-When grid search is infeasible or inefficient, iterative methods are a sensible approach for optimizing tuning parameters.
+Cuando la búsqueda en cuadrícula no es factible o ineficiente, los métodos iterativos son un enfoque sensato para optimizar los parámetros de ajuste.
 :::
 
-This chapter outlines two search methods. First, we discuss *Bayesian optimization*, which uses a statistical model to predict better parameter settings. After that, the chapter describes a global search method called *simulated annealing*.
+Este capítulo describe dos métodos de búsqueda. Primero, analizamos la *optimización bayesiana*, que utiliza un modelo estadístico para predecir mejores configuraciones de parámetros. Después de eso, el capítulo describe un método de búsqueda global llamado *recocido simulado*.
 
-We use the same data on cell characteristics as the previous chapter for illustration, but change the model. This chapter uses a support vector machine model because it provides nice two-dimensional visualizations of the search processes.
+Usamos los mismos datos sobre las características de las células que en el capítulo anterior a modo de ilustración, pero cambiamos el modelo. Este capítulo utiliza un modelo de máquina de vectores de soporte porque proporciona bonitas visualizaciones bidimensionales de los procesos de búsqueda.
 
-## A Support Vector Machine Model {#sec-svm}
+## Un modelo de máquina de vectores de soporte {#sec-svm}
 
-We once again use the cell segmentation data, described in @sec-evaluating-grid, for modeling, with a support vector machine (SVM) model to demonstrate sequential tuning methods. See @apm for more information on this model. The two tuning parameters to optimize are the SVM cost value and the radial basis function kernel parameter $\sigma$. Both parameters can have a profound effect on the model complexity and performance.
+Una vez más utilizamos los datos de segmentación de celdas, descritos en @sec-evaluating-grid, para modelar, con un modelo de máquina de vectores de soporte (SVM) para demostrar métodos de ajuste secuencial. Consulte @apm para obtener más información sobre este modelo. Los dos parámetros de ajuste a optimizar son el valor del costo de SVM y el parámetro del núcleo de la función de base radial $\sigma$. Ambos parámetros pueden tener un efecto profundo en la complejidad y el rendimiento del modelo.
 
-The SVM model uses a dot product and, for this reason, it is necessary to center and scale the predictors. Like the multilayer perceptron model, this model would benefit from the use of PCA feature extraction. However, we will not use this third tuning parameter in this chapter so that we can visualize the search process in two dimensions.
+El modelo SVM utiliza un producto escalar y, por este motivo, es necesario centrar y escalar los predictores. Al igual que el modelo de perceptrón multicapa, este modelo se beneficiaría del uso de la extracción de características PCA. Sin embargo, no utilizaremos este tercer parámetro de ajuste en este capítulo para que podamos visualizar el proceso de búsqueda en dos dimensiones.
 
-Along with the previously used objects (shown in @sec-grid-summary), the tidymodels objects `svm_rec`, `svm_spec`, and `svm_wflow` define the model process:
+Junto con los objetos utilizados anteriormente (que se muestran en @sec-grid-summary), los objetos tidymodels `svm_rec`, `svm_spec` y `svm_wflow` definen el proceso del modelo:
 
 ```{r iterative-svm-defs, message = FALSE}
 library(tidymodels)
@@ -62,14 +62,14 @@ svm_wflow <-
   add_recipe(svm_rec)
 ```
 
-The default parameter ranges for the two tuning parameters `cost` and `rbf_sigma` are:
+Los rangos de parámetros predeterminados para los dos parámetros de ajuste `cost` y `rbf_sigma` son:
 
 ```{r iterative-svm-param}
 cost()
 rbf_sigma()
 ```
 
-For illustration, let's slightly change the kernel parameter range, to improve the visualizations of the search:
+A modo de ilustración, cambiemos ligeramente el rango de parámetros del kernel para mejorar las visualizaciones de la búsqueda:
 
 ```{r iterative-svm-param-set}
 svm_param <- 
@@ -78,23 +78,23 @@ svm_param <-
   Matrix::update(rbf_sigma = rbf_sigma(c(-7, -1)))
 ```
 
-Before discussing specific details about iterative search and how it works, let's explore the relationship between the two SVM tuning parameters and the area under the ROC curve for this specific data set. We constructed a very large regular grid, composed of 2,500 candidate values, and evaluated the grid using resampling. This is obviously impractical in regular data analysis and tremendously inefficient. However, it elucidates the path that the search process should take and where the numerically optimal value(s) occur.
+Antes de analizar detalles específicos sobre la búsqueda iterativa y cómo funciona, exploremos la relación entre los dos parámetros de ajuste de SVM y el área bajo la curva ROC para este conjunto de datos específico. Construimos una cuadrícula regular muy grande, compuesta por 2500 valores candidatos, y evaluamos la cuadrícula mediante remuestreo. Obviamente, esto es poco práctico en el análisis de datos regular y tremendamente ineficiente. Sin embargo, aclara el camino que debe tomar el proceso de búsqueda y dónde ocurren los valores numéricamente óptimos.
 
-@fig-roc-surface shows the results of evaluating this grid, with lighter color corresponding to higher (better) model performance. There is a large swath in the lower diagonal of the parameter space that is relatively flat with poor performance. A ridge of best performance occurs in the upper-right portion of the space. The black dot indicates the best settings. The transition from the plateau of poor results to the ridge of best performance is very sharp. There is also a sharp drop in the area under the ROC curve just to the right of the ridge.
+@fig-roc-surface muestra los resultados de la evaluación de esta cuadrícula, donde el color más claro corresponde a un mayor (mejor) rendimiento del modelo. Hay una gran franja en la diagonal inferior del espacio de parámetros que es relativamente plana con un rendimiento deficiente. En la parte superior derecha del espacio se produce una cresta de mejor rendimiento. El punto negro indica la mejor configuración. La transición desde la meseta de los malos resultados a la cima del mejor desempeño es muy pronunciada. También hay una fuerte caída en el área bajo la curva ROC justo a la derecha de la cresta.
 
 ```{r}
 #| label: fig-roc-surface
 #| out.width: "80%"
 #| echo: FALSE
 #| warning: FALSE
-#| fig.cap: "Heatmap of the mean area under the ROC curve for a high density grid of tuning parameter values. The best point is a solid dot in the upper-right corner. "
-#| fig.alt: "A heatmap of the mean area under the ROC curve for a high density grid of tuning parameter values. The best point is a solid dot in the upper-right corner. The surface has a ridge of high performance moving to the lower right. "
+#| fig.cap: "Mapa de calor del área media bajo la curva ROC para una cuadrícula de alta densidad de valores de parámetros de ajuste. El mejor punto es un punto sólido en la esquina superior derecha."
+#| fig.alt: "Un mapa de calor del área media bajo la curva ROC para una cuadrícula de alta densidad de valores de parámetros de ajuste. El mejor punto es un punto sólido en la esquina superior derecha. La superficie tiene una cresta de alto rendimiento que se desplaza hacia la parte inferior derecha. "
 
-# See file extras/cells_svm_large.R
+# Vea archivo extras/cells_svm_large.R
 knitr::include_graphics("premade/roc_surface.png")
 ```
 
-The following search procedures require at least some resampled performance statistics before proceeding. For this purpose, the following code creates a small regular grid that resides in the flat portion of the parameter space. The `tune_grid()` function resamples this grid:
+Los siguientes procedimientos de búsqueda requieren al menos algunas estadísticas de rendimiento remuestreadas antes de continuar. Para ello, el siguiente código crea una pequeña cuadrícula regular que reside en la parte plana del espacio de parámetros. La función `tune_grid()` vuelve a muestrear esta cuadrícula:
 
 ```{r iterative-svm-initial, message = FALSE}
 set.seed(1401)
@@ -114,25 +114,25 @@ svm_initial <-
 collect_metrics(svm_initial)
 ```
 
-This initial grid shows fairly equivalent results, with no individual point much better than any of the others. These results can be ingested by the iterative tuning functions discussed in the following sections to be used as initial values.
+Esta cuadrícula inicial muestra resultados bastante equivalentes, sin que ningún punto individual sea mucho mejor que los demás. Estos resultados pueden ser absorbidos por las funciones de ajuste iterativas analizadas en las siguientes secciones para usarse como valores iniciales.
 
-## Bayesian Optimization
+## Optimización bayesiana
 
-Bayesian optimization techniques analyze the current resampling results and create a predictive model to suggest tuning parameter values that have yet to be evaluated. The suggested parameter combination is then resampled. These results are then used in another predictive model that recommends more candidate values for testing, and so on. The process proceeds for a set number of iterations or until no further improvements occur. @Shahriari and @frazier2018tutorial are good introductions to Bayesian optimization.
+Las técnicas de optimización bayesiana analizan los resultados del remuestreo actual y crean un modelo predictivo para sugerir valores de parámetros de ajuste que aún no se han evaluado. A continuación se vuelve a muestrear la combinación de parámetros sugerida. Estos resultados luego se utilizan en otro modelo predictivo que recomienda más valores candidatos para realizar pruebas, y así sucesivamente. El proceso continúa durante un número determinado de iteraciones o hasta que no se produzcan más mejoras. @Shahriari y @frazier2018tutorial son buenas introducciones a la optimización bayesiana.
 
-When using Bayesian optimization, the primary concerns are how to create the model and how to select parameters recommended by that model. First, let's consider the technique most commonly used for Bayesian optimization, the Gaussian process model.
+Cuando se utiliza la optimización bayesiana, las principales preocupaciones son cómo crear el modelo y cómo seleccionar los parámetros recomendados por ese modelo. Primero, consideremos la técnica más comúnmente utilizada para la optimización bayesiana, el modelo de proceso gaussiano.
 
-### A Gaussian process model
+### Un modelo de proceso gaussiano
 
-Gaussian process (GP) [@SCHULZ20181] models are well-known statistical techniques that have a history in spatial statistics (under the name of *kriging methods*). They can be derived in multiple ways, including as a Bayesian model; see @RaWi06 for an excellent reference.
+Los modelos de proceso gaussiano (GP) [@SCHULZ20181] son técnicas estadísticas bien conocidas que tienen una historia en la estadística espacial (bajo el nombre de *métodos de kriging*). Se pueden derivar de múltiples formas, incluso como modelo bayesiano; consulte @RaWi06 para obtener una excelente referencia.
 
-Mathematically, a GP is a collection of random variables whose joint probability distribution is multivariate Gaussian. In the context of our application, this is the collection of performance metrics for the tuning parameter candidate values. For the previous initial grid of four samples, the realization of these four random variables were `r knitr::combine_words(round(collect_metrics(svm_initial)$mean, 4))`. These are assumed to be distributed as multivariate Gaussian. The inputs that define the independent variables/predictors for the GP model are the corresponding tuning parameter values (shown in @tbl-initial-gp-data).
+Matemáticamente, un GP es una colección de variables aleatorias cuya distribución de probabilidad conjunta es gaussiana multivariada. En el contexto de nuestra aplicación, esta es la colección de métricas de rendimiento para los valores candidatos de los parámetros de ajuste. Para la cuadrícula inicial anterior de cuatro muestras, la realización de estas cuatro variables aleatorias fue `r knitr::combine_words(round(collect_metrics(svm_initial)$mean, 4))`. Se supone que están distribuidos como gaussianos multivariados. Las entradas que definen las variables/predictores independientes para el modelo GP son los valores de los parámetros de ajuste correspondientes (que se muestran en @tbl-initial-gp-data).
 
 ```{r}
 #| label: tbl-initial-gp-data
 #| echo: FALSE
 #| results: "asis"
-#| tbl-cap: "Resampling statistics used as the initial substrate to the Gaussian process model."
+#| tbl-cap: "Estadísticas de remuestreo utilizadas como sustrato inicial del modelo de proceso gaussiano."
 
 collect_metrics(svm_initial) %>% 
   select(ROC = mean, cost, rbf_sigma) %>% 
@@ -143,31 +143,33 @@ collect_metrics(svm_initial) %>%
   kableExtra::add_header_above(c("outcome" = 1, "predictors" = 2))
 ```
 
-Gaussian process models are specified by their mean and covariance functions, although the latter has the most effect on the nature of the GP model. The covariance function is often parameterized in terms of the input values (denoted as $x$). As an example, a commonly used covariance function is the squared exponential[^14-iterative-search-1] function:
+Los modelos de procesos gaussianos se especifican por sus funciones de media y covarianza, aunque esta última tiene el mayor efecto sobre la naturaleza del modelo GP. La función de covarianza a menudo se parametriza en términos de los valores de entrada (denotados como $x$). Como ejemplo, una función de covarianza comúnmente utilizada es la función exponencial al cuadrado[^14-iterative-search-1]:
 
-[^14-iterative-search-1]: This equation is also the same as the *radial basis function* used in kernel methods, such as the SVM model that is currently being used. This is a coincidence; this covariance function is unrelated to the SVM tuning parameter that we are using.
+[^14-iterative-search-1]: Esta ecuación también es la misma que la *función de base radial* utilizada en los métodos del núcleo, como el modelo SVM que se utiliza actualmente. Esto es una coincidencia; esta función de covarianza no está relacionada con el parámetro de ajuste SVM que estamos usando.
 
-$$\operatorname{cov}(\boldsymbol{x}_i, \boldsymbol{x}_j) = \exp\left(-\frac{1}{2}|\boldsymbol{x}_i - \boldsymbol{x}_j|^2\right) + \sigma^2_{ij}$$ where $\sigma^2_{ij}$ is a constant error variance term that is zero when $i=j$. This equation translates to:
+$$\operatorname{cov}(\boldsymbol{x}_i, \boldsymbol{x}_j) = \exp\left(-\frac{1}{2}|\boldsymbol{x}_i - \boldsymbol{x}_j|^2\right) + \sigma^2_{ij}$$ 
 
-> As the distance between two tuning parameter combinations increases, the covariance between the performance metrics increase exponentially.
+donde $\sigma^2_{ij}$ es un término de varianza de error constante que es cero cuando $i=j$. Esta ecuación se traduce en:
 
-The nature of the equation also implies that the variation of the outcome metric is minimized at the points that have already been observed (i.e., when $|\boldsymbol{x}_i - \boldsymbol{x}_j|^2$ is zero).
+> A medida que aumenta la distancia entre dos combinaciones de parámetros de ajuste, la covarianza entre las métricas de rendimiento aumenta exponencialmente.
 
-The nature of this covariance function allows the Gaussian process to represent highly nonlinear relationships between model performance and the tuning parameters even when only a small amount of data exists.
+La naturaleza de la ecuación también implica que la variación de la métrica del resultado se minimiza en los puntos que ya se han observado (es decir, cuando $|\boldsymbol{x}_i - \boldsymbol{x}_j|^2$ es cero) .
+
+La naturaleza de esta función de covarianza permite que el proceso gaussiano represente relaciones altamente no lineales entre el rendimiento del modelo y los parámetros de ajuste incluso cuando sólo existe una pequeña cantidad de datos.
 
 ::: rmdwarning
-However, fitting these models can be difficult in some cases, and the model becomes more computationally expensive as the number of tuning parameter combinations increases.
+Sin embargo, ajustar estos modelos puede resultar difícil en algunos casos y el modelo se vuelve más costoso computacionalmente a medida que aumenta el número de combinaciones de parámetros de ajuste.
 :::
 
-An important virtue of this model is that, since a full probability model is specified, the predictions for new inputs can reflect the entire distribution of the outcome. In other words, new performance statistics can be predicted in terms of both mean and variance.
+Una virtud importante de este modelo es que, dado que se especifica un modelo de probabilidad total, las predicciones de nuevos insumos pueden reflejar la distribución completa del resultado. En otras palabras, se pueden predecir nuevas estadísticas de desempeño tanto en términos de media como de varianza.
 
-Suppose that two new tuning parameters were under consideration. In @tbl-tuning-candidates, candidate *A* has a slightly better mean ROC value than candidate *B* (the current best is `r round(max(collect_metrics(svm_initial)$mean), 4)`). However, its variance is four-fold larger than *B*. Is this good or bad? Choosing option *A* is riskier but has potentially higher return. The increase in variance also reflects that this new value is farther from the existing data than *B*. The next section considers these aspects of GP predictions for Bayesian optimization in more detail.
+Supongamos que se estuvieran considerando dos nuevos parámetros de ajuste. En @tbl-tuning-candidates, el candidato *A* tiene un valor ROC medio ligeramente mejor que el candidato *B* (el mejor actual es `r round(max(collect_metrics(svm_initial)$mean), 4)`). Sin embargo, su varianza es cuatro veces mayor que *B*. ¿Esto es bueno o malo? Elegir la opción *A* es más riesgoso pero tiene un rendimiento potencialmente mayor. El aumento en la varianza también refleja que este nuevo valor está más alejado de los datos existentes que *B*. La siguiente sección considera con más detalle estos aspectos de las predicciones de GP para la optimización bayesiana.
 
 ```{r}
 #| label: tbl-tuning-candidates
 #| echo: FALSE
 #| result: "asis"
-#| tbl-cap: "Two example tuning parameters considered for further sampling."
+#| tbl-cap: "Dos ejemplos de parámetros de ajuste considerados para un muestreo posterior."
 
 best_val <- max(collect_metrics(svm_initial)$mean)
 tmp <- tibble(candidate = LETTERS[1:2], .mean = c(.90, .89), .sd = c(0.02, 0.005))
@@ -178,24 +180,24 @@ tmp %>%
   format(digits = 4, scientific = FALSE) %>%
   kable() %>% 
   kableExtra::kable_styling(full_width = FALSE) %>% 
-  kableExtra::add_header_above(c(" " = 1, "GP Prediction of ROC AUC" = 2))
+  kableExtra::add_header_above(c(" " = 1, "Predicción GP de ROC AUC" = 2))
 ```
 
 ::: rmdnote
-Bayesian optimization is an iterative process.
+La optimización bayesiana es un proceso iterativo.
 :::
 
-Based on the initial grid of four results, the GP model is fit, candidates are predicted, and a fifth tuning parameter combination is selected. We compute performance estimates for the new configuration, the GP is refit with the five existing results (and so on).
+Con base en la cuadrícula inicial de cuatro resultados, se ajusta el modelo GP, se predicen los candidatos y se selecciona una quinta combinación de parámetros de ajuste. Calculamos estimaciones de rendimiento para la nueva configuración, el GP se reajusta con los cinco resultados existentes (y así sucesivamente).
 
-### Acquisition functions
+### Funciones de adquisición
 
-Once the Gaussian process is fit to the current data, how is it used? Our goal is to choose the next tuning parameter combination that is most likely to have "better results" than the current best. One approach to do this is to create a large candidate set (perhaps using a space-filling design) and then make mean and variance predictions on each. Using this information, we choose the most advantageous tuning parameter value.
+Una vez que el proceso gaussiano se ajusta a los datos actuales, ¿cómo se utiliza? Nuestro objetivo es elegir la siguiente combinación de parámetros de ajuste que tenga más probabilidades de tener "mejores resultados" que los mejores actuales. Un enfoque para hacer esto es crear un gran conjunto de candidatos (quizás usando un diseño que llene el espacio) y luego hacer predicciones de media y varianza para cada uno. Utilizando esta información, elegimos el valor del parámetro de ajuste más ventajoso.
 
-A class of objective functions, called *acquisition functions*, facilitate the trade-off between mean and variance. Recall that the predicted variance of the GP models are mostly driven by how far away they are from the existing data. The trade-off between the predicted mean and variance for new candidates is frequently viewed through the lens of exploration and exploitation:
+Una clase de funciones objetivo, llamadas *funciones de adquisición*, facilitan el equilibrio entre media y varianza. Recuerde que la varianza prevista de los modelos GP depende principalmente de qué tan lejos están de los datos existentes. El equilibrio entre la media y la varianza previstas para nuevos candidatos se ve frecuentemente a través del lente de la exploración y la explotación:
 
--   *Exploration* biases the selection towards regions where there are fewer (if any) observed candidate models. This tends to give more weight to candidates with higher variance and focuses on finding new results.
+-   La *Exploración* sesga la selección hacia regiones donde hay menos (si es que hay alguno) modelos candidatos observados. Esto tiende a dar más peso a los candidatos con mayor variación y se centra en encontrar nuevos resultados.
 
--   *Exploitation* principally relies on the mean prediction to find the best (mean) value. It focuses on existing results.
+-   La *explotación* se basa principalmente en la predicción media para encontrar el mejor valor (medio). Se centra en los resultados existentes.
 
 ```{r iterative-aq-data, include = FALSE}
 source("extras/nonlinear_function.R")
@@ -234,33 +236,33 @@ gp_pred <-
   )
 ```
 
-To demonstrate, let's look at a toy example with a single parameter that has values between \[0, 1\] and the performance metric is $R^2$. The true function is shown in @fig-performance-profile, along with `r xfun::numbers_to_words(nrow(current_iter))` candidate values that have existing results as points.
+Para demostrarlo, veamos un ejemplo de juguete con un único parámetro que tiene valores entre \[0, 1\] y la métrica de rendimiento es $R^2$. La función verdadera se muestra en @fig-performance-profile, junto con los valores candidatos `r xfun::numbers_to_words(nrow(current_iter))` que tienen resultados existentes como puntos.
 
 ```{r}
 #| label: fig-performance-profile
 #| echo: FALSE
 #| fig.height: 4
-#| fig.cap: "Hypothetical true performance profile over an arbitrary tuning parameter, with five estimated points"
-#| fig.alt: "A hypothetical true performance profile over an arbitrary tuning parameter. Five estimated points are also shown. The profile is highly nonlinear with a peak in-between two of the observed points."
+#| fig.cap: "Perfil de rendimiento real hipotético sobre un parámetro de ajuste arbitrario, con cinco puntos estimados"
+#| fig.alt: "Un perfil de rendimiento real hipotético sobre un parámetro de ajuste arbitrario. También se muestran cinco puntos estimados. El perfil es altamente no lineal con un pico entre dos de los puntos observados."
 
 y_lab <- expression(Estimated ~ italic(R^2))
 
 ggplot(grid, aes(x = x, y = y)) + 
   geom_line(color = "red", alpha = .5, linewidth = 1.25) + 
-  labs(y = y_lab, x = "Tuning Parameter") +
+  labs(y = y_lab, x = "Optimización de Parámetros") +
   geom_point(data = current_iter)
 ```
 
-For these data, the GP model fit is shown in @fig-estimated-profile. The shaded region indicates the mean $\pm$ 1 standard error. The two vertical lines indicate two candidate points that are examined in more detail later.
+Para estos datos, el ajuste del modelo GP se muestra en @fig-estimated-profile. La región sombreada indica el error estándar medio $\pm$ 1. Las dos líneas verticales indican dos puntos candidatos que se examinan con más detalle más adelante.
 
-The shaded confidence region demonstrates the squared exponential variance function; it becomes very large between points and converges to zero at the existing data points.
+La región de confianza sombreada demuestra la función de varianza exponencial al cuadrado; se vuelve muy grande entre puntos y converge a cero en los puntos de datos existentes.
 
 ```{r}
 #| label: fig-estimated-profile
 #| echo: FALSE
 #| fig.height: 4
-#| fig.cap: "Estimated performance profile generated by the Gaussian process model. The shaded region shows one-standard-error bounds."
-#| fig.alt: "The estimated performance profile generated by the Gaussian process model. The shaded region shows one-standard-error bounds. Two vertical lines show potential points to be sampled in the next iteration."
+#| fig.cap: "Perfil de rendimiento estimado generado por el modelo de proceso gaussiano. La región sombreada muestra límites de error estándar."
+#| fig.alt: "El perfil de rendimiento estimado generado por el modelo de proceso gaussiano. La región sombreada muestra límites de error estándar. Dos líneas verticales muestran puntos potenciales que se muestrearán en la siguiente iteración."
 
 y_lab <- expression(Estimated ~ italic(R^2))
 
@@ -270,18 +272,18 @@ gp_pred %>%
   geom_line(aes(y = .mean)) +
   geom_vline(xintercept = c(0.1, 0.25), lty = 2, alpha = .5) + 
   geom_ribbon(aes(ymin = .mean -  1 * .sd, ymax = .mean + 1 * .sd), alpha = .1) + 
-  labs(y = y_lab, x = "Tuning Parameter")
+  labs(y = y_lab, x = "Optimización de Parámetros")
 ```
 
-This nonlinear trend passes through each observed point, but the model is not perfect. There are no observed points near the true optimum setting and, in this region, the fit could be much better. Despite this, the GP model can effectively point us in the right direction.
+Esta tendencia no lineal pasa por cada punto observado, pero el modelo no es perfecto. No se observan puntos cercanos al verdadero ajuste óptimo y, en esta región, el ajuste podría ser mucho mejor. A pesar de esto, el modelo GP puede orientarnos efectivamente en la dirección correcta.
 
-From a pure exploitation standpoint, the best choice would select the parameter value that has the best mean prediction. Here, this would be a value of `r round(gp_pred$x[which.max(gp_pred$.mean)], 3)`, just to the right of the existing best observed point at 0.09.
+Desde un punto de vista puramente de explotación, la mejor opción sería seleccionar el valor del parámetro que tenga la mejor predicción media. Aquí, esto sería un valor de `r round(gp_pred$x[which.max(gp_pred$.mean)], 3)`, justo a la derecha del punto mejor observado existente en 0,09.
 
-As a way to encourage exploration, a simple (but not often used) approach is to find the tuning parameter associated with the largest confidence interval. For example, by using a single standard deviation for the $R^2$ confidence bound, the next point to sample would be `r round(gp_pred$x[which.max(gp_pred$conf_int_1)], 3)`. This is slightly more into the region with no observed results. Increasing the number of standard deviations used in the upper bound would push the selection farther into empty regions.
+Como forma de fomentar la exploración, un enfoque simple (pero no utilizado con frecuencia) es encontrar el parámetro de ajuste asociado con el intervalo de confianza más grande. Por ejemplo, al usar una única desviación estándar para el límite de confianza $R^2$, el siguiente punto a muestrear sería `r round(gp_pred$x[which.max(gp_pred$conf_int_1)], 3)`. Esto es un poco más en la región sin resultados observados. Aumentar el número de desviaciones estándar utilizadas en el límite superior empujaría la selección hacia regiones vacías.
 
-One of the most commonly used acquisition functions is *expected improvement*. The notion of improvement requires a value for the current best results (unlike the confidence bound approach). Since the GP can describe a new candidate point using a distribution, we can weight the parts of the distribution that show improvement using the probability of the improvement occurring.
+Una de las funciones de adquisición más utilizadas es *mejora esperada*. La noción de mejora requiere un valor para los mejores resultados actuales (a diferencia del enfoque de confianza). Dado que el médico de cabecera puede describir un nuevo punto candidato utilizando una distribución, podemos ponderar las partes de la distribución que muestran una mejora utilizando la probabilidad de que se produzca la mejora.
 
-For example, consider two candidate parameter values of 0.10 and 0.25 (indicated by the vertical lines in @fig-estimated-profile). Using the fitted GP model, their predicted $R^2$ distributions are shown in @fig-two-candidates along with a reference line for the current best results.
+Por ejemplo, considere dos valores de parámetros candidatos de 0,10 y 0,25 (indicados por las líneas verticales en @fig-estimated-profile). Utilizando el modelo GP ajustado, sus distribuciones $R^2$ previstas se muestran en @fig-two-candidates junto con una línea de referencia para los mejores resultados actuales.
 
 ```{r}
 #| label: fig-two-candidates
@@ -289,8 +291,8 @@ For example, consider two candidate parameter values of 0.10 and 0.25 (indicated
 #| fig.height: 4 
 #| fig.width: 6.25 
 #| out.width: "80%"
-#| fig.cap: "Predicted performance distributions for two sampled tuning parameter values"
-#| fig.alt: "Predicted performance distributions for two sampled tuning parameter values. For one, the distribution is slightly better than the current value with a small spread. The other parameter value is slightly worse but has a very wide spread."
+#| fig.cap: "Distribuciones de rendimiento previstas para dos valores de parámetros de ajuste muestreados"
+#| fig.alt: "Distribuciones de rendimiento previstas para dos valores de parámetros de ajuste muestreados. Por un lado, la distribución es ligeramente mejor que el valor actual con un pequeño diferencial. El otro valor del parámetro es ligeramente peor pero tiene una distribución muy amplia."
 
 small_pred <- 
   predict(gp, c(0.1, 0.25))$complete_data %>% 
@@ -331,13 +333,13 @@ small_pred %>%
   scale_color_brewer(palette = "Set1")
 ```
 
-When only considering the mean $R^2$ prediction, a parameter value of 0.10 is the better choice (see @tbl-two-exp-improve). The tuning parameter recommendation for 0.25 is, on average, predicted to be worse than the current best. However, since it has higher variance, it has more overall probability area above the current best. As a result, it has a larger expected improvement:
+Cuando solo se considera la predicción media de $R^2$, un valor de parámetro de 0,10 es la mejor opción (consulte @tbl-two-exp-improve). Se prevé, en promedio, que la recomendación del parámetro de ajuste de 0,25 será peor que el mejor nivel actual. Sin embargo, dado que tiene una mayor varianza, tiene más área de probabilidad general por encima del mejor nivel actual. Como resultado, tiene una mejora esperada mayor:
 
 ```{r}
 #| label: tbl-two-exp-improve
 #| echo: FALSE
 #| results: "asis"
-#| tbl-cap: "Expected improvement for the two candidate tuning parameters."
+#| tbl-cap: "Mejora esperada para los dos parámetros de ajuste candidatos."
 
 small_pred %>% 
   select(`Parameter Value` = x, Mean = .mean, `Std Dev` = .sd, `Expected Improvment` = exp_imp) %>% 
@@ -345,17 +347,17 @@ small_pred %>%
   format(digits = 4, scientific = FALSE) %>% 
   kable() %>% 
   kableExtra::kable_styling(full_width = FALSE) %>% 
-  kableExtra::add_header_above(c(" " = 1, "Predictions" = 3))
+  kableExtra::add_header_above(c(" " = 1, "Predicciones" = 3))
 ```
 
-When expected improvement is computed across the range of the tuning parameter, the recommended point to sample is much closer to 0.25 than 0.10, as shown in @fig-expected-improvement.
+Cuando la mejora esperada se calcula en todo el rango del parámetro de ajuste, el punto de muestreo recomendado está mucho más cerca de 0,25 que de 0,10, como se muestra en @fig-expected-improvement.
 
 ```{r}
 #| label: fig-expected-improvement
 #| echo: FALSE
 #| fig.height: 5.5 
-#| fig.cap: "The estimated performance profile generated by the Gaussian process model (top panel) and the expected improvement (bottom panel). The vertical line indicates the point of maximum improvement."
-#| fig.alt: "The estimated performance profile generated by the Gaussian process model (top panel) and the expected improvement (bottom panel). The vertical line indicates the point of maximum improvement where estimated performance is high and the predicted variation is also large."
+#| fig.cap: "El perfil de rendimiento estimado generado por el modelo de proceso gaussiano (panel superior) y la mejora esperada (panel inferior). La línea vertical indica el punto de máxima mejora."
+#| fig.alt: "El perfil de rendimiento estimado generado por el modelo de proceso gaussiano (panel superior) y la mejora esperada (panel inferior). La línea vertical indica el punto de máxima mejora donde el rendimiento estimado es alto y la variación prevista también es grande."
 
 y_lab <- expression(Estimated ~ italic(R^2))
 
@@ -377,24 +379,26 @@ p2 <-
   gp_pred %>% 
   ggplot(aes(x = x, y = exp_imp)) + 
   geom_line() + 
-  labs(y = "Expected Improvement", x = "Tuning Parameter") + 
+  labs(y = "Mejora esperada", x = "Optimización de Parámetros") + 
   theme(plot.margin = unit(c(0, 0, 0, 0), "null")) +
   geom_vline(xintercept = gp_pred$x[which.max(gp_pred$exp_imp)], lty = 2)
 
 p1/p2
 ```
 
-Numerous acquisition functions have been proposed and discussed; in tidymodels, expected improvement is the default.
+Se han propuesto y discutido numerosas funciones de adquisición; en tidymodels, la mejora esperada es la predeterminada.
 
 ```{r iterative-cells-bo-calcs, echo = FALSE}
-# We will do the calculations here but use some nonstandard options. First, 
-# purrr is used to capture the output in a vector so that we can show the 
-# results piecemeal. Also, a hidden option is used to save the grid of candidate 
-# values for each iteration of the search. These will be used to make an 
-# animation in a later chunk. 
+# Haremos los cálculos aquí pero usaremos algunas opciones no estándar. 
+# Primero, purrr se usa para capturar la salida en un vector para que 
+# podamos mostrar los resultados poco a poco. Además, se utiliza una 
+# opción oculta para guardar la cuadrícula de valores candidatos para 
+# cada iteración de la búsqueda. Estos se utilizarán para hacer una 
+# animación en una parte posterior. 
 # 
-# This means that any changes to this chunk have to be made to the next chunk 
-# (where the code is shown and not executed).
+# Esto significa que cualquier cambio en este fragmento debe 
+# realizarse en el siguiente fragmento (donde el código se muestra 
+# y no se ejecuta).
 
 ctrl <- control_bayes(verbose = TRUE)
 ctrl$save_gp_scoring <- TRUE
@@ -414,10 +418,10 @@ svm_bo_sshh <-
   )
 
 
-# Make sure that the results have not changed since 2022-02-20. Save the results with: 
+# Asegúrese de que los resultados no hayan cambiado desde el 2022-02-20. Guarde los resultados con: 
 #   svm_bo_metrics <- collect_metrics(svm_bo_sshh$result)
 #   save(svm_bo_metrics, file = "RData/svm_bo_metrics.RData")
-# Check with:
+# Comprobar con:
 verify_consistent_bo(collect_metrics(svm_bo_sshh$result))
 
 svm_bo <- svm_bo_sshh$result
@@ -426,27 +430,27 @@ svm_bo_output <- svm_bo_sshh$messages
 gp_candidates <- collect_gp_results(svm_bo)
 ```
 
-### The `tune_bayes()` function {#sec-tune-bayes}
+### La función `tune_bayes()` {#sec-tune-bayes}
 
-To implement iterative search via Bayesian optimization, use the `tune_bayes()` function. Its syntax is very similar to `tune_grid()` but with several additional arguments:
+Para implementar la búsqueda iterativa mediante optimización bayesiana, utilice la función `tune_bayes()`. Su sintaxis es muy similar a `tune_grid()` pero con varios argumentos adicionales:
 
--   `iter` is the maximum number of search iterations.
+-   `iter` es el número máximo de iteraciones de búsqueda.
 
--   `initial` can be either an integer, an object produced using `tune_grid()`, or one of the racing functions. Using an integer specifies the size of a space-filling design that is sampled prior to the first GP model.
+-   `initial` Puede ser un número entero, un objeto producido usando `tune_grid()` o una de las funciones de carrera. El uso de un número entero especifica el tamaño de un diseño de relleno de espacio que se muestrea antes del primer modelo GP.
 
--   `objective` is an argument for which acquisition function should be used. The `r pkg(tune)` package contains functions to pass here, such as `exp_improve()` or `conf_bound()`.
+-   `objective` es un argumento para qué función de adquisición se debe utilizar. El paquete `r pkg(tune)` contiene funciones para pasar aquí, como `exp_improve()` o `conf_bound()`.
 
--   The `param_info` argument, in this case, specifies the range of the parameters as well as any transformations that are used. These are used to define the search space. In situations where the default parameter objects are insufficient, `param_info` is used to override the defaults.
+-   El argumento `param_info`, en este caso, especifica el rango de los parámetros así como cualquier transformación que se utilice. Se utilizan para definir el espacio de búsqueda. En situaciones en las que los objetos de parámetros predeterminados son insuficientes, se utiliza `param_info` para anular los valores predeterminados.
 
-The `control` argument now uses the results of `control_bayes()`. Some helpful arguments there are:
+El argumento `control` ahora usa los resultados de `control_bayes()`. Algunos argumentos útiles son:
 
--   `no_improve` is an integer that will stop the search if improved parameters are not discovered within `no_improve` iterations.
+-   `no_improve` es un número entero que detendrá la búsqueda si no se descubren parámetros mejorados dentro de las iteraciones `no_improve`.
 
--   `uncertain` is also an integer (or `Inf`) that will take an *uncertainty sample* if there is no improvement within `uncertain` iterations. This will select the next candidate that has large variation. It has the effect of pure exploration since it does not consider the mean prediction.
+-   `uncertain` también es un número entero (o `Inf`) que tomará una *muestra de incertidumbre* si no hay mejora dentro de las iteraciones `inciertas`. Esto seleccionará al siguiente candidato que tenga una gran variación. Tiene el efecto de exploración pura ya que no considera la predicción media.
 
--   `verbose` is a logical that will print logging information as the search proceeds.
+-   `verbose` es un método lógico que imprimirá información de registro a medida que avanza la búsqueda.
 
-Let's use the first SVM results from @sec-svm as the initial substrate for the Gaussian process model. Recall that, for this application, we want to maximize the area under the ROC curve. Our code is:
+Usemos los primeros resultados de SVM de @sec-svm como sustrato inicial para el modelo de proceso gaussiano. Recuerde que, para esta aplicación, queremos maximizar el área bajo la curva ROC. Nuestro código es:
 
 ```{r iterative-cells-bo, eval = FALSE}
 ctrl <- control_bayes(verbose = TRUE)
@@ -482,8 +486,8 @@ iter_1_roc <- bo_res$mean[bo_res$.iter == 1]
 iter_1_imp <- iter_1_roc > best_init
 iter_1_text <- 
   paste0(
-    ifelse(iter_1_imp, "showed an improvement, resulting in an ROC value of ",
-           "failed to improve the outcome with an ROC value of "),
+    ifelse(iter_1_imp, "mostró una mejora, lo que resultó en un valor ROC de ",
+           "no logró mejorar el resultado con un valor ROC de "),
     round(iter_1_roc, 5), "."
   )
 
@@ -492,30 +496,30 @@ iter_2_imp <- iter_2_roc > max(bo_res$mean[bo_res$.iter < 2])
 iter_2_text <- 
   dplyr::case_when(
     !iter_1_imp &  !iter_2_imp ~ 
-      paste0("the second iteration also failed to yield an improvement."),
+      paste0("la segunda iteración tampoco logró producir una mejora."),
     !iter_1_imp &   iter_2_imp ~ 
-      paste0("the second iteration did yield a better result with an area under the ROC curve of ", 
+      paste0("la segunda iteración arrojó un mejor resultado con un área bajo la curva ROC de ", 
              round(iter_2_roc, 5), "."),
     iter_1_imp &  !iter_2_imp ~ 
-      paste0("the second iteration did not continue the trend with a suboptimal ROC value of ",
+      paste0("la segunda iteración no continuó la tendencia con un valor ROC subóptimo de ",
              round(iter_2_roc, 5), "."),
     iter_1_imp &  !iter_2_imp ~ 
-      paste0("the second iteration further increased the outcome value (ROC = ",
+      paste0("la segunda iteración aumentó aún más el valor del resultado (ROC = ",
              round(iter_2_roc, 5), ").") 
   )
 
 if (num_improve > 1) {
   improve_text <-
     paste0(
-      "There were a total of ",
+      "Hubo un total de ",
       num_improve,
-      " improvements in the outcome along the way at iterations ",
+      " mejoras en el resultado a lo largo del camino en las iteraciones ",
       knitr::combine_words(new_best_iter),
       "."
     )
 } else {
   improve_text <-
-    paste0("There was only a single improvement in the outcome at iteration ",
+    paste0("Solo hubo una mejora en el resultado en la iteración. ",
            new_best_iter,
            ".")
 }
@@ -523,27 +527,27 @@ if (num_improve > 1) {
 if (last_iter < 25) {
   last_bo_text <-
     paste0(
-      "There were no more improvements and the default option is to stop if no progress is made after `no_improve = ",
+      "No hubo más mejoras y la opción predeterminada es detener si no se logra ningún progreso después de `no_improve = ",
       ctrl$no_improve,
-      "` more steps. The last step was:"
+      "` más pasos. El último paso fue:"
     )
 } else {
-  last_bo_text <- "The last step was:"
+  last_bo_text <- "El último paso fue:"
 }
 ```
 
-The search process starts with an initial best value of `r round(best_init, 5)` for the area under the ROC curve. A Gaussian process model uses these `r xfun::numbers_to_words(nrow(init_vals))` statistics to create a model. The large candidate set is automatically generated and scored using the expected improvement acquisition function. The first iteration `r iter_1_text` After fitting another Gaussian process model with the new outcome value, `r iter_2_text`
+El proceso de búsqueda comienza con un mejor valor inicial de `r round(best_init, 5)` para el área bajo la curva ROC. Un modelo de proceso gaussiano utiliza estas estadísticas `r xfun::numbers_to_words(nrow(init_vals))` para crear un modelo. El gran conjunto de candidatos se genera y califica automáticamente utilizando la función de adquisición de mejora esperada. La primera iteración `r iter_1_text` Después de ajustar otro modelo de proceso gaussiano con el nuevo valor de resultado, `r iter_2_text`
 
-The log of the first two iterations, produced by the `verbose` option, was:
+El registro de las dos primeras iteraciones, generado por la opción "detallado", fue:
 
 ```{r iterative-cells-bo-print-first, echo = FALSE}
-so_stop_index <- grep("Iteration 3", svm_bo_output) 
+so_stop_index <- grep("Iteración 3", svm_bo_output) 
 if (length(so_stop_index) > 0) {
   cat(svm_bo_output[1:(so_stop_index - 2)], sep = "")
 }
 ```
 
-The search continues. `r improve_text` The best result occurred at iteration `r max(new_best_iter)` with an area under the ROC curve of `r round(best_bo, 5)`.
+La búsqueda continúa. `r improve_text` El mejor resultado se produjo en la iteración `r max(new_best_iter)` con un área bajo la curva ROC de `r round(best_bo, 5)`.
 
 ```{r iterative-cells-bo-print-impr, echo = FALSE}
 all_imp_index <- grep("♥", svm_bo_output)
@@ -564,27 +568,27 @@ if (length(so_start_index) > 0) {
 }
 ```
 
-The functions that are used to interrogate the results are the same as those used for grid search (e.g., `collect_metrics()`, etc.). For example:
+Las funciones que se utilizan para interrogar los resultados son las mismas que se utilizan para la búsqueda en cuadrícula (por ejemplo, `collect_metrics()`, etc.). Por ejemplo:
 
 ```{r iterative-bo-best}
 show_best(svm_bo)
 ```
 
-The `autoplot()` function has several options for iterative search methods. @fig-progress-plot shows how the outcome changed over the search by using `autoplot(svm_bo, type = "performance")`.
+La función `autoplot()` tiene varias opciones para métodos de búsqueda iterativos. @fig-progress-plot muestra cómo cambió el resultado durante la búsqueda usando `autoplot(svm_bo, type = "performance")`.
 
 ```{r}
 #| label: fig-progress-plot
 #| fig.height: 4
 #| echo: FALSE
-#| fig.cap: 'The progress of the Bayesian optimization produced when the `autoplot()` method is used with `type = "performance"`'
-#| fig.alt: "The progress of the Bayesian optimization produced when the `autoplot()` method is used with `type = 'performance'`. The plot shows the estimated performance on the y axis versus the iteration number on the x axis. Confidence intervals are shown for the points."
+#| fig.cap: 'El progreso de la optimización bayesiana producido cuando se utiliza el método `autoplot()` con `type = "performance"`'
+#| fig.alt: "El progreso de la optimización bayesiana se produce cuando se utiliza el método `autoplot()` con `type = 'performance'`. El gráfico muestra el rendimiento estimado en el eje y frente al número de iteraciones en el eje x. Se muestran intervalos de confianza para los puntos."
 
 autoplot(svm_bo, type = "performance")
 ```
 
-An additional type of plot uses `type = "parameters"` that shows the parameter values over iterations.
+Un tipo adicional de gráfico utiliza `type = "parameters"` que muestra los valores de los parámetros en iteraciones.
 
-The animation below visualizes the results of the search. The black $\times$ values show the starting values contained in `svm_initial`. The top-left blue panel shows the predicted mean value of the area under the ROC curve. The red panel on the top-right displays the predicted variation in the ROC values while the bottom plot visualizes the expected improvement. In each panel, darker colors indicate less attractive values (e.g., small mean values, large variation, and small improvements).
+La siguiente animación visualiza los resultados de la búsqueda. Los valores negros $\times$ muestran los valores iniciales contenidos en `svm_initial`. El panel azul superior izquierdo muestra el valor medio previsto del área bajo la curva ROC. El panel rojo en la parte superior derecha muestra la variación prevista en los valores de ROC, mientras que el gráfico inferior visualiza la mejora esperada. En cada panel, los colores más oscuros indican valores menos atractivos (por ejemplo, valores medios pequeños, variación grande y mejoras pequeñas).
 
 ```{r iterative-bo-progress, include = FALSE}
 av_capture_graphics(
@@ -604,35 +608,35 @@ av_capture_graphics(
 
 </video>
 
-The surface of the predicted mean surface is very inaccurate in the first few iterations of the search. Despite this, it does help guide the process to the region of good performance. In other words, the Gaussian process model is wrong but shows itself to be very useful. Within the first ten iterations, the search is sampling near the optimum location.
+La superficie de la superficie media prevista es muy inexacta en las primeras iteraciones de la búsqueda. A pesar de esto, ayuda a guiar el proceso hacia la región de buen desempeño. En otras palabras, el modelo del proceso gaussiano es incorrecto pero resulta muy útil. Dentro de las primeras diez iteraciones, la búsqueda realiza un muestreo cerca de la ubicación óptima.
 
-While the best tuning parameter combination is on the boundary of the parameter space, Bayesian optimization will often choose new points on other sides of the boundary. While we can adjust the ratio of exploration and exploitation, the search tends to sample boundary points early on.
+Si bien la mejor combinación de parámetros de ajuste se encuentra en el límite del espacio de parámetros, la optimización bayesiana a menudo elegirá nuevos puntos en otros lados del límite. Si bien podemos ajustar la proporción de exploración y explotación, la búsqueda tiende a muestrear puntos fronterizos desde el principio.
 
 ::: rmdnote
-If the search is seeded with an initial grid, a space-filling design would probably be a better choice than a regular design. It samples more unique values of the parameter space and would improve the predictions of the standard deviation in the early iterations.
+Si la búsqueda se basa en una cuadrícula inicial, un diseño que llene el espacio probablemente sería una mejor opción que un diseño normal. Muestra valores más únicos del espacio de parámetros y mejoraría las predicciones de la desviación estándar en las primeras iteraciones.
 :::
 
-Finally, if the user interrupts the `tune_bayes()` computations, the function returns the current results (instead of resulting in an error).
+Finalmente, si el usuario interrumpe los cálculos de `tune_bayes()`, la función devuelve los resultados actuales (en lugar de generar un error).
 
-## Simulated Annealing
+## Recocido simulado
 
-*Simulated annealing* (SA) [@kirkpatrick1983optimization; @van1987simulated] is a general nonlinear search routine inspired by the process in which metal cools. It is a global search method that can effectively navigate many different types of search landscapes, including discontinuous functions. Unlike most gradient-based optimization routines, simulated annealing can reassess previous solutions.
+*Recocido simulado* (SA) [@kirkpatrick1983optimization; @van1987simulated] es una rutina de búsqueda no lineal general inspirada en el proceso en el que se enfría el metal. Es un método de búsqueda global que puede navegar eficazmente por muchos tipos diferentes de entornos de búsqueda, incluidas funciones discontinuas. A diferencia de la mayoría de las rutinas de optimización basadas en gradientes, el recocido simulado puede reevaluar soluciones anteriores.
 
-### Simulated annealing search process
+### Proceso de búsqueda de recocido simulado
 
-The process of using simulated annealing starts with an initial value and embarks on a controlled random walk through the parameter space. Each new candidate parameter value is a small perturbation of the previous value that keeps the new point within a local neighborhood.
+El proceso de uso del recocido simulado comienza con un valor inicial y se embarca en un recorrido aleatorio controlado a través del espacio de parámetros. Cada nuevo valor de parámetro candidato es una pequeña perturbación del valor anterior que mantiene el nuevo punto dentro de una vecindad local.
 
-The candidate point is resampled to obtain its corresponding performance value. If this achieves better results than the previous parameters, it is accepted as the new best and the process continues. If the results are worse than the previous value the search procedure may still use this parameter to define further steps. This depends on two factors. First, the likelihood of accepting a bad result decreases as performance becomes worse. In other words, a slightly worse result has a better chance of acceptance than one with a large drop in performance. The other factor is the number of search iterations. Simulated annealing wants to accept fewer suboptimal values as the search proceeds. From these two factors, the *acceptance probability* for a bad result can be formalized as:
+El punto candidato se vuelve a muestrear para obtener su valor de rendimiento correspondiente. Si con este se logran mejores resultados que los parámetros anteriores, se acepta como el nuevo mejor y el proceso continúa. Si los resultados son peores que el valor anterior, el procedimiento de búsqueda aún puede usar este parámetro para definir pasos adicionales. Esto depende de dos factores. Primero, la probabilidad de aceptar un mal resultado disminuye a medida que el desempeño empeora. En otras palabras, un resultado ligeramente peor tiene más posibilidades de aceptación que uno con una gran caída en el rendimiento. El otro factor es el número de iteraciones de búsqueda. El recocido simulado quiere aceptar menos valores subóptimos a medida que avanza la búsqueda. A partir de estos dos factores, la *probabilidad de aceptación* de un mal resultado puede formalizarse como:
 
 $$\operatorname{Pr}[\text{accept suboptimal parameters at iteration } i] = \exp(c\times D_i \times i)$$
 
-where $i$ is the iteration number, $c$ is a user-specified constant, and $D_i$ is the percent difference between the old and new values (where negative values imply worse results). For a bad result, we determine the acceptance probability and compare it to a random uniform number. If the random number is greater than the probability value, the search discards the current parameters and the next iteration creates its candidate value in the neighborhood of the previous value. Otherwise, the next iteration forms the next set of parameters based on the current (suboptimal) values.
+donde $i$ es el número de iteración, $c$ es una constante especificada por el usuario y $D_i$ es la diferencia porcentual entre los valores antiguos y nuevos (donde los valores negativos implican peores resultados). Para un mal resultado, determinamos la probabilidad de aceptación y la comparamos con un número uniforme aleatorio. Si el número aleatorio es mayor que el valor de probabilidad, la búsqueda descarta los parámetros actuales y la siguiente iteración crea su valor candidato en la vecindad del valor anterior. De lo contrario, la siguiente iteración forma el siguiente conjunto de parámetros en función de los valores actuales (subóptimos).
 
 ::: rmdnote
-The acceptance probabilities of simulated annealing allow the search to proceed in the wrong direction, at least for the short term, with the potential to find a much better region of the parameter space in the long run.
+Las probabilidades de aceptación del recocido simulado permiten que la búsqueda avance en la dirección equivocada, al menos a corto plazo, con el potencial de encontrar una región mucho mejor del espacio de parámetros a largo plazo.
 :::
 
-How are the acceptance probabilities influenced? The heatmap in @fig-acceptance-prob shows how the acceptance probability can change over iterations, performance, and the user-specified coefficient.
+¿Cómo se ven influenciadas las probabilidades de aceptación? El mapa de calor en @fig-acceptance-prob muestra cómo la probabilidad de aceptación puede cambiar a lo largo de las iteraciones, el rendimiento y el coeficiente especificado por el usuario.
 
 ```{r}
 #| label: fig-acceptance-prob
@@ -640,11 +644,11 @@ How are the acceptance probabilities influenced? The heatmap in @fig-acceptance-
 #| dev: "png" 
 #| fig.height: 4.5
 #| out.width: "80%"
-#| fig.cap: "Heatmap of the simulated annealing acceptance probabilities for different coefficient values"
-#| fig.alt: "A heatmap of the simulated annealing acceptance probabilities for different coefficient values. The probabilities are affected by the both the iteration number as well as how far off the the performance is from the current best."
+#| fig.cap: "Mapa de calor de las probabilidades de aceptación del recocido simuladas para diferentes valores de coeficientes"
+#| fig.alt: "Un mapa de calor de las probabilidades de aceptación de recocido simuladas para diferentes valores de coeficientes. Las probabilidades se ven afectadas tanto por el número de iteraciones como por la distancia entre el rendimiento y el mejor nivel actual."
 
 get_accept_probs <- function(coef, pct_diff) {
-  # pct loss to abs value
+  # pérdida porcentual al valor absoluto
   candidate <- .8 - (pct_diff  * .8 /100) 
   
   x <- finetune:::acceptance_prob(0.8, candidate, 1:50, coef = coef, maximize = TRUE)
@@ -666,30 +670,30 @@ ggplot(prob_res, aes(x = iteration, y = pct_diff, fill = `Acceptance Probability
     colours = scales::brewer_pal(palette = "Greens")(8),
     limits = 0:1
   ) +
-  labs(y = "Percent Loss", x = "Iteration")
+  labs(y = "Pérdida Porcentual", x = "Iteración")
 ```
 
-The user can adjust the coefficients to find a probability profile that suits their needs. In `finetune::control_sim_anneal()`, the default for this `cooling_coef` argument is `r control_sim_anneal()$cooling_coef`. Decreasing this coefficient will encourage the search to be more forgiving of poor results.
+El usuario puede ajustar los coeficientes para encontrar un perfil de probabilidad que se adapte a sus necesidades. En `finetune::control_sim_anneal()`, el valor predeterminado para este argumento `cooling_coef` es `r control_sim_anneal()$cooling_coef`. Disminuir este coeficiente fomentará que la búsqueda sea más indulgente con los malos resultados.
 
-This process continues for a set amount of iterations but can halt if no globally best results occur within a pre-determined number of iterations. However, it can be very helpful to set a *restart threshold*. If there are a string of failures, this feature revisits the last globally best parameter settings and starts anew.
+Este proceso continúa durante una cantidad determinada de iteraciones, pero puede detenerse si no se obtienen los mejores resultados globales dentro de un número predeterminado de iteraciones. Sin embargo, puede resultar muy útil establecer un *umbral de reinicio*. Si hay una serie de fallas, esta función revisa la última configuración de parámetros globalmente mejor y comienza de nuevo.
 
-The main important detail is to define how to perturb the tuning parameters from iteration to iteration. There are a variety of methods in the literature for this. We follow the method given in @gsa called *generalized simulated annealing*. For continuous tuning parameters, we define a small radius to specify the local "neighborhood." For example, suppose there are two tuning parameters and each is bounded by zero and one. The simulated annealing process generates random values on the surrounding radius and randomly chooses one to be the current candidate value.
+El principal detalle importante es definir cómo perturbar los parámetros de ajuste de una iteración a otra. Hay una variedad de métodos en la literatura para esto. Seguimos el método dado en @gsa llamado *recocido simulado generalizado*. Para parámetros de ajuste continuo, definimos un radio pequeño para especificar el "vecindario" local. Por ejemplo, supongamos que hay dos parámetros de ajuste y cada uno está limitado por cero y uno. El proceso de recocido simulado genera valores aleatorios en el radio circundante y elige aleatoriamente uno como valor candidato actual.
 
-In our implementation, the neighborhood is determined by scaling the current candidate to be between zero and one based on the range of the parameter object, so radius values between 0.05 and 0.15 seem reasonable. For these values, the fastest that the search could go from one side of the parameter space to the other is about 10 iterations. The size of the radius controls how quickly the search explores the parameter space. In our implementation, a range of radii is specified so different magnitudes of "local" define the new candidate values.
+En nuestra implementación, la vecindad se determina escalando el candidato actual para que esté entre cero y uno según el rango del objeto de parámetro, por lo que los valores de radio entre 0,05 y 0,15 parecen razonables. Para estos valores, lo más rápido que puede ir la búsqueda de un lado al otro del espacio de parámetros es de aproximadamente 10 iteraciones. El tamaño del radio controla la rapidez con la que la búsqueda explora el espacio de parámetros. En nuestra implementación, se especifica un rango de radios para que diferentes magnitudes de "local" definan los nuevos valores candidatos.
 
-To illustrate, we'll use the two main `r pkg(glmnet)` tuning parameters:
+Para ilustrar, usaremos los dos parámetros de ajuste principales `r pkg(glmnet)`:
 
--   The amount of total regularization (`penalty`). The default range for this parameter is $10^{`r penalty()$range[[1]]`}$ to $10^{`r penalty()$range[[2]]`}$. It is typical to use a log (base-10) transformation for this parameter.
+-   El importe de la regularización total (`penalty`). El rango predeterminado para este parámetro es $10^{`r penalty()$range[[1]]`}$ a $10^{`r penalty()$range[[2]]`}$. Es típico utilizar una transformación logarítmica (base-10) para este parámetro.
 
--   The proportion of the lasso penalty (`mixture`). This is bounded at zero and one with no transformation.
+-   La proporción de la pena de lazo (`mixture`). Esto está acotado en cero y uno sin transformación.
 
 ```{r iterative-neighborhood-calcs, echo = FALSE}
 #| echo = FALSE, 
 #| message = FALSE, 
 #| warning = FALSE,
 #| out.width = "80%",
-#| fig.cap = "How simulated annealing determines the local neighborhood for two numeric tuning parameters. The clouds of points show possible next values where one would be selected at random. ",
-#| fig.alt = "An illustration of how simulated annealing determines what is the local neighborhood for two numeric tuning parameters. The clouds of points show possible next values where one would be selected at random. The candidate points are small circular clouds surrounding the current best point."
+#| fig.cap = "Cómo el recocido simulado determina la vecindad local para dos parámetros de ajuste numéricos. Las nubes de puntos muestran posibles siguientes valores donde se seleccionaría uno al azar. ",
+#| fig.alt = "Una ilustración de cómo el recocido simulado determina cuál es la vecindad local para dos parámetros de ajuste numéricos. Las nubes de puntos muestran posibles siguientes valores donde se seleccionaría uno al azar. Los puntos candidatos son pequeñas nubes circulares que rodean el mejor punto actual."
 
 glmn_param <- parameters(penalty(), mixture())
 pen_rng <- unlist(range_get(penalty(), original = TRUE))
@@ -736,7 +740,7 @@ for (i in 2:6) {
 }
 ```
 
-The process starts with initial values of `penalty = 0.025` and `mixture = 0.050`. Using a radius that randomly fluctuates between 0.050 and 0.015, the data are appropriately scaled, random values are generated on radii around the initial point, then one is randomly chosen as the candidate. For illustration, we will assume that all candidate values are improvements. Using the new value, a set of new random neighbors are generated, one is chosen, and so on. @fig-iterative-neighborhood shows `r xfun::numbers_to_words(max(best_values$Iteration))` iterations as the search proceeds toward the upper left corner.
+El proceso comienza con valores iniciales de `penalty = 0,025` y `mixture = 0,050`. Utilizando un radio que fluctúa aleatoriamente entre 0,050 y 0,015, los datos se escalan adecuadamente, se generan valores aleatorios en los radios alrededor del punto inicial y luego se elige uno al azar como candidato. A modo de ilustración, asumiremos que todos los valores candidatos son mejoras. Utilizando el nuevo valor, se genera un conjunto de nuevos vecinos aleatorios, se elige uno, y así sucesivamente. @fig-iterative-neighborhood muestra `r xfun::numbers_to_words(max(best_values$Iteration))` iteraciones a medida que la búsqueda avanza hacia la esquina superior izquierda.
 
 ```{r}
 #| label: fig-iterative-neighborhood
@@ -744,8 +748,8 @@ The process starts with initial values of `penalty = 0.025` and `mixture = 0.050
 #| message: FALSE 
 #| warning: FALSE
 #| out.width: "80%"
-#| fig.cap: "An illustration of how simulated annealing determines what is the local neighborhood for two numeric tuning parameters. The clouds of points show possible next values where one would be selected at random. "
-#| fig.alt: "An illustration of how simulated annealing determines what is the local neighborhood for two numeric tuning parameters. The clouds of points show possible next values where one would be selected at random. The candidate points are small circular clouds surrounding the current best point."
+#| fig.cap: "Una ilustración de cómo el recocido simulado determina cuál es la vecindad local para dos parámetros de ajuste numéricos. Las nubes de puntos muestran posibles siguientes valores donde se seleccionaría uno al azar. "
+#| fig.alt: "Una ilustración de cómo el recocido simulado determina cuál es la vecindad local para dos parámetros de ajuste numéricos. Las nubes de puntos muestran posibles siguientes valores donde se seleccionaría uno al azar. Los puntos candidatos son pequeñas nubes circulares que rodean el mejor punto actual."
 
 ggplot(neighbors_values, aes(x = penalty, y = mixture)) + 
   geom_point(alpha = .3, size = 3/4, aes(color = factor(Iteration)), show.legend = FALSE) + 
@@ -756,37 +760,38 @@ ggplot(neighbors_values, aes(x = penalty, y = mixture)) +
   geom_point(data = path) + 
   facet_wrap(vars(Iteration), labeller = label_both) + 
   labs(
-    x = paste(penalty()$label, "(penalty)"),
-    y = paste(mixture()$label, "(mixture)")
+    x = paste(penalty()$label, "(penalización)"),
+    y = paste(mixture()$label, "(mezcla)")
   )
 ```
 
-Note that, during some iterations, the candidate sets along the radius exclude points outside of the parameter boundaries. Also, our implementation biases the choice of the next tuning parameter configurations *away* from new values that are very similar to previous configurations.
+Tenga en cuenta que, durante algunas iteraciones, los conjuntos candidatos a lo largo del radio excluyen puntos fuera de los límites del parámetro. Además, nuestra implementación desvía la elección de las siguientes configuraciones de parámetros de ajuste *lejos* de nuevos valores que son muy similares a las configuraciones anteriores.
 
-For non-numeric parameters, we assign a probability for how often the parameter value changes.
+Para parámetros no numéricos, asignamos una probabilidad de con qué frecuencia cambia el valor del parámetro.
 
-### The `tune_sim_anneal()` function {#sec-tune-sim-anneal}
+### La función `tune_sim_anneal()` {#sec-tune-sim-anneal}
 
-To implement iterative search via simulated annealing, use the `tune_sim_anneal()` function. The syntax for this function is nearly identical to `tune_bayes()`. There are no options for acquisition functions or uncertainty sampling. The `control_sim_anneal()` function has some details that define the local neighborhood and the cooling schedule:
+Para implementar la búsqueda iterativa mediante recocido simulado, utilice la función `tune_sim_anneal()`. La sintaxis de esta función es casi idéntica a `tune_bayes()`. No hay opciones para funciones de adquisición o muestreo de incertidumbre. La función `control_sim_anneal()` tiene algunos detalles que definen la vecindad local y el programa de enfriamiento:
 
--   `no_improve`, for simulated annealing, is an integer that will stop the search if no global best or improved results are discovered within `no_improve` iterations. Accepted suboptimal or discarded parameters count as "no improvement."
+-   `no_improve`, para recocido simulado, es un número entero que detendrá la búsqueda si no se descubren resultados globales mejores o mejorados dentro de las iteraciones `no_improve`. Los parámetros subóptimos aceptados o descartados cuentan como "sin mejora".
 
--   `restart` is the number of iterations with no new best results before starting from the previous best results.
+-   `restart` es el número de iteraciones sin nuevos mejores resultados antes de comenzar con los mejores resultados anteriores.
 
--   `radius` is a numeric vector on (0, 1) that defines the minimum and maximum radius of the local neighborhood around the initial point.
+-   `radius` es un vector numérico en (0, 1) que define el radio mínimo y máximo de la vecindad local alrededor del punto inicial.
 
--   `flip` is a probability value that defines the chances of altering the value of categorical or integer parameters.
+-   `flip` es un valor de probabilidad que define las posibilidades de alterar el valor de parámetros categóricos o enteros.
 
--   `cooling_coef` is the $c$ coefficient in $\exp(c\times D_i \times i)$ that modulates how quickly the acceptance probability decreases over iterations. Larger values of `cooling_coef` decrease the probability of accepting a suboptimal parameter setting.
+-   `cooling_coef` es el coeficiente $c$ en $\exp(c\times D_i \times i)$ que modula la rapidez con la que la probabilidad de aceptación disminuye a lo largo de las iteraciones. Los valores más grandes de `cooling_coef` disminuyen la probabilidad de aceptar una configuración de parámetro subóptima.
 
-For the cell segmentation data, the syntax is very consistent with the previously used functions:
+Para los datos de segmentación de celdas, la sintaxis es muy consistente con las funciones utilizadas anteriormente:
 
 ```{r iterative-cells-sa-calcs, include = FALSE}
-# As we did above, this chunk executes the code with some extra options that
-# capture the output and save some internal objects for plotting. 
+# Como hicimos anteriormente, este fragmento ejecuta el código 
+# con algunas opciones adicionales que capturan la salida y guardan 
+# algunos objetos internos para trazar. 
 
-# This means that any changes to this chunk have to be made to the next chunk 
-# (where the code is shown and not executed).
+# Esto significa que cualquier cambio en este fragmento debe realizarse
+# en el siguiente fragmento (donde el código se muestra y no se ejecuta).
 
 ctrl_sa <- control_sim_anneal(no_improve = 10L, verbose = TRUE, save_history = TRUE)
 
@@ -803,16 +808,16 @@ svm_sa_sshh <- svm_wflow %>%
     control = ctrl_sa
   )
 
-# Make sure that the results have not changed since 2022-02-20. Save the results with: 
+# Asegúrese de que los resultados no hayan cambiado desde el 2022-02-20. Guarde los resultados con:
   # svm_sa_metrics <- collect_metrics(svm_sa_sshh$result)
   # save(svm_sa_metrics, file = "RData/svm_sa_metrics.RData")
-# Check with:
+# Comprobar con:
   #verify_consistent_sa(collect_metrics(svm_sa_sshh$result))
 
 svm_sa <- svm_sa_sshh$result
 svm_sa_output <- svm_sa_sshh$messages
 
-# We set tune_sim_anneal() to save a file to the temp directory.
+# Configuramos tune_sim_anneal() para guardar un archivo en el directorio temporal.
 file.copy(
   file.path(tempdir(), "sa_history.RData"),
   "RData/sa_history.RData",
@@ -844,55 +849,55 @@ restart_num <- length(restart_iter)
 sa_iter_list <- knitr::combine_words(restart_iter)
 restart_txt <- 
   dplyr::case_when(
-    restart_num == 0 ~ paste0("There were no restarts during the search."),
-    restart_num == 1 ~ paste0("There was a single restart at iteration ", restart_iter)[1],
-    TRUE ~ paste0("There were ", restart_num, " restarts at iterations ", sa_iter_list)[1]
+    restart_num == 0 ~ paste0("No hubo reinicios durante la búsqueda."),
+    restart_num == 1 ~ paste0("Hubo un único reinicio en la iteración.", restart_iter)[1],
+    TRUE ~ paste0("Había ", restart_num, " se reinicia en iteraciones ", sa_iter_list)[1]
   )
-discard_num<- length(result_history$.iter[result_history$results == "discard suboptimal"])
+discard_num<- length(result_history$.iter[result_history$results == "descartar subóptimo"])
 if (discard_num > 0) {
   restart_txt <-
     paste0(
       restart_txt, 
-      " as well as ", 
+      " así como ", 
       discard_num, 
-      " discarded ", 
-      ifelse(discard_num > 1, "candidates ", "candidate "),
-      "during the process."
+      " descartado ", 
+      ifelse(discard_num > 1, "candidatos ", "candidato "),
+      "durante el proceso."
     )
 } else {
   restart_txt <- paste0(restart_txt, ".")
 }
 
 
-best_iters <- result_history$.iter[result_history$results == "new best"]
+best_iters <- result_history$.iter[result_history$results == "nuevo mejor"]
 best_init <- max(result_history$mean[result_history$.iter == 0])
 best_sa_res <- max(result_history$mean[result_history$.iter > 0])
 best_sa_inds <- result_history$.iter[which.max(result_history$mean)]
 best_txt <-
   dplyr::case_when(
-    restart_num == 1 ~ paste0("a new global optimum once at iteration ", best_iters, "."),
-    TRUE ~ paste0("new global optimums at ", length(best_iters), " different iterations.")[1]
+    restart_num == 1 ~ paste0("un nuevo óptimo global una vez en la iteración ", best_iters, "."),
+    TRUE ~ paste0("nuevos óptimos globales en ", length(best_iters), " diferentes iteraciones.")[1]
   )
 best_txt <- best_txt[1]
 if (length(best_iters) > 1) {
   best_txt <-
     paste0(
       best_txt,
-      " The earliest improvement was at iteration ",
+      " La primera mejora fue en la iteración.",
       min(best_iters),
-      " and the final optimum occured at iteration ",
+      " y el óptimo final ocurrió en la iteración ",
       max(best_iters),
       ". The best overall results occured at iteration ", 
-      best_sa_inds, " with a mean area under the ROC curve of ",
-      round(best_sa_res, 4), " (compared to an initial best of ",
+      best_sa_inds, " con un área media bajo la curva ROC de ",
+      round(best_sa_res, 4), " (comparado con un mejor inicial de ",
       round(best_init, 4), ")."
     )
 }
 ```
 
-The simulated annealing process discovered `r best_txt` `r restart_txt`
+El proceso de recocido simulado descubrió `r best_txt` `r restart_txt`
 
-The `verbose` option prints details of the search process. The output for the first five iterations was:
+La opción `verbose` imprime detalles del proceso de búsqueda. El resultado de las primeras cinco iteraciones fue:
 
 ```{r iterative-cells-sa-print-start, echo = FALSE}
 so_stop_index <- grep("^ 5", svm_sa_output)
@@ -901,7 +906,7 @@ if (length(so_stop_index) > 0) {
 }
 ```
 
-The output for last ten iterations was:
+El resultado de las últimas diez iteraciones fue:
 
 ```{r iterative-cells-sa-print-end, echo = FALSE}
 last_sa_iter <- max(result_history$.iter)
@@ -913,14 +918,14 @@ if (length(so_stop_index) > 0) {
 }
 ```
 
-As with the other `tune_*()` functions, the corresponding `autoplot()` function produces visual assessments of the results. Using `autoplot(svm_sa, type = "performance")` shows the performance over iterations (@fig-sa-iterations) while `autoplot(svm_sa, type = "parameters")` plots performance versus specific tuning parameter values (@fig-sa-parameters).
+Al igual que con las otras funciones `tune_*()`, la función `autoplot()` correspondiente produce evaluaciones visuales de los resultados. El uso de `autoplot(svm_sa, type = "performance")` muestra el rendimiento en iteraciones (@fig-sa-iterations) mientras que `autoplot(svm_sa, type = "parameters")` traza el rendimiento versus valores de parámetros de ajuste específicos (@fig-sa-parameters).
 
 ```{r}
 #| label: fig-sa-iterations
 #| fig.height: 4
 #| echo: FALSE
-#| fig.cap: 'Progress of the simulated annealing process shown when the `autoplot()` method is used with `type = "performance"`'
-#| fig.alt: "The progress of the simulated annealing process shown when the `autoplot()` method is used with `type = 'performance'`. The plot shows the estimated performance on the y axis versus the iteration number on the x axis. Confidence intervals are shown for the points."
+#| fig.cap: 'El progreso del proceso de recocido simulado se muestra cuando se usa el método `autoplot()` con `type = "performance"`'
+#| fig.alt: "El progreso del proceso de recocido simulado se muestra cuando se usa el método `autoplot()` con `type = 'performance'`. El gráfico muestra el rendimiento estimado en el eje y frente al número de iteraciones en el eje x. Se muestran intervalos de confianza para los puntos."
 
 autoplot(svm_sa, type = "performance")
 ```
@@ -929,13 +934,13 @@ autoplot(svm_sa, type = "performance")
 #| label: fig-sa-parameters
 #| fig.height: 4
 #| echo: FALSE
-#| fig.cap: 'Performance versus tuning parameter values when the `autoplot()` method is used with `type = "parameters"`.'
-#| fig.alt: "A visualization of performance versus tuning parameter values when the `autoplot()` method is used with `type = 'parameters'`. The plot shows different panels for each tuning parameter in their transformed units."
+#| fig.cap: 'Rendimiento versus valores de parámetros de ajuste cuando el método `autoplot()` se usa con `type = "parameters"`.'
+#| fig.alt: "Una visualización del rendimiento frente a los valores de los parámetros de ajuste cuando se utiliza el método `autoplot()` con `type = 'parameters'`. El gráfico muestra diferentes paneles para cada parámetro de sintonización en sus unidades transformadas."
 
 autoplot(svm_sa, type = "parameters")
 ```
 
-A visualization of the search path helps to understand where the search process did well and where it went astray:
+Una visualización de la ruta de búsqueda ayuda a comprender dónde funcionó bien el proceso de búsqueda y dónde se extravió:
 
 ```{r iterative-sa-plot, include = FALSE}
 av_capture_graphics(
@@ -955,8 +960,8 @@ av_capture_graphics(
 
 </video>
 
-Like `tune_bayes()`, manually stopping execution will return the completed iterations.
+Al igual que `tune_bayes()`, detener manualmente la ejecución devolverá las iteraciones completadas.
 
-## Chapter Summary {#sec-iterative-summary}
+## Resumen del capítulo {#sec-iterative-summary}
 
-This chapter described two iterative search methods for optimizing tuning parameters. Bayes optimization uses a predictive model trained on existing resampling results to suggest tuning parameter values, while simulated annealing walks through the hyperparameter space to find good values. Both can be effective at finding good values alone or as a follow-up method used after an initial grid search to further `r pkg(finetune)` performance.
+Este capítulo describió dos métodos de búsqueda iterativos para optimizar los parámetros de ajuste. La optimización de Bayes utiliza un modelo predictivo entrenado en los resultados de remuestreo existentes para sugerir valores de parámetros de ajuste, mientras que el recocido simulado recorre el espacio de hiperparámetros para encontrar buenos valores. Ambos pueden ser eficaces para encontrar buenos valores por sí solos o como método de seguimiento utilizado después de una búsqueda inicial en la cuadrícula para mejorar el rendimiento de `r pkg(finetune)`.
