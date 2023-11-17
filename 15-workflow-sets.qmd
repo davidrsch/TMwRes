@@ -19,23 +19,23 @@ if (!grepl("mingw32", R.Version()$platform)) {
 }
 ```
 
-# Screening Many Models {#sec-workflow-sets}
+# Probando muchos modelos {#sec-workflow-sets}
 
-We introduced workflow sets in [Chapter @sec-workflows] and demonstrated how to use them with resampled data sets in [Chapter @sec-compare]. In this chapter, we discuss these sets of multiple modeling workflows in more detail and describe a use case where they can be helpful.
+Presentamos conjuntos de flujos de trabajo en el [Capítulo @sec-workflows] y demostramos cómo usarlos con conjuntos de datos remuestreados en el [Capítulo @sec-compare]. En este capítulo, analizamos estos conjuntos de múltiples flujos de trabajo de modelado con más detalle y describimos un caso de uso en el que pueden resultar útiles.
 
-For projects with new data sets that have not yet been well understood, a data practitioner may need to screen many combinations of models and preprocessors. It is common to have little or no *a priori* knowledge about which method will work best with a novel data set.
+Para proyectos con nuevos conjuntos de datos que aún no se han comprendido bien, es posible que un profesional de datos necesite examinar muchas combinaciones de modelos y preprocesadores. Es común tener poco o ningún conocimiento *a priori* sobre qué método funcionará mejor con un conjunto de datos novedoso.
 
 ::: rmdnote
-A good strategy is to spend some initial effort trying a variety of modeling approaches, determine what works best, then invest additional time tweaking/optimizing a small set of models.
+Una buena estrategia es dedicar un esfuerzo inicial a probar una variedad de enfoques de modelado, determinar qué funciona mejor y luego invertir tiempo adicional ajustando/optimizando un pequeño conjunto de modelos.
 :::
 
-Workflow sets provide a user interface to create and manage this process. We'll also demonstrate how to evaluate these models efficiently using the racing methods discussed in @sec-racing-example.
+Los conjuntos de flujos de trabajo proporcionan una interfaz de usuario para crear y gestionar este proceso. También demostraremos cómo evaluar estos modelos de manera eficiente utilizando los métodos de carrera discutidos en @sec-racing-example.
 
-## Modeling Concrete Mixture Strength
+## Modelado de la resistencia de una mezcla de hormigón
 
-To demonstrate how to screen multiple model workflows, we will use the concrete mixture data from *Applied Predictive Modeling* [@apm] as an example. Chapter 10 of that book demonstrated models to predict the compressive strength of concrete mixtures using the ingredients as predictors. A wide variety of models were evaluated with different predictor sets and preprocessing needs. How can workflow sets make such a process of large scale testing for models easier?
+Para demostrar cómo filtrar múltiples flujos de trabajo de modelos, usaremos los datos de mezcla de concreto de *Applied Predictive Modeling* [@apm] como ejemplo. El capítulo 10 de ese libro demostró modelos para predecir la resistencia a la compresión de mezclas de concreto utilizando los ingredientes como predictores. Se evaluó una amplia variedad de modelos con diferentes conjuntos de predictores y necesidades de preprocesamiento. ¿Cómo pueden los conjuntos de flujos de trabajo facilitar este proceso de pruebas de modelos a gran escala?
 
-First, let's define the data splitting and resampling schemes.
+Primero, definamos los esquemas de división y remuestreo de datos.
 
 ```{r workflow-sets-data}
 library(tidymodels)
@@ -44,13 +44,13 @@ data(concrete, package = "modeldata")
 glimpse(concrete)
 ```
 
-The `compressive_strength` column is the outcome. The `age` predictor tells us the age of the concrete sample at testing in days (concrete strengthens over time) and the rest of the predictors like `cement` and `water` are concrete components in units of kilograms per cubic meter.
+La columna `compression_strength` es el resultado. El predictor de "edad" nos dice la edad de la muestra de concreto en la prueba en días (el concreto se fortalece con el tiempo) y el resto de los predictores como "cemento" y "agua" son componentes de concreto en unidades de kilogramos por metro cúbico.
 
 ::: rmdwarning
-For some cases in this data set, the same concrete formula was tested multiple times. We'd rather not include these replicate mixtures as individual data points since they might be distributed across both the training and test set. Doing so might artificially inflate our performance estimates.
+En algunos casos de este conjunto de datos, la misma fórmula concreta se probó varias veces. Preferimos no incluir estas mezclas replicadas como puntos de datos individuales, ya que podrían distribuirse tanto en el conjunto de entrenamiento como en el de prueba. Hacerlo podría inflar artificialmente nuestras estimaciones de desempeño.
 :::
 
-To address this, we will use the mean compressive strength per concrete mixture for modeling:
+Para abordar esto, utilizaremos la resistencia a la compresión media por mezcla de concreto para modelar:
 
 ```{r workflow-sets-means}
 concrete <- 
@@ -61,7 +61,7 @@ concrete <-
 nrow(concrete)
 ```
 
-Let's split the data using the default 3:1 ratio of training-to-test and resample the training set using five repeats of 10-fold cross-validation:
+Dividamos los datos usando la proporción predeterminada de 3:1 de entrenamiento a prueba y volvamos a muestrear el conjunto de entrenamiento usando cinco repeticiones de validación cruzada de 10 veces:
 
 ```{r workflow-sets-splitting}
 set.seed(1501)
@@ -74,7 +74,7 @@ concrete_folds <-
    vfold_cv(concrete_train, strata = compressive_strength, repeats = 5)
 ```
 
-Some models (notably neural networks, KNN, and support vector machines) require predictors that have been centered and scaled, so some model workflows will require recipes with these preprocessing steps. For other models, a traditional response surface design model expansion (i.e., quadratic and two-way interactions) is a good idea. For these purposes, we create two recipes:
+Algunos modelos (en particular, redes neuronales, KNN y máquinas de vectores de soporte) requieren predictores centrados y escalados, por lo que algunos flujos de trabajo de modelos requerirán recetas con estos pasos de preprocesamiento. Para otros modelos, una expansión del modelo de diseño de superficie de respuesta tradicional (es decir, interacciones cuadráticas y bidireccionales) es una buena idea. Para estos fines, creamos dos recetas:
 
 ```{r workflow-sets-recipes}
 normalized_rec <- 
@@ -87,7 +87,7 @@ poly_recipe <-
    step_interact(~ all_predictors():all_predictors())
 ```
 
-For the models, we use the the `r pkg(parsnip)` addin to create a set of model specifications:
+Para los modelos, utilizamos el complemento `r pkg(parsnip)` para crear un conjunto de especificaciones de modelo:
 
 ```{r workflow-sets-models}
 library(rules)
@@ -148,7 +148,7 @@ cubist_spec <-
    set_engine("Cubist") 
 ```
 
-The analysis in @apm specifies that the neural network should have up to 27 hidden units in the layer. The `extract_parameter_set_dials()` function extracts the parameter set, which we modify to have the correct parameter range:
+El análisis en @apm especifica que la red neuronal debe tener hasta 27 unidades ocultas en la capa. La función `extract_parameter_set_dials()` extrae el conjunto de parámetros, que modificamos para tener el rango de parámetros correcto:
 
 ```{r workflow-sets-param}
 nnet_param <- 
@@ -157,17 +157,17 @@ nnet_param <-
    update(hidden_units = hidden_units(c(1, 27)))
 ```
 
-How can we match these models to their recipes, tune them, then evaluate their performance efficiently? A workflow set offers a solution.
+¿Cómo podemos hacer coincidir estos modelos con sus recetas, ajustarlos y luego evaluar su desempeño de manera eficiente? Un conjunto de flujo de trabajo ofrece una solución.
 
-## Creating the Workflow Set
+## Crear el conjunto de flujo de trabajo
 
-Workflow sets take named lists of preprocessors and model specifications and combine them into an object containing multiple workflows. There are three possible kinds of preprocessors:
+Los conjuntos de flujos de trabajo toman listas con nombres de preprocesadores y especificaciones de modelos y las combinan en un objeto que contiene múltiples flujos de trabajo. Hay tres tipos posibles de preprocesadores:
 
--   A standard R formula
--   A recipe object (prior to estimation/prepping)
--   A `r pkg(dplyr)`-style selector to choose the outcome and predictors
+-   Una fórmula R estándar
+-   Un objeto de receta (antes de la estimación/preparación)
+-   Un selector estilo `r pkg(dplyr)` para elegir el resultado y los predictores.
 
-As a first workflow set example, let's combine the recipe that only standardizes the predictors to the nonlinear models that require the predictors to be in the same units:
+Como primer ejemplo de conjunto de flujo de trabajo, combinemos la receta que solo estandariza los predictores con los modelos no lineales que requieren que los predictores estén en las mismas unidades:
 
 ```{r workflow-sets-normalized}
 normalized <- 
@@ -179,15 +179,15 @@ normalized <-
 normalized
 ```
 
-Since there is only a single preprocessor, this function creates a set of workflows with this value. If the preprocessor contained more than one entry, the function would create all combinations of preprocessors and models.
+Dado que solo hay un preprocesador, esta función crea un conjunto de flujos de trabajo con este valor. Si el preprocesador contuviera más de una entrada, la función crearía todas las combinaciones de preprocesadores y modelos.
 
-The `wflow_id` column is automatically created but can be modified using a call to `mutate()`. The `info` column contains a tibble with some identifiers and the workflow object. The workflow can be extracted:
+La columna `wflow_id` se crea automáticamente pero se puede modificar usando una llamada a `mutate()`. La columna `info` contiene un tibble con algunos identificadores y el objeto de flujo de trabajo. El flujo de trabajo se puede extraer:
 
 ```{r workflow-sets-get-workflow}
 normalized %>% extract_workflow(id = "normalized_KNN")
 ```
 
-The `option` column is a placeholder for any arguments to use when we evaluate the workflow. For example, to add the neural network parameter object:
+La columna `option` es un marcador de posición para cualquier argumento que se utilice cuando evaluamos el flujo de trabajo. Por ejemplo, para agregar el objeto de parámetro de red neuronal:
 
 ```{r workflow-sets-info-update}
 normalized <- 
@@ -196,11 +196,11 @@ normalized <-
 normalized
 ```
 
-When a function from the `r pkg(tune)` or `r pkg(finetune)` package is used to tune (or resample) the workflow, this argument will be used.
+Cuando se usa una función del paquete `r pkg(tune)` o `r pkg(finetune)` para ajustar (o volver a muestrear) el flujo de trabajo, se usará este argumento.
 
-The `result` column is a placeholder for the output of the tuning or resampling functions.
+La columna `result` es un marcador de posición para la salida de las funciones de ajuste o remuestreo.
 
-For the other nonlinear models, let's create another workflow set that uses `r pkg(dplyr)` selectors for the outcome and predictors:
+Para los otros modelos no lineales, creemos otro conjunto de flujo de trabajo que use selectores `r pkg(dplyr)` para el resultado y los predictores:
 
 ```{r workflow-sets-selectors}
 model_vars <- 
@@ -216,7 +216,7 @@ no_pre_proc <-
 no_pre_proc
 ```
 
-Finally, we assemble the set that uses nonlinear terms and interactions with the appropriate models:
+Finalmente, ensamblamos el conjunto que utiliza términos no lineales e interacciones con los modelos apropiados:
 
 ```{r workflow-sets-quad}
 with_features <- 
@@ -226,21 +226,21 @@ with_features <-
    )
 ```
 
-These objects are tibbles with the extra class of `workflow_set`. Row binding does not affect the state of the sets and the result is itself a workflow set:
+Estos objetos son tibbles con la clase adicional `workflow_set`. La vinculación de filas no afecta el estado de los conjuntos y el resultado es en sí mismo un conjunto de flujo de trabajo:
 
 ```{r workflow-sets-complete}
 all_workflows <- 
    bind_rows(no_pre_proc, normalized, with_features) %>% 
-   # Make the workflow ID's a little more simple: 
+   # Haga que los ID del flujo de trabajo sean un poco más simples:
    mutate(wflow_id = gsub("(simple_)|(normalized_)", "", wflow_id))
 all_workflows
 ```
 
-## Tuning and Evaluating the Models
+## Ajuste y evaluación de los modelos
 
-Almost all of the members of `all_workflows` contain tuning parameters. To evaluate their performance, we can use the standard tuning or resampling functions (e.g., `tune_grid()` and so on). The `workflow_map()` function will apply the same function to all of the workflows in the set; the default is `tune_grid()`.
+Casi todos los miembros de `all_workflows` contienen parámetros de ajuste. Para evaluar su rendimiento, podemos utilizar las funciones estándar de ajuste o remuestreo (por ejemplo, `tune_grid()`, etc.). La función `workflow_map()` aplicará la misma función a todos los flujos de trabajo del conjunto; el valor predeterminado es `tune_grid()`.
 
-For this example, grid search is applied to each workflow using up to 25 different parameter candidates. There are a set of common options to use with each execution of `tune_grid()`. For example, in the following code we will use the same resampling and control objects for each workflow, along with a grid size of 25. The `workflow_map()` function has an additional argument called `seed`, which is used to ensure that each execution of `tune_grid()` consumes the same random numbers.
+Para este ejemplo, la búsqueda de cuadrícula se aplica a cada flujo de trabajo utilizando hasta 25 candidatos de parámetros diferentes. Hay un conjunto de opciones comunes para usar con cada ejecución de `tune_grid()`. Por ejemplo, en el siguiente código usaremos los mismos objetos de remuestreo y control para cada flujo de trabajo, junto con un tamaño de cuadrícula de 25. La función `workflow_map()` tiene un argumento adicional llamado `seed`, que se usa para garantizar que cada ejecución de `tune_grid()` consume los mismos números aleatorios.
 
 ```{r workflow-sets-grid, eval = FALSE}
 grid_ctrl <-
@@ -279,15 +279,15 @@ full_results_time <-
 num_grid_models <- nrow(collect_metrics(grid_results, summarize = FALSE)) / 2
 ```
 
-The results show that the `option` and `result` columns have been updated:
+Los resultados muestran que las columnas `option` y `result` se han actualizado:
 
 ```{r workflow-sets-grid-print}
 grid_results
 ```
 
-The `option` column now contains all of the options that we used in the `workflow_map()` call. This makes our results reproducible. In the `result` columns, the "`tune[+]`" and "`rsmp[+]`" notations mean that the object had no issues. A value such as "`tune[x]`" occurs if all of the models failed for some reason.
+La columna `option` ahora contiene todas las opciones que usamos en la llamada `workflow_map()`. Esto hace que nuestros resultados sean reproducibles. En las columnas `result`, las notaciones "`tune[+]`" y "`rsmp[+]`" significan que el objeto no tuvo problemas. Un valor como "`tune[x]`" ocurre si todos los modelos fallaron por algún motivo.
 
-There are a few convenience functions for examining results such as `grid_results`. The `rank_results()` function will order the models by some performance metric. By default, it uses the first metric in the metric set (RMSE in this instance). Let's `filter()` to look only at RMSE:
+Hay algunas funciones convenientes para examinar resultados, como `grid_results`. La función `rank_results()` ordenará los modelos según alguna métrica de rendimiento. De forma predeterminada, utiliza la primera métrica del conjunto de métricas (RMSE en este caso). Vamos a `filter()` para mirar solo RMSE:
 
 ```{r workflow-sets-rank}
 grid_results %>% 
@@ -296,9 +296,9 @@ grid_results %>%
    select(model, .config, rmse = mean, rank)
 ```
 
-Also by default, the function ranks all of the candidate sets; that's why the same model can show up multiple times in the output. An option, called `select_best`, can be used to rank the models using their best tuning parameter combination.
+Además, de forma predeterminada, la función clasifica todos los conjuntos de candidatos; es por eso que el mismo modelo puede aparecer varias veces en el resultado. Se puede utilizar una opción, llamada `select_best`, para clasificar los modelos utilizando su mejor combinación de parámetros de ajuste.
 
-The `autoplot()` method plots the rankings; it also has a `select_best` argument. The plot in @fig-workflow-set-ranks visualizes the best results for each model and is generated with:
+El método `autoplot()` traza las clasificaciones; también tiene un argumento `select_best`. El gráfico en @fig-workflow-set-ranks visualiza los mejores resultados para cada modelo y se genera con:
 
 ```{r}
 #| label: workflow-sets-plot-rank
@@ -306,9 +306,9 @@ The `autoplot()` method plots the rankings; it also has a `select_best` argument
 
 autoplot(
    grid_results,
-   rank_metric = "rmse",  # <- how to order models
-   metric = "rmse",       # <- which metric to visualize
-   select_best = TRUE     # <- one point per workflow
+   rank_metric = "rmse",  # <- cómo pedir modelos
+   metric = "rmse",       # <- qué métrica visualizar
+   select_best = TRUE     # <- un punto por flujo de trabajo
 ) +
    geom_text(aes(y = mean - 1/2, label = wflow_id), angle = 90, hjust = 1) +
    lims(y = c(3.5, 9.5)) +
@@ -322,13 +322,13 @@ autoplot(
 #| out-width: '100%' 
 #| fig-width: 8
 #| fig-height: 5.75
-#| fig-cap: "Estimated RMSE (and approximate confidence intervals) for the best model configuration in each workflow."
-#| fig-alt: "Estimated RMSE (and approximate confidence intervals) for the best model configuration in each workflow. The y axis is the estimated RMSE and the x axis is the model rank based on RMSE. Cubist rules and boosted trees show the smallest RMSE values. "
+#| fig-cap: "RMSE estimado (e intervalos de confianza aproximados) para la mejor configuración del modelo en cada flujo de trabajo."
+#| fig-alt: "RMSE estimado (e intervalos de confianza aproximados) para la mejor configuración del modelo en cada flujo de trabajo. El eje y es el RMSE estimado y el eje x es el rango del modelo basado en RMSE. Las reglas cubistas y los árboles potenciados muestran los valores RMSE más pequeños. "
 ```
 
-In case you want to see the tuning parameter results for a specific model, like @fig-workflow-sets-autoplot, the `id` argument can take a single value from the `wflow_id` column for which model to plot:
+En caso de que desee ver los resultados de los parámetros de ajuste para un modelo específico, como @fig-workflow-sets-autoplot, el argumento `id` puede tomar un único valor de la columna `wflow_id` para qué modelo trazar:
 
-```{r} 
+```{r}
 #| label: workflow-sets-plot-model
 #| eval: FALSE
 
@@ -342,17 +342,17 @@ autoplot(grid_results, id = "Cubist", metric = "rmse")
 #| out.width: '100%' 
 #| fig-width: 8
 #| fig-height: 4.5
-#| fig-cap: "The `autoplot()` results for the Cubist model contained in the workflow set."
-#| fig.alt: "The `autoplot()` results for the Cubist model contained in the workflow set. The visalization has a panel for each tuning pameter and shows performance versus the parameter values."
+#| fig-cap: "Los resultados `autoplot()` para el modelo cubista contenido en el conjunto de flujo de trabajo."
+#| fig.alt: "Los resultados `autoplot()` para el modelo cubista contenido en el conjunto de flujo de trabajo. La visualización tiene un panel para cada parámetro de ajuste y muestra el rendimiento frente a los valores de los parámetros."
 ```
 
-There are also methods for `collect_predictions()` and `collect_metrics()`.
+También hay métodos para `collect_predictions()` y `collect_metrics()`.
 
-The example model screening with our concrete mixture data fits a total of `r format(num_grid_models, big.mark = ",")` models. Using `r cores` workers in parallel, the estimation process took `r round(full_results_time[3]/60/60, 1)` hours to complete.
+La selección del modelo de ejemplo con nuestros datos de mezcla de concreto se ajusta a un total de modelos `r format(num_grid_models, big.mark = ",")`. Utilizando trabajadores de `r cores` en paralelo, el proceso de estimación tardó `r round(full_results_time[3]/60/60, 1)` horas en completarse.
 
-## Efficiently Screening Models {#sec-racing-example}
+## Modelos de detección eficiente {#sec-racing-example}
 
-One effective method for screening a large set of models efficiently is to use the racing approach described in @sec-racing. With a workflow set, we can use the `workflow_map()` function for this racing approach. Recall that after we pipe in our workflow set, the argument we use is the function to apply to the workflows; in this case, we can use a value of `"tune_race_anova"`. We also pass an appropriate control object; otherwise the options would be the same as the code in the previous section.
+Un método eficaz para seleccionar un gran conjunto de modelos de manera eficiente es utilizar el enfoque de carreras descrito en @sec-racing. Con un flujo de trabajo configurado, podemos usar la función `workflow_map()` para este enfoque de carrera. Recuerde que después de canalizar nuestro conjunto de flujos de trabajo, el argumento que usamos es la función que se aplicará a los flujos de trabajo; en este caso, podemos usar un valor de `"tune_race_anova"`. También pasamos un objeto de control apropiado; de lo contrario, las opciones serían las mismas que el código de la sección anterior.
 
 ```{r workflow-sets-race, eval = FALSE}
 library(finetune)
@@ -395,15 +395,15 @@ race_results_time <-
 num_race_models <- sum(collect_metrics(race_results)$n) / 2
 ```
 
-The new object looks very similar, although the elements of the `result` column show a value of `"race[+]"`, indicating a different type of object:
+El nuevo objeto se ve muy similar, aunque los elementos de la columna `resultado` muestran un valor de `"race[+]"`, lo que indica un tipo diferente de objeto:
 
 ```{r workflow-sets-race-print}
 race_results
 ```
 
-The same helpful functions are available for this object to interrogate the results and, in fact, the basic `autoplot()` method shown in @fig-workflow-set-racing-ranks[^15-workflow-sets-1] produces trends similar to @fig-workflow-set-ranks. This is produced by:
+Las mismas funciones útiles están disponibles para este objeto para interrogar los resultados y, de hecho, el método básico `autoplot()` que se muestra en @fig-workflow-set-racing-ranks[^15-workflow-sets-1] produce tendencias. similar a @fig-workflow-set-ranks. Esto es producido por:
 
-[^15-workflow-sets-1]: As of February 2022, we see slightly different performance metrics for the neural network when trained using macOS on ARM architecture (Apple M1 chip) compared to Intel architecture.
+[^15-workflow-sets-1]: A partir de febrero de 2022, vemos métricas de rendimiento ligeramente diferentes para la red neuronal cuando se entrena con macOS en arquitectura ARM (chip Apple M1) en comparación con la arquitectura Intel.
 
 ```{r workflow-sets-plot-race-rank, eval = FALSE}
 autoplot(
@@ -424,13 +424,13 @@ autoplot(
 #| out.width: '100%' 
 #| fig.width: 8
 #| fig.height: 5.75
-#| fig.cap: "Estimated RMSE (and approximate confidence intervals) for the best model configuration in each workflow in the racing results."
-#| fig.alt: "Estimated RMSE (and approximate confidence intervals) for the best model configuration in each workflow in the racing results. The y axis is the estimated RMSE and the x axis is the model rank based on RMSE. Cubist rules and boosted trees show the smallest RMSE values. "
+#| fig.cap: "RMSE estimado (e intervalos de confianza aproximados) para la mejor configuración del modelo en cada flujo de trabajo en los resultados de las carreras."
+#| fig.alt: "RMSE estimado (e intervalos de confianza aproximados) para la mejor configuración del modelo en cada flujo de trabajo en los resultados de las carreras. El eje y es el RMSE estimado y el eje x es el rango del modelo basado en RMSE. Las reglas cubistas y los árboles potenciados muestran los valores RMSE más pequeños."
 ```
 
-Overall, the racing approach estimated a total of `r format(num_race_models, big.mark = ",")` models, `r round(num_race_models/num_grid_models*100, 2)`% of the full set of `r format(num_grid_models, big.mark = ",")` models in the full grid. As a result, the racing approach was `r round(full_results_time[3]/race_results_time[3], 1)`-fold faster.
+En general, el enfoque de carreras estimó un total de `r format(num_race_models, big.mark = ",")` modelos, `r round(num_race_models/num_grid_models*100, 2)`% del conjunto completo de `r format(num_grid_models , big.mark = ",")` modelos en la cuadrícula completa. Como resultado, el enfoque de carrera fue `r round(full_results_time[3]/race_results_time[3], 1)`-veces más rápido.
 
-Did we get similar results? For both objects, we rank the results, merge them, and plot them against one another in @fig-racing-concordance.
+¿Obtuvimos resultados similares? Para ambos objetos, clasificamos los resultados, los fusionamos y los comparamos entre sí en @fig-racing-concordance.
 
 ```{r workflow-sets-racing-concordance, eval = FALSE}
 matched_results <- 
@@ -452,7 +452,7 @@ matched_results %>%
    geom_point() + 
    geom_text_repel(aes(label = model)) +
    coord_obs_pred() + 
-   labs(x = "Complete Grid RMSE", y = "Racing RMSE") 
+   labs(x = "Cuadrícula completa RMSE", y = "Carreras RMSE") 
 ```
 
 ```{r}
@@ -460,15 +460,15 @@ matched_results %>%
 #| ref.label: "workflow-sets-racing-concordance"
 #| echo: FALSE
 #| out.width: '100%' 
-#| fig.cap: "Estimated RMSE for the full grid and racing results."
-#| fig.alt: "Estimated RMSE for the full grid and racing results. The results show that many models have the same RMSE result and the others are very similar."
+#| fig.cap: "RMSE estimado para la cuadrícula completa y los resultados de las carreras."
+#| fig.alt: "RMSE estimado para la cuadrícula completa y los resultados de las carreras. Los resultados muestran que muchos modelos tienen el mismo resultado RMSE y los demás son muy similares."
 ```
 
-While the racing approach selected the same candidate parameters as the complete grid for only `r round(mean(matched_results$config_race == matched_results$config_complete) * 100, 2)`% of the models, the performance metrics of the models selected by racing were nearly equal. The correlation of RMSE values was `r signif(cor(matched_results$race, matched_results$complete), 3)` and the rank correlation was `r signif(cor(matched_results$race, matched_results$complete, method = "spearman"), 3)`. This indicates that, within a model, there were multiple tuning parameter combinations that had nearly identical results.
+Si bien el enfoque de carreras seleccionó los mismos parámetros candidatos que la cuadrícula completa solo para `r round(mean(matched_results$config_race == matched_results$config_complete) * 100, 2)`% de los modelos, las métricas de rendimiento de los modelos seleccionados por las carreras eran casi iguales. La correlación de los valores RMSE fue `r signif(cor(matched_results$race, matched_results$complete), 3)` y la correlación de rango fue `r signif(cor(matched_results$race, matched_results$complete, method = "spearman"), 3)`. Esto indica que, dentro de un modelo, había múltiples combinaciones de parámetros de ajuste que tenían resultados casi idénticos.
 
-## Finalizing a Model
+## Finalizando un modelo
 
-Similar to what we have shown in previous chapters, the process of choosing the final model and fitting it on the training set is straightforward. The first step is to pick a workflow to finalize. Since the boosted tree model worked well, we'll extract that from the set, update the parameters with the numerically best settings, and fit to the training set:
+De manera similar a lo que hemos mostrado en capítulos anteriores, el proceso de elegir el modelo final y ajustarlo al conjunto de entrenamiento es sencillo. El primer paso es elegir un flujo de trabajo para finalizar. Dado que el modelo de árbol mejorado funcionó bien, lo extraeremos del conjunto, actualizaremos los parámetros con la mejor configuración numérica y lo ajustaremos al conjunto de entrenamiento:
 
 ```{r workflow-sets-finalize}
 best_results <- 
@@ -484,7 +484,7 @@ boosting_test_results <-
    last_fit(split = concrete_split)
 ```
 
-We can see the test set metrics results, and visualize the predictions in @fig-concrete-test-results.
+Podemos ver los resultados de las métricas del conjunto de pruebas y visualizar las predicciones en @fig-concrete-test-results.
 
 ```{r workflow-sets-collect-test-metrics}
 collect_metrics(boosting_test_results)
@@ -497,7 +497,7 @@ boosting_test_results %>%
    geom_abline(color = "gray50", lty = 2) + 
    geom_point(alpha = 0.5) + 
    coord_obs_pred() + 
-   labs(x = "observed", y = "predicted")
+   labs(x = "observados", y = "predichos")
 ```
 
 ```{r}
@@ -505,15 +505,15 @@ boosting_test_results %>%
 #| ref.label: "workflow-sets-test-results"
 #| echo: FALSE
 #| out.width: '100%' 
-#| fig.cap: "Observed versus predicted values for the test set."
-#| fig.alt: "Observed versus predicted values for the test set. The values fall closely along the 45 degree line of identity."
+#| fig.cap: "Valores observados versus valores predichos para el conjunto de prueba."
+#| fig.alt: "Valores observados versus valores predichos para el conjunto de prueba. Los valores caen estrechamente a lo largo de la línea de identidad de 45 grados."
 ```
 
-We see here how well the observed and predicted compressive strength for these concrete mixtures align.
+Aquí vemos qué tan bien se alinean la resistencia a la compresión observada y prevista para estas mezclas de concreto.
 
-## Chapter Summary {#sec-workflow-sets-summary}
+## Resumen del capítulo {#sec-workflow-sets-summary}
 
-Often a data practitioner needs to consider a large number of possible modeling approaches for a task at hand, especially for new data sets and/or when there is little knowledge about what modeling strategy will work best. This chapter illustrated how to use workflow sets to investigate multiple models or feature engineering strategies in such a situation. Racing methods can more efficiently rank models than fitting every candidate model being considered.
+A menudo, un profesional de datos necesita considerar una gran cantidad de posibles enfoques de modelado para una tarea en cuestión, especialmente para nuevos conjuntos de datos y/o cuando hay poco conocimiento sobre qué estrategia de modelado funcionará mejor. Este capítulo ilustró cómo utilizar conjuntos de flujos de trabajo para investigar múltiples modelos o estrategias de ingeniería de características en tal situación. Los métodos de carrera pueden clasificar los modelos de manera más eficiente que ajustar cada modelo candidato que se esté considerando.
 
 ```{r workflow-sets-save, include = FALSE}
 save(concrete_test, concrete_split, grid_results, race_results, 
