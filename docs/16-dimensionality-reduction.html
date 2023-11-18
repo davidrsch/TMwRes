@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 16&nbsp; Dimensionality Reduction</title>
+<title>Modelado Ordenado con R - 16&nbsp; Reducción de Dimensionalidad</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -74,7 +74,6 @@ div.csl-indent {
 }</style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -99,16 +98,16 @@ div.csl-indent {
   "type": "textbox",
   "limit": 20,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
   }
 }</script><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
@@ -118,11 +117,11 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">BEYOND THE BASICS</a></li><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">BEYOND THE BASICS</a></li><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción de Dimensionalidad</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -134,8 +133,22 @@ div.csl-indent {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/davidrsch/TMwRes" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
   </div>
@@ -145,7 +158,7 @@ div.csl-indent {
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
+        <div id="quarto-search" class="" title="Buscar"></div>
         </div>
         </div>
     <div class="sidebar-menu-container"> 
@@ -153,14 +166,14 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Hello World</span></a>
+ <span class="menu-text">Hola Mundo</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">INTRODUCTION</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -168,19 +181,19 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software for modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software para modelar</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A Tidyverse Primer</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una introducción tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Review of R Modeling Fundamentals</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span></a>
   </div>
 </li>
       </ul>
@@ -188,8 +201,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">MODELING BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -197,37 +210,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Ames Housing Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spending our Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fitting Models with parsnip</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A Model Workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo de Modelado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Feature Engineering with recipes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería de Características con recipes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Judging Model Effectiveness</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar la Eficacia del Modelo</span></span></a>
   </div>
 </li>
       </ul>
@@ -236,7 +249,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
  <span class="menu-text">TOOLS FOR CREATING EFFECTIVE MODELS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -244,37 +257,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Resampling for Evaluating Performance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear para Evaluar el Rendimiento</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparing Models with Resampling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación de Modelos con Remuestreo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Model Tuning and the Dangers of Overfitting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste de Modelos y los Peligros del Sobreajuste</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Grid Search</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda de cuadrícula</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Iterative Search</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda iterativa</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Screening Many Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando muchos modelos</span></span></a>
   </div>
 </li>
       </ul>
@@ -283,7 +296,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
  <span class="menu-text">BEYOND THE BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -291,13 +304,13 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción de Dimensionalidad</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Encoding Categorical Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación de datos categóricos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -329,8 +342,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -354,35 +367,35 @@ div.csl-indent {
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-<li><a href="#what-problems-can-dimensionality-reduction-solve" id="toc-what-problems-can-dimensionality-reduction-solve" class="nav-link active" data-scroll-target="#what-problems-can-dimensionality-reduction-solve"><span class="header-section-number">16.1</span> What Problems Can Dimensionality Reduction Solve?</a></li>
-  <li><a href="#sec-beans" id="toc-sec-beans" class="nav-link" data-scroll-target="#sec-beans"><span class="header-section-number">16.2</span> A Picture Is Worth a Thousand… Beans</a></li>
-  <li><a href="#a-starter-recipe" id="toc-a-starter-recipe" class="nav-link" data-scroll-target="#a-starter-recipe"><span class="header-section-number">16.3</span> A Starter Recipe</a></li>
+<li><a href="#qu%C3%A9-problemas-puede-resolver-la-reducci%C3%B3n-de-dimensionalidad" id="toc-qué-problemas-puede-resolver-la-reducción-de-dimensionalidad" class="nav-link active" data-scroll-target="#qu%C3%A9-problemas-puede-resolver-la-reducci%C3%B3n-de-dimensionalidad"><span class="header-section-number">16.1</span> ¿Qué problemas puede resolver la reducción de dimensionalidad?</a></li>
+  <li><a href="#sec-beans" id="toc-sec-beans" class="nav-link" data-scroll-target="#sec-beans"><span class="header-section-number">16.2</span> Una imagen vale más que mil… Frijoles</a></li>
+  <li><a href="#una-receta-inicial" id="toc-una-receta-inicial" class="nav-link" data-scroll-target="#una-receta-inicial"><span class="header-section-number">16.3</span> Una Receta Inicial</a></li>
   <li>
-<a href="#sec-recipe-functions" id="toc-sec-recipe-functions" class="nav-link" data-scroll-target="#sec-recipe-functions"><span class="header-section-number">16.4</span> Recipes in the Wild</a>
+<a href="#sec-recipe-functions" id="toc-sec-recipe-functions" class="nav-link" data-scroll-target="#sec-recipe-functions"><span class="header-section-number">16.4</span> Recetas en la naturaleza</a>
   <ul class="collapse">
-<li><a href="#sec-prep" id="toc-sec-prep" class="nav-link" data-scroll-target="#sec-prep"><span class="header-section-number">16.4.1</span> Preparing a recipe</a></li>
-  <li><a href="#sec-bake" id="toc-sec-bake" class="nav-link" data-scroll-target="#sec-bake"><span class="header-section-number">16.4.2</span> Baking the recipe</a></li>
+<li><a href="#sec-prep" id="toc-sec-prep" class="nav-link" data-scroll-target="#sec-prep"><span class="header-section-number">16.4.1</span> Preparando una receta</a></li>
+  <li><a href="#sec-bake" id="toc-sec-bake" class="nav-link" data-scroll-target="#sec-bake"><span class="header-section-number">16.4.2</span> Hornear la receta</a></li>
   </ul>
 </li>
   <li>
-<a href="#feature-extraction-techniques" id="toc-feature-extraction-techniques" class="nav-link" data-scroll-target="#feature-extraction-techniques"><span class="header-section-number">16.5</span> Feature Extraction Techniques</a>
+<a href="#t%C3%A9cnicas-de-extracci%C3%B3n-de-caracter%C3%ADsticas" id="toc-técnicas-de-extracción-de-características" class="nav-link" data-scroll-target="#t%C3%A9cnicas-de-extracci%C3%B3n-de-caracter%C3%ADsticas"><span class="header-section-number">16.5</span> Técnicas de extracción de características</a>
   <ul class="collapse">
-<li><a href="#principal-component-analysis" id="toc-principal-component-analysis" class="nav-link" data-scroll-target="#principal-component-analysis"><span class="header-section-number">16.5.1</span> Principal component analysis</a></li>
-  <li><a href="#partial-least-squares" id="toc-partial-least-squares" class="nav-link" data-scroll-target="#partial-least-squares"><span class="header-section-number">16.5.2</span> Partial least squares</a></li>
-  <li><a href="#independent-component-analysis" id="toc-independent-component-analysis" class="nav-link" data-scroll-target="#independent-component-analysis"><span class="header-section-number">16.5.3</span> Independent component analysis</a></li>
-  <li><a href="#uniform-manifold-approximation-and-projection" id="toc-uniform-manifold-approximation-and-projection" class="nav-link" data-scroll-target="#uniform-manifold-approximation-and-projection"><span class="header-section-number">16.5.4</span> Uniform manifold approximation and projection</a></li>
+<li><a href="#an%C3%A1lisis-de-componentes-principales" id="toc-análisis-de-componentes-principales" class="nav-link" data-scroll-target="#an%C3%A1lisis-de-componentes-principales"><span class="header-section-number">16.5.1</span> Análisis de componentes principales</a></li>
+  <li><a href="#m%C3%ADnimos-cuadrados-parciales" id="toc-mínimos-cuadrados-parciales" class="nav-link" data-scroll-target="#m%C3%ADnimos-cuadrados-parciales"><span class="header-section-number">16.5.2</span> Mínimos cuadrados parciales</a></li>
+  <li><a href="#an%C3%A1lisis-de-componentes-independientes" id="toc-análisis-de-componentes-independientes" class="nav-link" data-scroll-target="#an%C3%A1lisis-de-componentes-independientes"><span class="header-section-number">16.5.3</span> Análisis de componentes independientes</a></li>
+  <li><a href="#aproximaci%C3%B3n-y-proyecci%C3%B3n-de-variedades-uniformes." id="toc-aproximación-y-proyección-de-variedades-uniformes." class="nav-link" data-scroll-target="#aproximaci%C3%B3n-y-proyecci%C3%B3n-de-variedades-uniformes."><span class="header-section-number">16.5.4</span> Aproximación y proyección de variedades uniformes.</a></li>
   </ul>
 </li>
-  <li><a href="#sec-bean-models" id="toc-sec-bean-models" class="nav-link" data-scroll-target="#sec-bean-models"><span class="header-section-number">16.6</span> Modeling</a></li>
-  <li><a href="#sec-dimensionality-summary" id="toc-sec-dimensionality-summary" class="nav-link" data-scroll-target="#sec-dimensionality-summary"><span class="header-section-number">16.7</span> Chapter Summary</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/16-dimensionality-reduction.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  <li><a href="#sec-bean-models" id="toc-sec-bean-models" class="nav-link" data-scroll-target="#sec-bean-models"><span class="header-section-number">16.6</span> Modelado</a></li>
+  <li><a href="#sec-dimensionality-summary" id="toc-sec-dimensionality-summary" class="nav-link" data-scroll-target="#sec-dimensionality-summary"><span class="header-section-number">16.7</span> Resumen del capítulo</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-dimensionality" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></h1>
+<h1 class="title"><span id="sec-dimensionality" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción de Dimensionalidad</span></span></h1>
 </div>
 
 
@@ -395,63 +408,63 @@ div.csl-indent {
   </div>
   
 
-</header><p>Dimensionality reduction transforms a data set from a high-dimensional space into a low-dimensional space, and can be a good choice when you suspect there are “too many” variables. An excess of variables, usually predictors, can be a problem because it is difficult to understand or visualize data in higher dimensions.</p>
-<section id="what-problems-can-dimensionality-reduction-solve" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="what-problems-can-dimensionality-reduction-solve">
-<span class="header-section-number">16.1</span> What Problems Can Dimensionality Reduction Solve?</h2>
-<p>Dimensionality reduction can be used either in feature engineering or in exploratory data analysis. For example, in high-dimensional biology experiments, one of the first tasks, before any modeling, is to determine if there are any unwanted trends in the data (e.g., effects not related to the question of interest, such as lab-to-lab differences). Debugging the data is difficult when there are hundreds of thousands of dimensions, and dimensionality reduction can be an aid for exploratory data analysis.</p>
-<p>Another potential consequence of having a multitude of predictors is possible harm to a model. The simplest example is a method like ordinary linear regression where the number of predictors should be less than the number of data points used to fit the model. Another issue is multicollinearity, where between-predictor correlations can negatively impact the mathematical operations used to estimate a model. If there are an extremely large number of predictors, it is fairly unlikely that there are an equal number of real underlying effects. Predictors may be measuring the same latent effect(s), and thus such predictors will be highly correlated. Many dimensionality reduction techniques thrive in this situation. In fact, most can be effective only when there are such relationships between predictors that can be exploited.</p>
+</header><p>La reducción de dimensionalidad transforma un conjunto de datos de un espacio de alta dimensión a un espacio de baja dimensión y puede ser una buena opción cuando se sospecha que hay “demasiadas” variables. Un exceso de variables, normalmente predictores, puede ser un problema porque resulta difícil comprender o visualizar datos en dimensiones superiores.</p>
+<section id="qué-problemas-puede-resolver-la-reducción-de-dimensionalidad" class="level2" data-number="16.1"><h2 data-number="16.1" class="anchored" data-anchor-id="qué-problemas-puede-resolver-la-reducción-de-dimensionalidad">
+<span class="header-section-number">16.1</span> ¿Qué problemas puede resolver la reducción de dimensionalidad?</h2>
+<p>La reducción de dimensionalidad se puede utilizar en ingeniería de características o en análisis de datos exploratorios. Por ejemplo, en experimentos de biología de alta dimensión, una de las primeras tareas, antes de cualquier modelado, es determinar si hay tendencias no deseadas en los datos (por ejemplo, efectos no relacionados con la cuestión de interés, como la transferencia de laboratorio a laboratorio). diferencias de laboratorio). Depurar los datos es difícil cuando hay cientos de miles de dimensiones y la reducción de la dimensionalidad puede ser una ayuda para el análisis exploratorio de datos.</p>
+<p>Otra posible consecuencia de tener una multitud de predictores es el posible daño a un modelo. El ejemplo más simple es un método como la regresión lineal ordinaria donde la cantidad de predictores debe ser menor que la cantidad de puntos de datos utilizados para ajustar el modelo. Otro problema es la multicolinealidad, donde las correlaciones entre predictores pueden afectar negativamente las operaciones matemáticas utilizadas para estimar un modelo. Si hay un número extremadamente grande de predictores, es bastante improbable que haya un número igual de efectos subyacentes reales. Los predictores pueden estar midiendo los mismos efectos latentes y, por lo tanto, dichos predictores estarán altamente correlacionados. Muchas técnicas de reducción de dimensionalidad prosperan en esta situación. De hecho, la mayoría puede ser eficaz sólo cuando existen relaciones entre predictores que puedan explotarse.</p>
 <div class="rmdnote">
-<p>When starting a new modeling project, reducing the dimensions of the data may provide some intuition about how hard the modeling problem may be.</p>
+<p>Al iniciar un nuevo proyecto de modelado, reducir las dimensiones de los datos puede proporcionar cierta intuición sobre cuán difícil puede ser el problema de modelado.</p>
 </div>
-<p>Principal component analysis (PCA) is one of the most straightforward methods for reducing the number of columns in the data set because it relies on linear methods and is unsupervised (i.e., does not consider the outcome data). For a high-dimensional classification problem, an initial plot of the main PCA components might show a clear separation between the classes. If this is the case, then it is fairly safe to assume that a linear classifier might do a good job. However, the converse is not true; a lack of separation does not mean that the problem is insurmountable.</p>
-<p>The dimensionality reduction methods discussed in this chapter are generally <em>not</em> feature selection methods. Methods such as PCA represent the original predictors using a smaller subset of new features. All of the original predictors are required to compute these new features. The exception to this are sparse methods that have the ability to completely remove the impact of predictors when creating the new features.</p>
+<p>El análisis de componentes principales (PCA) es uno de los métodos más sencillos para reducir el número de columnas en el conjunto de datos porque se basa en métodos lineales y no está supervisado (es decir, no considera los datos de resultados). Para un problema de clasificación de alta dimensión, un gráfico inicial de los componentes principales del PCA podría mostrar una separación clara entre las clases. Si este es el caso, entonces es bastante seguro asumir que un clasificador lineal podría hacer un buen trabajo. Sin embargo, lo contrario no es cierto; la falta de separación no significa que el problema sea insuperable.</p>
+<p>Los métodos de reducción de dimensionalidad discutidos en este capítulo generalmente <em>no</em> son métodos de selección de características. Los métodos como PCA representan los predictores originales utilizando un subconjunto más pequeño de características nuevas. Se requieren todos los predictores originales para calcular estas nuevas características. La excepción a esto son los métodos escasos que tienen la capacidad de eliminar por completo el impacto de los predictores al crear nuevas funciones.</p>
 <div class="rmdnote">
-<p>This chapter has two goals:</p>
+<p>Este capítulo tiene dos objetivos:</p>
 <ul>
-<li><p>Demonstrate how to use recipes to create a small set of features that capture the main aspects of the original predictor set.</p></li>
-<li><p>Describe how recipes can be used on their own (as opposed to being used in a workflow object, as in <a href="08-feature-engineering.html#sec-using-recipes"><span>Section&nbsp;8.2</span></a>).</p></li>
+<li><p>Demuestre cómo utilizar recetas para crear un pequeño conjunto de funciones que capturen los aspectos principales del conjunto de predictores original.</p></li>
+<li><p>Describir cómo se pueden usar las recetas por sí solas (en lugar de usarse en un objeto de flujo de trabajo, como en <a href="#sec-using-recipes"><span class="quarto-unresolved-ref">sec-using-recipes</span></a>).</p></li>
 </ul>
 </div>
-<p>The latter is helpful when testing or debugging a recipe. However, as described in <a href="08-feature-engineering.html#sec-using-recipes"><span>Section&nbsp;8.2</span></a>, the best way to use a recipe for modeling is from within a workflow object.</p>
-<p>In addition to the <span class="pkg">tidymodels</span> package, this chapter uses the following packages: <span class="pkg">baguette</span>, <span class="pkg">beans</span>, <span class="pkg">bestNormalize</span>, <span class="pkg">corrplot</span>, <span class="pkg">discrim</span>, <span class="pkg">embed</span>, <span class="pkg">ggforce</span>, <span class="pkg">klaR</span>, <span class="pkg">learntidymodels</span>,<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="pkg">mixOmics</span>,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and <span class="pkg">uwot</span>.</p>
+<p>Esto último resulta útil a la hora de probar o depurar una receta. Sin embargo, como se describe en <a href="#sec-using-recipes"><span class="quarto-unresolved-ref">sec-using-recipes</span></a>, la mejor manera de utilizar una receta para modelar es desde un objeto de flujo de trabajo.</p>
+<p>Además del paquete <span class="pkg">tidymodels</span>, este capítulo utiliza los siguientes paquetes: <span class="pkg">baguette</span>, <span class="pkg">beans</span>, <span class="pkg">bestNormalize</span>, <span class="pkg">corrplot</span>, <span class="pkg">discrim</span>, <span class="pkg">embed</span>, <span class="pkg">ggforce</span>, <span class="pkg">klaR</span>, <span class="pkg">learntidymodels</span>,<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="pkg">mixOmics</span>,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> y <span class="pkg">uwot</span>.</p>
 </section><section id="sec-beans" class="level2" data-number="16.2"><h2 data-number="16.2" class="anchored" data-anchor-id="sec-beans">
-<span class="header-section-number">16.2</span> A Picture Is Worth a Thousand… Beans</h2>
-<p>Let’s walk through how to use dimensionality reduction with <span class="pkg">recipes</span> for an example data set. <span class="citation" data-cites="beans">Koklu and Ozkan (<a href="references.html#ref-beans" role="doc-biblioref">2020</a>)</span> published a data set of visual characteristics of dried beans and described methods for determining the varieties of dried beans in an image. While the dimensionality of these data is not very large compared to many real-world modeling problems, it does provide a nice working example to demonstrate how to reduce the number of features. From their manuscript:</p>
+<span class="header-section-number">16.2</span> Una imagen vale más que mil… Frijoles</h2>
+<p>Veamos cómo usar la reducción de dimensionalidad con <span class="pkg">recipes</span> para ver un conjunto de datos de ejemplo. <span class="citation" data-cites="beans">Koklu y Ozkan (<a href="#ref-beans" role="doc-biblioref">2020</a>)</span> publicó un conjunto de datos de características visuales de los frijoles secos y describió métodos para determinar las variedades de frijoles secos en una imagen. Si bien la dimensionalidad de estos datos no es muy grande en comparación con muchos problemas de modelado del mundo real, proporciona un buen ejemplo práctico para demostrar cómo reducir la cantidad de funciones. De su manuscrito:</p>
 <blockquote class="blockquote">
-<p>The primary objective of this study is to provide a method for obtaining uniform seed varieties from crop production, which is in the form of population, so the seeds are not certified as a sole variety. Thus, a computer vision system was developed to distinguish seven different registered varieties of dry beans with similar features in order to obtain uniform seed classification. For the classification model, images of 13,611 grains of 7 different registered dry beans were taken with a high-resolution camera.</p>
+<p>El objetivo principal de este estudio es proporcionar un método para la obtención de variedades de semillas uniformes a partir de la producción de cultivos, la cual es en forma de población, por lo que las semillas no están certificadas como una única variedad. Así, se desarrolló un sistema de visión por computadora para distinguir siete variedades diferentes registradas de frijol seco con características similares con el fin de obtener una clasificación uniforme de las semillas. Para el modelo de clasificación se tomaron imágenes de 13.611 granos de 7 diferentes frijoles secos registrados con una cámara de alta resolución.</p>
 </blockquote>
-<p>Each image contains multiple beans. The process of determining which pixels correspond to a particular bean is called <em>image segmentation</em>. These pixels can be analyzed to produce features for each bean, such as color and morphology (i.e., shape). These features are then used to model the outcome (bean variety) because different bean varieties look different. The training data come from a set of manually labeled images, and this data set is used to create a predictive model that can distinguish between seven bean varieties: Cali, Horoz, Dermason, Seker, Bombay, Barbunya, and Sira. Producing an effective model can help manufacturers quantify the homogeneity of a batch of beans.</p>
-<p>There are numerous methods for quantifying shapes of objects <span class="citation" data-cites="Mingqiang08">(<a href="references.html#ref-Mingqiang08" role="doc-biblioref">Mingqiang, Kidiyo, and Joseph 2008</a>)</span>. Many are related to the boundaries or regions of the object of interest. Example of features include:</p>
+<p>Cada imagen contiene varios beans. El proceso de determinar qué píxeles corresponden a un frijol en particular se llama <em>segmentación de imágenes</em>. Estos píxeles se pueden analizar para producir características para cada frijol, como el color y la morfología (es decir, la forma). Estas características se utilizan luego para modelar el resultado (variedad de frijol) porque las diferentes variedades de frijol se ven diferentes. Los datos de entrenamiento provienen de un conjunto de imágenes etiquetadas manualmente, y este conjunto de datos se utiliza para crear un modelo predictivo que puede distinguir entre siete variedades de frijol: Cali, Horoz, Dermason, Seker, Bombay, Barbunya y Sira. Producir un modelo eficaz puede ayudar a los fabricantes a cuantificar la homogeneidad de un lote de granos.</p>
+<p>Existen numerosos métodos para cuantificar las formas de los objetos <span class="citation" data-cites="Mingqiang08">(<a href="#ref-Mingqiang08" role="doc-biblioref">Mingqiang, Kidiyo, y Joseph 2008</a>)</span>. Muchos están relacionados con los límites o regiones del objeto de interés. Ejemplos de características incluyen:</p>
 <ul>
-<li><p>The <em>area</em> (or size) can be estimated using the number of pixels in the object or the size of the convex hull around the object.</p></li>
-<li><p>We can measure the <em>perimeter</em> using the number of pixels in the boundary as well as the area of the bounding box (the smallest rectangle enclosing an object).</p></li>
-<li><p>The <em>major axis</em> quantifies the longest line connecting the most extreme parts of the object. The <em>minor axis</em> is perpendicular to the major axis.</p></li>
-<li><p>We can measure the <em>compactness</em> of an object using the ratio of the object’s area to the area of a circle with the same perimeter. For example, the symbols “•” and “×” have very different compactness.</p></li>
-<li><p>There are also different measures of how <em>elongated</em> or oblong an object is. For example, the <em>eccentricity</em> statistic is the ratio of the major and minor axes. There are also related estimates for roundness and convexity.</p></li>
+<li><p>El <em>área</em> (o tamaño) se puede estimar utilizando el número de píxeles del objeto o el tamaño del casco convexo alrededor del objeto.</p></li>
+<li><p>Podemos medir el <em>perímetro</em> usando el número de píxeles en el límite así como el área del cuadro delimitador (el rectángulo más pequeño que encierra un objeto).</p></li>
+<li><p>El <em>eje mayor</em> cuantifica la línea más larga que conecta las partes más extremas del objeto. El <em>eje menor</em> es perpendicular al eje mayor.</p></li>
+<li><p>Podemos medir la <em>compacidad</em> de un objeto usando la relación entre el área del objeto y el área de un círculo con el mismo perímetro. Por ejemplo, los símbolos “•” y “×” tienen compacidades muy diferentes.</p></li>
+<li><p>También existen diferentes medidas de qué tan <em>alargado</em> u oblongo es un objeto. Por ejemplo, la estadística de <em>excentricidad</em> es la relación entre los ejes mayor y menor. También existen estimaciones relacionadas para la redondez y la convexidad.</p></li>
 </ul>
-<p>Notice the eccentricity for the different shapes in <a href="#fig-eccentricity">Figure&nbsp;<span>16.1</span></a>.</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-eccentricity_66163a0b912cbee38f26084bc9c8fd0d">
+<p>Observe la excentricidad de las diferentes formas en <a href="#fig-eccentricity">Figura&nbsp;<span class="quarto-unresolved-ref">fig-eccentricity</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-eccentricity_c858418d54fa2842620801b9c1cc522c">
 <div class="cell-output-display">
 <div id="fig-eccentricity" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="premade/morphology.svg" class="img-fluid figure-img" style="width:95.0%" alt="Some example shapes and their eccentricity statistics. Circles and squares have the smallest eccentricity values while X shapes and lightning bolts have the largest. Also, the eccentricity is the same when shapes are rotated."></p>
-<figcaption class="figure-caption">Figure&nbsp;16.1: Some example shapes and their eccentricity statistics</figcaption></figure>
+<figure class="figure"><p><img src="premade/morphology.svg" class="img-fluid figure-img" style="width:95.0%" alt="Algunos ejemplos de formas y sus estadísticas de excentricidad. Los círculos y cuadrados tienen los valores de excentricidad más pequeños, mientras que las formas X y los relámpagos tienen los valores más grandes. Además, la excentricidad es la misma cuando se giran las formas."></p>
+<figcaption class="figure-caption">Figura&nbsp;16.1: Algunos ejemplos de formas y sus estadísticas de excentricidad.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Shapes such as circles and squares have low eccentricity while oblong shapes have high values. Also, the metric is unaffected by the rotation of the object.</p>
-<p>Many of these image features have high correlations; objects with large areas are more likely to have large perimeters. There are often multiple methods to quantify the same underlying characteristics (e.g., size).</p>
-<p>In the bean data, 16 morphology features were computed: area, perimeter, major axis length, minor axis length, aspect ratio, eccentricity, convex area, equiv diameter, extent, solidity, roundness, compactness, shape factor 1, shape factor 2, shape factor 3, and shape factor 4. The latter four are described in <span class="citation" data-cites="symons1988211">Symons and Fulcher (<a href="references.html#ref-symons1988211" role="doc-biblioref">1988</a>)</span>.</p>
-<p>We can begin by loading the data:</p>
+<p>Las formas como círculos y cuadrados tienen una excentricidad baja, mientras que las formas oblongas tienen valores altos. Además, la métrica no se ve afectada por la rotación del objeto.</p>
+<p>Muchas de estas características de la imagen tienen altas correlaciones; es más probable que los objetos con áreas grandes tengan perímetros grandes. A menudo existen varios métodos para cuantificar las mismas características subyacentes (por ejemplo, tamaño).</p>
+<p>En los datos de los frijoles, se calcularon las características morfológicas de 16: area, perimeter, major axis length, minor axis length, aspect ratio, eccentricity, convex area, equiv diameter, extent, solidity, roundness, compactness, shape factor 1, shape factor 2, shape factor 3, and shape factor 4. Los últimos cuatro se describen en <span class="citation" data-cites="symons1988211">Symons y Fulcher (<a href="#ref-symons1988211" role="doc-biblioref">1988</a>)</span>.</p>
+<p>Podemos comenzar cargando los datos:</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-import_683e3bfe9a7175644a9b0b944dfdf341">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">beans</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">beans</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdwarning">
-<p>It is important to maintain good data discipline when evaluating dimensionality reduction techniques, especially if you will use them within a model.</p>
+<p>Es importante mantener una buena disciplina de datos al evaluar técnicas de reducción de dimensionalidad, especialmente si las utilizará dentro de un modelo.</p>
 </div>
-<p>For our analyses, we start by holding back a testing set with <code>initial_split()</code>. The remaining data are split into training and validation sets:</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-split_955fe68ddeb4f59c9c6879058c5fc251">
+<p>Para nuestros análisis, comenzamos reteniendo un conjunto de pruebas con <code>initial_split()</code>. Los datos restantes se dividen en conjuntos de entrenamiento y validación:</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-split_a8ee4ff4ed5eafc5e696039aef08a504">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1601</span><span class="op">)</span></span>
 <span><span class="va">bean_split</span> <span class="op">&lt;-</span> <span class="fu">initial_validation_split</span><span class="op">(</span><span class="va">beans</span>, strata <span class="op">=</span> <span class="va">class</span>, prop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.75</span>, <span class="fl">0.125</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">## Warning: Too little data to stratify.</span></span>
@@ -460,74 +473,74 @@ div.csl-indent {
 <span><span class="co">## &lt;Training/Validation/Testing/Total&gt;</span></span>
 <span><span class="co">## &lt;10206/1702/1703/13611&gt;</span></span>
 <span></span>
-<span><span class="co"># Return data frames:</span></span>
+<span><span class="co"># Devolver marcos de datos:</span></span>
 <span><span class="va">bean_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">bean_split</span><span class="op">)</span></span>
 <span><span class="va">bean_test</span> <span class="op">&lt;-</span> <span class="fu">testing</span><span class="op">(</span><span class="va">bean_split</span><span class="op">)</span></span>
 <span><span class="va">bean_validation</span> <span class="op">&lt;-</span> <span class="fu">validation</span><span class="op">(</span><span class="va">bean_split</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1602</span><span class="op">)</span></span>
-<span><span class="co"># Return an 'rset' object to use with the tune functions:</span></span>
+<span><span class="co"># Devuelve un objeto 'rset' para usarlo con las funciones de sintonización:</span></span>
 <span><span class="va">bean_val</span> <span class="op">&lt;-</span> <span class="fu">validation_set</span><span class="op">(</span><span class="va">bean_split</span><span class="op">)</span></span>
 <span><span class="va">bean_val</span><span class="op">$</span><span class="va">splits</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="co">## &lt;Training/Validation/Total&gt;</span></span>
-<span><span class="co">## &lt;10206/1702/11908&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## &lt;10206/1702/11908&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>To visually assess how well different methods perform, we can estimate the methods on the training set (n = 10,206 beans) and display the results using the validation set (n = 1,702).</p>
-<p>Before beginning any dimensionality reduction, we can spend some time investigating our data. Since we know that many of these shape features are probably measuring similar concepts, let’s take a look at the correlation structure of the data in <a href="#fig-beans-corr-plot">Figure&nbsp;<span>16.2</span></a> using this code.</p>
+<p>Para evaluar visualmente qué tan bien funcionan los diferentes métodos, podemos estimar los métodos en el conjunto de entrenamiento (n = 10,206 beans) y mostrar los resultados usando el conjunto de validación ( n = <code>formato r(nrow(bean_validation), big.mark = ",")</code>).</p>
+<p>Antes de comenzar cualquier reducción de dimensionalidad, podemos dedicar algún tiempo a investigar nuestros datos. Como sabemos que muchas de estas características de forma probablemente miden conceptos similares, echemos un vistazo a la estructura de correlación de los datos en <a href="#fig-beans-corr-plot">Figura&nbsp;<span class="quarto-unresolved-ref">fig-beans-corr-plot</span></a> usando este código.</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-corr-plot_03bd6f789a93b78cbbfd275c6e51c95a">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/taiyun/corrplot">corrplot</a></span><span class="op">)</span></span>
 <span><span class="va">tmwr_cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/colorRamp.html">colorRampPalette</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#91CBD765"</span>, <span class="st">"#CA225E"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">bean_train</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="op">-</span><span class="va">class</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html">corrplot</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu">tmwr_cols</span><span class="op">(</span><span class="fl">200</span><span class="op">)</span>, tl.col <span class="op">=</span> <span class="st">"black"</span>, method <span class="op">=</span> <span class="st">"ellipse"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/corrplot/man/corrplot.html">corrplot</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu">tmwr_cols</span><span class="op">(</span><span class="fl">200</span><span class="op">)</span>, tl.col <span class="op">=</span> <span class="st">"black"</span>, method <span class="op">=</span> <span class="st">"ellipse"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-beans-corr-plot_c9e08b19a35f0f5b76779da1cbd1ef87">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-beans-corr-plot_1cfa3364feebf6130adba3af34cc8ffd">
 <div class="cell-output-display">
 <div id="fig-beans-corr-plot" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-beans-corr-plot-1.png" class="img-fluid figure-img" style="width:70.0%" alt="A correlation matrix of the predictors with variables ordered via clustering. There are two to three clusters that have high within cluster correlations."></p>
-<figcaption class="figure-caption">Figure&nbsp;16.2: Correlation matrix of the predictors with variables ordered via clustering</figcaption></figure>
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-beans-corr-plot-1.png" class="img-fluid figure-img" style="width:70.0%" alt="Una matriz de correlación de los predictores con variables ordenadas mediante clustering. Hay dos o tres grupos que tienen altas correlaciones dentro del grupo."></p>
+<figcaption class="figure-caption">Figura&nbsp;16.2: Matriz de correlación de los predictores con variables ordenadas mediante clustering</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Many of these predictors are highly correlated, such as area and perimeter or shape factors 2 and 3. While we don’t take the time to do it here, it is also important to see if this correlation structure significantly changes across the outcome categories. This can help create better models.</p>
-</section><section id="a-starter-recipe" class="level2" data-number="16.3"><h2 data-number="16.3" class="anchored" data-anchor-id="a-starter-recipe">
-<span class="header-section-number">16.3</span> A Starter Recipe</h2>
-<p>It’s time to look at the beans data in a smaller space. We can start with a basic recipe to preprocess the data prior to any dimensionality reduction steps. Several predictors are ratios and so are likely to have skewed distributions. Such distributions can wreak havoc on variance calculations (such as the ones used in PCA). The <a href="https://petersonr.github.io/bestNormalize/"><span class="pkg">bestNormalize</span> package</a> has a step that can enforce a symmetric distribution for the predictors. We’ll use this to mitigate the issue of skewed distributions:</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-initial-rec_db7b75ce9f0026446564136f89d2d61f">
+<p>Muchos de estos predictores están altamente correlacionados, como el área y el perímetro o los factores de forma 2 y 3. Si bien no nos tomamos el tiempo para hacerlo aquí, también es importante ver si esta estructura de correlación cambia significativamente entre las categorías de resultados. Esto puede ayudar a crear mejores modelos.</p>
+</section><section id="una-receta-inicial" class="level2" data-number="16.3"><h2 data-number="16.3" class="anchored" data-anchor-id="una-receta-inicial">
+<span class="header-section-number">16.3</span> Una Receta Inicial</h2>
+<p>Es hora de mirar los datos de los beans en un espacio más pequeño. Podemos comenzar con una receta básica para preprocesar los datos antes de cualquier paso de reducción de dimensionalidad. Varios predictores son razones y, por lo tanto, es probable que tengan distribuciones sesgadas. Estas distribuciones pueden causar estragos en los cálculos de varianza (como los que se utilizan en PCA). El paquete <a href="https://petersonr.github.io/bestNormalize/"><span class="pkg">bestNormalize</span></a> tiene un paso que puede imponer una distribución simétrica para los predictores. Usaremos esto para mitigar el problema de las distribuciones sesgadas:</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-initial-rec_1fc6236c8d354fefa57cfd612d973486">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://petersonr.github.io/bestNormalize/">bestNormalize</a></span><span class="op">)</span></span>
 <span><span class="va">bean_rec</span> <span class="op">&lt;-</span></span>
-<span>  <span class="co"># Use the training data from the bean_val split object</span></span>
+<span>  <span class="co"># Utilice los datos de entrenamiento del objeto dividido bean_val</span></span>
 <span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">bean_train</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">step_zv</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu"><a href="https://petersonr.github.io/bestNormalize/reference/step_orderNorm.html">step_orderNorm</a></span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">step_normalize</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">step_normalize</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdnote">
-<p>Remember that when invoking the <code><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe()</a></code> function, the steps are not estimated or executed in any way.</p>
+<p>Recuerde que al invocar la función <code><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe()</a></code> los pasos no se estiman ni ejecutan de ninguna manera.</p>
 </div>
-<p>This recipe will be extended with additional steps for the dimensionality reduction analyses. Before doing so, let’s go over how a recipe can be used outside of a workflow.</p>
+<p>Esta receta se ampliará con pasos adicionales para los análisis de reducción de dimensionalidad. Antes de hacerlo, repasemos cómo se puede utilizar una receta fuera de un flujo de trabajo.</p>
 </section><section id="sec-recipe-functions" class="level2" data-number="16.4"><h2 data-number="16.4" class="anchored" data-anchor-id="sec-recipe-functions">
-<span class="header-section-number">16.4</span> Recipes in the Wild</h2>
-<p>As mentioned in <a href="08-feature-engineering.html#sec-using-recipes"><span>Section&nbsp;8.2</span></a>, a workflow containing a recipe uses <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> to estimate the recipe and model, then <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> to process the data and make model predictions. There are analogous functions in the <span class="pkg">recipes</span> package that can be used for the same purpose:</p>
+<span class="header-section-number">16.4</span> Recetas en la naturaleza</h2>
+<p>Como se menciona en <a href="#sec-using-recipes"><span class="quarto-unresolved-ref">sec-using-recipes</span></a>, un flujo de trabajo que contiene una receta usa <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> para estimar la receta y el modelo, luego <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> para procesar los datos y hacer predicciones del modelo. Hay funciones análogas en el paquete <span class="pkg">recipes</span> que se pueden usar para el mismo propósito:</p>
 <ul>
 <li>
-<code>prep(recipe, training)</code> fits the recipe to the training set.</li>
+<code>prep(recipe, training)</code> ajusta la receta al conjunto de entrenamiento.</li>
 <li>
-<code>bake(recipe, new_data)</code> applies the recipe operations to <code>new_data</code>.</li>
+<code>bake(recipe, new_data)</code> aplica las operaciones de la receta a <code>new_data</code>.</li>
 </ul>
-<p><a href="#fig-recipe-process">Figure&nbsp;<span>16.3</span></a> summarizes this. Let’s look at each of these functions in more detail.</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-recipe-process_ee887b8862887d13d17115ba839407bf">
+<p><a href="#fig-recipe-process">Figura&nbsp;<span class="quarto-unresolved-ref">fig-recipe-process</span></a> resume esto. Veamos cada una de estas funciones con más detalle.</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-recipe-process_661d216de769a6146b91df563bfae289">
 <div class="cell-output-display">
 <div id="fig-recipe-process" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="premade/recipes-process.svg" class="img-fluid figure-img" style="width:80.0%" alt="A summary of the recipe-related functions."></p>
-<figcaption class="figure-caption">Figure&nbsp;16.3: Summary of recipe-related functions</figcaption></figure>
+<figure class="figure"><p><img src="premade/recipes-process.svg" class="img-fluid figure-img" style="width:80.0%" alt="Un resumen de las funciones relacionadas con recetas."></p>
+<figcaption class="figure-caption">Figura&nbsp;16.3: Resumen de funciones relacionadas con recetas</figcaption></figure>
 </div>
 </div>
 </div>
 <section id="sec-prep" class="level3" data-number="16.4.1"><h3 data-number="16.4.1" class="anchored" data-anchor-id="sec-prep">
-<span class="header-section-number">16.4.1</span> Preparing a recipe</h3>
-<p>Let’s estimate <code>bean_rec</code> using the training set data, with <code>prep(bean_rec)</code>:</p>
+<span class="header-section-number">16.4.1</span> Preparando una receta</h3>
+<p>Estimemos <code>bean_rec</code> usando los datos del conjunto de entrenamiento, con <code>prep(bean_rec)</code>:</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-prep-rec_9ac89fc3a4d187eff11d20ea4e020da1">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_rec_trained</span> <span class="op">&lt;-</span> <span class="fu">prep</span><span class="op">(</span><span class="va">bean_rec</span><span class="op">)</span></span>
 <span><span class="va">bean_rec_trained</span></span>
@@ -545,20 +558,20 @@ div.csl-indent {
 <span><span class="co">## ── Operations</span></span>
 <span><span class="co">## • Zero variance filter removed: &lt;none&gt; | Trained</span></span>
 <span><span class="co">## • orderNorm transformation on: area, perimeter, major_axis_length, ... | Trained</span></span>
-<span><span class="co">## • Centering and scaling for: area, perimeter, major_axis_length, ... | Trained</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## • Centering and scaling for: area, perimeter, major_axis_length, ... | Trained</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdnote">
-<p>Remember that <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> for a recipe is like <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> for a model.</p>
+<p>Recuerde que <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> para una receta es como <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> para un modelo.</p>
 </div>
-<p>Note in the output that the steps have been trained and that the selectors are no longer general (i.e., <code><a href="https://recipes.tidymodels.org/reference/has_role.html">all_numeric_predictors()</a></code>); they now show the actual columns that were selected. Also, <code>prep(bean_rec)</code> does not require the <code>training</code> argument. You can pass any data into that argument, but omitting it means that the original <code>data</code> from the call to <code><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe()</a></code> will be used. In our case, this was the training set data.</p>
-<p>One important argument to <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> is <code>retain</code>. When <code>retain = TRUE</code> (the default), the estimated version of the training set is kept within the recipe. This data set has been pre-processed using all of the steps listed in the recipe. Since <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> has to execute the recipe as it proceeds, it may be advantageous to keep this version of the training set so that, if that data set is to be used later, redundant calculations can be avoided. However, if the training set is big, it may be problematic to keep such a large amount of data in memory. Use <code>retain = FALSE</code> to avoid this.</p>
-<p>Once new steps are added to this estimated recipe, reapplying <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> will estimate only the untrained steps. This will come in handy when we try different feature extraction methods.</p>
+<p>Tenga en cuenta en el resultado que los pasos han sido entrenados y que los selectores ya no son generales (es decir, <code><a href="https://recipes.tidymodels.org/reference/has_role.html">all_numeric_predictors()</a></code>); ahora muestran las columnas reales que se seleccionaron. Además, <code>prep(bean_rec)</code> no requiere el argumento <code>training</code>. Puede pasar cualquier dato a ese argumento, pero omitirlo significa que se utilizarán los “datos”, <code>data</code>, originales de la llamada a <code><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe()</a></code>. En nuestro caso, estos fueron los datos del conjunto de entrenamiento.</p>
+<p>Un argumento importante para <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> es <code>retain</code>. Cuando <code>retain = TRUE</code> (el valor predeterminado), la versión estimada del conjunto de entrenamiento se mantiene dentro de la receta. Este conjunto de datos ha sido preprocesado siguiendo todos los pasos enumerados en la receta. Dado que <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> tiene que ejecutar la receta a medida que avanza, puede ser ventajoso mantener esta versión del conjunto de entrenamiento para que, si ese conjunto de datos se va a utilizar más adelante, se puedan evitar cálculos redundantes. Sin embargo, si el conjunto de entrenamiento es grande, puede resultar problemático mantener una cantidad tan grande de datos en la memoria. Utilice <code>retain = FALSE</code> para evitar esto.</p>
+<p>Una vez que se agregan nuevos pasos a esta receta estimada, volver a aplicar <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> estimará solo los pasos no entrenados. Esto será útil cuando probemos diferentes métodos de extracción de características.</p>
 <div class="rmdwarning">
-<p>If you encounter errors when working with a recipe, <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> can be used with its <code>verbose</code> option to troubleshoot:</p>
+<p>Si encuentra errores al trabajar con una receta, puede usar <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> con su opción <code>verbose</code> para solucionar problemas:</p>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-prep-fail_405610a5b4efd67568cb9f5eef0261f1">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-prep-fail_383b35adeaec819917a893f708431d58">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_rec_trained</span> <span class="op">%&gt;%</span> </span>
-<span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="va">cornbread</span><span class="op">)</span> <span class="op">%&gt;%</span>  <span class="co"># &lt;- not a real predictor</span></span>
+<span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="va">cornbread</span><span class="op">)</span> <span class="op">%&gt;%</span>  <span class="co"># &lt;- no es un predictor real</span></span>
 <span>  <span class="fu">prep</span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">## oper 1 step zv [pre-trained]</span></span>
 <span><span class="co">## oper 2 step orderNorm [pre-trained]</span></span>
@@ -567,9 +580,9 @@ div.csl-indent {
 <span><span class="co">## Error in `step_dummy()`:</span></span>
 <span><span class="co">## Caused by error in `prep()`:</span></span>
 <span><span class="co">## ! Can't subset columns that don't exist.</span></span>
-<span><span class="co">## ✖ Column `cornbread` doesn't exist.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## ✖ Column `cornbread` doesn't exist.</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Another option that can help you understand what happens in the analysis is <code>log_changes</code>:</p>
+<p>Otra opción que puede ayudarte a entender lo que sucede en el análisis es <code>log_changes</code>:</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-prep-log_f2e2bce74f81b2dea854f9512b0db0c9">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">show_variables</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">bean_rec</span> <span class="op">%&gt;%</span> </span>
@@ -578,208 +591,208 @@ div.csl-indent {
 <span><span class="co">## </span></span>
 <span><span class="co">## step_orderNorm (orderNorm_Jx8oD): same number of columns</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## step_normalize (normalize_GU75D): same number of columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## step_normalize (normalize_GU75D): same number of columns</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="sec-bake" class="level3" data-number="16.4.2"><h3 data-number="16.4.2" class="anchored" data-anchor-id="sec-bake">
-<span class="header-section-number">16.4.2</span> Baking the recipe</h3>
+<span class="header-section-number">16.4.2</span> Hornear la receta</h3>
 <div class="rmdnote">
-<p>Using <code><a href="https://recipes.tidymodels.org/reference/bake.html">bake()</a></code> with a recipe is much like using <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> with a model; the operations estimated from the training set are applied to any data, like testing data or new data at prediction time.</p>
+<p>Usar <code><a href="https://recipes.tidymodels.org/reference/bake.html">bake()</a></code> con una receta es muy parecido a usar <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> con un modelo; las operaciones estimadas a partir del conjunto de entrenamiento se aplican a cualquier dato, como datos de prueba o datos nuevos en el momento de la predicción.</p>
 </div>
-<p>For example, the validation set samples can be processed:</p>
+<p>Por ejemplo, las muestras del conjunto de validación se pueden procesar:</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-bake_6cfc9542c1b7ab2f231462916c505e58">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_val_processed</span> <span class="op">&lt;-</span> <span class="fu">bake</span><span class="op">(</span><span class="va">bean_rec_trained</span>, new_data <span class="op">=</span> <span class="va">bean_validation</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_val_processed</span> <span class="op">&lt;-</span> <span class="fu">bake</span><span class="op">(</span><span class="va">bean_rec_trained</span>, new_data <span class="op">=</span> <span class="va">bean_validation</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><a href="#fig-bean-area">Figure&nbsp;<span>16.4</span></a> shows histograms of the <code>area</code> predictor before and after the recipe was prepared.</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-bake-off_f901789d7fab775ebc9461075c191b18">
+<p><a href="#fig-bean-area">Figura&nbsp;<span class="quarto-unresolved-ref">fig-bean-area</span></a> muestra histogramas del predictor de <code>area</code> antes y después de que se preparara la receta.</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-bake-off_da512fc61a202aa54f92d19fa27a23e0">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://patchwork.data-imaginist.com">patchwork</a></span><span class="op">)</span></span>
 <span><span class="va">p1</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">bean_validation</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">area</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">30</span>, color <span class="op">=</span> <span class="st">"white"</span>, fill <span class="op">=</span> <span class="st">"blue"</span>, alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Original validation set data"</span><span class="op">)</span></span>
+<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Datos del conjunto de validación original"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">p2</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">bean_val_processed</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">area</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">30</span>, color <span class="op">=</span> <span class="st">"white"</span>, fill <span class="op">=</span> <span class="st">"red"</span>, alpha <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Processed validation set data"</span><span class="op">)</span></span>
+<span>  <span class="fu">ggtitle</span><span class="op">(</span><span class="st">"Datos del conjunto de validación procesados"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">p1</span> <span class="op">+</span> <span class="va">p2</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-area_354e619be26c52aa5827b1399aff846e">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-area_d9b0771f699362018a47e17d5fe86bee">
 <div class="cell-output-display">
 <div id="fig-bean-area" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-area-1.png" class="img-fluid figure-img" alt="The `area` predictor before and after preprocessing. The before panel shows a right-skewed, slightly bimodal distribution. The after panel has a distribution that is fairly bell shaped." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;16.4: The <code>area</code> predictor before and after preprocessing</figcaption></figure>
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-area-1.png" class="img-fluid figure-img" alt="El predictor de `area` antes y después del preprocesamiento. El panel anterior muestra una distribución ligeramente bimodal y sesgada hacia la derecha. El panel de popa tiene una distribución bastante acampanada." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;16.4: El predictor de <code>area</code> antes y después del preprocesamiento</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Two important aspects of <code><a href="https://recipes.tidymodels.org/reference/bake.html">bake()</a></code> are worth noting here.</p>
-<p>First, as previously mentioned, using <code>prep(recipe, retain = TRUE)</code> keeps the existing processed version of the training set in the recipe. This enables the user to use <code>bake(recipe, new_data = NULL)</code>, which returns that data set without further computations. For example:</p>
+<p>Aquí vale la pena señalar dos aspectos importantes de <code><a href="https://recipes.tidymodels.org/reference/bake.html">bake()</a></code>.</p>
+<p>Primero, como se mencionó anteriormente, el uso de <code>prep(recipe, retener = TRUE)</code> mantiene la versión procesada existente del conjunto de entrenamiento en la receta. Esto permite al usuario utilizar <code>bake(recipe, new_data = NULL)</code>, que devuelve ese conjunto de datos sin más cálculos. Por ejemplo:</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-new-data-null_5752c6f54d3ec71782c0dba705e734b0">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">bake</span><span class="op">(</span><span class="va">bean_rec_trained</span>, new_data <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] 10206</span></span>
 <span><span class="va">bean_train</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## [1] 10206</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 10206</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>If the training set is not pathologically large, using this value of <code>retain</code> can save a lot of computational time.</p>
-<p>Second, additional selectors can be used in the call to specify which columns to return. The default selector is <code>everything()</code>, but more specific directives can be used.</p>
-<p>We will use <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> and <code><a href="https://recipes.tidymodels.org/reference/bake.html">bake()</a></code> in the next section to illustrate some of these options.</p>
-</section></section><section id="feature-extraction-techniques" class="level2" data-number="16.5"><h2 data-number="16.5" class="anchored" data-anchor-id="feature-extraction-techniques">
-<span class="header-section-number">16.5</span> Feature Extraction Techniques</h2>
-<p>Since recipes are the primary option in tidymodels for dimensionality reduction, let’s write a function that will estimate the transformation and plot the resulting data in a scatter plot matrix via the <span class="pkg">ggforce</span> package:</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-function_2332cc34e02522e36d6785e255c87ca6">
+<p>Si el conjunto de entrenamiento no es patológicamente grande, usar este valor de <code>retain</code> puede ahorrar mucho tiempo de cálculo.</p>
+<p>En segundo lugar, se pueden utilizar selectores adicionales en la llamada para especificar qué columnas devolver. El selector predeterminado es <code>everything()</code>, pero se pueden usar directivas más específicas.</p>
+<p>Usaremos <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> y <code><a href="https://recipes.tidymodels.org/reference/bake.html">bake()</a></code> en la siguiente sección para ilustrar algunas de estas opciones.</p>
+</section></section><section id="técnicas-de-extracción-de-características" class="level2" data-number="16.5"><h2 data-number="16.5" class="anchored" data-anchor-id="técnicas-de-extracción-de-características">
+<span class="header-section-number">16.5</span> Técnicas de extracción de características</h2>
+<p>Dado que las recetas son la opción principal en tidymodels para la reducción de dimensionalidad, escribamos una función que estime la transformación y represente los datos resultantes en una matriz de diagrama de dispersión a través del paquete <span class="pkg">ggforce</span>:</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-function_cfb3f9c93c1f32caf62554496d6561d5">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggforce.data-imaginist.com">ggforce</a></span><span class="op">)</span></span>
 <span><span class="va">plot_validation_results</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">recipe</span>, <span class="va">dat</span> <span class="op">=</span> <span class="va">bean_validation</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">recipe</span> <span class="op">%&gt;%</span></span>
-<span>    <span class="co"># Estimate any additional steps</span></span>
+<span>    <span class="co"># Calcule los pasos adicionales</span></span>
 <span>    <span class="fu">prep</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>    <span class="co"># Process the data (the validation set by default)</span></span>
+<span>    <span class="co"># Procesar los datos (la validación establecida por defecto)</span></span>
 <span>    <span class="fu">bake</span><span class="op">(</span>new_data <span class="op">=</span> <span class="va">dat</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
-<span>    <span class="co"># Create the scatterplot matrix</span></span>
+<span>    <span class="co"># Crear la matriz del diagrama de dispersión</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">.panel_x</span>, y <span class="op">=</span> <span class="va">.panel_y</span>, color <span class="op">=</span> <span class="va">class</span>, fill <span class="op">=</span> <span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.4</span>, size <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggforce.data-imaginist.com/reference/geom_autohistogram.html">geom_autodensity</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.3</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggforce.data-imaginist.com/reference/facet_matrix.html">facet_matrix</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span><span class="op">(</span><span class="op">-</span><span class="va">class</span><span class="op">)</span>, layer.diag <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Dark2"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="op">}</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We will reuse this function several times in this chapter.</p>
-<p>A series of several feature extraction methodologies are explored here. An overview of most can be found in <a href="https://bookdown.org/max/FES/numeric-many-to-many.html#linear-projection-methods">Section 6.3.1</a> of <span class="citation" data-cites="fes">Kuhn and Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> and the references therein. The UMAP method is described in <span class="citation" data-cites="mcinnes2020umap">McInnes, Healy, and Melville (<a href="references.html#ref-mcinnes2020umap" role="doc-biblioref">2020</a>)</span>.</p>
-<section id="principal-component-analysis" class="level3" data-number="16.5.1"><h3 data-number="16.5.1" class="anchored" data-anchor-id="principal-component-analysis">
-<span class="header-section-number">16.5.1</span> Principal component analysis</h3>
-<p>We’ve mentioned PCA several times already in this book, and it’s time to go into more detail. PCA is an unsupervised method that uses linear combinations of the predictors to define new features. These features attempt to account for as much variation as possible in the original data. We add <code><a href="https://recipes.tidymodels.org/reference/step_pca.html">step_pca()</a></code> to the original recipe and use our function to visualize the results on the validation set in <a href="#fig-bean-pca">Figure&nbsp;<span>16.5</span></a> using:</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-pca_cd2948e1ce9ce116f384bc071d986a64">
+<p>Reutilizaremos esta función varias veces en este capítulo.</p>
+<p>Aquí se exploran una serie de varias metodologías de extracción de características. Se puede encontrar una descripción general de la mayoría en la <a href="https://bookdown.org/max/FES/numeric-many-to-many.html#linear-projection-methods">Sección 6.3.1</a> de <span class="citation" data-cites="fes">Kuhn y Johnson (<a href="#ref-fes" role="doc-biblioref">2020</a>)</span> y las referencias allí contenidas. . El método UMAP se describe en <span class="citation" data-cites="mcinnes2020umap">McInnes, Healy, y Melville (<a href="#ref-mcinnes2020umap" role="doc-biblioref">2020</a>)</span>.</p>
+<section id="análisis-de-componentes-principales" class="level3" data-number="16.5.1"><h3 data-number="16.5.1" class="anchored" data-anchor-id="análisis-de-componentes-principales">
+<span class="header-section-number">16.5.1</span> Análisis de componentes principales</h3>
+<p>Ya hemos mencionado la PCA varias veces en este libro y es hora de entrar en más detalles. PCA es un método no supervisado que utiliza combinaciones lineales de predictores para definir nuevas características. Estas características intentan dar cuenta de la mayor variación posible en los datos originales. Agregamos <code><a href="https://recipes.tidymodels.org/reference/step_pca.html">step_pca()</a></code> a la receta original y usamos nuestra función para visualizar los resultados en el conjunto de validación en <a href="#fig-bean-pca">Figura&nbsp;<span class="quarto-unresolved-ref">fig-bean-pca</span></a> usando:</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-pca_791cca172fa6db2ef03645959c4df7e3">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_rec_trained</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">step_pca</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span>, num_comp <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">plot_validation_results</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Principal Component Analysis"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Análisis de componentes principales"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-pca_997fd31a174416f24899d1169e690651">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-pca_e7c788e53541784fd7269e0f652cf629">
 <div class="cell-output-display">
 <div id="fig-bean-pca" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-pca-1.png" class="img-fluid figure-img" alt="Principal component scores for the bean validation set, colored by class. The classes separate when the first two components are plotted against one another." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;16.5: Principal component scores for the bean validation set, colored by class</figcaption></figure>
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-pca-1.png" class="img-fluid figure-img" alt="Puntuaciones de los componentes principales para el conjunto de validación de beans, coloreadas por clase. Las clases se separan cuando los dos primeros componentes se comparan entre sí." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;16.5: Puntuaciones de los componentes principales para el conjunto de validación de beans, coloreadas por clase</figcaption></figure>
 </div>
 </div>
 </div>
-<p>We see that the first two components <code>PC1</code> and <code>PC2</code>, especially when used together, do an effective job distinguishing between or separating the classes. This may lead us to expect that the overall problem of classifying these beans will not be especially difficult.</p>
-<p>Recall that PCA is unsupervised. For these data, it turns out that the PCA components that explain the most variation in the predictors also happen to be predictive of the classes. What features are driving performance? The <span class="pkg">learntidymodels</span> package has functions that can help visualize the top features for each component. We’ll need the prepared recipe; the PCA step is added in the following code along with a call to <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code>:</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-pca-loadings_e24824a4a25eb1c0bd7620cadc92136a">
+<p>Vemos que los dos primeros componentes <code>PC1</code> y <code>PC2</code>, especialmente cuando se usan juntos, hacen un trabajo eficaz al distinguir o separar las clases. Esto puede llevarnos a esperar que el problema general de clasificar estos granos no sea especialmente difícil.</p>
+<p>Recuerde que PCA no está supervisada. Para estos datos, resulta que los componentes del PCA que explican la mayor variación en los predictores también predicen las clases. ¿Qué características son el rendimiento de conducción? El paquete <span class="pkg">learntidymodels</span> tiene funciones que pueden ayudar a visualizar las características principales de cada componente. Necesitaremos la receta preparada; el paso PCA se agrega en el siguiente código junto con una llamada a <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code>:</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-pca-loadings_1a73d15fc72de72233d79ff9a046f4c4">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">learntidymodels</span><span class="op">)</span></span>
 <span><span class="va">bean_rec_trained</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">step_pca</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span>, num_comp <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">prep</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/learntidymodels/man/plot_top_loadings.html">plot_top_loadings</a></span><span class="op">(</span><span class="va">component_number</span> <span class="op">&lt;=</span> <span class="fl">4</span>, n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Paired"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Principal Component Analysis"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Análisis de Componentes Principales"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This produces <a href="#fig-pca-loadings">Figure&nbsp;<span>16.6</span></a>.</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-pca-loadings_b39dc893a6fcf95923d175b0604bb6c2">
+<p>Esto produce <a href="#fig-pca-loadings">Figura&nbsp;<span class="quarto-unresolved-ref">fig-pca-loadings</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-pca-loadings_17dc7976b817320c3632d5f1f37dffc8">
 <div class="cell-output-display">
 <div id="fig-pca-loadings" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-pca-loadings-1.png" class="img-fluid figure-img" alt="Predictor loadings for the PCA transformation. For the first component, the major axis length, second shape factor, convex area, and area have the largest effect. " width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;16.6: Predictor loadings for the PCA transformation</figcaption></figure>
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-pca-loadings-1.png" class="img-fluid figure-img" alt="Cargas de predictores para la transformación PCA. Para el primer componente, la longitud del eje mayor, el segundo factor de forma, el área convexa y el área tienen el mayor efecto." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;16.6: Cargas de predictores para la transformación PCA.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The top loadings are mostly related to the cluster of correlated predictors shown in the top-left portion of the previous correlation plot: perimeter, area, major axis length, and convex area. These are all related to bean size. Shape factor 2, from <span class="citation" data-cites="symons1988211">Symons and Fulcher (<a href="references.html#ref-symons1988211" role="doc-biblioref">1988</a>)</span>, is the area over the cube of the major axis length and is therefore also related to bean size. Measures of elongation appear to dominate the second PCA component.</p>
-</section><section id="partial-least-squares" class="level3" data-number="16.5.2"><h3 data-number="16.5.2" class="anchored" data-anchor-id="partial-least-squares">
-<span class="header-section-number">16.5.2</span> Partial least squares</h3>
-<p>PLS, which we introduced in <a href="13-grid-search.html#sec-submodel-trick"><span>Section&nbsp;13.5.1</span></a>, is a supervised version of PCA. It tries to find components that simultaneously maximize the variation in the predictors while also maximizing the relationship between those components and the outcome. <a href="#fig-bean-pls">Figure&nbsp;<span>16.7</span></a> shows the results of this slightly modified version of the PCA code:</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-pls_5c8e7ba64143853caf46124737fa81a0">
+<p>Las cargas superiores están relacionadas principalmente con el grupo de predictores correlacionados que se muestran en la parte superior izquierda del gráfico de correlación anterior: perímetro, área, longitud del eje principal y área convexa. Todos estos están relacionados con el tamaño del frijol. El factor de forma 2, de <span class="citation" data-cites="symons1988211">Symons y Fulcher (<a href="#ref-symons1988211" role="doc-biblioref">1988</a>)</span>, es el área sobre el cubo de la longitud del eje mayor y, por lo tanto, también está relacionado con el tamaño del frijol. Las medidas de alargamiento parecen dominar el segundo componente de PCA.</p>
+</section><section id="mínimos-cuadrados-parciales" class="level3" data-number="16.5.2"><h3 data-number="16.5.2" class="anchored" data-anchor-id="mínimos-cuadrados-parciales">
+<span class="header-section-number">16.5.2</span> Mínimos cuadrados parciales</h3>
+<p>PLS, que presentamos en <a href="#sec-submodel-trick"><span class="quarto-unresolved-ref">sec-submodel-trick</span></a>, es una versión supervisada de PCA. Intenta encontrar componentes que maximicen simultáneamente la variación en los predictores y al mismo tiempo maximicen la relación entre esos componentes y el resultado. <a href="#fig-bean-pls">Figura&nbsp;<span class="quarto-unresolved-ref">fig-bean-pls</span></a> muestra los resultados de esta versión ligeramente modificada del código PCA:</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-pls_30fe9c154dcc55724c953e2b12afe3e1">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_rec_trained</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">step_pls</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span>, outcome <span class="op">=</span> <span class="st">"class"</span>, num_comp <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">plot_validation_results</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Partial Least Squares"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Mínimos cuadrados parciales"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-pls_223da58198a0d95b1009c47a19d124b4">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-pls_e65105112779cd3842fb321a0eaf2749">
 <div class="cell-output-display">
 <div id="fig-bean-pls" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-pls-1.png" class="img-fluid figure-img" alt="PLS component scores for the bean validation set, colored by class. The first two PLS components are nearly identical to the first two PCA components." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;16.7: PLS component scores for the bean validation set, colored by class</figcaption></figure>
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-pls-1.png" class="img-fluid figure-img" alt="Puntuaciones de componentes PLS para el conjunto de validación de beans, coloreadas por clase. Los dos primeros componentes PLS son casi idénticos a los dos primeros componentes PCA." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;16.7: Puntuaciones de componentes PLS para el conjunto de validación de beans, coloreadas por clase</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The first two PLS components plotted in <a href="#fig-bean-pls">Figure&nbsp;<span>16.7</span></a> are nearly identical to the first two PCA components! We find this result because those PCA components are so effective at separating the varieties of beans. The remaining components are different. <a href="#fig-pls-loadings">Figure&nbsp;<span>16.8</span></a> visualizes the loadings, the top features for each component.</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-pls-loadings_bc23c55db3287da6f69ae52c88849781">
+<p>¡Los dos primeros componentes PLS trazados en <a href="#fig-bean-pls">Figura&nbsp;<span class="quarto-unresolved-ref">fig-bean-pls</span></a> son casi idénticos a los dos primeros componentes PCA! Encontramos este resultado porque esos componentes de PCA son muy efectivos para separar las variedades de frijoles. Los componentes restantes son diferentes. <a href="#fig-pls-loadings">Figura&nbsp;<span class="quarto-unresolved-ref">fig-pls-loadings</span></a> visualiza las cargas, las características principales de cada componente.</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-pls-loadings_20fb1ec705c638cf1e991aa433c701fa">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_rec_trained</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">step_pls</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span>, outcome <span class="op">=</span> <span class="st">"class"</span>, num_comp <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">prep</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/pkg/learntidymodels/man/plot_top_loadings.html">plot_top_loadings</a></span><span class="op">(</span><span class="va">component_number</span> <span class="op">&lt;=</span> <span class="fl">4</span>, n <span class="op">=</span> <span class="fl">5</span>, type <span class="op">=</span> <span class="st">"pls"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_fill_brewer</a></span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Paired"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Partial Least Squares"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Mínimos cuadrados parciales"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-pls-loadings_fbfdcc6eccba8fb184a1c8dbeaf466f1">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-pls-loadings_beaa5c65fb380f46e48e5c51f8806cbb">
 <div class="cell-output-display">
 <div id="fig-pls-loadings" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-pls-loadings-1.png" class="img-fluid figure-img" alt="Predictor loadings for the PLS transformation. For the first component, the major axis length, second shape factor, the equivalent diameter, convex area, and area have the largest effect. " width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;16.8: Predictor loadings for the PLS transformation</figcaption></figure>
+<figcaption class="figure-caption">Figura&nbsp;16.8: Predictor loadings for the PLS transformation</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Solidity (i.e., the density of the bean) drives the third PLS component, along with roundness. Solidity may be capturing bean features related to “bumpiness” of the bean surface since it can measure irregularity of the bean boundaries.</p>
-</section><section id="independent-component-analysis" class="level3" data-number="16.5.3"><h3 data-number="16.5.3" class="anchored" data-anchor-id="independent-component-analysis">
-<span class="header-section-number">16.5.3</span> Independent component analysis</h3>
-<p>ICA is slightly different than PCA in that it finds components that are as statistically independent from one another as possible (as opposed to being uncorrelated). It can be thought of as maximizing the “non-Gaussianity” of the ICA components, or separating information instead of compressing information like PCA. Let’s use <code><a href="https://recipes.tidymodels.org/reference/step_ica.html">step_ica()</a></code> to produce <a href="#fig-bean-ica">Figure&nbsp;<span>16.9</span></a>:</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-ica_ad1407ff4dd5af67bc0bb2f37d5fb582">
+<p>La solidez (es decir, la densidad del grano) impulsa el tercer componente del PLS, junto con la redondez. La solidez puede estar capturando características del frijol relacionadas con las “baches” de la superficie del frijol, ya que puede medir la irregularidad de los límites del frijol.</p>
+</section><section id="análisis-de-componentes-independientes" class="level3" data-number="16.5.3"><h3 data-number="16.5.3" class="anchored" data-anchor-id="análisis-de-componentes-independientes">
+<span class="header-section-number">16.5.3</span> Análisis de componentes independientes</h3>
+<p>ICA (Análisis de componentes independientes) es ligeramente diferente a PCA en que encuentra componentes que son lo más independientes estadísticamente posible entre sí (en lugar de no estar correlacionados). Se puede considerar que maximiza la “no gaussianidad” de los componentes de ICA, o separa información en lugar de comprimir información como PCA. Usemos <code><a href="https://recipes.tidymodels.org/reference/step_ica.html">step_ica()</a></code> para producir <a href="#fig-bean-ica">Figura&nbsp;<span class="quarto-unresolved-ref">fig-bean-ica</span></a>:</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-ica_ba8cde8f9eb14058cad001040dd5a167">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_rec_trained</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">step_ica</span><span class="op">(</span><span class="fu">all_numeric_predictors</span><span class="op">(</span><span class="op">)</span>, num_comp <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">plot_validation_results</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Independent Component Analysis"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"Análisis de componentes independientes"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-ica_3ec911d996284da61d4dcfbde7bd730d">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-ica_e18ba411e633dfc95749e8b862351a34">
 <div class="cell-output-display">
 <div id="fig-bean-ica" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-ica-1.png" class="img-fluid figure-img" alt="ICA component scores for the bean validation set, colored by class. There is significant overlap in the first two ICA components." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;16.9: ICA component scores for the bean validation set, colored by class</figcaption></figure>
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-ica-1.png" class="img-fluid figure-img" alt="Puntuaciones de componentes ICA para el conjunto de validación de beans, coloreadas por clase. Existe una importante superposición en los dos primeros componentes del ICA." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;16.9: Puntuaciones de componentes ICA para el conjunto de validación de beans, coloreadas por clase</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Inspecting this plot, there does not appear to be much separation between the classes in the first few components when using ICA. These independent (or as independent as possible) components do not separate the bean types.</p>
-</section><section id="uniform-manifold-approximation-and-projection" class="level3" data-number="16.5.4"><h3 data-number="16.5.4" class="anchored" data-anchor-id="uniform-manifold-approximation-and-projection">
-<span class="header-section-number">16.5.4</span> Uniform manifold approximation and projection</h3>
-<p>UMAP is similar to the popular t-SNE method for nonlinear dimension reduction. In the original high-dimensional space, UMAP uses a distance-based nearest neighbor method to find local areas of the data where the data points are more likely to be related. The relationship between data points is saved as a directed graph model where most points are not connected.</p>
-<p>From there, UMAP translates points in the graph to the reduced dimensional space. To do this, the algorithm has an optimization process that uses cross-entropy to map data points to the smaller set of features so that the graph is well approximated.</p>
-<p>To create the mapping, the <span class="pkg">embed</span> package contains a step function for this method, visualized in <a href="#fig-bean-umap">Figure&nbsp;<span>16.10</span></a>.</p>
+<p>Al inspeccionar este gráfico, no parece haber mucha separación entre las clases en los primeros componentes cuando se usa ICA. Estos componentes independientes (o lo más independientes posible) no separan los tipos de frijoles.</p>
+</section><section id="aproximación-y-proyección-de-variedades-uniformes." class="level3" data-number="16.5.4"><h3 data-number="16.5.4" class="anchored" data-anchor-id="aproximación-y-proyección-de-variedades-uniformes.">
+<span class="header-section-number">16.5.4</span> Aproximación y proyección de variedades uniformes.</h3>
+<p>UMAP es similar al popular método t-SNE para la reducción de dimensiones no lineales. En el espacio original de alta dimensión, UMAP utiliza un método de vecino más cercano basado en la distancia para encontrar áreas locales de los datos donde es más probable que los puntos de datos estén relacionados. La relación entre puntos de datos se guarda como un modelo de gráfico dirigido donde la mayoría de los puntos no están conectados.</p>
+<p>A partir de ahí, UMAP traduce los puntos del gráfico al espacio dimensional reducido. Para hacer esto, el algoritmo tiene un proceso de optimización que utiliza entropía cruzada para asignar puntos de datos al conjunto más pequeño de características para que el gráfico sea bien aproximado.</p>
+<p>Para crear el mapeo, el paquete <span class="pkg">embed</span> contiene una función de paso para este método, visualizada en <a href="#fig-bean-umap">Figura&nbsp;<span class="quarto-unresolved-ref">fig-bean-umap</span></a>.</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-umap_d053e7636586c7fa6361dfd59acd87e7">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://embed.tidymodels.org">embed</a></span><span class="op">)</span></span>
 <span><span class="va">bean_rec_trained</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://embed.tidymodels.org/reference/step_umap.html">step_umap</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_numeric_predictors</a></span><span class="op">(</span><span class="op">)</span>, num_comp <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">plot_validation_results</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"UMAP"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"UMAP"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-umap_ae79a6e4646e27331ffb7e7547f1814f">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-umap_8b53786f838aee92a7976beb6846a7e4">
 <div class="cell-output-display">
 <div id="fig-bean-umap" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-umap-1.png" class="img-fluid figure-img" alt="UMAP component scores for the bean validation set, colored by class. There is a very high degree of separation between clusters, but several of the clusters contain more than one class." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;16.10: UMAP component scores for the bean validation set, colored by class</figcaption></figure>
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-umap-1.png" class="img-fluid figure-img" alt="Puntuaciones de componentes UMAP para el conjunto de validación de beans, coloreadas por clase. Existe un grado muy alto de separación entre los grupos, pero varios de ellos contienen más de una clase." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;16.10: Puntuaciones de componentes UMAP para el conjunto de validación de beans, coloreadas por clase</figcaption></figure>
 </div>
 </div>
 </div>
-<p>While the between-cluster space is pronounced, the clusters can contain a heterogeneous mixture of classes.</p>
-<p>There is also a supervised version of UMAP:</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-umap-supervised_d429ca324d87927ce18c2c676e048255">
+<p>Si bien el espacio entre grupos es pronunciado, los grupos pueden contener una mezcla heterogénea de clases.</p>
+<p>También existe una versión supervisada de UMAP:</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-umap-supervised_e65724d6eb2ef2374b0ede7c2f25834d">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_rec_trained</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://embed.tidymodels.org/reference/step_umap.html">step_umap</a></span><span class="op">(</span><span class="fu"><a href="https://recipes.tidymodels.org/reference/has_role.html">all_numeric_predictors</a></span><span class="op">(</span><span class="op">)</span>, outcome <span class="op">=</span> <span class="st">"class"</span>, num_comp <span class="op">=</span> <span class="fl">4</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">plot_validation_results</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"UMAP (supervised)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span><span class="op">(</span><span class="st">"UMAP (supervisado)"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-umap-supervised_0417da6238444dafdffa24dfb590cfed">
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-bean-umap-supervised_96a533cfeff492b3d03d12e049354124">
 <div class="cell-output-display">
 <div id="fig-bean-umap-supervised" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-umap-supervised-1.png" class="img-fluid figure-img" alt="Supervised UMAP component scores for the bean validation set, colored by class. There is again a very high degree of separation between clusters, and there are now fewer instances of one cluster containing multiple classes." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;16.11: Supervised UMAP component scores for the bean validation set, colored by class</figcaption></figure>
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-bean-umap-supervised-1.png" class="img-fluid figure-img" alt="Puntuaciones de componentes UMAP supervisadas para el conjunto de validación de beans, coloreadas por clase. Nuevamente hay un grado muy alto de separación entre los clústeres y ahora hay menos instancias de un clúster que contiene múltiples clases." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;16.11: Puntajes de componentes UMAP supervisados para el conjunto de validación de beans, coloreados por clase</figcaption></figure>
 </div>
 </div>
 </div>
-<p>The supervised method shown in <a href="#fig-bean-umap-supervised">Figure&nbsp;<span>16.11</span></a> looks promising for modeling the data.</p>
-<p>UMAP is a powerful method to reduce the feature space. However, it can be very sensitive to tuning parameters (e.g., the number of neighbors and so on). For this reason, it would help to experiment with a few of the parameters to assess how robust the results are for these data.</p>
+<p>El método supervisado que se muestra en <a href="#fig-bean-umap-supervised">Figura&nbsp;<span class="quarto-unresolved-ref">fig-bean-umap-supervised</span></a> parece prometedor para modelar los datos.</p>
+<p>UMAP es un método poderoso para reducir el espacio de funciones. Sin embargo, puede ser muy sensible a los parámetros de ajuste (por ejemplo, el número de vecinos, etc.). Por esta razón, sería útil experimentar con algunos de los parámetros para evaluar qué tan sólidos son los resultados de estos datos.</p>
 </section></section><section id="sec-bean-models" class="level2" data-number="16.6"><h2 data-number="16.6" class="anchored" data-anchor-id="sec-bean-models">
-<span class="header-section-number">16.6</span> Modeling</h2>
-<p>Both the PLS and UMAP methods are worth investigating in conjunction with different models. Let’s explore a variety of different models with these dimensionality reduction techniques (along with no transformation at all): a single layer neural network, bagged trees, flexible discriminant analysis (FDA), naive Bayes, and regularized discriminant analysis (RDA).</p>
-<p>Now that we are back in “modeling mode,” we’ll create a series of model specifications and then use a workflow set to tune the models in the following code. Note that the model parameters are tuned in conjunction with the recipe parameters (e.g., size of the reduced dimension, UMAP parameters).</p>
+<span class="header-section-number">16.6</span> Modelado</h2>
+<p>Vale la pena investigar tanto el método PLS como el UMAP junto con diferentes modelos. Exploremos una variedad de modelos diferentes con estas técnicas de reducción de dimensionalidad (sin ninguna transformación): una red neuronal de una sola capa, árboles en bolsas, análisis discriminante flexible (FDA), Bayes ingenuo y análisis discriminante regularizado (RDA).</p>
+<p>Ahora que volvemos al “modo de modelado”, crearemos una serie de especificaciones de modelo y luego usaremos un conjunto de flujo de trabajo para ajustar los modelos en el siguiente código. Tenga en cuenta que los parámetros del modelo se ajustan junto con los parámetros de la receta (por ejemplo, tamaño de la dimensión reducida, parámetros UMAP).</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-models_649620a411b151e735cf59019be67a6d">
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://baguette.tidymodels.org">baguette</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/discrim">discrim</a></span><span class="op">)</span></span>
@@ -806,9 +819,9 @@ div.csl-indent {
 <span></span>
 <span><span class="va">bayes_spec</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/naive_Bayes.html">naive_Bayes</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">'klaR'</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">'klaR'</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We also need recipes for the dimensionality reduction methods we’ll try. Let’s start with a base recipe <code>bean_rec</code> and then extend it with different dimensionality reduction steps:</p>
+<p>También necesitamos recetas para los métodos de reducción de dimensionalidad que probaremos. Comencemos con una receta base <code>bean_rec</code> y luego ampliémosla con diferentes pasos de reducción de dimensionalidad:</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-recipes_a5365b1b177f96dd56120e534e8a44a8">
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bean_rec</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">bean_train</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -828,9 +841,9 @@ div.csl-indent {
 <span>    num_comp <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    neighbors <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    min_dist <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Once again, the <span class="pkg">workflowsets</span> package takes the preprocessors and models and crosses them. The <code>control</code> option <code>parallel_over</code> is set so that the parallel processing can work simultaneously across tuning parameter combinations. The <code>workflow_map()</code> function applies grid search to optimize the model/preprocessing parameters (if any) across 10 parameter combinations. The multiclass area under the ROC curve is estimated on the validation set.</p>
+<p>Una vez más, el paquete <span class="pkg">workflowsets</span> toma los preprocesadores y modelos y los cruza. La opción <code>control</code> <code>parallel_over</code> está configurada para que el procesamiento paralelo pueda funcionar simultáneamente en todas las combinaciones de parámetros de ajuste. La función <code>workflow_map()</code> aplica la búsqueda de cuadrícula para optimizar los parámetros del modelo/preprocesamiento (si los hay) en 10 combinaciones de parámetros. El área multiclase bajo la curva ROC se estima en el conjunto de validación.</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-workflows_165d0a2b4ff88670df17b35234b975a6">
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ctrl</span> <span class="op">&lt;-</span> <span class="fu">control_grid</span><span class="op">(</span>parallel_over <span class="op">=</span> <span class="st">"everything"</span><span class="op">)</span></span>
 <span><span class="va">bean_res</span> <span class="op">&lt;-</span> </span>
@@ -847,9 +860,9 @@ div.csl-indent {
 <span>    grid <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>    metrics <span class="op">=</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">roc_auc</span><span class="op">)</span>,</span>
 <span>    control <span class="op">=</span> <span class="va">ctrl</span></span>
-<span>  <span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can rank the models by their validation set estimates of the area under the ROC curve:</p>
+<p>Podemos clasificar los modelos según sus estimaciones del conjunto de validación del área bajo la curva ROC:</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-ranked_9557b7109453e340b7d9d091bfe9c6a7">
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rankings</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu">rank_results</span><span class="op">(</span><span class="va">bean_res</span>, select_best <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
@@ -864,18 +877,18 @@ div.csl-indent {
 <span><span class="co">## 2     2 0.996 discrim_regularized pls   </span></span>
 <span><span class="co">## 3     3 0.995 discrim_flexible    basic </span></span>
 <span><span class="co">## 4     4 0.995 naive_Bayes         pls   </span></span>
-<span><span class="co">## 5     5 0.994 naive_Bayes         basic</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 5     5 0.994 naive_Bayes         basic</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Figure @ref(fig:dimensionality-rankings) illustrates this ranking.</p>
-<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-dimensionality-rankings_dde9131161f05ed4cdf47d2b34d8ca76">
+<p><a href="#fig-dimensionality-rankings">Figura&nbsp;<span class="quarto-unresolved-ref">fig-dimensionality-rankings</span></a> ilustra esta clasificación.</p>
+<div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/fig-dimensionality-rankings_af8b4a99d409981a0d4ffb6b7ecb37fb">
 <div class="cell-output-display">
 <div id="fig-dimensionality-rankings" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-dimensionality-rankings-1.png" class="img-fluid figure-img" alt="Area under the ROC curve from the validation set. The three best model configurations use PLS together with regularized discriminant analysis, a multi-layer perceptron, and a naive Bayes model." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;16.12: Area under the ROC curve from the validation set</figcaption></figure>
+<figure class="figure"><p><img src="16-dimensionality-reduction_files/figure-html/fig-dimensionality-rankings-1.png" class="img-fluid figure-img" alt="Área bajo la curva ROC del conjunto de validación. Las tres mejores configuraciones de modelo utilizan PLS junto con un análisis discriminante regularizado, un perceptrón multicapa y un modelo ingenuo de Bayes." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;16.12: Área bajo la curva ROC del conjunto de validación</figcaption></figure>
 </div>
 </div>
 </div>
-<p>It is clear from these results that most models give very good performance; there are few bad choices here. For demonstration, we’ll use the RDA model with PLS features as the final model. We will finalize the workflow with the numerically best parameters, fit it to the training set, then evaluate with the test set:</p>
+<p>De estos resultados se desprende claramente que la mayoría de los modelos ofrecen muy buen rendimiento; hay pocas malas decisiones aquí. Para la demostración, usaremos el modelo RDA con características PLS como modelo final. Finalizaremos el flujo de trabajo con los mejores parámetros numéricamente, lo ajustaremos al conjunto de entrenamiento y luego lo evaluaremos con el conjunto de prueba:</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-final_561862722924589c2e252b8da39f5260">
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rda_res</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">bean_res</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
@@ -887,44 +900,111 @@ div.csl-indent {
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">last_fit</span><span class="op">(</span>split <span class="op">=</span> <span class="va">bean_split</span>, metrics <span class="op">=</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">roc_auc</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">rda_wflow_fit</span> <span class="op">&lt;-</span> <span class="fu">extract_workflow</span><span class="op">(</span><span class="va">rda_res</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="va">rda_wflow_fit</span> <span class="op">&lt;-</span> <span class="fu">extract_workflow</span><span class="op">(</span><span class="va">rda_res</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>What are the results for our metric (multiclass ROC AUC) on the testing set?</p>
+<p>¿Cuáles son los resultados de nuestra métrica (ROC AUC multiclase) en el conjunto de pruebas?</p>
 <div class="cell" data-layout-align="center" data-hash="16-dimensionality-reduction_cache/html/dimensionality-test_65b460ff7cd31b06c3b3859f19df19ca">
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">collect_metrics</span><span class="op">(</span><span class="va">rda_res</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 4</span></span>
 <span><span class="co">##   .metric .estimator .estimate .config             </span></span>
 <span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               </span></span>
-<span><span class="co">## 1 roc_auc hand_till      0.995 Preprocessor1_Model1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 roc_auc hand_till      0.995 Preprocessor1_Model1</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Pretty good! We’ll use this model in the next chapter to demonstrate variable importance methods.</p>
+<p>¡Bastante bien! Usaremos este modelo en el próximo capítulo para demostrar métodos de importancia variable.</p>
 </section><section id="sec-dimensionality-summary" class="level2" data-number="16.7"><h2 data-number="16.7" class="anchored" data-anchor-id="sec-dimensionality-summary">
-<span class="header-section-number">16.7</span> Chapter Summary</h2>
-<p>Dimensionality reduction can be a helpful method for exploratory data analysis as well as modeling. The <span class="pkg">recipes</span> and <span class="pkg">embed</span> packages contain steps for a variety of different methods and <span class="pkg">workflowsets</span> facilitates choosing an appropriate method for a data set. This chapter also discussed how recipes can be used on their own, either for debugging problems with a recipe or directly for exploratory data analysis and data visualization.</p>
+<span class="header-section-number">16.7</span> Resumen del capítulo</h2>
+<p>La reducción de dimensionalidad puede ser un método útil para el análisis exploratorio de datos y el modelado. Los paquetes <span class="pkg">recipes</span> y <span class="pkg">embed</span> contienen pasos para una variedad de métodos diferentes y <span class="pkg">workflowsets</span> facilita la elección de un método apropiado para un conjunto de datos. Este capítulo también analizó cómo se pueden usar recetas por sí solas, ya sea para depurar problemas con una receta o directamente para análisis exploratorio de datos y visualización de datos.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-beans" class="csl-entry" role="listitem">
-Koklu, M, and IA Ozkan. 2020. <span>“Multiclass Classification of Dry Beans Using Computer Vision and Machine Learning Techniques.”</span> <em>Computers and Electronics in Agriculture</em> 174: 105507.
+Koklu, M, y IA Ozkan. 2020. <span>«Multiclass classification of dry beans using computer vision and machine learning techniques»</span>. <em>Computers and Electronics in Agriculture</em> 174: 105507.
 </div>
 <div id="ref-fes" class="csl-entry" role="listitem">
-Kuhn, M, and K Johnson. 2020. <em>Feature Engineering and Selection: A Practical Approach for Predictive Models</em>. CRC Press.
+Kuhn, M, y K Johnson. 2020. <em>Feature engineering and selection: A practical approach for predictive models</em>. CRC Press.
 </div>
 <div id="ref-mcinnes2020umap" class="csl-entry" role="listitem">
-McInnes, L, J Healy, and J Melville. 2020. <span>“UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction.”</span>
+McInnes, L, J Healy, y J Melville. 2020. <span>«UMAP: Uniform manifold approximation and projection for dimension reduction»</span>.
 </div>
 <div id="ref-Mingqiang08" class="csl-entry" role="listitem">
-Mingqiang, Y, K Kidiyo, and R Joseph. 2008. <span>“A Survey of Shape Feature Extraction Techniques.”</span> In <em>Pattern Recognition</em>, edited by PY Yin. Rijeka: IntechOpen. <a href="https://doi.org/10.5772/6237">https://doi.org/10.5772/6237</a>.
+Mingqiang, Y, K Kidiyo, y R Joseph. 2008. <span>«A survey of shape feature extraction techniques»</span>. En <em>Pattern Recognition</em>, editado por PY Yin. Rijeka: IntechOpen. <a href="https://doi.org/10.5772/6237">https://doi.org/10.5772/6237</a>.
 </div>
 <div id="ref-symons1988211" class="csl-entry" role="listitem">
-Symons, S, and RG Fulcher. 1988. <span>“Determination of Wheat Kernel Morphological Variation by Digital Image Analysis: <span>I</span>. <span>Variation</span> in Eastern Canadian Milling Quality Wheats.”</span> <em>Journal of Cereal Science</em> 8 (3): 211–18.
+Symons, S, y RG Fulcher. 1988. <span>«Determination of wheat kernel morphological variation by digital image analysis: <span>I</span>. <span>Variation</span> in Eastern Canadian milling quality wheats»</span>. <em>Journal of Cereal Science</em> 8 (3): 211-18.
 </div>
 </div>
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
-<li id="fn1"><p>The <span class="pkg">learntidymodels</span> package can be found at its GitHub site: <a href="https://github.com/tidymodels/learntidymodels" class="uri">https://github.com/tidymodels/learntidymodels</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>The <span class="pkg">mixOmics</span> package is not available on CRAN, but instead on Bioconductor: <a href="https://doi.org/doi:10.18129/B9.bioc.mixOmics" class="uri">https://doi.org/doi:10.18129/B9.bioc.mixOmics</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<li id="fn1"><p>El paquete <span class="pkg">learntidymodels</span> se puede encontrar en su sitio de GitHub: <a href="https://github.com/tidymodels/learntidymodels" class="uri">https://github.com/tidymodels/learntidymodels</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>El paquete <span class="pkg">mixOmics</span> no está disponible en CRAN, sino en Bioconductor: <a href="https://doi.org/doi:10.18129/B9.bioc.mixOmics" class="uri">https://doi.org/doi:10.18129/B9.bioc.mixOmics</a><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -978,12 +1058,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copiado");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copiado");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
@@ -1158,12 +1238,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./15-workflow-sets.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Screening Many Models</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando muchos modelos</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./17-encoding-categorical-data.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Encoding Categorical Data</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación de datos categóricos</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

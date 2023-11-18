@@ -59,7 +59,7 @@ book:
         - 14-iterative-search.qmd
         - 15-workflow-sets.qmd
         
-    - part: "BEYOND THE BASICS"
+    - part: "MAS ALLÁ DE LO BÁSICO"
       chapters:
         - 16-dimensionality-reduction.qmd
         - 17-encoding-categorical-data.qmd
