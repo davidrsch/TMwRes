@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 17&nbsp; Encoding Categorical Data</title>
+<title>Modelado Ordenado con R - 17&nbsp; Codificación de datos categóricos</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -74,7 +74,6 @@ div.csl-indent {
 }</style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -99,16 +98,16 @@ div.csl-indent {
   "type": "textbox",
   "limit": 20,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
   }
 }</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -119,11 +118,11 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">BEYOND THE BASICS</a></li><li class="breadcrumb-item"><a href="./17-encoding-categorical-data.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Encoding Categorical Data</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">BEYOND THE BASICS</a></li><li class="breadcrumb-item"><a href="./17-encoding-categorical-data.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación de datos categóricos</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -135,8 +134,22 @@ div.csl-indent {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/davidrsch/TMwRes" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
   </div>
@@ -146,7 +159,7 @@ div.csl-indent {
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
+        <div id="quarto-search" class="" title="Buscar"></div>
         </div>
         </div>
     <div class="sidebar-menu-container"> 
@@ -154,14 +167,14 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Hello World</span></a>
+ <span class="menu-text">Hola Mundo</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">INTRODUCTION</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -169,19 +182,19 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software for modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software para modelar</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A Tidyverse Primer</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una introducción tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Review of R Modeling Fundamentals</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span></a>
   </div>
 </li>
       </ul>
@@ -189,8 +202,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">MODELING BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -198,37 +211,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Ames Housing Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spending our Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fitting Models with parsnip</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A Model Workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo de Modelado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Feature Engineering with recipes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería de Características con recipes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Judging Model Effectiveness</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar la Eficacia del Modelo</span></span></a>
   </div>
 </li>
       </ul>
@@ -237,7 +250,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
  <span class="menu-text">TOOLS FOR CREATING EFFECTIVE MODELS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -245,37 +258,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Resampling for Evaluating Performance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear para Evaluar el Rendimiento</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparing Models with Resampling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación de Modelos con Remuestreo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Model Tuning and the Dangers of Overfitting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste de Modelos y los Peligros del Sobreajuste</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Grid Search</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda de cuadrícula</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Iterative Search</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda iterativa</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Screening Many Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando muchos modelos</span></span></a>
   </div>
 </li>
       </ul>
@@ -284,7 +297,7 @@ div.csl-indent {
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
  <span class="menu-text">BEYOND THE BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -292,13 +305,13 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción de Dimensionalidad</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Encoding Categorical Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación de datos categóricos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -330,8 +343,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -355,25 +368,25 @@ div.csl-indent {
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-<li><a href="#is-an-encoding-necessary" id="toc-is-an-encoding-necessary" class="nav-link active" data-scroll-target="#is-an-encoding-necessary"><span class="header-section-number">17.1</span> Is an Encoding Necessary?</a></li>
-  <li><a href="#encoding-ordinal-predictors" id="toc-encoding-ordinal-predictors" class="nav-link" data-scroll-target="#encoding-ordinal-predictors"><span class="header-section-number">17.2</span> Encoding Ordinal Predictors</a></li>
+<li><a href="#es-necesaria-una-codificaci%C3%B3n" id="toc-es-necesaria-una-codificación" class="nav-link active" data-scroll-target="#es-necesaria-una-codificaci%C3%B3n"><span class="header-section-number">17.1</span> ¿Es necesaria una codificación?</a></li>
+  <li><a href="#codificaci%C3%B3n-de-predictores-ordinales" id="toc-codificación-de-predictores-ordinales" class="nav-link" data-scroll-target="#codificaci%C3%B3n-de-predictores-ordinales"><span class="header-section-number">17.2</span> Codificación de predictores ordinales</a></li>
   <li>
-<a href="#using-the-outcome-for-encoding-predictors" id="toc-using-the-outcome-for-encoding-predictors" class="nav-link" data-scroll-target="#using-the-outcome-for-encoding-predictors"><span class="header-section-number">17.3</span> Using the Outcome for Encoding Predictors</a>
+<a href="#uso-del-resultado-para-codificar-predictores" id="toc-uso-del-resultado-para-codificar-predictores" class="nav-link" data-scroll-target="#uso-del-resultado-para-codificar-predictores"><span class="header-section-number">17.3</span> Uso del resultado para codificar predictores</a>
   <ul class="collapse">
-<li><a href="#effect-encodings-with-partial-pooling" id="toc-effect-encodings-with-partial-pooling" class="nav-link" data-scroll-target="#effect-encodings-with-partial-pooling"><span class="header-section-number">17.3.1</span> Effect encodings with partial pooling</a></li>
+<li><a href="#codificaciones-de-efectos-con-agrupaci%C3%B3n-parcial" id="toc-codificaciones-de-efectos-con-agrupación-parcial" class="nav-link" data-scroll-target="#codificaciones-de-efectos-con-agrupaci%C3%B3n-parcial"><span class="header-section-number">17.3.1</span> Codificaciones de efectos con agrupación parcial</a></li>
   </ul>
 </li>
-  <li><a href="#feature-hashing" id="toc-feature-hashing" class="nav-link" data-scroll-target="#feature-hashing"><span class="header-section-number">17.4</span> Feature Hashing</a></li>
-  <li><a href="#more-encoding-options" id="toc-more-encoding-options" class="nav-link" data-scroll-target="#more-encoding-options"><span class="header-section-number">17.5</span> More Encoding Options</a></li>
-  <li><a href="#sec-categorical-summary" id="toc-sec-categorical-summary" class="nav-link" data-scroll-target="#sec-categorical-summary"><span class="header-section-number">17.6</span> Chapter Summary</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/17-encoding-categorical-data.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+  <li><a href="#hashing-de-caracter%C3%ADsticas" id="toc-hashing-de-características" class="nav-link" data-scroll-target="#hashing-de-caracter%C3%ADsticas"><span class="header-section-number">17.4</span> Hashing de características</a></li>
+  <li><a href="#m%C3%A1s-opciones-de-codificaci%C3%B3n" id="toc-más-opciones-de-codificación" class="nav-link" data-scroll-target="#m%C3%A1s-opciones-de-codificaci%C3%B3n"><span class="header-section-number">17.5</span> Más opciones de codificación</a></li>
+  <li><a href="#sec-categorical-summary" id="toc-sec-categorical-summary" class="nav-link" data-scroll-target="#sec-categorical-summary"><span class="header-section-number">17.6</span> Resumen del capítulo</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-categorical" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Encoding Categorical Data</span></span></h1>
+<h1 class="title"><span id="sec-categorical" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación de datos categóricos</span></span></h1>
 </div>
 
 
@@ -386,12 +399,12 @@ div.csl-indent {
   </div>
   
 
-</header><p>For statistical modeling in R, the preferred representation for categorical or nominal data is a <em>factor</em>, which is a variable that can take on a limited number of different values; internally, factors are stored as a vector of integer values together with a set of text labels.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> In <a href="08-feature-engineering.html#sec-dummies"><span>Section&nbsp;8.4.1</span></a> we introduced feature engineering approaches to encode or transform qualitative or nominal data into a representation better suited for most model algorithms. We discussed how to transform a categorical variable, such as the <code>Bldg_Type</code> in our Ames housing data (with levels <code>OneFam</code>, <code>TwoFmCon</code>, <code>Duplex</code>, <code>Twnhs</code>, and <code>TwnhsE</code>), to a set of dummy or indicator variables like those shown in <a href="#tbl-encoding-dummies">Table&nbsp;<span>17.1</span></a>.</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/tbl-encoding-dummies_44fffa16e97e776a292063c5b912ed4c">
+</header><p>Para el modelado estadístico en R, la representación preferida para datos categóricos o nominales es un <em>factor</em>, que es una variable que puede tomar un número limitado de valores diferentes; internamente, los factores se almacenan como un vector de valores enteros junto con un conjunto de etiquetas de texto.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> En <a href="08-feature-engineering.html#sec-dummies"><span>Sección&nbsp;8.4.1</span></a> introdujimos enfoques de ingeniería de características para codificar o transformar datos cualitativos o nominales en una representación más adecuada para la mayoría de los algoritmos modelo. Discutimos cómo transformar una variable categórica, como <code>Bldg_Type</code> en nuestros datos de vivienda de Ames (con niveles <code>OneFam</code>, <code>TwoFmCon</code>, <code>Duplex</code>, <code>Twnhs</code>, and <code>TwnhsE</code>), en un conjunto de Variables ficticias o indicadoras como las que se muestran en <a href="#tbl-encoding-dummies">Tabla&nbsp;<span>17.1</span></a>.</p>
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/tbl-encoding-dummies_b1873258a8222526a6e3c5a2fc13d458">
 <div class="cell-output-display">
 <div id="tbl-encoding-dummies" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Table&nbsp;17.1: Dummy or indicator variable encodings for the building type predictor in the Ames training set.</caption>
+<caption>Tabla&nbsp;17.1: Codificaciones de variables ficticias o indicadoras para el predictor de tipo de edificio en el conjunto de entrenamiento de Ames.</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Raw Data</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">TwoFmCon</th>
@@ -442,26 +455,26 @@ div.csl-indent {
 
 </div>
 </div>
-<p>Many model implementations require such a transformation to a numeric representation for categorical data.</p>
+<p>Muchas implementaciones de modelos requieren dicha transformación a una representación numérica para datos categóricos.</p>
 <div class="rmdnote">
-<p><a href="pre-proc-table.html">Appendix&nbsp;<span>A</span></a> presents a table of recommended preprocessing techniques for different models; notice how many of the models in the table require a numeric encoding for all predictors.</p>
+<p><a href="pre-proc-table.html">Apéndice&nbsp;<span>A</span></a> presenta una tabla de técnicas de preprocesamiento recomendadas para diferentes modelos; observe cuántos de los modelos de la tabla requieren una codificación numérica para todos los predictores.</p>
 </div>
-<p>However, for some realistic data sets, straightforward dummy variables are not a good fit. This often happens because there are <em>too many</em> categories or there are <em>new</em> categories at prediction time. In this chapter, we discuss more sophisticated options for encoding categorical predictors that address these issues. These options are available as tidymodels recipe steps in the <a href="https://embed.tidymodels.org/"><span class="pkg">embed</span></a> and <a href="https://textrecipes.tidymodels.org/"><span class="pkg">textrecipes</span></a> packages.</p>
-<section id="is-an-encoding-necessary" class="level2" data-number="17.1"><h2 data-number="17.1" class="anchored" data-anchor-id="is-an-encoding-necessary">
-<span class="header-section-number">17.1</span> Is an Encoding Necessary?</h2>
-<p>A minority of models, such as those based on trees or rules, can handle categorical data natively and do not require encoding or transformation of these kinds of features. A tree-based model can natively partition a variable like <code>Bldg_Type</code> into groups of factor levels, perhaps <code>OneFam</code> alone in one group and <code>Duplex</code> and <code>Twnhs</code> together in another group. Naive Bayes models are another example where the structure of the model can deal with categorical variables natively; distributions are computed within each level, for example, for all the different kinds of <code>Bldg_Type</code> in the data set.</p>
-<p>These models that can handle categorical features natively can <em>also</em> deal with numeric, continuous features, making the transformation or encoding of such variables optional. Does this help in some way, perhaps with model performance or time to train models? Typically no, as Section 5.7 of <span class="citation" data-cites="fes">Kuhn and Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> shows using benchmark data sets with untransformed factor variables compared with transformed dummy variables for those same features. In short, using dummy encodings did not typically result in better model performance but often required more time to train the models.</p>
+<p>Sin embargo, para algunos conjuntos de datos realistas, las variables ficticias sencillas no son una buena opción. Esto sucede a menudo porque hay <em>demasiadas</em> categorías o hay categorías <em>nuevas</em> en el momento de la predicción. En este capítulo, analizamos opciones más sofisticadas para codificar predictores categóricos que abordan estos problemas. Estas opciones están disponibles como pasos de recetas de tidymodels en <a href="https://embed.tidymodels.org/"><span class="pkg">embed</span></a> y <a href="https://textrecipes.tidymodels.%20org/"><span class="pkg">textrecipes</span></a> paquetes.</p>
+<section id="es-necesaria-una-codificación" class="level2" data-number="17.1"><h2 data-number="17.1" class="anchored" data-anchor-id="es-necesaria-una-codificación">
+<span class="header-section-number">17.1</span> ¿Es necesaria una codificación?</h2>
+<p>Una minoría de modelos, como los basados en árboles o reglas, pueden manejar datos categóricos de forma nativa y no requieren codificación ni transformación de este tipo de características. Un modelo basado en árbol puede dividir de forma nativa una variable como <code>Bldg_Type</code> en grupos de niveles de factores, tal vez <code>OneFam</code> solo en un grupo y <code>Duplex</code> y <code>Twnhs</code> juntos en otro grupo. Los modelos Naive Bayes son otro ejemplo en el que la estructura del modelo puede tratar variables categóricas de forma nativa; las distribuciones se calculan dentro de cada nivel, por ejemplo, para todos los diferentes tipos de <code>Bldg_Type</code> en el conjunto de datos.</p>
+<p>Estos modelos que pueden manejar características categóricas de forma nativa <em>también</em> pueden manejar características numéricas continuas, lo que hace que la transformación o codificación de dichas variables sea opcional. ¿Esto ayuda de alguna manera, quizás con el rendimiento del modelo o con el tiempo para entrenar modelos? Normalmente no, como muestra la Sección 5.7 de <span class="citation" data-cites="fes">Kuhn y Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> utilizando conjuntos de datos de referencia con variables factoriales no transformadas en comparación con variables ficticias transformadas para esas mismas características. En resumen, el uso de codificaciones ficticias normalmente no daba como resultado un mejor rendimiento del modelo, pero a menudo requería más tiempo para entrenar los modelos.</p>
 <div class="rmdnote">
-<p>We advise starting with untransformed categorical variables when a model allows it; note that more complex encodings often do not result in better performance for such models.</p>
+<p>Recomendamos comenzar con variables categóricas no transformadas cuando un modelo lo permita; tenga en cuenta que las codificaciones más complejas a menudo no dan como resultado un mejor rendimiento para dichos modelos.</p>
 </div>
-</section><section id="encoding-ordinal-predictors" class="level2" data-number="17.2"><h2 data-number="17.2" class="anchored" data-anchor-id="encoding-ordinal-predictors">
-<span class="header-section-number">17.2</span> Encoding Ordinal Predictors</h2>
-<p>Sometimes qualitative columns can be <em>ordered</em>, such as “low,” “medium,” and “high”. In base R, the default encoding strategy is to make new numeric columns that are polynomial expansions of the data. For columns that have five ordinal values, like the example shown in <a href="#tbl-encoding-ordered-table">Table&nbsp;<span>17.2</span></a>, the factor column is replaced with columns for linear, quadratic, cubic, and quartic terms:</p>
+</section><section id="codificación-de-predictores-ordinales" class="level2" data-number="17.2"><h2 data-number="17.2" class="anchored" data-anchor-id="codificación-de-predictores-ordinales">
+<span class="header-section-number">17.2</span> Codificación de predictores ordinales</h2>
+<p>A veces, las columnas cualitativas se pueden <em>ordenar</em>, como “baja”, “media” y “alta”. En base R, la estrategia de codificación predeterminada es crear nuevas columnas numéricas que sean expansiones polinómicas de los datos. Para las columnas que tienen cinco valores ordinales, como el ejemplo que se muestra en <a href="#tbl-encoding-ordered-table">Tabla&nbsp;<span>17.2</span></a>, la columna de factores se reemplaza con columnas para términos lineales, cuadráticos, cúbicos y cuárticos:</p>
 <div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/tbl-encoding-ordered-table_57527f7c1634ee82c30f7303ee30bb4e">
 <div class="cell-output-display">
 <div id="tbl-encoding-ordered-table" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Table&nbsp;17.2: Polynominal expansions for encoding an ordered variable.</caption>
+<caption>Tabla&nbsp;17.2: Polynominal expansions for encoding an ordered variable.</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Raw Data</th>
 <th style="text-align: right;" data-quarto-table-cell-role="th">Linear</th>
@@ -512,11 +525,11 @@ div.csl-indent {
 
 </div>
 </div>
-<p>While this is not unreasonable, it is not an approach that people tend to find useful. For example, an 11-degree polynomial is probably not the most effective way of encoding an ordinal factor for the months of the year. Instead, consider trying recipe steps related to ordered factors, such as <code><a href="https://recipes.tidymodels.org/reference/step_unorder.html">step_unorder()</a></code>, to convert to regular factors, and <code><a href="https://recipes.tidymodels.org/reference/step_ordinalscore.html">step_ordinalscore()</a></code>, which maps specific numeric values to each factor level.</p>
-</section><section id="using-the-outcome-for-encoding-predictors" class="level2" data-number="17.3"><h2 data-number="17.3" class="anchored" data-anchor-id="using-the-outcome-for-encoding-predictors">
-<span class="header-section-number">17.3</span> Using the Outcome for Encoding Predictors</h2>
-<p>There are multiple options for encodings more complex than dummy or indicator variables. One method called <em>effect</em> or <em>likelihood encodings</em> replaces the original categorical variables with a single numeric column that measures the effect of those data <span class="citation" data-cites="MicciBarreca2001 Zumel2019">(<a href="references.html#ref-MicciBarreca2001" role="doc-biblioref">Micci-Barreca 2001</a>; <a href="references.html#ref-Zumel2019" role="doc-biblioref">Zumel and Mount 2019</a>)</span>. For example, for the neighborhood predictor in the Ames housing data, we can compute the mean or median sale price for each neighborhood (as shown in <a href="#fig-encoding-mean-price">Figure&nbsp;<span>17.1</span></a>) and substitute these means for the original data values:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/fig-encoding-mean-price_7d0ed3f9c28313cfce22dd956ef38f9f">
+<p>Si bien esto no es descabellado, no es un enfoque que la gente tienda a encontrar útil. Por ejemplo, un polinomio de 11 grados probablemente no sea la forma más eficaz de codificar un factor ordinal para los meses del año. En su lugar, considere probar pasos de recetas relacionados con factores ordenados, como <code><a href="https://recipes.tidymodels.org/reference/step_unorder.html">step_unorder()</a></code>, para convertir a factores regulares, y <code><a href="https://recipes.tidymodels.org/reference/step_ordinalscore.html">step_ordinalscore()</a></code>, que asigna valores numéricos específicos a cada nivel de factor.</p>
+</section><section id="uso-del-resultado-para-codificar-predictores" class="level2" data-number="17.3"><h2 data-number="17.3" class="anchored" data-anchor-id="uso-del-resultado-para-codificar-predictores">
+<span class="header-section-number">17.3</span> Uso del resultado para codificar predictores</h2>
+<p>Existen múltiples opciones para codificaciones más complejas que las variables ficticias o indicadoras. Un método llamado <em>efecto</em> o <em>codificaciones de probabilidad</em> reemplaza las variables categóricas originales con una sola columna numérica que mide el efecto de esos datos <span class="citation" data-cites="MicciBarreca2001 Zumel2019">(<a href="references.html#ref-MicciBarreca2001" role="doc-biblioref">Micci-Barreca 2001</a>; <a href="references.html#ref-Zumel2019" role="doc-biblioref">Zumel y Mount 2019</a>)</span>. Por ejemplo, para el predictor de vecindario en los datos de vivienda de Ames, podemos calcular el precio de venta medio o mediano para cada vecindario (como se muestra en <a href="#fig-encoding-mean-price">Figura&nbsp;<span>17.1</span></a>) y sustituir estos medios por los valores de los datos originales:</p>
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/fig-encoding-mean-price_7df1363b97c90defda273af8951b2e37">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_train</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">Neighborhood</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
 <span>  <span class="fu">summarize</span><span class="op">(</span>mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span>,</span>
@@ -524,15 +537,15 @@ div.csl-indent {
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/reorder.factor.html">reorder</a></span><span class="op">(</span><span class="va">Neighborhood</span>, <span class="va">mean</span><span class="op">)</span>, x <span class="op">=</span> <span class="va">mean</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_errorbar</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">mean</span> <span class="op">-</span> <span class="fl">1.64</span> <span class="op">*</span> <span class="va">std_err</span>, xmax <span class="op">=</span> <span class="va">mean</span> <span class="op">+</span> <span class="fl">1.64</span> <span class="op">*</span> <span class="va">std_err</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"Price (mean, log scale)"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"Price (mean, log scale)"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-encoding-mean-price" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="17-encoding-categorical-data_files/figure-html/fig-encoding-mean-price-1.png" class="img-fluid figure-img" alt="A chart with points and error bars for the mean home price for neighborhoods in the Ames training set. The most expensive neighborhoods are Northridge and Stone Brook, while the least expensive are Iowa DOT and Railroad and Meadow Village." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;17.1: Mean home price for neighborhoods in the Ames training set, which can be used as an effect encoding for this categorical variable</figcaption></figure>
+<figure class="figure"><p><img src="17-encoding-categorical-data_files/figure-html/fig-encoding-mean-price-1.png" class="img-fluid figure-img" alt="Un gráfico con puntos y barras de error para el precio medio de la vivienda en los barrios del conjunto de entrenamiento de Ames. Los vecindarios más caros son Northridge y Stone Brook, mientras que los menos costosos son Iowa DOT y Railroad y Meadow Village." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;17.1: Precio medio de la vivienda para vecindarios en el conjunto de entrenamiento de Ames, que puede usarse como codificación de efecto para esta variable categórica</figcaption></figure>
 </div>
 </div>
 </div>
-<p>This kind of effect encoding works well when your categorical variable has many levels. In tidymodels, the <span class="pkg">embed</span> package includes several recipe step functions for different kinds of effect encodings, such as <code><a href="https://embed.tidymodels.org/reference/step_lencode_glm.html">step_lencode_glm()</a></code>, <code><a href="https://embed.tidymodels.org/reference/step_lencode_mixed.html">step_lencode_mixed()</a></code>, and <code><a href="https://embed.tidymodels.org/reference/step_lencode_bayes.html">step_lencode_bayes()</a></code>. These steps use a generalized linear model to estimate the effect of each level in a categorical predictor on the outcome. When using a recipe step like <code><a href="https://embed.tidymodels.org/reference/step_lencode_glm.html">step_lencode_glm()</a></code>, specify the variable being encoded first and then the outcome using <code>vars()</code>:</p>
+<p>Este tipo de codificación de efectos funciona bien cuando su variable categórica tiene muchos niveles. En tidymodels, el paquete <span class="pkg">embed</span> incluye varias funciones de pasos de recetas para diferentes tipos de codificaciones de efectos, como <code><a href="https://embed.tidymodels.org/reference/step_lencode_glm.html">step_lencode_glm()</a></code>, <code><a href="https://embed.tidymodels.org/reference/step_lencode_mixed.html">step_lencode_mixed()</a></code> y <code><a href="https://embed.tidymodels.org/reference/step_lencode_bayes.html">step_lencode_bayes()</a></code>. Estos pasos utilizan un modelo lineal generalizado para estimar el efecto de cada nivel en un predictor categórico sobre el resultado. Cuando utilice un paso de receta como <code><a href="https://embed.tidymodels.org/reference/step_lencode_glm.html">step_lencode_glm()</a></code>, especifique primero la variable que se codifica y luego el resultado usando <code>vars()</code>:</p>
 <div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-4_aea588047f8075dbb064335a4788d18d">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://embed.tidymodels.org">embed</a></span><span class="op">)</span></span>
 <span></span>
@@ -559,9 +572,9 @@ div.csl-indent {
 <span><span class="co">## • Linear embedding for factors via GLM for: Neighborhood</span></span>
 <span><span class="co">## • Dummy variables from: all_nominal_predictors()</span></span>
 <span><span class="co">## • Interactions with: Gr_Liv_Area:starts_with("Bldg_Type_")</span></span>
-<span><span class="co">## • Natural splines on: Latitude, Longitude</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## • Natural splines on: Latitude, Longitude</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>As detailed in <a href="16-dimensionality-reduction.html#sec-recipe-functions"><span>Section&nbsp;16.4</span></a>, we can <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> our recipe to fit or estimate parameters for the preprocessing transformations using training data. We can then <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> this prepared recipe to see the results:</p>
+<p>Como se detalla en <a href="16-dimensionality-reduction.html#sec-recipe-functions"><span>Sección&nbsp;16.4</span></a>, podemos preparar, <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code>, nuestra receta para ajustar o estimar parámetros para las transformaciones de preprocesamiento utilizando datos de entrenamiento. Luego podemos <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> esta receta preparada para ver los resultados:</p>
 <div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-5_7b936810cddfe58ca47460c6bc9ced99">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">glm_estimates</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html">prep</a></span><span class="op">(</span><span class="va">ames_glm</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -577,25 +590,25 @@ div.csl-indent {
 <span><span class="co">## 4 Edwards             5.09 Neighborhood lencode_glm_ZsXdy</span></span>
 <span><span class="co">## 5 Somerset            5.35 Neighborhood lencode_glm_ZsXdy</span></span>
 <span><span class="co">## 6 Northridge_Heights  5.49 Neighborhood lencode_glm_ZsXdy</span></span>
-<span><span class="co">## # ℹ 23 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 23 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>When we use the newly encoded <code>Neighborhood</code> numeric variable created via this method, we substitute the original level (such as <code>"North_Ames"</code>) with the estimate for <code>Sale_Price</code> from the GLM.</p>
-<p>Effect encoding methods like this one can also seamlessly handle situations where a novel factor level is encountered in the data. This <code>value</code> is the predicted price from the GLM when we don’t have any specific neighborhood information:</p>
+<p>Cuando utilizamos la variable numérica <code>Neighborhood</code> recién codificada creada mediante este método, sustituimos el nivel original (como <code>"North_Ames"</code>) con la estimación de <code>Sale_Price</code> del GLM.</p>
+<p>Los métodos de codificación de efectos como este también pueden manejar sin problemas situaciones en las que se encuentra un nivel de factor novedoso en los datos. Este “valor” es el precio previsto por el GLM cuando no tenemos ninguna información específica del vecindario:</p>
 <div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-6_ee062f5fb76c858022a02bbb6fb7a821">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">glm_estimates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">level</span> <span class="op">==</span> <span class="st">"..new"</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 4</span></span>
 <span><span class="co">##   level value terms        id               </span></span>
 <span><span class="co">##   &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;            </span></span>
-<span><span class="co">## 1 ..new  5.23 Neighborhood lencode_glm_ZsXdy</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 ..new  5.23 Neighborhood lencode_glm_ZsXdy</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdwarn">
-<p>Effect encodings can be powerful but should be used with care. The effects should be computed from the training set, after data splitting. This type of supervised preprocessing should be rigorously resampled to avoid overfitting (see <a href="10-resampling.html">Chapter&nbsp;<span>10</span></a>).</p>
+<p>Las codificaciones de efectos pueden ser poderosas, pero deben usarse con cuidado. Los efectos deben calcularse a partir del conjunto de entrenamiento, después de dividir los datos. Este tipo de preprocesamiento supervisado debe remuestrearse rigurosamente para evitar el sobreajuste (consulte el <a href="10-resampling.html">Capítulo&nbsp;<span>10</span></a>).</p>
 </div>
-<p>When you create an effect encoding for your categorical variable, you are effectively layering a mini-model inside your actual model. The possibility of overfitting with effect encodings is a representative example for why feature engineering <em>must</em> be considered part of the model process, as described in Chapter @ref(workflows), and why feature engineering must be estimated together with model parameters inside resampling.</p>
-<section id="effect-encodings-with-partial-pooling" class="level3" data-number="17.3.1"><h3 data-number="17.3.1" class="anchored" data-anchor-id="effect-encodings-with-partial-pooling">
-<span class="header-section-number">17.3.1</span> Effect encodings with partial pooling</h3>
-<p>Creating an effect encoding with <code><a href="https://embed.tidymodels.org/reference/step_lencode_glm.html">step_lencode_glm()</a></code> estimates the effect separately for each factor level (in this example, neighborhood). However, some of these neighborhoods have many houses in them, and some have only a few. There is much more uncertainty in our measurement of price for the single training set home in the Landmark neighborhood than the 354 training set homes in North Ames. We can use <em>partial pooling</em> to adjust these estimates so that levels with small sample sizes are shrunken toward the overall mean. The effects for each level are modeled all at once using a mixed or hierarchical generalized linear model:</p>
+<p>Cuando crea una codificación de efecto para su variable categórica, efectivamente está superponiendo un minimodelo dentro de su modelo real. La posibilidad de sobreajustar con codificaciones de efectos es un ejemplo representativo de por qué la ingeniería de características <em>debe</em> considerarse parte del proceso del modelo, como se describe en el <a href="07-the-model-workflow.html"><span>Capítulo&nbsp;7</span></a>, y por qué la ingeniería de características debe estimarse junto con los parámetros del modelo dentro del remuestreo. .</p>
+<section id="codificaciones-de-efectos-con-agrupación-parcial" class="level3" data-number="17.3.1"><h3 data-number="17.3.1" class="anchored" data-anchor-id="codificaciones-de-efectos-con-agrupación-parcial">
+<span class="header-section-number">17.3.1</span> Codificaciones de efectos con agrupación parcial</h3>
+<p>La creación de una codificación de efecto con <code><a href="https://embed.tidymodels.org/reference/step_lencode_glm.html">step_lencode_glm()</a></code> estima el efecto por separado para cada nivel de factor (en este ejemplo, vecindad). Sin embargo, algunos de estos vecindarios tienen muchas casas y otros tienen solo unas pocas. Hay mucha más incertidumbre en nuestra medición del precio para el conjunto de entrenamiento único que se encuentra en el vecindario Landmark que en el 354 casas de entrenamiento en North Ames. Podemos utilizar <em>agrupación parcial</em> para ajustar estas estimaciones de modo que los niveles con tamaños de muestra pequeños se reduzcan hacia la media general. Los efectos para cada nivel se modelan todos a la vez utilizando un modelo lineal generalizado mixto o jerárquico:</p>
 <div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-7_bb879ed03c9d916dda3b33e5cefc3ef5">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_mixed</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/recipe.html">recipe</a></span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="va">Gr_Liv_Area</span> <span class="op">+</span> <span class="va">Year_Built</span> <span class="op">+</span> <span class="va">Bldg_Type</span> <span class="op">+</span> </span>
@@ -620,9 +633,9 @@ div.csl-indent {
 <span><span class="co">## • Linear embedding for factors via mixed effects for: Neighborhood</span></span>
 <span><span class="co">## • Dummy variables from: all_nominal_predictors()</span></span>
 <span><span class="co">## • Interactions with: Gr_Liv_Area:starts_with("Bldg_Type_")</span></span>
-<span><span class="co">## • Natural splines on: Latitude, Longitude</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## • Natural splines on: Latitude, Longitude</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Let’s <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> and <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> this recipe to see the results:</p>
+<p>Vamos a <code><a href="https://recipes.tidymodels.org/reference/prep.html">prep()</a></code> y <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> esta receta para ver los resultados:</p>
 <div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-8_28667e5f8b61c6779df2f2b5979ee58d">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mixed_estimates</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="https://recipes.tidymodels.org/reference/prep.html">prep</a></span><span class="op">(</span><span class="va">ames_mixed</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -638,22 +651,22 @@ div.csl-indent {
 <span><span class="co">## 4 Edwards             5.10 Neighborhood lencode_mixed_SC9hi</span></span>
 <span><span class="co">## 5 Somerset            5.35 Neighborhood lencode_mixed_SC9hi</span></span>
 <span><span class="co">## 6 Northridge_Heights  5.49 Neighborhood lencode_mixed_SC9hi</span></span>
-<span><span class="co">## # ℹ 23 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 23 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>New levels are then encoded at close to the same value as with the GLM:</p>
+<p>Luego, los nuevos niveles se codifican casi con el mismo valor que con el GLM:</p>
 <div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-9_56f051a16e4be7ef9558a795a293f0e6">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mixed_estimates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">level</span> <span class="op">==</span> <span class="st">"..new"</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 4</span></span>
 <span><span class="co">##   level value terms        id                 </span></span>
 <span><span class="co">##   &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;              </span></span>
-<span><span class="co">## 1 ..new  5.23 Neighborhood lencode_mixed_SC9hi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 ..new  5.23 Neighborhood lencode_mixed_SC9hi</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdnote">
-<p>You can use a fully Bayesian hierarchical model for the effects in the same way with <code><a href="https://embed.tidymodels.org/reference/step_lencode_bayes.html">step_lencode_bayes()</a></code>.</p>
+<p>Puedes usar un modelo jerárquico completamente bayesiano para los efectos de la misma manera con <code><a href="https://embed.tidymodels.org/reference/step_lencode_bayes.html">step_lencode_bayes()</a></code>.</p>
 </div>
-<p>Let’s visually compare the effects using partial pooling vs.&nbsp;no pooling in <a href="#fig-encoding-compare-pooling">Figure&nbsp;<span>17.2</span></a>:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/fig-encoding-compare-pooling_ea97cff2c1cf1b09f823352078b205c1">
+<p>Comparemos visualmente los efectos usando agrupación parcial versus sin agrupación en <a href="#fig-encoding-compare-pooling">Figura&nbsp;<span>17.2</span></a>:</p>
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/fig-encoding-compare-pooling_1d83d68b60e3823339ce89ab63223810">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">glm_estimates</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">rename</span><span class="op">(</span>`no pooling` <span class="op">=</span> <span class="va">value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">left_join</span><span class="op">(</span></span>
@@ -669,18 +682,18 @@ div.csl-indent {
 <span>  <span class="fu">geom_abline</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"gray50"</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_point</span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">coord_fixed</span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## Warning: Removed 1 rows containing missing values (`geom_point()`).</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Warning: Removed 1 rows containing missing values (`geom_point()`).</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-encoding-compare-pooling" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="17-encoding-categorical-data_files/figure-html/fig-encoding-compare-pooling-1.png" class="img-fluid figure-img" alt="A scatter chart comparing the effect encodings for neighborhood estimated without pooling to those with partial pooling. Almost all neighborhoods are very close to the slope = 1 line, but the neighborhoods with the fewest homes are further away." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;17.2: Comparing the effect encodings for neighborhood estimated without pooling to those with partial pooling</figcaption></figure>
+<figure class="figure"><p><img src="17-encoding-categorical-data_files/figure-html/fig-encoding-compare-pooling-1.png" class="img-fluid figure-img" alt="Un gráfico de dispersión que compara las codificaciones de efectos para el vecindario estimado sin agrupación con aquellas con agrupación parcial. Casi todos los barrios están muy cerca de la pendiente = línea 1, pero los barrios con menos viviendas están más alejados." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;17.2: Comparación de las codificaciones de efectos para el vecindario estimado sin agrupación con aquellas con agrupación parcial</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Notice in <a href="#fig-encoding-compare-pooling">Figure&nbsp;<span>17.2</span></a> that most estimates for neighborhood effects are about the same when we compare pooling to no pooling. However, the neighborhoods with the fewest homes in them have been pulled (either up or down) toward the mean effect. When we use pooling, we shrink the effect estimates toward the mean because we don’t have as much evidence about the price in those neighborhoods.</p>
-</section></section><section id="feature-hashing" class="level2" data-number="17.4"><h2 data-number="17.4" class="anchored" data-anchor-id="feature-hashing">
-<span class="header-section-number">17.4</span> Feature Hashing</h2>
-<p>Traditional dummy variables as described in <a href="08-feature-engineering.html#sec-dummies"><span>Section&nbsp;8.4.1</span></a> require that all of the possible categories be known to create a full set of numeric features. <em>Feature hashing</em> methods <span class="citation" data-cites="weinberger2009feature">(<a href="references.html#ref-weinberger2009feature" role="doc-biblioref">Weinberger et al. 2009</a>)</span> also create dummy variables, but only consider the value of the category to assign it to a predefined pool of dummy variables. Let’s look at the <code>Neighborhood</code> values in Ames again and use the <code><a href="https://rlang.r-lib.org/reference/hash.html">rlang::hash()</a></code> function to understand more:</p>
+<p>Observe en <a href="#fig-encoding-compare-pooling">Figura&nbsp;<span>17.2</span></a> que la mayoría de las estimaciones de los efectos de vecindad son aproximadamente las mismas cuando comparamos la agrupación con la no agrupación. Sin embargo, los barrios con menos viviendas se han visto arrastrados (ya sea hacia arriba o hacia abajo) hacia el efecto medio. Cuando utilizamos la agrupación, reducimos las estimaciones del efecto hacia la media porque no tenemos tanta evidencia sobre el precio en esos vecindarios.</p>
+</section></section><section id="hashing-de-características" class="level2" data-number="17.4"><h2 data-number="17.4" class="anchored" data-anchor-id="hashing-de-características">
+<span class="header-section-number">17.4</span> Hashing de características</h2>
+<p>Las variables ficticias tradicionales, como se describe en <a href="08-feature-engineering.html#sec-dummies"><span>Sección&nbsp;8.4.1</span></a>, requieren que se conozcan todas las categorías posibles para crear un conjunto completo de características numéricas. Los métodos de <em>hash de funciones</em> <span class="citation" data-cites="weinberger2009feature">(<a href="references.html#ref-weinberger2009feature" role="doc-biblioref">Weinberger et&nbsp;al. 2009</a>)</span> también crean variables ficticias, pero solo consideran el valor de la categoría para asignarla a un grupo predefinido de variables ficticias. Miremos nuevamente los valores de <code>Neighborhood</code> en Ames y usemos la función <code><a href="https://rlang.r-lib.org/reference/hash.html">rlang::hash()</a></code> para entender más:</p>
 <div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-11_31846aad72653a52e85a8740b90f37aa">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rlang.r-lib.org">rlang</a></span><span class="op">)</span></span>
 <span></span>
@@ -699,18 +712,18 @@ div.csl-indent {
 <span><span class="co">## 4 Briardale       b598bec306983e3e68a3118952df8cf0</span></span>
 <span><span class="co">## 5 Northpark_Villa 6af95b5db968bf393e78188a81e0e1e4</span></span>
 <span><span class="co">## 6 Northpark_Villa 6af95b5db968bf393e78188a81e0e1e4</span></span>
-<span><span class="co">## # ℹ 2,336 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 2,336 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>If we input Briardale to this hashing function, we will always get the same output. The neighborhoods in this case are called the “keys,” while the outputs are the “hashes.”</p>
+<p>Si ingresamos Briardale a esta función hash, siempre obtendremos el mismo resultado. En este caso, las vecindades se denominan “claves”, mientras que las salidas son “hashes”.</p>
 <div class="rmdnote">
-<p>A hashing function takes an input of variable size and maps it to an output of fixed size. Hashing functions are commonly used in cryptography and databases.</p>
+<p>Una función hash toma una entrada de tamaño variable y la asigna a una salida de tamaño fijo. Las funciones hash se utilizan comúnmente en criptografía y bases de datos.</p>
 </div>
-<p>The <code><a href="https://rlang.r-lib.org/reference/hash.html">rlang::hash()</a></code> function generates a 128-bit hash, which means there are <code>2^128</code> possible hash values. This is great for some applications but doesn’t help with feature hashing of <em>high cardinality</em> variables (variables with many levels). In feature hashing, the number of possible hashes is a hyperparameter and is set by the model developer through computing the modulo of the integer hashes. We can get sixteen possible hash values by using <code>Hash %% 16</code>:</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-12_8a6c33279c21d382b787075cf49af01e">
+<p>La función <code><a href="https://rlang.r-lib.org/reference/hash.html">rlang::hash()</a></code> genera un hash de 128 bits, lo que significa que hay <code>2^128</code> valores hash posibles. Esto es excelente para algunas aplicaciones, pero no ayuda con el hash de funciones de variables de <em>alta cardinalidad</em> (variables con muchos niveles). En el hash de características, el número de hashes posibles es un hiperparámetro y lo establece el desarrollador del modelo calculando el módulo de los hashes enteros. Podemos obtener dieciséis valores hash posibles usando <code>Hash %% 16</code>:</p>
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-12_590331a5158cd4ba02ef55fc0d68dbc4">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_hashed</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
-<span>  <span class="co">## first make a smaller hash for integers that R can handle</span></span>
+<span>  <span class="co">## primero haga un hash más pequeño para números enteros que R pueda manejar</span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span>Hash <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/strtoi.html">strtoi</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/substr.html">substr</a></span><span class="op">(</span><span class="va">Hash</span>, <span class="fl">26</span>, <span class="fl">32</span><span class="op">)</span>, base <span class="op">=</span> <span class="fl">16L</span><span class="op">)</span>,  </span>
-<span>         <span class="co">## now take the modulo</span></span>
+<span>         <span class="co">## ahora toma el módulo</span></span>
 <span>         Hash <span class="op">=</span> <span class="va">Hash</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html">%%</a></span> <span class="fl">16</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu">select</span><span class="op">(</span><span class="va">Neighborhood</span>, <span class="va">Hash</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 2,342 × 2</span></span>
@@ -722,13 +735,13 @@ div.csl-indent {
 <span><span class="co">## 4 Briardale           0</span></span>
 <span><span class="co">## 5 Northpark_Villa     4</span></span>
 <span><span class="co">## 6 Northpark_Villa     4</span></span>
-<span><span class="co">## # ℹ 2,336 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 2,336 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now instead of the 28 neighborhoods in our original data or an incredibly huge number of the original hashes, we have sixteen hash values. This method is very fast and memory efficient, and it can be a good strategy when there are a large number of possible categories.</p>
+<p>Ahora, en lugar de los vecindarios 28 en nuestros datos originales o una cantidad increíblemente grande de hashes originales, tenemos dieciséis valores hash. Este método es muy rápido y eficiente en cuanto a memoria, y puede ser una buena estrategia cuando hay una gran cantidad de categorías posibles.</p>
 <div class="rmdnote">
-<p>Feature hashing is useful for text data as well as high cardinality categorical data. See Section 6.7 of <span class="citation" data-cites="Hvitfeldt2021">Hvitfeldt and Silge (<a href="references.html#ref-Hvitfeldt2021" role="doc-biblioref">2021</a>)</span> for a case study demonstration with text predictors.</p>
+<p>El hash de características es útil para datos de texto, así como para datos categóricos de alta cardinalidad. Consulte la Sección 6.7 de <span class="citation" data-cites="Hvitfeldt2021">Hvitfeldt y Silge (<a href="references.html#ref-Hvitfeldt2021" role="doc-biblioref">2021</a>)</span> para ver una demostración de un estudio de caso con predictores de texto.</p>
 </div>
-<p>We can implement feature hashing using a tidymodels recipe step from the <span class="pkg">textrecipes</span> package:</p>
+<p>Podemos implementar hash de características usando un paso de receta tidymodels del paquete <span class="pkg">textrecipes</span>:</p>
 <div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/unnamed-chunk-13_d807782a18bd7c084fa31712b6244540">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/textrecipes">textrecipes</a></span><span class="op">)</span></span>
 <span><span class="va">ames_hash</span> <span class="op">&lt;-</span> </span>
@@ -754,20 +767,20 @@ div.csl-indent {
 <span><span class="co">## • Feature hashing with: Neighborhood</span></span>
 <span><span class="co">## • Dummy variables from: all_nominal_predictors()</span></span>
 <span><span class="co">## • Interactions with: Gr_Liv_Area:starts_with("Bldg_Type_")</span></span>
-<span><span class="co">## • Natural splines on: Latitude, Longitude</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## • Natural splines on: Latitude, Longitude</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Feature hashing is fast and efficient but has a few downsides. For example, different category values often map to the same hash value. This is called a <em>collision</em> or <em>aliasing</em>. How often did this happen with our neighborhoods in Ames? <a href="#tbl-encoding-hash">Table&nbsp;<span>17.3</span></a> presents the distribution of number of neighborhoods per hash value.</p>
-<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/tbl-encoding-hash_816599df24f33dafb9d6e1d090ba76ad">
+<p>El hash de funciones es rápido y eficiente, pero tiene algunas desventajas. Por ejemplo, diferentes valores de categorías a menudo se asignan al mismo valor hash. Esto se llama <em>colisión</em> o <em>aliasing</em>. ¿Con qué frecuencia sucedió esto en nuestros vecindarios de Ames? <a href="#tbl-encoding-hash">Tabla&nbsp;<span>17.3</span></a> presenta la distribución del número de vecindarios por valor hash.</p>
+<div class="cell" data-layout-align="center" data-hash="17-encoding-categorical-data_cache/html/tbl-encoding-hash_2defa9660436df23a1a94c016f529c4a">
 <pre><code>## 'as(&lt;dgTMatrix&gt;, "dgCMatrix")' is deprecated.
 ## Use 'as(., "CsparseMatrix")' instead.
 ## See help("Deprecated") and help("Matrix-deprecated").</code></pre>
 <div class="cell-output-display">
 <div id="tbl-encoding-hash" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Table&nbsp;17.3: The number of hash features at each number of neighborhoods.</caption>
+<caption>Tabla&nbsp;17.3: La cantidad de características hash en cada número de vecindarios.</caption>
 <thead><tr class="header">
-<th style="text-align: right;" data-quarto-table-cell-role="th">Number of neighborhoods within a hash feature</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Number of occurrences</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Número de vecindarios dentro de una característica hash</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Numero de incidentes</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
@@ -797,59 +810,126 @@ div.csl-indent {
 
 </div>
 </div>
-<p>The number of neighborhoods mapped to each hash value varies between zero and four. All of the hash values greater than one are examples of hash collisions.</p>
-<p>What are some things to consider when using feature hashing?</p>
+<p>El número de vecindades asignadas a cada valor hash varía entre zero y four. Todos los valores hash mayores que uno son ejemplos de colisiones hash.</p>
+<p>¿Cuáles son algunas cosas a considerar al utilizar hash de funciones?</p>
 <ul>
-<li><p>Feature hashing is not directly interpretable because hash functions cannot be reversed. We can’t determine what the input category levels were from the hash value, or if a collision occurred.</p></li>
-<li><p>The number of hash values is a <em>tuning parameter</em> of this preprocessing technique, and you should try several values to determine what is best for your particular modeling approach. A lower number of hash values results in more collisions, but a high number may not be an improvement over your original high cardinality variable.</p></li>
-<li><p>Feature hashing can handle new category levels at prediction time, since it does not rely on pre-determined dummy variables.</p></li>
-<li><p>You can reduce hash collisions with a <em>signed</em> hash by using <code>signed = TRUE</code>. This expands the values from only 1 to either +1 or -1, depending on the sign of the hash.</p></li>
+<li><p>El hash de características no se puede interpretar directamente porque las funciones hash no se pueden revertir. No podemos determinar cuáles eran los niveles de categoría de entrada a partir del valor hash o si ocurrió una colisión.</p></li>
+<li><p>El número de valores hash es un <em>parámetro de ajuste</em> de esta técnica de preprocesamiento, y debes probar varios valores para determinar cuál es mejor para tu enfoque de modelado particular. Una cantidad menor de valores hash da como resultado más colisiones, pero una cantidad alta puede no ser una mejora con respecto a la variable de cardinalidad alta original.</p></li>
+<li><p>El hash de características puede manejar nuevos niveles de categorías en el momento de la predicción, ya que no depende de variables ficticias predeterminadas.</p></li>
+<li><p>Puedes reducir las colisiones de hash con un hash <em>firmado</em> usando <code>signed = TRUE</code>. Esto expande los valores de solo 1 a +1 o -1, según el signo del hash.</p></li>
 </ul>
 <div class="rmdwarn">
-<p>It is likely that some hash columns will contain all zeros, as we see in this example. We recommend a zero-variance filter via <code><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv()</a></code> to filter out such columns.</p>
+<p>Es probable que algunas columnas hash contengan solo ceros, como vemos en este ejemplo. Recomendamos un filtro de variación cero a través de <code><a href="https://recipes.tidymodels.org/reference/step_zv.html">step_zv()</a></code> para filtrar dichas columnas.</p>
 </div>
-</section><section id="more-encoding-options" class="level2" data-number="17.5"><h2 data-number="17.5" class="anchored" data-anchor-id="more-encoding-options">
-<span class="header-section-number">17.5</span> More Encoding Options</h2>
-<p>Even more options are available for transforming factors to a numeric representation.</p>
-<p>We can build a full set of <em>entity embeddings</em> <span class="citation" data-cites="Guo2016">(<a href="references.html#ref-Guo2016" role="doc-biblioref">Guo and Berkhahn 2016</a>)</span> to transform a categorical variable with many levels to a set of lower-dimensional vectors. This approach is best suited to a nominal variable with many category levels, many more than the example we’ve used with neighborhoods in Ames.</p>
+</section><section id="más-opciones-de-codificación" class="level2" data-number="17.5"><h2 data-number="17.5" class="anchored" data-anchor-id="más-opciones-de-codificación">
+<span class="header-section-number">17.5</span> Más opciones de codificación</h2>
+<p>Hay aún más opciones disponibles para transformar factores a una representación numérica.</p>
+<p>Podemos construir un conjunto completo de <em>incrustaciones de entidades</em> <span class="citation" data-cites="Guo2016">(<a href="references.html#ref-Guo2016" role="doc-biblioref">Guo y Berkhahn 2016</a>)</span> para transformar una variable categórica con muchos niveles en un conjunto de vectores de dimensiones inferiores. Este enfoque se adapta mejor a una variable nominal con muchos niveles de categoría, muchos más que el ejemplo que hemos usado con los barrios de Ames.</p>
 <div class="rmdnote">
-<p>The idea of entity embeddings comes from the methods used to create word embeddings from text data. See Chapter 5 of <span class="citation" data-cites="Hvitfeldt2021">Hvitfeldt and Silge (<a href="references.html#ref-Hvitfeldt2021" role="doc-biblioref">2021</a>)</span> for more on word embeddings.</p>
+<p>La idea de incrustaciones de entidades proviene de los métodos utilizados para crear incrustaciones de palabras a partir de datos de texto. Consulte el Capítulo 5 de <span class="citation" data-cites="Hvitfeldt2021">Hvitfeldt y Silge (<a href="references.html#ref-Hvitfeldt2021" role="doc-biblioref">2021</a>)</span> para obtener más información sobre la incrustación de palabras.</p>
 </div>
-<p>Embeddings for a categorical variable can be learned via a TensorFlow neural network with the <code><a href="https://embed.tidymodels.org/reference/step_embed.html">step_embed()</a></code> function in <span class="pkg">embed</span>. We can use the outcome alone or optionally the outcome plus a set of additional predictors. Like in feature hashing, the number of new encoding columns to create is a hyperparameter of the feature engineering. We also must make decisions about the neural network structure (the number of hidden units) and how to fit the neural network (how many epochs to train, how much of the data to use for validation in measuring metrics).</p>
-<p>Yet one more option available for dealing with a binary outcome is to transform a set of category levels based on their association with the binary outcome. This <em>weight of evidence</em> (WoE) transformation <span class="citation" data-cites="Good1985">(<a href="references.html#ref-Good1985" role="doc-biblioref">Good 1985</a>)</span> uses the logarithm of the “Bayes factor” (the ratio of the posterior odds to the prior odds) and creates a dictionary mapping each category level to a WoE value. WoE encodings can be determined with the <code><a href="https://embed.tidymodels.org/reference/step_woe.html">step_woe()</a></code> function in <span class="pkg">embed</span>.</p>
+<p>Las incrustaciones de una variable categórica se pueden aprender a través de una red neuronal TensorFlow con la función <code><a href="https://embed.tidymodels.org/reference/step_embed.html">step_embed()</a></code> en <span class="pkg">embed</span>. Podemos usar el resultado solo o, opcionalmente, el resultado más un conjunto de predictores adicionales. Al igual que en el hashing de funciones, la cantidad de nuevas columnas de codificación que se crearán es un hiperparámetro de la ingeniería de funciones. También debemos tomar decisiones sobre la estructura de la red neuronal (la cantidad de unidades ocultas) y cómo ajustar la red neuronal (cuántas épocas entrenar, cuántos datos usar para la validación en la medición de métricas).</p>
+<p>Una opción más disponible para abordar un resultado binario es transformar un conjunto de niveles de categorías en función de su asociación con el resultado binario. Esta transformación de <em>peso de la evidencia</em> (WoE) <span class="citation" data-cites="Good1985">(<a href="references.html#ref-Good1985" role="doc-biblioref">Good 1985</a>)</span> utiliza el logaritmo del “factor Bayes” (la relación entre las probabilidades posteriores y las probabilidades anteriores) y crea un diccionario que asigna cada nivel de categoría a un valor WoE. Las codificaciones WoE se pueden determinar con la función <code><a href="https://embed.tidymodels.org/reference/step_woe.html">step_woe()</a></code> en <span class="pkg">embed</span>.</p>
 </section><section id="sec-categorical-summary" class="level2" data-number="17.6"><h2 data-number="17.6" class="anchored" data-anchor-id="sec-categorical-summary">
-<span class="header-section-number">17.6</span> Chapter Summary</h2>
-<p>In this chapter, you learned about using preprocessing recipes for encoding categorical predictors. The most straightforward option for transforming a categorical variable to a numeric representation is to create dummy variables from the levels, but this option does not work well when you have a variable with high cardinality (too many levels) or when you may see novel values at prediction time (new levels). One option in such a situation is to create <em>effect encodings</em>, a supervised encoding method that uses the outcome. Effect encodings can be learned with or without pooling the categories. Another option uses a <em>hashing</em> function to map category levels to a new, smaller set of dummy variables. Feature hashing is fast and has a low-memory footprint. Other options include entity embeddings (learned via a neural network) and weight of evidence transformation.</p>
-<p>Most model algorithms require some kind of transformation or encoding of this type for categorical variables. A minority of models, including those based on trees and rules, can handle categorical variables natively and do not require such encodings.</p>
+<span class="header-section-number">17.6</span> Resumen del capítulo</h2>
+<p>En este capítulo, aprendió a utilizar recetas de preprocesamiento para codificar predictores categóricos. La opción más sencilla para transformar una variable categórica en una representación numérica es crear variables ficticias a partir de los niveles, pero esta opción no funciona bien cuando tienes una variable con alta cardinalidad (demasiados niveles) o cuando puedes ver valores novedosos en tiempo de predicción (nuevos niveles). Una opción en tal situación es crear <em>codificaciones de efectos</em>, un método de codificación supervisado que utiliza el resultado. Las codificaciones de efectos se pueden aprender agrupando o sin las categorías. Otra opción utiliza una función <em>hashing</em> para asignar niveles de categoría a un conjunto nuevo y más pequeño de variables ficticias. El hash de funciones es rápido y ocupa poca memoria. Otras opciones incluyen incorporaciones de entidades (aprendidas a través de una red neuronal) y transformación del peso de la evidencia.</p>
+<p>La mayoría de los algoritmos modelo requieren algún tipo de transformación o codificación de este tipo para variables categóricas. Una minoría de modelos, incluidos los basados ​​en árboles y reglas, pueden manejar variables categóricas de forma nativa y no requieren dichas codificaciones.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-Good1985" class="csl-entry" role="listitem">
-Good, I. J. 1985. <span>“Weight of Evidence: A Brief Survey.”</span> <em>Bayesian Statistics</em> 2: 249–70.
+Good, I. J. 1985. <span>«Weight of evidence: A brief survey»</span>. <em>Bayesian Statistics</em> 2: 249-70.
 </div>
 <div id="ref-Guo2016" class="csl-entry" role="listitem">
-Guo, Cheng, and Felix Berkhahn. 2016. <span>“Entity Embeddings of Categorical Variables.”</span> <a href="http://arxiv.org/abs/1604.06737">http://arxiv.org/abs/1604.06737</a>.
+Guo, Cheng, y Felix Berkhahn. 2016. <span>«Entity Embeddings of Categorical Variables»</span>. <a href="http://arxiv.org/abs/1604.06737">http://arxiv.org/abs/1604.06737</a>.
 </div>
 <div id="ref-Hvitfeldt2021" class="csl-entry" role="listitem">
-Hvitfeldt, E., and J. Silge. 2021. <em>Supervised Machine Learning for Text Analysis in r</em>. A Chapman &amp; Hall Book. CRC Press. <a href="https://smltar.com/">https://smltar.com/</a>.
+Hvitfeldt, E., y J. Silge. 2021. <em>Supervised Machine Learning for Text Analysis in R</em>. A Chapman &amp; Hall libro. CRC Press. <a href="https://smltar.com/">https://smltar.com/</a>.
 </div>
 <div id="ref-fes" class="csl-entry" role="listitem">
-Kuhn, M, and K Johnson. 2020. <em>Feature Engineering and Selection: A Practical Approach for Predictive Models</em>. CRC Press.
+Kuhn, M, y K Johnson. 2020. <em>Feature engineering and selection: A practical approach for predictive models</em>. CRC Press.
 </div>
 <div id="ref-MicciBarreca2001" class="csl-entry" role="listitem">
-Micci-Barreca, Daniele. 2001. <span>“A Preprocessing Scheme for High-Cardinality Categorical Attributes in Classification and Prediction Problems.”</span> <em>SIGKDD Explor. Newsl.</em> 3 (1): 27–32. <a href="https://doi.org/10.1145/507533.507538">https://doi.org/10.1145/507533.507538</a>.
+Micci-Barreca, Daniele. 2001. <span>«A Preprocessing Scheme for High-Cardinality Categorical Attributes in Classification and Prediction Problems»</span>. <em>SIGKDD Explor. Newsl.</em> 3 (1): 27-32. <a href="https://doi.org/10.1145/507533.507538">https://doi.org/10.1145/507533.507538</a>.
 </div>
 <div id="ref-weinberger2009feature" class="csl-entry" role="listitem">
-Weinberger, K, A Dasgupta, J Langford, A Smola, and J Attenberg. 2009. <span>“Feature Hashing for Large Scale Multitask Learning.”</span> In <em>Proceedings of the 26th Annual International Conference on Machine Learning</em>, 1113–20. ACM.
+Weinberger, K, A Dasgupta, J Langford, A Smola, y J Attenberg. 2009. <span>«Feature hashing for large scale multitask learning»</span>. En <em>Proceedings of the 26th Annual International Conference on Machine Learning</em>, 1113-20. ACM.
 </div>
 <div id="ref-Zumel2019" class="csl-entry" role="listitem">
-Zumel, Nina, and John Mount. 2019. <span>“Vtreat: A Data.frame Processor for Predictive Modeling.”</span> <a href="http://arxiv.org/abs/1611.09477">http://arxiv.org/abs/1611.09477</a>.
+Zumel, Nina, y John Mount. 2019. <span>«vtreat: a data.frame Processor for Predictive Modeling»</span>. <a href="http://arxiv.org/abs/1611.09477">http://arxiv.org/abs/1611.09477</a>.
 </div>
 </div>
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
-<li id="fn1"><p>This is in contrast to statistical modeling in Python, where categorical variables are often directly represented by integers alone, such as <code>0, 1, 2</code> representing red, blue, and green.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<li id="fn1"><p>Esto contrasta con el modelado estadístico en Python, donde las variables categóricas a menudo se representan directamente solo con números enteros, como “0, 1, 2” que representa rojo, azul y verde.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -903,12 +983,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copiado");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copiado");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
@@ -1083,7 +1163,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./16-dimensionality-reduction.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción de Dimensionalidad</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
