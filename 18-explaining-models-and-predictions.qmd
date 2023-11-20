@@ -27,31 +27,32 @@ rf_fit <- rf_wflow %>% fit(data = ames_train)
 lm_fit <- lm_wflow %>% fit(data = ames_train)
 ```
 
-# Explaining Models and Predictions {#sec-explain}
+# Explicando Modelos y Predicciones {#sec-explain}
 
-In @sec-model-types, we outlined a taxonomy of models and suggested that models typically are built as one or more of descriptive, inferential, or predictive. We suggested that model performance, as measured by appropriate metrics (like RMSE for regression or area under the ROC curve for classification), can be important for all modeling applications. Similarly, model explanations, answering *why* a model makes the predictions it does, can be important whether the purpose of your model is largely descriptive, to test a hypothesis, or to make a prediction. Answering the question "why?" allows modeling practitioners to understand which features were important in predictions and even how model predictions would change under different values for the features. This chapter covers how to ask a model why it makes the predictions it does.
+En @sec-model-types, describimos una taxonomía de modelos y sugerimos que los modelos generalmente se construyen como uno o más descriptivos, inferenciales o predictivos. Sugerimos que el rendimiento del modelo, medido mediante métricas apropiadas (como RMSE para regresión o área bajo la curva ROC para clasificación), puede ser importante para todas las aplicaciones de modelado. De manera similar, las explicaciones del modelo, que responden *por qué* un modelo hace las predicciones que hace, pueden ser importantes ya sea que el propósito de su modelo sea en gran medida descriptivo, probar una hipótesis o hacer una predicción. Respondiendo a la pregunta "¿por qué?" permite a los profesionales del modelado comprender qué características fueron importantes en las predicciones e incluso cómo cambiarían las predicciones del modelo bajo diferentes valores de las características. Este capítulo cubre cómo preguntarle a un modelo por qué hace las predicciones que hace.
 
-For some models, like linear regression, it is usually clear how to explain why the model makes its predictions. The structure of a linear model contains coefficients for each predictor that are typically straightforward to interpret. For other models, like random forests that can capture nonlinear behavior by design, it is less transparent how to explain the model's predictions from only the structure of the model itself. Instead, we can apply model explainer algorithms to generate understanding of predictions.
+Para algunos modelos, como la regresión lineal, suele estar claro cómo explicar por qué el modelo hace sus predicciones. La estructura de un modelo lineal contiene coeficientes para cada predictor que normalmente son sencillos de interpretar. Para otros modelos, como los bosques aleatorios que pueden capturar el comportamiento no lineal por diseño, es menos transparente cómo explicar las predicciones del modelo únicamente a partir de la estructura del modelo mismo. En cambio, podemos aplicar algoritmos explicativos de modelos para generar comprensión de las predicciones.
 
 ::: rmdnote
-There are two types of model explanations, *global* and *local*. Global model explanations provide an overall understanding aggregated over a whole set of observations; local model explanations provide information about a prediction for a single observation.
+Hay dos tipos de explicaciones de modelos, *global* y *local*. Las explicaciones del modelo global proporcionan una comprensión general agregada de un conjunto completo de observaciones; Las explicaciones del modelo local proporcionan información sobre una predicción para una sola observación.
 :::
 
-## Software for Model Explanations
+## Software para explicaciones de modelos
 
-The tidymodels framework does not itself contain software for model explanations. Instead, models trained and evaluated with tidymodels can be explained with other, supplementary software in R packages such as [`r pkg(lime)`](https://lime.data-imaginist.com/), [`r pkg(vip)`](https://koalaverse.github.io/vip/), and [`r pkg(DALEX)`](https://dalex.drwhy.ai/). We often choose:
+El marco tidymodels no contiene software para explicaciones de modelos. En cambio, los modelos entrenados y evaluados con tidymodels se pueden explicar con otro software complementario en paquetes R como [`r pkg(lime)`](https://lime.data-imaginist.com/), [`r pkg( vip)`](https://koalaverse.github.io/vip/) y [`r pkg(DALEX)`](https://dalex.drwhy.ai/). A menudo elegimos:
 
--   `r pkg(vip)` functions when we want to use *model-based* methods that take advantage of model structure (and are often faster)
--   `r pkg(DALEX)` functions when we want to use *model-agnostic* methods that can be applied to any model
+-   Las funciones de `r pkg(vip)` cuando queremos usar métodos *basados en modelos* que aprovechan la estructura del modelo (y a menudo son más rápidos)
+-   Las funciones de `r pkg(DALEX)` cuando queremos usar métodos *independientes del modelo* que se pueden aplicar a cualquier modelo
 
-In Chapters [-@sec-resampling] and [-@sec-compare], we trained and compared several models to predict the price of homes in Ames, IA, including a linear model with interactions and a random forest model, with results shown in @fig-explain-obs-pred.
+En los capítulos [-@sec-resampling] y [-@sec-compare], entrenamos y comparamos varios modelos para predecir el precio de las viviendas en Ames, IA, incluido un modelo lineal con interacciones y un modelo forestal aleatorio, y los resultados se muestran en @fig-explain-obs-pred.
 
 ```{r}
 #| label: fig-explain-obs-pred
 #| echo: FALSE
 #| fig.height: 4
-#| fig.cap: "Comparing predicted prices for a linear model with interactions and a random forest model"
-#| fig.alt: "Comparing predicted prices for a linear model with interactions and a random forest model. The random forest results in more accurate predictions."
+#| fig.cap: "Comparación de precios previstos para un modelo lineal con interacciones y un modelo forestal aleatorio"
+#| fig.alt: "Comparación de precios previstos para un modelo lineal con interacciones y un modelo forestal aleatorio. El bosque aleatorio da como resultado predicciones más precisas."
+
 bind_rows(
   augment(lm_fit, ames_train) %>% mutate(model = "lm + interactions"),
   augment(rf_fit, ames_train) %>% mutate(model = "random forest")
@@ -60,10 +61,10 @@ bind_rows(
   geom_abline(color = "gray50", lty = 2) + 
   geom_point(alpha = 0.2, show.legend = FALSE) +
   facet_wrap(vars(model)) +
-  labs(x = "true price", y = "predicted price")
+  labs(x = "precio verdadero", y = "precio previsto")
 ```
 
-Let's build model-agnostic explainers for both of these models to find out why they make these predictions. We can use the `r pkg(DALEXtra)` add-on package for `r pkg(DALEX)`, which provides support for tidymodels. @Biecek2021 provide a thorough exploration of how to use `r pkg(DALEX)` for model explanations; this chapter only summarizes some important approaches, specific to tidymodels. To compute any kind of model explanation, global or local, using `r pkg(DALEX)`, we first prepare the appropriate data and then create an *explainer* for each model:
+Construyamos explicadores independientes del modelo para ambos modelos para descubrir por qué hacen estas predicciones. Podemos usar el paquete complementario `r pkg(DALEXtra)` para `r pkg(DALEX)`, que proporciona soporte para tidymodels. @Biecek2021 proporciona una exploración exhaustiva de cómo utilizar `r pkg(DALEX)` para explicaciones de modelos; Este capítulo sólo resume algunos enfoques importantes, específicos de tidymodels. Para calcular cualquier tipo de explicación de modelo, global o local, usando `r pkg(DALEX)`, primero preparamos los datos apropiados y luego creamos un *explicador* para cada modelo:
 
 ```{r explain-explainers, message=FALSE}
 library(DALEXtra)
@@ -94,35 +95,35 @@ explainer_rf <-
 ```
 
 ::: rmdwarning
-A linear model is typically straightforward to interpret and explain; you may not often find yourself using separate model explanation algorithms for a linear model. However, it can sometimes be difficult to understand or explain the predictions of even a linear model once it has splines and interaction terms!
+Un modelo lineal suele ser sencillo de interpretar y explicar; Es posible que no se encuentre frecuentemente utilizando algoritmos de explicación de modelos separados para un modelo lineal. Sin embargo, a veces puede resultar difícil comprender o explicar las predicciones incluso de un modelo lineal una vez que tiene splines y términos de interacción.
 :::
 
-Dealing with significant feature engineering transformations during model explainability highlights some options we have (or sometimes, ambiguity in such analyses). We can quantify global or local model explanations either in terms of:
+Tratar con importantes transformaciones de ingeniería de características durante la explicabilidad del modelo resalta algunas opciones que tenemos (o, a veces, la ambigüedad en dichos análisis). Podemos cuantificar las explicaciones del modelo global o local en términos de:
 
--   *original, basic predictors* as they existed without significant feature engineering transformations, or
--   *derived features*, such as those created via dimensionality reduction ([Chapter @sec-dimensionality]) or interactions and spline terms, as in this example.
+-   *predictores básicos originales* tal como existían sin transformaciones significativas de ingeniería de características, o
+-   *características derivadas*, como las creadas mediante reducción de dimensionalidad ([Capítulo @sec-dimensionality]) o interacciones y términos spline, como en este ejemplo.
 
-## Local Explanations
+## Explicaciones locales
 
-Local model explanations provide information about a prediction for a single observation. For example, let's consider an older duplex in the North Ames neighborhood (@sec-exploring-features-of-homes-in-ames):
+Las explicaciones de los modelos locales proporcionan información sobre una predicción para una sola observación. Por ejemplo, consideremos un dúplex antiguo en el vecindario de North Ames (@sec-exploring-features-of-homes-in-ames):
 
 ```{r explain-duplex}
 duplex <- vip_train[120,]
 duplex
 ```
 
-There are multiple possible approaches to understanding why a model predicts a given price for this duplex. One is a break-down explanation, implemented with the `r pkg(DALEX)` function `predict_parts()`; it computes how contributions attributed to individual features change the mean model's prediction for a particular observation, like our duplex. For the linear model, the duplex status (`Bldg_Type = 3`),[^18-explaining-models-and-predictions-1] size, longitude, and age all contribute the most to the price being driven down from the intercept:
+Existen múltiples enfoques posibles para comprender por qué un modelo predice un precio determinado para este dúplex. Una es una explicación detallada, implementada con la función `r pkg(DALEX)` `predict_parts()`; calcula cómo las contribuciones atribuidas a características individuales cambian la predicción del modelo medio para una observación particular, como nuestro dúplex. Para el modelo lineal, el estado dúplex (`Bldg_Type = 3`),[^18-explaining-models-and-predictions-1] el tamaño, la longitud y la antigüedad son los que más contribuyen a que el precio baje desde la intersección:
 
-[^18-explaining-models-and-predictions-1]: Notice that this package for model explanations focuses on the *level* of categorical predictors in this type of output, like `Bldg_Type = 3` for duplex and `Neighborhood = 1` for North Ames.
+[^18-explaining-models-and-predictions-1]: Tenga en cuenta que este paquete de explicaciones de modelos se centra en el *nivel* de predictores categóricos en este tipo de salida, como `Bldg_Type = 3` para dúplex y `Neighborhood = 1` para North Ames.
 
 ```{r explain-duplex-lm-breakdown}
 lm_breakdown <- predict_parts(explainer = explainer_lm, new_observation = duplex)
 lm_breakdown
 ```
 
-Since this linear model was trained using spline terms for latitude and longitude, the contribution to price for `Longitude` shown here combines the effects of all of its individual spline terms. The contribution is in terms of the original `Longitude` feature, not the derived spline features.
+Dado que este modelo lineal se entrenó utilizando términos spline para latitud y longitud, la contribución al precio de "Longitud", `Longitude` que se muestra aquí combina los efectos de todos sus términos spline individuales. La contribución se realiza en términos de la característica "Longitud" original, no de las características spline derivadas.
 
-The most important features are slightly different for the random forest model, with the size, age, and duplex status being most important:
+Las características más importantes son ligeramente diferentes para el modelo de bosque aleatorio, siendo el tamaño, la edad y el estado dúplex los más importantes:
 
 ```{r explain-duplex-rf-breakdown}
 rf_breakdown <- predict_parts(explainer = explainer_rf, new_observation = duplex)
@@ -130,10 +131,10 @@ rf_breakdown
 ```
 
 ::: rmdwarning
-Model break-down explanations like these depend on the *order* of the features.
+Las explicaciones de desglose del modelo como estas dependen del *orden* de las características.
 :::
 
-If we choose the `order` for the random forest model explanation to be the same as the default for the linear model (chosen via a heuristic), we can change the relative importance of the features:
+Si elegimos que el orden, `order`, para la explicación del modelo de bosque aleatorio sea el mismo que el predeterminado para el modelo lineal (elegido mediante una heurística), podemos cambiar la importancia relativa de las características:
 
 ```{r explain-duplex-rf-breakdown-reorder}
 predict_parts(
@@ -143,7 +144,7 @@ predict_parts(
 )
 ```
 
-We can use the fact that these break-down explanations change based on order to compute the most important features over all (or many) possible orderings. This is the idea behind Shapley Additive Explanations [@Lundberg2017], where the average contributions of features are computed under different combinations or "coalitions" of feature orderings. Let's compute SHAP attributions for our duplex, using `B = 20` random orderings:
+Podemos utilizar el hecho de que estas explicaciones desglosadas cambian según el orden para calcular las características más importantes en todos (o muchos) ordenamientos posibles. Esta es la idea detrás de Shapley Additive Explanations [@Lundberg2017], donde las contribuciones promedio de las características se calculan bajo diferentes combinaciones o "coaliciones" de ordenamiento de características. Calculemos las atribuciones SHAP para nuestro dúplex, usando ordenamientos aleatorios `B = 20`:
 
 ```{r explain-duplex-rf-shap-calc}
 set.seed(1801)
@@ -156,7 +157,7 @@ shap_duplex <-
   )
 ```
 
-We could use the default plot method from `r pkg(DALEX)` by calling `plot(shap_duplex)`, or we can access the underlying data and create a custom plot. The box plots in @fig-duplex-rf-shap display the distribution of contributions across all the orderings we tried, and the bars display the average attribution for each feature:
+Podríamos usar el método de trazado predeterminado de `r pkg(DALEX)` llamando a `plot(shap_duplex)`, o podemos acceder a los datos subyacentes y crear un gráfico personalizado. Los diagramas de caja en @fig-duplex-rf-shap muestran la distribución de las contribuciones en todos los ordenamientos que probamos, y las barras muestran la atribución promedio de cada característica:
 
 ```{r explain-duplex-rf-shap, eval=FALSE}
 library(forcats)
@@ -179,18 +180,18 @@ shap_duplex %>%
 #| label: fig-duplex-rf-shap
 #| ref.label: "explain-duplex-rf-shap"
 #| echo: FALSE
-#| fig.cap: "Shapley additive explanations from the random forest model for a duplex property"
-#| fig.alt: "Shapley additive explanations from the random forest model for a duplex property. Year built and gross living area have the largest contributions."
+#| fig.cap: "Explicaciones aditivas de Shapley del modelo de bosque aleatorio para una propiedad dúplex"
+#| fig.alt: "Explicaciones aditivas de Shapley a partir del modelo de bosque aleatorio para una propiedad dúplex. El año de construcción y la superficie habitable bruta tienen las mayores contribuciones."
 ```
 
-What about a different observation in our data set? Let's look at a larger, newer one-family home in the Gilbert neighborhood:
+¿Qué pasa con una observación diferente en nuestro conjunto de datos? Veamos una casa unifamiliar más grande y nueva en el vecindario de Gilbert:
 
 ```{r explain-gilbert}
 big_house <- vip_train[1269,]
 big_house
 ```
 
-We can compute SHAP average attributions for this house in the same way:
+Podemos calcular las atribuciones promedio SHAP para esta casa de la misma manera:
 
 ```{r explain-gilbert-shap-calc}
 set.seed(1802)
@@ -203,13 +204,13 @@ shap_house <-
   )
 ```
 
-The results are shown in @fig-gilbert-shap; unlike the duplex, the size and age of this house contribute to its price being higher.
+Los resultados se muestran en @fig-gilbert-shap; a diferencia del dúplex, el tamaño y antigüedad de esta vivienda contribuyen a que su precio sea más elevado.
 
 ```{r}
 #| label: fig-gilbert-shap
 #| echo: FALSE
-#| fig.cap: "Shapley additive explanations from the random forest model for a one-family home in Gilbert"
-#| fig.alt: "Shapley additive explanations from the random forest model for a one-family home in Gilbert. Gross living area and year built have the largest contributions but in the opposite direction as the previous explainer."
+#| fig.cap: "Explicaciones aditivas de Shapley a partir del modelo de bosque aleatorio para una vivienda unifamiliar en Gilbert"
+#| fig.alt: "Explicaciones aditivas de Shapley a partir del modelo de bosque aleatorio para una vivienda unifamiliar en Gilbert. La superficie habitable bruta y el año de construcción tienen las mayores contribuciones, pero en la dirección opuesta a la explicación anterior."
 
 shap_house %>%
   group_by(variable) %>%
@@ -226,17 +227,17 @@ shap_house %>%
   labs(y = NULL)
 ```
 
-## Global Explanations
+## Explicaciones globales
 
-Global model explanations, also called global feature importance or variable importance, help us understand which features are most important in driving the predictions of the linear and random forest models overall, aggregated over the whole training set. While the previous section addressed which variables or features are most important in predicting sale price for an individual home, global feature importance addresses the most important variables for a model in aggregate.
+Las explicaciones del modelo global, también llamadas importancia de característica global o importancia variable, nos ayudan a comprender qué características son más importantes para impulsar las predicciones de los modelos forestales lineales y aleatorios en general, agregados en todo el conjunto de entrenamiento. Si bien la sección anterior abordó qué variables o características son más importantes para predecir el precio de venta de una vivienda individual, la importancia de las características globales aborda las variables más importantes para un modelo en conjunto.
 
 ::: rmdnote
-One way to compute variable importance is to *permute* the features [@breiman2001random]. We can permute or shuffle the values of a feature, predict from the model, and then measure how much worse the model fits the data compared to before shuffling.
+Una forma de calcular la importancia de una variable es *permutar* las características [@breiman2001random]. Podemos permutar o mezclar los valores de una característica, predecir a partir del modelo y luego medir cuánto peor se ajusta el modelo a los datos en comparación con antes de la mezcla.
 :::
 
-If shuffling a column causes a large degradation in model performance, it is important; if shuffling a column's values doesn't make much difference to how the model performs, it must not be an important variable. This approach can be applied to any kind of model (it is *model agnostic*), and the results are straightforward to understand.
+Si barajar una columna provoca una gran degradación en el rendimiento del modelo, es importante; Si mezclar los valores de una columna no supone mucha diferencia en el rendimiento del modelo, no debe ser una variable importante. Este enfoque se puede aplicar a cualquier tipo de modelo (es *independiente del modelo*) y los resultados son fáciles de entender.
 
-Using `r pkg(DALEX)`, we compute this kind of variable importance via the `model_parts()` function.
+Usando `r pkg(DALEX)`, calculamos este tipo de importancia variable mediante la función `model_parts()`.
 
 ```{r explain-global-calcs}
 set.seed(1803)
@@ -245,14 +246,14 @@ set.seed(1804)
 vip_rf <- model_parts(explainer_rf, loss_function = loss_root_mean_square)
 ```
 
-Again, we could use the default plot method from `r pkg(DALEX)` by calling `plot(vip_lm, vip_rf)` but the underlying data is available for exploration, analysis, and plotting. Let's create a function for plotting:
+Nuevamente, podríamos usar el método de trazado predeterminado de `r pkg(DALEX)` llamando a `plot(vip_lm, vip_rf)` pero los datos subyacentes están disponibles para exploración, análisis y trazado. Creemos una función para trazar:
 
 ```{r explain-global-func}
 ggplot_imp <- function(...) {
   obj <- list(...)
   metric_name <- attr(obj[[1]], "loss_name")
   metric_lab <- paste(metric_name, 
-                      "after permutations\n(higher indicates more important)")
+                      "después de permutaciones\n(más alto indica más importante)")
   
   full_vip <- bind_rows(obj) %>%
     filter(variable != "_baseline_")
@@ -286,36 +287,37 @@ ggplot_imp <- function(...) {
 }
 ```
 
-Using `ggplot_imp(vip_lm, vip_rf)` produces @fig-global-rf.
+El uso de `ggplot_imp(vip_lm, vip_rf)` produce @fig-global-rf.
 
 ```{r}
 #| label: fig-global-rf
 #| echo: FALSE
 #| fig.width: 8
 #| fig.height: 4.5
-#| fig.cap: "Global explainer for the random forest and linear regression models"
-#| fig.alt: "Global explainer for the random forest and linear regression models. For both models, gross living area and year built have the largest contributions, but the linear model uses the neighborhood predictor to a large degree."
+#| fig.cap: "Explicador global para los modelos de regresión lineal y de bosque aleatorio"
+#| fig.alt: "Explicador global para los modelos de bosque aleatorio y de regresión lineal. Para ambos modelos, la superficie habitable bruta y el año de construcción tienen las mayores contribuciones, pero el modelo lineal utiliza el predictor de vecindario en gran medida."
+
 ggplot_imp(vip_lm, vip_rf)
 ```
 
-The dashed line in each panel of @fig-global-rf shows the RMSE for the full model, either the linear model or the random forest model. Features farther to the right are more important, because permuting them results in higher RMSE. There is quite a lot of interesting information to learn from this plot; for example, neighborhood is quite important in the linear model with interactions/splines but the second least important feature for the random forest model.
+La línea discontinua en cada panel de @fig-global-rf muestra el RMSE para el modelo completo, ya sea el modelo lineal o el modelo de bosque aleatorio. Las características más a la derecha son más importantes porque permutarlas da como resultado un RMSE más alto. Hay bastante información interesante que aprender de esta trama; por ejemplo, la vecindad es bastante importante en el modelo lineal con interacciones/splines, pero es la segunda característica menos importante para el modelo de bosque aleatorio.
 
-## Building Global Explanations from Local Explanations
+## Construyendo explicaciones globales a partir de explicaciones locales
 
-So far in this chapter, we have focused on local model explanations for a single observation (via Shapley additive explanations) and global model explanations for a data set as a whole (via permuting features). It is also possible to build global model explanations by aggregating local model explanations, as with *partial dependence profiles*.
+Hasta ahora en este capítulo, nos hemos centrado en explicaciones de modelos locales para una sola observación (a través de explicaciones aditivas de Shapley) y explicaciones de modelos globales para un conjunto de datos en su conjunto (a través de características de permutación). También es posible construir explicaciones de modelos globales agregando explicaciones de modelos locales, como con los *perfiles de dependencia parcial*.
 
 ::: rmdnote
-Partial dependence profiles show how the expected value of a model prediction, like the predicted price of a home in Ames, changes as a function of a feature, like the age or gross living area.
+Los perfiles de dependencia parcial muestran cómo el valor esperado de la predicción de un modelo, como el precio previsto de una casa en Ames, cambia en función de una característica, como la edad o la superficie habitable bruta.
 :::
 
-One way to build such a profile is by aggregating or averaging profiles for individual observations. A profile showing how an individual observation's prediction changes as a function of a given feature is called an ICE (individual conditional expectation) profile or a CP (*ceteris paribus*) profile. We can compute such individual profiles (for 500 of the observations in our training set) and then aggregate them using the `r pkg(DALEX)` function `model_profile()`:
+Una forma de crear dicho perfil es agregando o promediando perfiles para observaciones individuales. Un perfil que muestra cómo cambia la predicción de una observación individual en función de una característica determinada se denomina perfil ICE (expectativa condicional individual) o perfil CP (*ceteris paribus*). Podemos calcular dichos perfiles individuales (para 500 de las observaciones en nuestro conjunto de entrenamiento) y luego agregarlos usando la función `r pkg(DALEX)` `model_profile()`:
 
 ```{r explain-year-built-pdp-calc}
 set.seed(1805)
 pdp_age <- model_profile(explainer_rf, N = 500, variables = "Year_Built")
 ```
 
-Let's create another function for plotting the underlying data in this object:
+Creemos otra función para trazar los datos subyacentes en este objeto:
 
 ```{r explain-pdp-func}
 ggplot_pdp <- function(obj, x) {
@@ -340,7 +342,7 @@ ggplot_pdp <- function(obj, x) {
 }
 ```
 
-Using this function generates @fig-year-built, where we can see the nonlinear behavior of the random forest model.
+El uso de esta función genera @fig-year-built, donde podemos ver el comportamiento no lineal del modelo de bosque aleatorio.
 
 ```{r explain-year-built, eval = FALSE}
 ggplot_pdp(pdp_age, Year_Built)  +
@@ -353,11 +355,11 @@ ggplot_pdp(pdp_age, Year_Built)  +
 #| label: fig-year-built
 #| ref.label: "explain-year-built"
 #| echo: FALSE
-#| fig.cap: "Partial dependence profiles for the random forest model focusing on the year built predictor"
-#| fig.alt: "Partial dependence profiles for the random forest model focusing on the year built predictor. The profiles are mostly relatively constant but then increase linearly around 1950."
+#| fig.cap: "Perfiles de dependencia parcial para el modelo de bosque aleatorio centrados en el predictor del año de construcción"
+#| fig.alt: "Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en el predictor del año de construcción. Los perfiles son en su mayoría relativamente constantes, pero luego aumentan linealmente alrededor de 1950."
 ```
 
-Sale price for houses built in different years is mostly flat, with a modest rise after about 1960. Partial dependence profiles can be computed for any other feature in the model, and also for groups in the data, such as `Bldg_Type`. Let's use 1,000 observations for these profiles.
+El precio de venta de las casas construidas en diferentes años es en su mayor parte estable, con un modesto aumento después de 1960 aproximadamente. Se pueden calcular perfiles de dependencia parcial para cualquier otra característica del modelo, y también para grupos en los datos, como `Bldg_Type`. Utilicemos 1000 observaciones para estos perfiles.
 
 ```{r explain-build-type-pdp, eval = FALSE}
 set.seed(1806)
@@ -368,22 +370,22 @@ pdp_liv <- model_profile(explainer_rf, N = 1000,
 ggplot_pdp(pdp_liv, Gr_Liv_Area) +
   scale_x_log10() +
   scale_color_brewer(palette = "Dark2") +
-  labs(x = "Gross living area", 
-       y = "Sale Price (log)", 
+  labs(x = "Superficie habitable bruta", 
+       y = "Precio de venta (registro)", 
        color = NULL)
 ```
 
-This code produces @fig-building-type-profiles, where we see that sale price increases the most between about 1,000 and 3,000 square feet of living area, and that different home types (like single family homes or different types of townhouses) mostly exhibit similar increasing trends in price with more living space.
+Este código produce @fig-building-type-profiles, donde vemos que el precio de venta aumenta más entre aproximadamente 1,000 y 3,000 pies cuadrados de área habitable, y que los diferentes tipos de viviendas (como casas unifamiliares o diferentes tipos de casas adosadas) exhiben en su mayoría tendencias crecientes similares en el precio con más espacio habitable.
 
 ```{r}
 #| label: fig-building-type-profiles
 #| ref.label: "explain-build-type-pdp"
 #| echo: FALSE
-#| fig.cap: "Partial dependence profiles for the random forest model focusing on building types and gross living area"
-#| fig.alt: "Partial dependence profiles for the random forest model focusing on building types and gross living area. The building type profiles are, for the most part, parallel over gross living area."
+#| fig.cap: "Perfiles de dependencia parcial para el modelo de bosque aleatorio centrado en los tipos de construcción y la superficie habitable bruta"
+#| fig.alt: "Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en los tipos de construcción y la superficie habitable bruta. Los perfiles tipo edificio son, en su mayor parte, paralelos sobre la superficie habitable bruta."
 ```
 
-We have the option of using `plot(pdp_liv)` for default `r pkg(DALEX)` plots, but since we are making plots with the underlying data here, we can even facet by one of the features to visualize if the predictions change differently and highlighting the imbalance in these subgroups (as shown in @fig-building-type-facets).
+Tenemos la opción de usar `plot(pdp_liv)` para los gráficos predeterminados `r pkg(DALEX)`, pero dado que aquí estamos haciendo gráficos con los datos subyacentes, incluso podemos facetar una de las características para visualizar si las predicciones cambian. de manera diferente y resaltando el desequilibrio en estos subgrupos (como se muestra en @fig-building-type-facets).
 
 ```{r explain-build-type-facet, eval = FALSE}
 as_tibble(pdp_liv$agr_profiles) %>%
@@ -396,8 +398,8 @@ as_tibble(pdp_liv$agr_profiles) %>%
   scale_x_log10() +
   facet_wrap(~Bldg_Type) +
   scale_color_brewer(palette = "Dark2") +
-  labs(x = "Gross living area", 
-       y = "Sale Price (log)", 
+  labs(x = "Superficie habitable bruta", 
+       y = "Precio de venta (registro)", 
        color = NULL)
 ```
 
@@ -405,15 +407,15 @@ as_tibble(pdp_liv$agr_profiles) %>%
 #| label: fig-building-type-facets
 #| ref.label: "explain-build-type-facet"
 #| echo: FALSE
-#| fig.cap: "Partial dependence profiles for the random forest model focusing on building types and gross living area using facets"
-#| fig.alt: "Partial dependence profiles for the random forest model focusing on building types and gross living area using facets. The building type profiles are, for the most part, parallel over gross living area."
+#| fig.cap: "Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en los tipos de construcción y la superficie habitable bruta mediante facetas"
+#| fig.alt: "Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en los tipos de construcción y la superficie habitable bruta mediante facetas. Los perfiles tipo edificio son, en su mayor parte, paralelos sobre la superficie habitable bruta."
 ```
 
-There is no one correct approach for building model explanations, and the options outlined in this chapter are not exhaustive. We have highlighted good options for explanations at both the individual and global level, as well as how to bridge from one to the other, and we point you to @Biecek2021 and @Molnar2021 for further reading.
+No existe un único enfoque correcto para crear explicaciones de modelos y las opciones descritas en este capítulo no son exhaustivas. Hemos destacado buenas opciones para explicaciones tanto a nivel individual como global, así como también cómo tender un puente entre uno y otro, y le remitimos a @Biecek2021 y @Molnar2021 para obtener más información.
 
-## Back to Beans!
+## ¡De vuelta a los frijoles!
 
-In [Chapter @sec-dimensionality], we discussed how to use dimensionality reduction as a feature engineering or preprocessing step when modeling high-dimensional data. For our example data set of dry bean morphology measures predicting bean type, we saw great results from partial least squares (PLS) dimensionality reduction combined with a regularized discriminant analysis model. Which of those morphological characteristics were *most* important in the bean type predictions? We can use the same approach outlined throughout this chapter to create a model-agnostic explainer and compute, say, global model explanations via `model_parts()`:
+En el [Capítulo @sec-dimensionality], analizamos cómo utilizar la reducción de dimensionalidad como un paso de preprocesamiento o ingeniería de características al modelar datos de alta dimensión. Para nuestro conjunto de datos de ejemplo de medidas de morfología de frijoles secos que predicen el tipo de frijol, vimos excelentes resultados de la reducción de la dimensionalidad de mínimos cuadrados parciales (PLS) combinada con un modelo de análisis discriminante regularizado. ¿Cuáles de esas características morfológicas fueron *más* importantes en las predicciones del tipo de frijol? Podemos usar el mismo enfoque descrito a lo largo de este capítulo para crear un explicador independiente del modelo y calcular, por ejemplo, explicaciones del modelo global a través de `model_parts()`:
 
 ```{r explain-bean-data, echo=FALSE}
 library(beans)
@@ -438,30 +440,30 @@ vip_beans <-
   model_parts() 
 ```
 
-Using our previously defined importance plotting function, `ggplot_imp(vip_beans)` produces @fig-bean-explainer.
+Usando nuestra función de trazado de importancia previamente definida, `ggplot_imp(vip_beans)` produce @fig-bean-explainer.
 
 ```{r}
 #| label: fig-bean-explainer
 #| echo: FALSE
 #| fig.width: 8
-#| fig.cap: "Global explainer for the regularized discriminant analysis model on the beans data"
-#| fig.alt: "Global explainer for the regularized discriminant analysis model on the beans data. Almost all predictors have a significant contribution with shape factors one and four contributing the most. "
+#| fig.cap: "Explicador global del modelo de análisis discriminante regularizado de los datos de frijoles"
+#| fig.alt: "Explicador global del modelo de análisis discriminante regularizado de los datos de frijoles. Casi todos los predictores tienen una contribución significativa, siendo los factores de forma uno y cuatro los que más contribuyen. "
 
 ggplot_imp(vip_beans)
 ```
 
 ::: rmdwarning
-The measures of global feature importance that we see in @fig-bean-explainer incorporate the effects of all of the PLS components, but in terms of the original variables.
+Las medidas de importancia de características globales que vemos en @fig-bean-explainer incorporan los efectos de todos los componentes de PLS, pero en términos de las variables originales.
 :::
 
-@fig-bean-explainer shows us that shape factors are among the most important features for predicting bean type, especially shape factor 4, a measure of solidity that takes into account the area $A$, major axis $L$, and minor axis $l$:
+@fig-bean-explainer nos muestra que los factores de forma se encuentran entre las características más importantes para predecir el tipo de frijol, especialmente el factor de forma 4, una medida de solidez que toma en cuenta el área $A$, el eje mayor $L$ y el eje menor $l$:
 
 $$\text{SF4} = \frac{A}{\pi(L/2)(l/2)}$$
 
-We can see from @fig-bean-explainer that shape factor 1 (the ratio of the major axis to the area), the minor axis length, and roundness are the next most important bean characteristics for predicting bean variety.
+Podemos ver en @fig-bean-explainer que el factor de forma 1 (la relación entre el eje mayor y el área), la longitud del eje menor y la redondez son las siguientes características más importantes del frijol para predecir la variedad de frijol.
 
-## Chapter Summary {#sec-explain-summary}
+## Resumen del Capítulo {#sec-explain-summary}
 
-For some types of models, the answer to why a model made a certain prediction is straightforward, but for other types of models, we must use separate explainer algorithms to understand what features are relatively most important for predictions. You can generate two main kinds of model explanations from a trained model. Global explanations provide information aggregated over an entire data set, while local explanations provide understanding about a model's predictions for a single observation.
+Para algunos tipos de modelos, la respuesta a por qué un modelo hizo una determinada predicción es sencilla, pero para otros tipos de modelos, debemos usar algoritmos explicativos separados para comprender qué características son relativamente más importantes para las predicciones. Puede generar dos tipos principales de explicaciones de modelo a partir de un modelo entrenado. Las explicaciones globales brindan información agregada sobre un conjunto de datos completo, mientras que las explicaciones locales brindan comprensión sobre las predicciones de un modelo para una sola observación.
 
-Packages such as `r pkg(DALEX)` and its supporting package `r pkg(DALEXtra)`, `r pkg(vip)`, and `r pkg(lime)` can be integrated into a tidymodels analysis to provide these model explainers. Model explanations are just one piece of understanding whether your model is appropriate and effective, along with estimates of model performance; Chapter \@ref(trust) further explores the quality and trustworthiness of predictions.
+Paquetes como `r pkg(DALEX)` y su paquete de soporte `r pkg(DALEXtra)`, `r pkg(vip)` y `r pkg(lime)` se pueden integrar en un análisis de tidymodels para proporcionar explicaciones de estos modelos. . Las explicaciones del modelo son sólo una parte de la comprensión de si su modelo es apropiado y eficaz, junto con las estimaciones del rendimiento del modelo; El @sec-trust explora más a fondo la calidad y confiabilidad de las predicciones.
