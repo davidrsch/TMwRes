@@ -348,7 +348,7 @@ Esto produce @fig-pca-loadings.
 
 Las cargas superiores están relacionadas principalmente con el grupo de predictores correlacionados que se muestran en la parte superior izquierda del gráfico de correlación anterior: perímetro, área, longitud del eje principal y área convexa. Todos estos están relacionados con el tamaño del frijol. El factor de forma 2, de @symons1988211, es el área sobre el cubo de la longitud del eje mayor y, por lo tanto, también está relacionado con el tamaño del frijol. Las medidas de alargamiento parecen dominar el segundo componente de PCA.
 
-### Mínimos cuadrados parciales
+### Mínimos cuadrados parciales {#sec-partial-least-squares}
 
 PLS, que presentamos en @sec-submodel-trick, es una versión supervisada de PCA. Intenta encontrar componentes que maximicen simultáneamente la variación en los predictores y al mismo tiempo maximicen la relación entre esos componentes y el resultado. @fig-bean-pls muestra los resultados de esta versión ligeramente modificada del código PCA:
 
