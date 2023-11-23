@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 21&nbsp; Inferential Analysis</title>
+<title>Modelado Ordenado con R - 21&nbsp; Análisis inferencial</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -74,7 +74,6 @@ div.csl-indent {
 }</style>
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
 <script src="site_libs/quarto-search/fuse.min.js"></script>
@@ -99,16 +98,16 @@ div.csl-indent {
   "type": "textbox",
   "limit": 20,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
   }
 }</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
@@ -118,11 +117,11 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">BEYOND THE BASICS</a></li><li class="breadcrumb-item"><a href="./21-inferential-analysis.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inferential Analysis</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">MAS ALLÁ DE LO BÁSICO</a></li><li class="breadcrumb-item"><a href="./21-inferential-analysis.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis inferencial</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
@@ -134,8 +133,22 @@ div.csl-indent {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
-    <a href="https://github.com/davidrsch/TMwRes" rel="" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
-  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+<li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+</div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
   </div>
@@ -145,7 +158,7 @@ div.csl-indent {
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
+        <div id="quarto-search" class="" title="Buscar"></div>
         </div>
         </div>
     <div class="sidebar-menu-container"> 
@@ -153,14 +166,14 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Hello World</span></a>
+ <span class="menu-text">Hola Mundo</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">INTRODUCTION</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -168,19 +181,19 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software for modeling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software para modelar</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">A Tidyverse Primer</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una introducción tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">A Review of R Modeling Fundamentals</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span></a>
   </div>
 </li>
       </ul>
@@ -188,8 +201,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">MODELING BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -197,37 +210,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Ames Housing Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Spending our Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Fitting Models with parsnip</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A Model Workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo de Modelado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Feature Engineering with recipes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería de Características con recipes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Judging Model Effectiveness</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar la Eficacia del Modelo</span></span></a>
   </div>
 </li>
       </ul>
@@ -235,8 +248,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">TOOLS FOR CREATING EFFECTIVE MODELS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -244,37 +257,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Resampling for Evaluating Performance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear para Evaluar el Rendimiento</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparing Models with Resampling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación de Modelos con Remuestreo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Model Tuning and the Dangers of Overfitting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste de Modelos y los Peligros del Sobreajuste</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Grid Search</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda de cuadrícula</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Iterative Search</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda iterativa</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Screening Many Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando muchos modelos</span></span></a>
   </div>
 </li>
       </ul>
@@ -282,8 +295,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">BEYOND THE BASICS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -291,37 +304,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción de Dimensionalidad</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Encoding Categorical Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación de datos categóricos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explaining Models and Predictions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos y Predicciones</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">When Should You Trust Your Predictions?</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo debería confiar en sus predicciones?</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Ensembles of Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos de modelos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inferential Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis inferencial</span></span></a>
   </div>
 </li>
       </ul>
@@ -329,8 +342,8 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
- <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -354,20 +367,20 @@ div.csl-indent {
 </nav><div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-<li><a href="#inference-for-count-data" id="toc-inference-for-count-data" class="nav-link active" data-scroll-target="#inference-for-count-data"><span class="header-section-number">21.1</span> Inference for Count Data</a></li>
-  <li><a href="#comparisons-with-two-sample-tests" id="toc-comparisons-with-two-sample-tests" class="nav-link" data-scroll-target="#comparisons-with-two-sample-tests"><span class="header-section-number">21.2</span> Comparisons with Two-Sample Tests</a></li>
-  <li><a href="#log-linear-models" id="toc-log-linear-models" class="nav-link" data-scroll-target="#log-linear-models"><span class="header-section-number">21.3</span> Log-Linear Models</a></li>
-  <li><a href="#a-more-complex-model" id="toc-a-more-complex-model" class="nav-link" data-scroll-target="#a-more-complex-model"><span class="header-section-number">21.4</span> A More Complex Model</a></li>
-  <li><a href="#sec-inference-options" id="toc-sec-inference-options" class="nav-link" data-scroll-target="#sec-inference-options"><span class="header-section-number">21.5</span> More Inferential Analysis</a></li>
-  <li><a href="#sec-inference-summary" id="toc-sec-inference-summary" class="nav-link" data-scroll-target="#sec-inference-summary"><span class="header-section-number">21.6</span> Chapter Summary</a></li>
-  </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/davidrsch/TMwRes/edit/main/21-inferential-analysis.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/davidrsch/TMwRes/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<li><a href="#inferencia-para-datos-de-recuento" id="toc-inferencia-para-datos-de-recuento" class="nav-link active" data-scroll-target="#inferencia-para-datos-de-recuento"><span class="header-section-number">21.1</span> Inferencia para datos de recuento</a></li>
+  <li><a href="#comparaciones-con-pruebas-de-dos-muestras" id="toc-comparaciones-con-pruebas-de-dos-muestras" class="nav-link" data-scroll-target="#comparaciones-con-pruebas-de-dos-muestras"><span class="header-section-number">21.2</span> Comparaciones con pruebas de dos muestras</a></li>
+  <li><a href="#modelos-log-lineales" id="toc-modelos-log-lineales" class="nav-link" data-scroll-target="#modelos-log-lineales"><span class="header-section-number">21.3</span> Modelos log-lineales</a></li>
+  <li><a href="#un-modelo-m%C3%A1s-complejo" id="toc-un-modelo-más-complejo" class="nav-link" data-scroll-target="#un-modelo-m%C3%A1s-complejo"><span class="header-section-number">21.4</span> Un modelo más complejo</a></li>
+  <li><a href="#sec-inference-options" id="toc-sec-inference-options" class="nav-link" data-scroll-target="#sec-inference-options"><span class="header-section-number">21.5</span> Más análisis inferencial</a></li>
+  <li><a href="#sec-inference-summary" id="toc-sec-inference-summary" class="nav-link" data-scroll-target="#sec-inference-summary"><span class="header-section-number">21.6</span> Resumen del capítulo</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-inferential" class="quarto-section-identifier"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inferential Analysis</span></span></h1>
+<h1 class="title"><span id="sec-inferential" class="quarto-section-identifier"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis inferencial</span></span></h1>
 </div>
 
 
@@ -381,23 +394,23 @@ div.csl-indent {
   
 
 </header><div class="rmdnote">
-<p>In <a href="01-software-modeling.html#sec-model-types"><span>Section&nbsp;1.2</span></a>, we outlined a taxonomy of models and said that most models can be categorized as descriptive, inferential, and/or predictive.</p>
+<p>En <a href="01-software-modeling.html#sec-model-types"><span>Sección&nbsp;1.2</span></a>, describimos una taxonomía de modelos y dijimos que la mayoría de los modelos pueden clasificarse como descriptivos, inferenciales y/o predictivos.</p>
 </div>
-<p>Most of the chapters in this book have focused on models from the perspective of the accuracy of predicted values, an important quality of models for all purposes but most relevant for predictive models. Inferential models are usually created not only for their predictions, but also to make inferences or judgments about some component of the model, such as a coefficient value or other parameter. These results are often used to answer some (hopefully) pre-defined questions or hypotheses. In predictive models, predictions on hold-out data are used to validate or characterize the quality of the model. Inferential methods focus on validating the probabilistic or structural assumptions that are made prior to fitting the model.</p>
-<p>For example, in ordinary linear regression, the common assumption is that the residual values are independent and follow a Gaussian distribution with a constant variance. While you may have scientific or domain knowledge to lend credence to this assumption for your model analysis, the residuals from the fitted model are usually examined to determine if the assumption was a good idea. As a result, the methods for determining if the model’s assumptions have been met are not as simple as looking at holdout predictions, although that can be very useful as well.</p>
-<p>We will use p-values in this chapter. However, the tidymodels framework tends to promote confidence intervals over p-values as a method for quantifying the evidence for an alternative hypothesis. As previously shown in <a href="11-comparing-models.html#sec-tidyposterior"><span>Section&nbsp;11.4</span></a>, Bayesian methods are often superior to both p-values and confidence intervals in terms of ease of interpretation (but they can be more computationally expensive).</p>
+<p>La mayoría de los capítulos de este libro se han centrado en los modelos desde la perspectiva de la precisión de los valores predichos, una cualidad importante de los modelos para todos los propósitos, pero más relevante para los modelos predictivos. Los modelos inferenciales generalmente se crean no solo para sus predicciones, sino también para hacer inferencias o juicios sobre algún componente del modelo, como un valor de coeficiente u otro parámetro. Estos resultados se utilizan a menudo para responder algunas (con suerte) preguntas o hipótesis predefinidas. En los modelos predictivos, las predicciones sobre datos reservados se utilizan para validar o caracterizar la calidad del modelo. Los métodos inferenciales se centran en validar los supuestos probabilísticos o estructurales que se hacen antes de ajustar el modelo.</p>
+<p>Por ejemplo, en la regresión lineal ordinaria, la suposición común es que los valores residuales son independientes y siguen una distribución gaussiana con una varianza constante. Si bien es posible que tenga conocimientos científicos o de dominio para dar credibilidad a este supuesto para el análisis de su modelo, los residuos del modelo ajustado generalmente se examinan para determinar si el supuesto fue una buena idea. Como resultado, los métodos para determinar si se han cumplido los supuestos del modelo no son tan simples como observar las predicciones de reserva, aunque eso también puede ser muy útil.</p>
+<p>Usaremos valores p en este capítulo. Sin embargo, el marco de tidymodels tiende a promover intervalos de confianza sobre los valores p como método para cuantificar la evidencia de una hipótesis alternativa. Como se mostró anteriormente en <a href="11-comparing-models.html#sec-tidyposterior"><span>Sección&nbsp;11.4</span></a>, los métodos bayesianos suelen ser superiores tanto a los valores p como a los intervalos de confianza en términos de facilidad de interpretación (pero pueden ser más costosos desde el punto de vista computacional).</p>
 <div class="rmdwarning">
-<p>There has been a push in recent years to move away from p-values in favor of other methods <span class="citation" data-cites="pvalue">(<a href="references.html#ref-pvalue" role="doc-biblioref">Wasserstein and Lazar 2016</a>)</span>. See Volume 73 of <a href="https://www.tandfonline.com/toc/utas20/73/"><em>The American Statistician</em></a> for more information and discussion.</p>
+<p>En los últimos años ha habido un impulso para alejarse de los valores p en favor de otros métodos <span class="citation" data-cites="pvalue">(<a href="references.html#ref-pvalue" role="doc-biblioref">Wasserstein y Lazar 2016</a>)</span>. Consulte el Volumen 73 de <a href="https://www.tandfonline.com/toc/utas20/73/"><em>The American Statistician</em></a> para obtener más información y discusión.</p>
 </div>
-<p>In this chapter, we describe how to use <span class="pkg">tidymodels</span> for fitting and assessing inferential models. In some cases, the tidymodels framework can help users work with the objects produced by their models. In others, it can help assess the quality of a given model.</p>
-<section id="inference-for-count-data" class="level2" data-number="21.1"><h2 data-number="21.1" class="anchored" data-anchor-id="inference-for-count-data">
-<span class="header-section-number">21.1</span> Inference for Count Data</h2>
-<p>To understand how tidymodels packages can be used for inferential modeling, let’s focus on an example with count data. We’ll use biochemistry publication data from the <span class="pkg">pscl</span> package. These data consist of information on 915 Ph.D.&nbsp;biochemistry graduates and tries to explain factors that impact their academic productivity (measured via number or count of articles published within three years). The predictors include the gender of the graduate, their marital status, the number of children of the graduate that are at least five years old, the prestige of their department, and the number of articles produced by their mentor in the same time period. The data reflect biochemistry doctorates who finished their education between 1956 and 1963. The data are a somewhat biased sample of all of the biochemistry doctorates given during this period (based on completeness of information).</p>
+<p>En este capítulo, describimos cómo usar <span class="pkg">tidymodels</span> para ajustar y evaluar modelos inferenciales. En algunos casos, el marco tidymodels puede ayudar a los usuarios a trabajar con los objetos producidos por sus modelos. En otros, puede ayudar a evaluar la calidad de un modelo determinado.</p>
+<section id="inferencia-para-datos-de-recuento" class="level2" data-number="21.1"><h2 data-number="21.1" class="anchored" data-anchor-id="inferencia-para-datos-de-recuento">
+<span class="header-section-number">21.1</span> Inferencia para datos de recuento</h2>
+<p>Para comprender cómo se pueden utilizar los paquetes tidymodels para el modelado inferencial, centrémonos en un ejemplo con datos de recuento. Usaremos datos de publicaciones de bioquímica del paquete <span class="pkg">pscl</span>. Estos datos consisten en información sobre 915 Ph.D.&nbsp;se gradúan en bioquímica e intenta explicar los factores que impactan su productividad académica (medida a través del número o recuento de artículos publicados en tres años). Los predictores incluyen el género del graduado, su estado civil, el número de hijos del graduado que tengan al menos cinco años, el prestigio de su departamento y el número de artículos producidos por su mentor en el mismo período de tiempo. Los datos reflejan doctorados en bioquímica que terminaron su educación entre 1956 y 1963. Los datos son una muestra algo sesgada de todos los doctorados en bioquímica otorgados durante este período (basado en la integridad de la información).</p>
 <div class="rmdnote">
-<p>Recall that in <a href="19-when-should-you-trust-predictions.html">Chapter&nbsp;<span>19</span></a> we asked the question “Is our model applicable for predicting a specific data point?” It is very important to define what populations an inferential analysis applies to. For these data, the results would likely apply to biochemistry doctorates given around the time frame that the data were collected. Does it also apply to other chemistry doctorate types (e.g., medicinal chemistry, etc)? These are important questions to address (and document) when conducting inferential analyses.</p>
+<p>Recuerde que en el <a href="19-when-should-you-trust-predictions.html">Capítulo&nbsp;<span>19</span></a> hicimos la pregunta “¿Es nuestro modelo aplicable para predecir un punto de datos específico?” Es muy importante definir a qué poblaciones se aplica un análisis inferencial. Para estos datos, los resultados probablemente se aplicarían a los doctorados en bioquímica dados aproximadamente en el período en que se recopilaron los datos. ¿Se aplica también a otros tipos de doctorado en química (por ejemplo, química medicinal, etc.)? Éstas son preguntas importantes que se deben abordar (y documentar) al realizar análisis inferenciales.</p>
 </div>
-<p>A plot of the data shown in <a href="#fig-counts">Figure&nbsp;<span>21.1</span></a> indicates that many graduates did not publish any articles in this time and that the outcome follows a right-skewed distribution:</p>
-<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-count-dist_d837426aa030f5069a4e5d84cf9faa2f">
+<p>Un gráfico de los datos mostrados en <a href="#fig-counts">Figura&nbsp;<span>21.1</span></a> indica que muchos graduados no publicaron ningún artículo durante este tiempo y que el resultado sigue una distribución sesgada a la derecha:</p>
+<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-count-dist_4a95922da522114b18aa99c1d4a5d656">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -405,20 +418,20 @@ div.csl-indent {
 <span></span>
 <span><span class="fu">ggplot</span><span class="op">(</span><span class="va">bioChemists</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">art</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">1</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Number of articles within 3y of graduation"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">labs</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Número de artículos dentro de los 3 años posteriores a la graduación"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/fig-counts_da3ec6cfc5a951c38afbd9024bb82b2f">
+<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/fig-counts_89ed7fb037d3990866127d0eb2e9f208">
 <div class="cell-output-display">
 <div id="fig-counts" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-counts-1.png" class="img-fluid figure-img" style="width:80.0%" alt="The distribution of the number of articles written within 3 years of graduation. The distribution is right-skewed and most of the data have counts of zero or one."></p>
-<figcaption class="figure-caption">Figure&nbsp;21.1: Distribution of the number of articles written within 3 years of graduation</figcaption></figure>
+<figure class="figure"><p><img src="figures/fig-counts-1.png" class="img-fluid figure-img" style="width:80.0%" alt="La distribución del número de artículos escritos dentro de los 3 años posteriores a la graduación. La distribución está sesgada a la derecha y la mayoría de los datos tienen recuentos de cero o uno."></p>
+<figcaption class="figure-caption">Figura&nbsp;21.1: Distribución del número de artículos escritos dentro de los 3 años posteriores a la graduación.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Since the outcome data are counts, the most common distribution assumption to make is that the outcome has a Poisson distribution. This chapter will use these data for several types of analyses.</p>
-</section><section id="comparisons-with-two-sample-tests" class="level2" data-number="21.2"><h2 data-number="21.2" class="anchored" data-anchor-id="comparisons-with-two-sample-tests">
-<span class="header-section-number">21.2</span> Comparisons with Two-Sample Tests</h2>
-<p>We can start with hypothesis testing. The original author’s goal with this data set on biochemistry publication data was to determine if there is a difference in publications between men and women <span class="citation" data-cites="Long1992">(<a href="references.html#ref-Long1992" role="doc-biblioref">Long 1992</a>)</span>. The data from the study show:</p>
+<p>Dado que los datos de los resultados son recuentos, la suposición de distribución más común es que el resultado tiene una distribución de Poisson. En este capítulo se utilizarán estos datos para varios tipos de análisis.</p>
+</section><section id="comparaciones-con-pruebas-de-dos-muestras" class="level2" data-number="21.2"><h2 data-number="21.2" class="anchored" data-anchor-id="comparaciones-con-pruebas-de-dos-muestras">
+<span class="header-section-number">21.2</span> Comparaciones con pruebas de dos muestras</h2>
+<p>Podemos comenzar con la prueba de hipótesis. El objetivo del autor original con este conjunto de datos sobre publicaciones de bioquímica era determinar si existe una diferencia en las publicaciones entre hombres y mujeres <span class="citation" data-cites="Long1992">(<a href="references.html#ref-Long1992" role="doc-biblioref">Long 1992</a>)</span>. Los datos del estudio muestran:</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-counts_c50233afcff5f0b1466cdde474dd9d5d">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bioChemists</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">fem</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
@@ -427,16 +440,16 @@ div.csl-indent {
 <span><span class="co">##   fem   counts     n</span></span>
 <span><span class="co">##   &lt;fct&gt;  &lt;int&gt; &lt;int&gt;</span></span>
 <span><span class="co">## 1 Men      930   494</span></span>
-<span><span class="co">## 2 Women    619   421</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 2 Women    619   421</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>There were many more publications by men, although there were also more men in the data. The simplest approach to analyzing these data would be to do a two-sample comparison using the <code><a href="https://rdrr.io/r/stats/poisson.test.html">poisson.test()</a></code> function in the <span class="pkg">stats</span> package. It requires the counts for one or two groups.</p>
-<p>For our application, the hypotheses to compare the two sexes are:</p>
+<p>Había muchas más publicaciones de hombres, aunque también había más hombres en los datos. El enfoque más simple para analizar estos datos sería hacer una comparación de dos muestras usando la función <code><a href="https://rdrr.io/r/stats/poisson.test.html">poisson.test()</a></code> en el paquete <span class="pkg">stats</span>. Requiere los conteos para uno o dos grupos.</p>
+<p>Para nuestra aplicación, las hipótesis para comparar los dos sexos son:</p>
 <span class="math display">\[\begin{align}
 H_0&amp;: \lambda_m = \lambda_f \notag \\
 H_a&amp;: \lambda_m \ne \lambda_f \notag
 \end{align}\]</span>
-<p>where the <span class="math inline">\(\lambda\)</span> values are the rates of publications (over the same time period).</p>
-<p>A basic application of the test is:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>donde los valores <span class="math inline">\(\lambda\)</span> son las tasas de publicaciones (durante el mismo período de tiempo).</p>
+<p>Una aplicación básica de la prueba es:Una aplicación básica de la prueba es:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-test-basic_ffaca8a897762e3bad1953ae5cfa9b58">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/poisson.test.html">poisson.test</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">930</span>, <span class="fl">619</span><span class="op">)</span>, T <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">## </span></span>
@@ -449,25 +462,25 @@ H_a&amp;: \lambda_m \ne \lambda_f \notag
 <span><span class="co">##  1.356 1.666</span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">## rate ratio </span></span>
-<span><span class="co">##      1.502</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##      1.502</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The function reports a p-value as well as a confidence interval for the ratio of the publication rates. The results indicate that the observed difference is greater than the experiential noise and favors <span class="math inline">\(H_a\)</span>.</p>
-<p>One issue with using this function is that the results come back as an <code>htest</code> object. While this type of object has a well-defined structure, it can be difficult to consume for subsequent operations such as reporting or visualizations. The most impactful tool that tidymodels offers for inferential models is the <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> functions in the <span class="pkg">broom</span> package. As previously seen, this function makes a well-formed, predictably named tibble from the object. We can <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> the results of our two-sample comparison test:</p>
+<p>La función informa un valor p así como un intervalo de confianza para la relación de las tasas de publicación. Los resultados indican que la diferencia observada es mayor que el ruido experiencial y favorece a <span class="math inline">\(H_a\)</span>.</p>
+<p>Un problema con el uso de esta función es que los resultados regresan como un objeto “htest”. Si bien este tipo de objeto tiene una estructura bien definida, puede resultar difícil consumirlo para operaciones posteriores, como informes o visualizaciones. La herramienta más impactante que ofrece tidymodels para modelos inferenciales son las funciones <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> en el paquete <span class="pkg">broom</span>. Como se vio anteriormente, esta función crea un tibble bien formado y con un nombre predecible a partir del objeto. Podemos <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> los resultados de nuestra prueba de comparación de dos muestras:</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-test-tidy_45b81b9fbb34d01df1e8e8fdbc9ba0f8">
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/poisson.test.html">poisson.test</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">930</span>, <span class="fl">619</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
 <span>  <span class="fu">tidy</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 1 × 8</span></span>
 <span><span class="co">##   estimate statistic  p.value parameter conf.low conf.high method        alternative</span></span>
 <span><span class="co">##      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;      </span></span>
-<span><span class="co">## 1     1.50       930 2.73e-15      774.     1.36      1.67 Comparison o… two.sided</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1     1.50       930 2.73e-15      774.     1.36      1.67 Comparison o… two.sided</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdnote">
-<p>Between the <a href="https://broom.tidymodels.org/"><span class="pkg">broom</span></a> and <a href="https://CRAN.R-project.org/package=broom.mixed"><span class="pkg">broom.mixed</span></a> packages, there are <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> methods for more than 150 models.</p>
+<p>Entre <a href="https://broom.tidymodels.org/"><span class="pkg">broom</span></a> y <a href="https://CRAN.R-project.org/package=%20broom.mixed"><span class="pkg">broom.mixed</span></a>, existen métodos <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> para más de 150 modelos.</p>
 </div>
-<p>While the Poisson distribution is reasonable, we might also want to assess using fewer distributional assumptions. Two methods that might be helpful are the bootstrap and permutation tests <span class="citation" data-cites="davison1997bootstrap">(<a href="references.html#ref-davison1997bootstrap" role="doc-biblioref">Davison and Hinkley 1997</a>)</span>.</p>
-<p>The <span class="pkg">infer</span> package, part of the tidymodels framework, is a powerful and intuitive tool for hypothesis testing <span class="citation" data-cites="ModernDive">(<a href="references.html#ref-ModernDive" role="doc-biblioref">Ismay and Kim 2021</a>)</span>. Its syntax is concise and designed for nonstatisticians.</p>
-<p>First, we <code><a href="https://infer.tidymodels.org/reference/specify.html">specify()</a></code> that we will use the difference in the mean number of articles between the sexes and then <code><a href="https://infer.tidymodels.org/reference/calculate.html">calculate()</a></code> the statistic from the data. Recall that the maximum likelihood estimator for the Poisson mean is the sample mean. The hypotheses tested here are the same as the previous test (but are conducted using a different testing procedure).</p>
-<p>With <span class="pkg">infer</span>, we specify the outcome and covariate, then state the statistic of interest:</p>
+<p>Si bien la distribución de Poisson es razonable, es posible que también deseemos evaluarla utilizando menos supuestos distributivos. Dos métodos que podrían resultar útiles son las pruebas de arranque y de permutación <span class="citation" data-cites="davison1997bootstrap">(<a href="references.html#ref-davison1997bootstrap" role="doc-biblioref">Davison y Hinkley 1997</a>)</span>.</p>
+<p>El paquete <span class="pkg">infer</span>, parte del marco tidymodels, es una herramienta poderosa e intuitiva para probar hipótesis <span class="citation" data-cites="ModernDive">(<a href="references.html#ref-ModernDive" role="doc-biblioref">Ismay y Kim 2021</a>)</span>. Su sintaxis es concisa y está diseñada para no estadísticos.</p>
+<p>Primero, <code><a href="https://infer.tidymodels.org/reference/specify.html">specify()</a></code> que usaremos la diferencia en el número medio de artículos entre los sexos y luego <code><a href="https://infer.tidymodels.org/reference/calculate.html">calculate()</a></code> la estadística a partir de los datos. Recuerde que el estimador de máxima verosimilitud para la media de Poisson es la media muestral. Las hipótesis probadas aquí son las mismas que las de la prueba anterior (pero se llevan a cabo mediante un procedimiento de prueba diferente).</p>
+<p>Con <span class="pkg">infer</span>, especificamos el resultado y la covariable, luego indicamos la estadística de interés:</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-mean-diff-obs_d9b68cb1545f93afc6980ff32c445f23">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/infer">infer</a></span><span class="op">)</span></span>
 <span></span>
@@ -481,9 +494,9 @@ H_a&amp;: \lambda_m \ne \lambda_f \notag
 <span><span class="co">## # A tibble: 1 × 1</span></span>
 <span><span class="co">##    stat</span></span>
 <span><span class="co">##   &lt;dbl&gt;</span></span>
-<span><span class="co">## 1 0.412</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1 0.412</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>From here, we compute a confidence interval for this mean by creating the bootstrap distribution via <code><a href="https://infer.tidymodels.org/reference/generate.html">generate()</a></code>; the same statistic is computed for each resampled version of the data:</p>
+<p>A partir de aquí, calculamos un intervalo de confianza para esta media creando la distribución de arranque mediante <code><a href="https://infer.tidymodels.org/reference/generate.html">generate()</a></code>; se calcula la misma estadística para cada versión remuestreada de los datos:</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-mean-diff-boot-gen_fbd0a872a32a60fdad605106804de46a">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2101</span><span class="op">)</span></span>
 <span><span class="va">bootstrapped</span> <span class="op">&lt;-</span> </span>
@@ -503,32 +516,32 @@ H_a&amp;: \lambda_m \ne \lambda_f \notag
 <span><span class="co">## 4         4 0.308</span></span>
 <span><span class="co">## 5         5 0.369</span></span>
 <span><span class="co">## 6         6 0.428</span></span>
-<span><span class="co">## # ℹ 1,994 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 1,994 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>A percentile interval is calculated using:</p>
+<p>Un intervalo percentil se calcula usando:</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-mean-diff-boot-ci_42d001998c77e2bc491baf87d05fb1e8">
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">percentile_ci</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://infer.tidymodels.org/reference/get_confidence_interval.html">get_ci</a></span><span class="op">(</span><span class="va">bootstrapped</span><span class="op">)</span></span>
 <span><span class="va">percentile_ci</span></span>
 <span><span class="co">## # A tibble: 1 × 2</span></span>
 <span><span class="co">##   lower_ci upper_ci</span></span>
 <span><span class="co">##      &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">## 1    0.158    0.653</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1    0.158    0.653</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <span class="pkg">infer</span> package has a high-level API for showing the analysis results, as shown in <a href="#fig-bootstrapped-mean">Figure&nbsp;<span>21.2</span></a>.</p>
+<p>El paquete <span class="pkg">infer</span> tiene una API de alto nivel para mostrar los resultados del análisis, como se muestra en <a href="#fig-bootstrapped-mean">Figura&nbsp;<span>21.2</span></a>.</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-mean-diff-boot_f86d91a37f81a8ad9ad7648eb894623c">
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://infer.tidymodels.org/reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">bootstrapped</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://infer.tidymodels.org/reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>    <span class="fu"><a href="https://infer.tidymodels.org/reference/shade_confidence_interval.html">shade_confidence_interval</a></span><span class="op">(</span>endpoints <span class="op">=</span> <span class="va">percentile_ci</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/fig-bootstrapped-mean_af24a8167ef30b983e476bbd428275f9">
+<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/fig-bootstrapped-mean_5862774527060b78e540aaa6f3545e88">
 <div class="cell-output-display">
 <div id="fig-bootstrapped-mean" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-bootstrapped-mean-1.png" class="img-fluid figure-img" style="width:80.0%" alt="The bootstrap distribution of the difference in means. The highlighted region is the confidence interval, which does not include a value of zero."></p>
-<figcaption class="figure-caption">Figure&nbsp;21.2: The bootstrap distribution of the difference in means. The highlighted region is the confidence interval.</figcaption></figure>
+<figure class="figure"><p><img src="figures/fig-bootstrapped-mean-1.png" class="img-fluid figure-img" style="width:80.0%" alt="La distribución bootstrap de la diferencia de medias. La región resaltada es el intervalo de confianza, que no incluye un valor de cero."></p>
+<figcaption class="figure-caption">Figura&nbsp;21.2: La distribución bootstrap de la diferencia de medias. La región resaltada es el intervalo de confianza.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Since the interval visualized in in <a href="#fig-bootstrapped-mean">Figure&nbsp;<span>21.2</span></a> does not include zero, these results indicate that men have published more articles than women.</p>
-<p>If we require a p-value, the <span class="pkg">infer</span> package can compute the value via a permutation test, shown in the following code. The syntax is very similar to the bootstrapping code we used earlier. We add a <code><a href="https://infer.tidymodels.org/reference/hypothesize.html">hypothesize()</a></code> verb to state the type of assumption to test and the <code><a href="https://infer.tidymodels.org/reference/generate.html">generate()</a></code> call contains an option to shuffle the data.</p>
+<p>Dado que el intervalo visualizado en <a href="#fig-bootstrapped-mean">Figura&nbsp;<span>21.2</span></a> no incluye cero, estos resultados indican que los hombres han publicado más artículos que las mujeres.</p>
+<p>Si requerimos un valor p, el paquete <span class="pkg">infer</span> puede calcular el valor mediante una prueba de permutación, que se muestra en el siguiente código. La sintaxis es muy similar al código de arranque que usamos anteriormente. Agregamos un verbo <code><a href="https://infer.tidymodels.org/reference/hypothesize.html">hypothesize()</a></code> para indicar el tipo de suposición a probar y la llamada <code><a href="https://infer.tidymodels.org/reference/generate.html">generate()</a></code> contiene una opción para mezclar los datos.</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-mean-diff-perm-gen_3726d271437e7640a90e4a728ff27f94">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2102</span><span class="op">)</span></span>
 <span><span class="va">permuted</span> <span class="op">&lt;-</span> </span>
@@ -550,18 +563,18 @@ H_a&amp;: \lambda_m \ne \lambda_f \notag
 <span><span class="co">## 4         4 -0.195  </span></span>
 <span><span class="co">## 5         5 -0.00128</span></span>
 <span><span class="co">## 6         6 -0.102  </span></span>
-<span><span class="co">## # ℹ 1,994 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 1,994 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The following visualization code is also very similar to the bootstrap approach. This code generates <a href="#fig-permutation-dist">Figure&nbsp;<span>21.3</span></a> where the vertical line signifies the observed value:</p>
+<p>El siguiente código de visualización también es muy similar al enfoque de arranque. Este código genera <a href="#fig-permutation-dist">Figura&nbsp;<span>21.3</span></a> donde la línea vertical indica el valor observado:</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-mean-diff-perm_f6c935ad51b986374dfd7f5b75318e29">
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://infer.tidymodels.org/reference/visualize.html">visualize</a></span><span class="op">(</span><span class="va">permuted</span><span class="op">)</span> <span class="op">+</span></span>
-<span>    <span class="fu"><a href="https://infer.tidymodels.org/reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">observed</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>    <span class="fu"><a href="https://infer.tidymodels.org/reference/shade_p_value.html">shade_p_value</a></span><span class="op">(</span>obs_stat <span class="op">=</span> <span class="va">observed</span>, direction <span class="op">=</span> <span class="st">"two-sided"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/fig-permutation-dist_e0e35abd623440cd83bc75577aa96fae">
+<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/fig-permutation-dist_5089018507423bdc64cbafc06b1169e2">
 <div class="cell-output-display">
 <div id="fig-permutation-dist" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-permutation-dist-1.png" class="img-fluid figure-img" style="width:80.0%" alt="The empirical distribution of the test statistic under the null hypothesis. The vertical line indicates the observed test statistic and is far away form the mainstream of the distribution."></p>
-<figcaption class="figure-caption">Figure&nbsp;21.3: Empirical distribution of the test statistic under the null hypothesis. The vertical line indicates the observed test statistic.</figcaption></figure>
+<figure class="figure"><p><img src="figures/fig-permutation-dist-1.png" class="img-fluid figure-img" style="width:80.0%" alt="La distribución empírica del estadístico de prueba bajo la hipótesis nula. La línea vertical indica la estadística de prueba observada y está muy alejada de la corriente principal de la distribución."></p>
+<figcaption class="figure-caption">Figura&nbsp;21.3: Distribución empírica del estadístico de prueba bajo la hipótesis nula. La línea vertical indica la estadística de prueba observada.</figcaption></figure>
 </div>
 </div>
 </div>
@@ -572,22 +585,22 @@ H_a&amp;: \lambda_m \ne \lambda_f \notag
 <span><span class="co">## # A tibble: 1 × 1</span></span>
 <span><span class="co">##   p_value</span></span>
 <span><span class="co">##     &lt;dbl&gt;</span></span>
-<span><span class="co">## 1   0.002</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 1   0.002</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The vertical line representing the null hypothesis in <a href="#fig-permutation-dist">Figure&nbsp;<span>21.3</span></a> is far away from the permutation distribution. This means, if in fact the null hypothesis were true, the likelihood is exceedingly small of observing data at least as extreme as what is at hand.</p>
-<p>The two-sample tests shown in this section are probably suboptimal because they do not account for other factors that might explain the observed relationship between publication rate and sex. Let’s move to a more complex model that can consider additional covariates.</p>
-</section><section id="log-linear-models" class="level2" data-number="21.3"><h2 data-number="21.3" class="anchored" data-anchor-id="log-linear-models">
-<span class="header-section-number">21.3</span> Log-Linear Models</h2>
-<p>The focus of the rest of this chapter will be on a generalized linear model <span class="citation" data-cites="Dobson99">(<a href="references.html#ref-Dobson99" role="doc-biblioref">Dobson 1999</a>)</span> where we assume the counts follow a Poisson distribution. For this model, the covariates/predictors enter the model in a log-linear fashion:</p>
+<p>La línea vertical que representa la hipótesis nula en <a href="#fig-permutation-dist">Figura&nbsp;<span>21.3</span></a> está muy lejos de la distribución de permutación. Esto significa que, si de hecho la hipótesis nula fuera cierta, la probabilidad de observar datos al menos tan extremos como los que tenemos a mano es extremadamente pequeña.</p>
+<p>Las pruebas de dos muestras que se muestran en esta sección probablemente no sean óptimas porque no tienen en cuenta otros factores que podrían explicar la relación observada entre la tasa de publicación y el sexo. Pasemos a un modelo más complejo que pueda considerar covariables adicionales.</p>
+</section><section id="modelos-log-lineales" class="level2" data-number="21.3"><h2 data-number="21.3" class="anchored" data-anchor-id="modelos-log-lineales">
+<span class="header-section-number">21.3</span> Modelos log-lineales</h2>
+<p>El resto de este capítulo se centrará en un modelo lineal generalizado <span class="citation" data-cites="Dobson99">(<a href="references.html#ref-Dobson99" role="doc-biblioref">Dobson 1999</a>)</span> donde asumimos que los recuentos siguen una distribución de Poisson. Para este modelo, las covariables/predictores ingresan al modelo de forma log-lineal:</p>
 <p><span class="math display">\[
 \log(\lambda) = \beta_0 + \beta_1x_1 + \ldots + \beta_px_p
 \]</span></p>
-<p>where <span class="math inline">\(\lambda\)</span> is the expected value of the counts.</p>
-<p>Let’s fit a simple model that contains all of the predictor columns. The <span class="pkg">poissonreg</span> package, a <span class="pkg">parsnip</span> extension package in tidymodels, will fit this model specification:</p>
-<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-glm_3e5275af729e27728abd3fa82e3d10a0">
+<p>donde <span class="math inline">\(\lambda\)</span> es el valor esperado de los recuentos.</p>
+<p>Ajustemos un modelo simple que contenga todas las columnas predictoras. El paquete <span class="pkg">poissonreg</span>, un paquete de extensión <span class="pkg">parsnip</span> en tidymodels, se ajustará a esta especificación de modelo:</p>
+<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-glm_1bbde3d8c0aed96099455ba432327cdf">
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/poissonreg">poissonreg</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># default engine is 'glm'</span></span>
+<span><span class="co"># El motor predeterminado es 'glm'</span></span>
 <span><span class="va">log_lin_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/poisson_reg.html">poisson_reg</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">log_lin_fit</span> <span class="op">&lt;-</span> </span>
@@ -605,9 +618,9 @@ H_a&amp;: \lambda_m \ne \lambda_f \notag
 <span><span class="co">## </span></span>
 <span><span class="co">## Degrees of Freedom: 914 Total (i.e. Null);  909 Residual</span></span>
 <span><span class="co">## Null Deviance:       1820 </span></span>
-<span><span class="co">## Residual Deviance: 1630  AIC: 3310</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Residual Deviance: 1630  AIC: 3310</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> method succinctly summarizes the coefficients for the model (along with 90% confidence intervals):</p>
+<p>El método <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> resume sucintamente los coeficientes del modelo (junto con intervalos de confianza del 90%):</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-glm-tidy_0e87de384d688125a6c53078c1045d39">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="va">log_lin_fit</span>, conf.int <span class="op">=</span> <span class="cn">TRUE</span>, conf.level <span class="op">=</span> <span class="fl">0.90</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 6 × 7</span></span>
@@ -618,15 +631,15 @@ H_a&amp;: \lambda_m \ne \lambda_f \notag
 <span><span class="co">## 3 marMarried    0.155    0.0614      2.53  1.14e- 2   0.0545    0.256 </span></span>
 <span><span class="co">## 4 kid5         -0.185    0.0401     -4.61  4.08e- 6  -0.251    -0.119 </span></span>
 <span><span class="co">## 5 phd           0.0128   0.0264      0.486 6.27e- 1  -0.0305    0.0563</span></span>
-<span><span class="co">## 6 ment          0.0255   0.00201    12.7   3.89e-37   0.0222    0.0288</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 6 ment          0.0255   0.00201    12.7   3.89e-37   0.0222    0.0288</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In this output, the p-values correspond to separate hypothesis tests for each parameter:</p>
+<p>En este resultado, los valores p corresponden a pruebas de hipótesis separadas para cada parámetro:</p>
 <span class="math display">\[\begin{align}
 H_0&amp;: \beta_j = 0 \notag \\
 H_a&amp;: \beta_j \ne 0 \notag
 \end{align}\]</span>
-<p>for each of the model parameters. Looking at these results, <code>phd</code> (the prestige of their department) may not have any relationship with the outcome.</p>
-<p>While the Poisson distribution is the routine assumption for data like these, it may be beneficial to conduct a rough check of the model assumptions by fitting the models without using the Poisson likelihood to calculate the confidence intervals. The <span class="pkg">rsample</span> package has a convenience function to compute bootstrap confidence intervals for <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> and <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> models. We can use this function, while explicitly declaring <code>family = poisson</code>, to compute a large number of model fits. By default, we compute a 90% confidence bootstrap-t interval (percentile intervals are also available):</p>
+<p>para cada uno de los parámetros del modelo. Al observar estos resultados, es posible que el <code>phd</code> (el prestigio de su departamento) no tenga ninguna relación con el resultado.</p>
+<p>Si bien la distribución de Poisson es el supuesto habitual para datos como estos, puede resultar beneficioso realizar una verificación aproximada de los supuestos del modelo ajustando los modelos sin utilizar la probabilidad de Poisson para calcular los intervalos de confianza. El paquete <span class="pkg">rsample</span> tiene una función conveniente para calcular intervalos de confianza de arranque para los modelos <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> y <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>. Podemos usar esta función, mientras declaramos explícitamente <code>family = poisson</code>, para calcular una gran cantidad de ajustes del modelo. De forma predeterminada, calculamos un intervalo bootstrap-t de confianza del 90% (los intervalos percentiles también están disponibles):</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-glm-ci_7a4e8f09445f7875187504b4ab1b5a45">
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2103</span><span class="op">)</span></span>
 <span><span class="va">glm_boot</span> <span class="op">&lt;-</span> </span>
@@ -639,25 +652,25 @@ H_a&amp;: \beta_j \ne 0 \notag
 <span><span class="co">## 2 kid5       -0.298      -0.184  -0.0789   0.05 student-t</span></span>
 <span><span class="co">## 3 marMarried  0.000264    0.155   0.317    0.05 student-t</span></span>
 <span><span class="co">## 4 ment        0.0182      0.0256  0.0322   0.05 student-t</span></span>
-<span><span class="co">## 5 phd        -0.0707      0.0130  0.102    0.05 student-t</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 5 phd        -0.0707      0.0130  0.102    0.05 student-t</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdwarning">
-<p>When we compare these results (in <a href="#fig-glm-intervals">Figure&nbsp;<span>21.4</span></a>) to the purely parametric results from <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>, the bootstrap intervals are somewhat wider. If the data were truly Poisson, these intervals would have more similar widths.</p>
+<p>Cuando comparamos estos resultados (en <a href="#fig-glm-intervals">Figura&nbsp;<span>21.4</span></a>) con los resultados puramente paramétricos de <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code>, los intervalos de arranque son algo más amplios. Si los datos fueran verdaderamente de Poisson, estos intervalos tendrían anchos más similares.</p>
 </div>
-<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/fig-glm-intervals_f080ab11b80fcdf41ce6c383680faeb1">
+<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/fig-glm-intervals_404b10772a557e07fd8d8af41ba701c0">
 <div class="cell-output-display">
 <div id="fig-glm-intervals" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-glm-intervals-1.png" class="img-fluid figure-img" alt="Two types of confidence intervals for the Poisson regression model. the interval for the PhD model is the only interval overlapping zero. The parametric intervals tend to be wider than the bootstrap intervals." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;21.4: Two types of confidence intervals for the Poisson regression model</figcaption></figure>
+<figure class="figure"><p><img src="figures/fig-glm-intervals-1.png" class="img-fluid figure-img" alt="Dos tipos de intervalos de confianza para el modelo de regresión de Poisson. el intervalo para el modelo PhD es el único intervalo que se superpone a cero. Los intervalos paramétricos tienden a ser más amplios que los intervalos de arranque." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;21.4: Dos tipos de intervalos de confianza para el modelo de regresión de Poisson</figcaption></figure>
 </div>
 </div>
 </div>
-<p>Determining which predictors to include in the model is a difficult problem. One approach is to conduct likelihood ratio tests (LRT) <span class="citation" data-cites="McCullaghNelder89">(<a href="references.html#ref-McCullaghNelder89" role="doc-biblioref">McCullagh and Nelder 1989</a>)</span> between nested models. Based on the confidence intervals, we have evidence that a simpler model without <code>phd</code> may be sufficient. Let’s fit a smaller model, then conduct a statistical test:</p>
+<p>Determinar qué predictores incluir en el modelo es un problema difícil. Un enfoque consiste en realizar pruebas de índice de verosimilitud (LRT) <span class="citation" data-cites="McCullaghNelder89">(<a href="references.html#ref-McCullaghNelder89" role="doc-biblioref">McCullagh y Nelder 1989</a>)</span> entre modelos anidados. Según los intervalos de confianza, tenemos evidencia de que un modelo más simple sin <code>phd</code> puede ser suficiente. Ajustemos un modelo más pequeño y luego realicemos una prueba estadística:</p>
 <span class="math display">\[\begin{align}
 H_0&amp;: \beta_{phd} = 0 \notag \\
 H_a&amp;: \beta_{phd} \ne 0 \notag
 \end{align}\]</span>
-<p>This hypothesis was previously tested when we showed the tidied results for <code>log_lin_fit</code>. That particular approach used results from a single model fit via a Wald statistic (i.e., the parameter divided by its standard error). For that approach, the p-value was 0.63. We can tidy the results for the LRT to get the p-value:</p>
+<p>Esta hipótesis se probó previamente cuando mostramos los resultados ordenados de <code>log_lin_fit</code>. Ese enfoque particular utilizó resultados de un ajuste de modelo único mediante una estadística de Wald (es decir, el parámetro dividido por su error estándar). Para ese enfoque, el valor p era 0.63. Podemos ordenar los resultados del LRT para obtener el valor p:</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-reduced_00bdb23aec2c02d86909e70a49eb71ac">
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">log_lin_reduced</span> <span class="op">&lt;-</span> </span>
 <span>  <span class="va">log_lin_spec</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
@@ -673,20 +686,20 @@ H_a&amp;: \beta_{phd} \ne 0 \notag
 <span><span class="co">##   term                          df.residual residual.deviance    df deviance p.value</span></span>
 <span><span class="co">##   &lt;chr&gt;                               &lt;dbl&gt;             &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;</span></span>
 <span><span class="co">## 1 art ~ ment + kid5 + fem + mar         910             1635.    NA   NA      NA    </span></span>
-<span><span class="co">## 2 art ~ fem + mar + kid5 + phd…         909             1634.     1    0.236   0.627</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 2 art ~ fem + mar + kid5 + phd…         909             1634.     1    0.236   0.627</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The results are the same and, based on these and the confidence interval for this parameter, we’ll exclude <code>phd</code> from further analyses since it does not appear to be associated with the outcome.</p>
-</section><section id="a-more-complex-model" class="level2" data-number="21.4"><h2 data-number="21.4" class="anchored" data-anchor-id="a-more-complex-model">
-<span class="header-section-number">21.4</span> A More Complex Model</h2>
-<p>We can move into even more complex models within our tidymodels approach. For count data, there are occasions where the number of zero counts is larger than what a simple Poisson distribution would prescribe. A more complex model appropriate for this situation is the zero-inflated Poisson (ZIP) model; see <span class="citation" data-cites="Mullahy">Mullahy (<a href="references.html#ref-Mullahy" role="doc-biblioref">1986</a>)</span>, <span class="citation" data-cites="Lambert1992">Lambert (<a href="references.html#ref-Lambert1992" role="doc-biblioref">1992</a>)</span>, and <span class="citation" data-cites="JSSv027i08">Zeileis, Kleiber, and Jackman (<a href="references.html#ref-JSSv027i08" role="doc-biblioref">2008</a>)</span>. Here, there are two sets of covariates: one for the count data and others that affect the probability (denoted as <span class="math inline">\(\pi\)</span>) of zeros. The equation for the mean <span class="math inline">\(\lambda\)</span> is:</p>
+<p>Los resultados son los mismos y, en base a estos y al intervalo de confianza para este parámetro, excluiremos <code>phd</code> de análisis adicionales ya que no parece estar asociado con el resultado.</p>
+</section><section id="un-modelo-más-complejo" class="level2" data-number="21.4"><h2 data-number="21.4" class="anchored" data-anchor-id="un-modelo-más-complejo">
+<span class="header-section-number">21.4</span> Un modelo más complejo</h2>
+<p>Podemos pasar a modelos aún más complejos dentro de nuestro enfoque de tidymodels. Para los datos de recuento, hay ocasiones en las que el número de recuentos de ceros es mayor de lo que prescribiría una distribución de Poisson simple. Un modelo más complejo apropiado para esta situación es el modelo de Poisson (ZIP) con inflación cero; consulte <span class="citation" data-cites="Mullahy">Mullahy (<a href="references.html#ref-Mullahy" role="doc-biblioref">1986</a>)</span>, <span class="citation" data-cites="Lambert1992">Lambert (<a href="references.html#ref-Lambert1992" role="doc-biblioref">1992</a>)</span> y <span class="citation" data-cites="JSSv027i08">Zeileis, Kleiber, y Jackman (<a href="references.html#ref-JSSv027i08" role="doc-biblioref">2008</a>)</span>. Aquí, hay dos conjuntos de covariables: uno para los datos de recuento y otros que afectan la probabilidad (indicada como <span class="math inline">\(\pi\)</span>) de ceros. La ecuación para la media <span class="math inline">\(\lambda\)</span> es:</p>
 <p><span class="math display">\[\lambda = 0 \pi + (1 - \pi) \lambda_{nz}\]</span></p>
-<p>where</p>
+<p>donde</p>
 <span class="math display">\[\begin{align}
 \log(\lambda_{nz}) &amp;= \beta_0 + \beta_1x_1 + \ldots + \beta_px_p \notag \\
 \log\left(\frac{\pi}{1-\pi}\right) &amp;= \gamma_0 + \gamma_1z_1 + \ldots + \gamma_qz_q \notag
 \end{align}\]</span>
-<p>and the <span class="math inline">\(x\)</span> covariates affect the count values while the <span class="math inline">\(z\)</span> covariates influence the probability of a zero. The two sets of predictors do not need to be mutually exclusive.</p>
-<p>We’ll fit a model with a full set of <span class="math inline">\(z\)</span> covariates:</p>
+<p>y las covariables <span class="math inline">\(x\)</span> afectan los valores de recuento, mientras que las covariables <span class="math inline">\(z\)</span> influyen en la probabilidad de un cero. No es necesario que los dos conjuntos de predictores sean mutuamente excluyentes.</p>
+<p>Ajustaremos un modelo con un conjunto completo de covariables <span class="math inline">\(z\)</span>:</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inference-zip-model_18322dd55c37732a384ae508af22d888">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">zero_inflated_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/poisson_reg.html">poisson_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"zeroinfl"</span><span class="op">)</span></span>
 <span></span>
@@ -709,14 +722,14 @@ H_a&amp;: \beta_{phd} \ne 0 \notag
 <span><span class="co">## </span></span>
 <span><span class="co">## Zero-inflation model coefficients (binomial with logit link):</span></span>
 <span><span class="co">## (Intercept)     femWomen   marMarried         kid5          phd         ment  </span></span>
-<span><span class="co">##     -0.6086       0.1093      -0.3529       0.2195       0.0124      -0.1351</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">##     -0.6086       0.1093      -0.3529       0.2195       0.0124      -0.1351</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Since the coefficients for this model are also estimated using maximum likelihood, let’s try to use another likelihood ratio test to understand if the new model terms are helpful. We will <em>simultaneously</em> test that:</p>
+<p>Dado que los coeficientes de este modelo también se estiman utilizando la máxima verosimilitud, intentemos utilizar otra prueba de razón de verosimilitud para comprender si los términos del nuevo modelo son útiles. <em>Simultáneamente</em> probaremos que:</p>
 <span class="math display">\[\begin{align}
 H_0&amp;: \gamma_1 = 0, \gamma_2 = 0, \cdots, \gamma_5 = 0 \notag \\
 H_a&amp;: \text{at least one } \gamma \ne 0  \notag
 \end{align}\]</span>
-<p>Let’s try ANOVA again:</p>
+<p>Probemos ANOVA nuevamente:</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inference-zip-anova_866eb70fcbb5117398ff60bf53537c59">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_engine</a></span><span class="op">(</span><span class="va">zero_inflated_fit</span><span class="op">)</span>,</span>
@@ -724,20 +737,20 @@ H_a&amp;: \text{at least one } \gamma \ne 0  \notag
 <span>  test <span class="op">=</span> <span class="st">"LRT"</span></span>
 <span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://generics.r-lib.org/reference/tidy.html">tidy</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## Error in UseMethod("anova"): no applicable method for 'anova' applied to an object of class "zeroinfl"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## Error in UseMethod("anova"): no applicable method for 'anova' applied to an object of class "zeroinfl"</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>An <code><a href="https://rdrr.io/r/stats/anova.html">anova()</a></code> method isn’t implemented for <code>zeroinfl</code> objects!</p>
-<p>An alternative is to use an <em>information criterion statistic</em>, such as the Akaike information criterion (AIC) <span class="citation" data-cites="claeskens2016statistical">(<a href="references.html#ref-claeskens2016statistical" role="doc-biblioref">Claeskens 2016</a>)</span>. This computes the log-likelihood (from the training set) and penalizes that value based on the training set size and the number of model parameters. In R’s parameterization, smaller AIC values are better. In this case, we are not conducting a formal statistical test but <em>estimating</em> the ability of the data to fit the data.</p>
-<p>The results indicate that the ZIP model is preferable:</p>
+<p>¡No se implementa un método <code><a href="https://rdrr.io/r/stats/anova.html">anova()</a></code> para objetos <code>zeroinfl</code>!</p>
+<p>Una alternativa es utilizar una <em>estadística de criterio de información</em>, como el criterio de información de Akaike (AIC) <span class="citation" data-cites="claeskens2016statistical">(<a href="references.html#ref-claeskens2016statistical" role="doc-biblioref">Claeskens 2016</a>)</span>. Esto calcula la probabilidad logarítmica (del conjunto de entrenamiento) y penaliza ese valor según el tamaño del conjunto de entrenamiento y la cantidad de parámetros del modelo. En la parametrización de R, los valores AIC más pequeños son mejores. En este caso, no estamos realizando una prueba estadística formal sino <em>estimando</em> la capacidad de los datos para ajustarse a los datos.</p>
+<p>Los resultados indican que el modelo ZIP es preferible:</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inference-zip-aic_ba9d4fdcff8b703258aa8598ad1762fb">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">zero_inflated_fit</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_engine</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">## [1] 3232</span></span>
 <span><span class="va">log_lin_reduced</span>   <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_engine</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">## [1] 3312</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 3312</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>However, it’s hard to contextualize this pair of single values and assess <em>how</em> different they actually are. To solve this problem, we’ll resample a large number of each of these two models. From these, we can compute the AIC values for each and determine how often the results favor the ZIP model. Basically, we will be characterizing the uncertainty of the AIC statistics to gauge their difference relative to the noise in the data.</p>
-<p>We’ll also compute more bootstrap confidence intervals for the parameters in a bit so we specify the <code>apparent = TRUE</code> option when creating the bootstrap samples. This is required for some types of intervals.</p>
-<p>First, we create the 4,000 model fits:</p>
+<p>Sin embargo, es difícil contextualizar este par de valores individuales y evaluar <em>cuán</em> diferentes son en realidad. Para resolver este problema, volveremos a muestrear una gran cantidad de cada uno de estos dos modelos. A partir de estos, podemos calcular los valores AIC para cada uno y determinar con qué frecuencia los resultados favorecen el modelo ZIP. Básicamente, caracterizaremos la incertidumbre de las estadísticas del AIC para medir su diferencia en relación con el ruido en los datos.</p>
+<p>También calcularemos más intervalos de confianza de arranque para los parámetros en un momento, por lo que especificamos la opción <code>apparent = TRUE</code> al crear las muestras de arranque. Esto es necesario para algunos tipos de intervalos.</p>
+<p>Primero, creamos los 4000 ajustes del modelo:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">zip_form</span> <span class="op">&lt;-</span> <span class="va">art</span> <span class="op">~</span> <span class="va">fem</span> <span class="op">+</span> <span class="va">mar</span> <span class="op">+</span> <span class="va">kid5</span> <span class="op">+</span> <span class="va">ment</span> <span class="op">|</span> <span class="va">fem</span> <span class="op">+</span> <span class="va">mar</span> <span class="op">+</span> <span class="va">kid5</span> <span class="op">+</span> <span class="va">phd</span> <span class="op">+</span> <span class="va">ment</span></span>
 <span><span class="va">glm_form</span> <span class="op">&lt;-</span> <span class="va">art</span> <span class="op">~</span> <span class="va">fem</span> <span class="op">+</span> <span class="va">mar</span> <span class="op">+</span> <span class="va">kid5</span> <span class="op">+</span> <span class="va">ment</span></span>
@@ -760,9 +773,9 @@ H_a&amp;: \text{at least one } \gamma \ne 0  \notag
 <span><span class="co">## 4 &lt;split [915/344]&gt; Bootstrap0004 &lt;fit[+]&gt; &lt;fit[+]&gt;</span></span>
 <span><span class="co">## 5 &lt;split [915/351]&gt; Bootstrap0005 &lt;fit[+]&gt; &lt;fit[+]&gt;</span></span>
 <span><span class="co">## 6 &lt;split [915/354]&gt; Bootstrap0006 &lt;fit[+]&gt; &lt;fit[+]&gt;</span></span>
-<span><span class="co">## # ℹ 1,995 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## # ℹ 1,995 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now we can extract the model fits and their corresponding AIC values:</p>
+<p>Ahora podemos extraer los ajustes del modelo y sus correspondientes valores AIC:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bootstrap_models</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">bootstrap_models</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -771,13 +784,13 @@ H_a&amp;: \text{at least one } \gamma \ne 0  \notag
 <span>    zip_aic <span class="op">=</span> <span class="fu">map_dbl</span><span class="op">(</span><span class="va">zip</span>, <span class="op">~</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_fit_engine</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html">AIC</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">bootstrap_models</span><span class="op">$</span><span class="va">zip_aic</span> <span class="op">&lt;</span> <span class="va">bootstrap_models</span><span class="op">$</span><span class="va">glm_aic</span><span class="op">)</span></span>
-<span><span class="co">## [1] 1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## [1] 1</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>It seems definitive from these results that accounting for the excessive number of zero counts is a good idea.</p>
+<p>A partir de estos resultados, parece definitivo que tener en cuenta el número excesivo de conteos de cero es una buena idea.</p>
 <div class="rmdnote">
-<p>We could have used <code>fit_resamples()</code> or a workflow set to conduct these computations. In this section, we used <code>mutate()</code> and <code>map()</code> to compute the models to demonstrate how one might use tidymodels tools for models that are not supported by one of the <span class="pkg">parsnip</span> packages.</p>
+<p>Podríamos haber usado <code>fit_resamples()</code> o un conjunto de flujo de trabajo para realizar estos cálculos. En esta sección, usamos <code>mutate()</code> y <code>map()</code> para calcular los modelos y demostrar cómo se pueden usar las herramientas tidymodels para modelos que no son compatibles con uno de los paquetes <span class="pkg">parsnip</span>.</p>
 </div>
-<p>Since we have computed the resampled model fits, let’s create bootstrap intervals for the zero probability model coefficients (i.e., the <span class="math inline">\(\gamma_j\)</span>). We can extract these with the <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> method and use the <code>type = "zero"</code> option to obtain these estimates:</p>
+<p>Dado que hemos calculado los ajustes del modelo remuestreado, creemos intervalos de arranque para los coeficientes del modelo de probabilidad cero (es decir, <span class="math inline">\(\gamma_j\)</span>). Podemos extraerlos con el método <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> y usar la opción <code>type = "zero"</code> para obtener estas estimaciones:</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bootstrap_models</span> <span class="op">&lt;-</span></span>
 <span>  <span class="va">bootstrap_models</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
@@ -793,27 +806,27 @@ H_a&amp;: \text{at least one } \gamma \ne 0  \notag
 <span><span class="co">## 3 marMarried  zero   -0.112     0.365     -0.307 0.759    </span></span>
 <span><span class="co">## 4 kid5        zero    0.270     0.186      1.45  0.147    </span></span>
 <span><span class="co">## 5 phd         zero   -0.178     0.132     -1.35  0.177    </span></span>
-<span><span class="co">## 6 ment        zero   -0.123     0.0315    -3.91  0.0000935</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 6 ment        zero   -0.123     0.0315    -3.91  0.0000935</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>It’s a good idea to visualize the bootstrap distributions of the coefficients, as in <a href="#fig-zip-bootstrap">Figure&nbsp;<span>21.5</span></a>.</p>
+<p>Es una buena idea visualizar las distribuciones de arranque de los coeficientes, como en <a href="#fig-zip-bootstrap">Figura&nbsp;<span>21.5</span></a>.</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inference-zip-bootstrap_22a1f42e2b7b466d18b74e2d9ed28b4b">
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bootstrap_models</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">unnest</span><span class="op">(</span><span class="va">zero_coefs</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">geom_histogram</span><span class="op">(</span>bins <span class="op">=</span> <span class="fl">25</span>, color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu">facet_wrap</span><span class="op">(</span><span class="op">~</span> <span class="va">term</span>, scales <span class="op">=</span> <span class="st">"free_x"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">0</span>, lty <span class="op">=</span> <span class="fl">2</span>, color <span class="op">=</span> <span class="st">"gray70"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span>  <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="fl">0</span>, lty <span class="op">=</span> <span class="fl">2</span>, color <span class="op">=</span> <span class="st">"gray70"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/fig-zip-bootstrap_fa955303149be2d05eb18a2917c14126">
+<div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/fig-zip-bootstrap_bcf43db96235624411f1ff75092530a9">
 <div class="cell-output-display">
 <div id="fig-zip-bootstrap" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure"><p><img src="figures/fig-zip-bootstrap-1.png" class="img-fluid figure-img" alt="Bootstrap distributions of the ZIP model coefficients. The vertical lines indicate the observed estimates. The ment predictor that appears to be important to the model." width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;21.5: Bootstrap distributions of the ZIP model coefficients. The vertical lines indicate the observed estimates.</figcaption></figure>
+<figure class="figure"><p><img src="figures/fig-zip-bootstrap-1.png" class="img-fluid figure-img" alt="Distribuciones bootstrap de los coeficientes del modelo ZIP. Las líneas verticales indican las estimaciones observadas. El predictor de mención que parece ser importante para el modelo." width="672"></p>
+<figcaption class="figure-caption">Figura&nbsp;21.5: Distribuciones bootstrap de los coeficientes del modelo ZIP. Las líneas verticales indican las estimaciones observadas.</figcaption></figure>
 </div>
 </div>
 </div>
-<p>One of the covariates (<code>ment</code>) that appears to be important has a very skewed distribution. The extra space in some of the facets indicates there are some outliers in the estimates. This <em>might</em> occur when models did not converge; those results probably should be excluded from the resamples. For the results visualized in <a href="#fig-zip-bootstrap">Figure&nbsp;<span>21.5</span></a>, the outliers are due only to extreme parameter estimates; all of the models converged.</p>
-<p>The <span class="pkg">rsample</span> package contains a set of functions named <code>int_*()</code> that compute different types of bootstrap intervals. Since the <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> method contains standard error estimates, the bootstrap-t intervals can be computed. We’ll also compute the standard percentile intervals. By default, 90% confidence intervals are computed.</p>
+<p>Una de las covariables (<code>ment</code>) que parece ser importante tiene una distribución muy sesgada. El espacio extra en algunas de las facetas indica que hay algunos valores atípicos en las estimaciones. Esto <em>podría</em> ocurrir cuando los modelos no convergieran; esos resultados probablemente deberían excluirse de las nuevas muestras. Para los resultados visualizados en <a href="#fig-zip-bootstrap">Figura&nbsp;<span>21.5</span></a>, los valores atípicos se deben únicamente a estimaciones extremas de parámetros; todos los modelos convergieron.</p>
+<p>El paquete <span class="pkg">rsample</span> contiene un conjunto de funciones denominadas <code>int_*()</code> que calculan diferentes tipos de intervalos de arranque. Dado que el método <code><a href="https://generics.r-lib.org/reference/tidy.html">tidy()</a></code> contiene estimaciones de error estándar, se pueden calcular los intervalos bootstrap-t. También calcularemos los intervalos percentiles estándar. De forma predeterminada, se calculan intervalos de confianza del 90%.</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inference-zip-intervals_93b3cfd7d8eef688e9da2bb906fdee28">
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bootstrap_models</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">int_pctl</span><span class="op">(</span><span class="va">zero_coefs</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 6 × 6</span></span>
@@ -834,53 +847,120 @@ H_a&amp;: \text{at least one } \gamma \ne 0  \notag
 <span><span class="co">## 3 kid5        -0.211    0.218   0.599    0.05 student-t</span></span>
 <span><span class="co">## 4 marMarried  -0.988   -0.381   0.290    0.05 student-t</span></span>
 <span><span class="co">## 5 ment        -0.324   -0.162  -0.0275   0.05 student-t</span></span>
-<span><span class="co">## 6 phd         -0.274    0.0220  0.291    0.05 student-t</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## 6 phd         -0.274    0.0220  0.291    0.05 student-t</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>From these results, we can get a good idea of which predictor(s) to include in the zero count probability model. It may be sensible to refit a smaller model to assess if the bootstrap distribution for <code>ment</code> is still skewed.</p>
+<p>A partir de estos resultados, podemos tener una buena idea de qué predictores incluir en el modelo de probabilidad de conteo cero. Puede ser sensato reajustar un modelo más pequeño para evaluar si la distribución de arranque para “ment” todavía está sesgada.</p>
 </section><section id="sec-inference-options" class="level2" data-number="21.5"><h2 data-number="21.5" class="anchored" data-anchor-id="sec-inference-options">
-<span class="header-section-number">21.5</span> More Inferential Analysis</h2>
-<p>This chapter demonstrated just a small subset of what is available for inferential analysis in tidymodels and has focused on resampling and frequentist methods. Arguably, Bayesian analysis is a very effective and often superior approach for inference. A variety of Bayesian models are available via <span class="pkg">parsnip</span>. Additionally, the <span class="pkg">multilevelmod</span> package enables users to fit hierarchical Bayesian and non-Bayesian models (e.g., mixed models). The <span class="pkg">broom.mixed</span> and <span class="pkg">tidybayes</span> packages are excellent tools for extracting data for plots and summaries. Finally, for data sets with a single hierarchy, such as simple longitudinal or repeated measures data, <span class="pkg">rsample</span>’s <code>group_vfold_cv()</code> function facilitates straightforward out-of-sample characterizations of model performance.</p>
+<span class="header-section-number">21.5</span> Más análisis inferencial</h2>
+<p>Este capítulo demostró solo un pequeño subconjunto de lo que está disponible para el análisis inferencial en modelos tidy y se ha centrado en los métodos frecuentistas y de remuestreo. Podría decirse que el análisis bayesiano es un enfoque de inferencia muy eficaz y, a menudo, superior. Hay una variedad de modelos bayesianos disponibles a través de <span class="pkg">parsnip</span>. Además, el paquete <span class="pkg">multilevelmod</span> permite a los usuarios ajustarse a modelos jerárquicos bayesianos y no bayesianos (por ejemplo, modelos mixtos). Los paquetes <span class="pkg">broom.mixed</span> y <span class="pkg">tidybayes</span> son excelentes herramientas para extraer datos para gráficos y resúmenes. Finalmente, para conjuntos de datos con una única jerarquía, como datos de medidas longitudinales o repetidas simples, la función <code>group_vfold_cv()</code> de <span class="pkg">rsample</span> facilita caracterizaciones directas fuera de la muestra del rendimiento del modelo.</p>
 </section><section id="sec-inference-summary" class="level2" data-number="21.6"><h2 data-number="21.6" class="anchored" data-anchor-id="sec-inference-summary">
-<span class="header-section-number">21.6</span> Chapter Summary</h2>
-<p>The tidymodels framework is for more than predictive modeling alone. Packages and functions from tidymodels can be used for hypothesis testing, as well as fitting and assessing inferential models. The tidymodels framework provides support for working with non-tidymodels R models, and can help assess the statistical qualities of your models.</p>
+<span class="header-section-number">21.6</span> Resumen del capítulo</h2>
+<p>El marco tidymodels sirve para algo más que el modelado predictivo. Los paquetes y funciones de tidymodels se pueden utilizar para probar hipótesis, así como para ajustar y evaluar modelos inferenciales. El marco tidymodels brinda soporte para trabajar con modelos R que no son tidymodels y puede ayudar a evaluar las cualidades estadísticas de sus modelos.</p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-claeskens2016statistical" class="csl-entry" role="listitem">
-Claeskens, G. 2016. <span>“Statistical Model Choice.”</span> <em>Annual Review of Statistics and Its Application</em> 3: 233–56.
+Claeskens, G. 2016. <span>«Statistical model choice»</span>. <em>Annual Review of Statistics and its Application</em> 3: 233-56.
 </div>
 <div id="ref-davison1997bootstrap" class="csl-entry" role="listitem">
-Davison, A, and D Hinkley. 1997. <em>Bootstrap Methods and Their Application</em>. Vol. 1. Cambridge university press.
+Davison, A, y D Hinkley. 1997. <em>Bootstrap methods and their application</em>. Vol. 1. Cambridge university press.
 </div>
 <div id="ref-Dobson99" class="csl-entry" role="listitem">
-Dobson, A. 1999. <em>An Introduction to Generalized Linear Models</em>. Chapman; Hall: Boca Raton.
+Dobson, A. 1999. <em>An introduction to generalized linear models</em>. Chapman; Hall: Boca Raton.
 </div>
 <div id="ref-ModernDive" class="csl-entry" role="listitem">
-Ismay, C, and A Kim. 2021. <em>Statistical Inference via Data Science: A ModernDive into r and the Tidyverse</em>. Chapman; Hall/CRC. <a href="https://moderndive.com/">https://moderndive.com/</a>.
+Ismay, C, y A Kim. 2021. <em>Statistical Inference via Data Science: A ModernDive into R and the Tidyverse</em>. Chapman; Hall/CRC. <a href="https://moderndive.com/">https://moderndive.com/</a>.
 </div>
 <div id="ref-Lambert1992" class="csl-entry" role="listitem">
-Lambert, D. 1992. <span>“Zero-Inflated Poisson Regression, with an Application to Defects in Manufacturing.”</span> <em>Technometrics</em> 34 (1): 1–14.
+Lambert, D. 1992. <span>«Zero-Inflated Poisson Regression, with an Application to Defects in Manufacturing»</span>. <em>Technometrics</em> 34 (1): 1-14.
 </div>
 <div id="ref-Long1992" class="csl-entry" role="listitem">
-Long, J. 1992. <span>“<span class="nocase">Measures of Sex Differences in Scientific Productivity*</span>.”</span> <em>Social Forces</em> 71 (1): 159–78.
+Long, J. 1992. <span>«<span>Measures of Sex Differences in Scientific Productivity*</span>»</span>. <em>Social Forces</em> 71 (1): 159-78.
 </div>
 <div id="ref-McCullaghNelder89" class="csl-entry" role="listitem">
-McCullagh, P, and J Nelder. 1989. <em>Generalized Linear Models</em>. London: Chapman; Hall.
+McCullagh, P, y J Nelder. 1989. <em>Generalized Linear Models</em>. London: Chapman; Hall.
 </div>
 <div id="ref-Mullahy" class="csl-entry" role="listitem">
-Mullahy, J. 1986. <span>“Specification and Testing of Some Modified Count Data Models.”</span> <em>Journal of Econometrics</em> 33 (3): 341–65.
+Mullahy, J. 1986. <span>«Specification and testing of some modified count data models»</span>. <em>Journal of Econometrics</em> 33 (3): 341-65.
 </div>
 <div id="ref-pvalue" class="csl-entry" role="listitem">
-Wasserstein, R, and N Lazar. 2016. <span>“The <span>ASA</span> Statement on p-Values: Context, Process, and Purpose.”</span> <em>The American Statistician</em> 70 (2): 129–33.
+Wasserstein, R, y N Lazar. 2016. <span>«The <span>ASA</span> statement on p-values: Context, process, and purpose»</span>. <em>The American Statistician</em> 70 (2): 129-33.
 </div>
 <div id="ref-JSSv027i08" class="csl-entry" role="listitem">
-Zeileis, A, C Kleiber, and S Jackman. 2008. <span>“Regression Models for Count Data in <span>R</span>.”</span> <em>Journal of Statistical Software</em> 27 (8): 1–25. <a href="https://www.jstatsoft.org/v027/i08">https://www.jstatsoft.org/v027/i08</a>.
+Zeileis, A, C Kleiber, y S Jackman. 2008. <span>«Regression models for count data in <span>R</span>»</span>. <em>Journal of Statistical Software</em> 27 (8): 1-25. <a href="https://www.jstatsoft.org/v027/i08">https://www.jstatsoft.org/v027/i08</a>.
 </div>
 </div>
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
-<li id="fn1"><p>The <code>T</code> argument allows us to account for the time when the events (publications) were counted, which was three years for both men and women. There are more men than women in these data, but <code><a href="https://rdrr.io/r/stats/poisson.test.html">poisson.test()</a></code> has limited functionality so more sophisticated analysis can be used to account for this difference.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+<li id="fn1"><p>El argumento <code>T</code> nos permite dar cuenta del tiempo en que se contaron los eventos (publicaciones), que fue de tres años tanto para hombres como para mujeres. Hay más hombres que mujeres en estos datos, pero <code><a href="https://rdrr.io/r/stats/poisson.test.html">poisson.test()</a></code> tiene una funcionalidad limitada, por lo que se pueden utilizar análisis más sofisticados para explicar esta diferencia.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol></section></main><!-- /main --><script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -934,12 +1014,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copiado");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copiado");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
@@ -1114,7 +1194,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./20-ensemble-models.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Ensembles of Models</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos de modelos</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
