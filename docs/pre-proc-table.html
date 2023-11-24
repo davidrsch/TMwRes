@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - Apéndice A — Recommended Preprocessing</title>
+<title>Modelado Ordenado con R - Apéndice A — Preprocesamiento Recomendado</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -87,7 +87,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./pre-proc-table.html">Apéndices</a></li><li class="breadcrumb-item"><a href="./pre-proc-table.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Recommended Preprocessing</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./pre-proc-table.html">Apéndices</a></li><li class="breadcrumb-item"><a href="./pre-proc-table.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -295,13 +295,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Ensembles of Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos de modelos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inferential Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis inferencial</span></span></a>
   </div>
 </li>
       </ul>
@@ -318,13 +318,13 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Recommended Preprocessing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+ <span class="menu-text">Referencias</span></a>
   </div>
 </li>
       </ul>
@@ -338,7 +338,7 @@ div.csl-indent {
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-pre-proc-table" class="quarto-section-identifier">Apéndice A — Recommended Preprocessing</span></h1>
+<h1 class="title"><span id="sec-pre-proc-table" class="quarto-section-identifier">Apéndice A — Preprocesamiento Recomendado</span></h1>
 </div>
 
 
@@ -351,23 +351,23 @@ div.csl-indent {
   </div>
   
 
-</header><p>The type of preprocessing needed depends on the type of model being fit. For example, models that use distance functions or dot products should have all of their predictors on the same scale so that distance is measured appropriately.</p>
-<p>To learn more about each of these models, and others that might be available, see <a href="https://www.tidymodels.org/find/parsnip/" class="uri">https://www.tidymodels.org/find/parsnip/</a>.</p>
-<p>This Appendix provides recommendations for baseline levels of preprocessing that are needed for various model functions. In <a href="#tbl-preprocessing">Tabla&nbsp;<span>A.1</span></a>, the preprocessing methods are categorized as:</p>
+</header><p>El tipo de preprocesamiento necesario depende del tipo de modelo que se ajuste. Por ejemplo, los modelos que utilizan funciones de distancia o productos escalares deben tener todos sus predictores en la misma escala para que la distancia se mida adecuadamente.</p>
+<p>Para obtener más información sobre cada uno de estos modelos y otros que podrían estar disponibles, consulte <a href="https://www.tidymodels.org/find/parsnip/" class="uri">https://www.tidymodels.org/find/parsnip/</a>.</p>
+<p>Este Apéndice proporciona recomendaciones para los niveles básicos de preprocesamiento que se necesitan para diversas funciones del modelo. En <a href="#tbl-preprocessing">Tabla&nbsp;<span>A.1</span></a>, los métodos de preprocesamiento se clasifican como:</p>
 <ul>
-<li><p><strong>dummy</strong>: Do qualitative predictors require a numeric encoding (e.g., via dummy variables or other methods)?</p></li>
-<li><p><strong>zv</strong>: Should columns with a single unique value be removed?</p></li>
-<li><p><strong>impute</strong>: If some predictors are missing, should they be estimated via imputation?</p></li>
-<li><p><strong>decorrelate</strong>: If there are correlated predictors, should this correlation be mitigated? This might mean filtering out predictors, using principal component analysis, or a model-based technique (e.g., regularization).</p></li>
-<li><p><strong>normalize</strong>: Should predictors be centered and scaled?</p></li>
-<li><p><strong>transform</strong>: Is it helpful to transform predictors to be more symmetric?</p></li>
+<li><p><strong>dummy</strong>: ¿Los predictores cualitativos requieren una codificación numérica (por ejemplo, mediante variables ficticias u otros métodos)?</p></li>
+<li><p><strong>zv</strong>: ¿Deberían eliminarse las columnas con un único valor único?</p></li>
+<li><p><strong>impute</strong>: Si faltan algunos predictores, ¿deberían estimarse mediante imputación?</p></li>
+<li><p><strong>decorrelate</strong>: Si existen predictores correlacionados, ¿debería mitigarse esta correlación? Esto podría significar filtrar los predictores, utilizar el análisis de componentes principales o una técnica basada en modelos (por ejemplo, regularización).</p></li>
+<li><p><strong>normalize</strong>: ¿Deben centrarse y escalarse los predictores?</p></li>
+<li><p><strong>transform</strong>: ¿Es útil transformar los predictores para que sean más simétricos?</p></li>
 </ul>
-<p>The information in <a href="#tbl-preprocessing">Tabla&nbsp;<span>A.1</span></a> is not exhaustive and somewhat depends on the implementation. For example, as noted below the table, some models may not require a particular preprocessing operation but the implementation may require it. In the table, ✔ indicates that the method is required for the model and × indicates that it is not. The ◌ symbol means that the model <em>may</em> be helped by the technique but it is not required.</p>
-<div class="cell" data-layout-align="center" data-hash="pre-proc-table_cache/html/tbl-preprocessing_fceadce8628b2d8e8d48f1f45b915666">
+<p>La información en <a href="#tbl-preprocessing">Tabla&nbsp;<span>A.1</span></a> no es exhaustiva y depende en cierta medida de la implementación. Por ejemplo, como se indica debajo de la tabla, es posible que algunos modelos no requieran una operación de preprocesamiento particular, pero la implementación puede requerirla. En la tabla, ✔ indica que el método es necesario para el modelo y × indica que no. El símbolo ◌ significa que la técnica <em>puede</em> ayudar al modelo, pero no es necesario.</p>
+<div class="cell" data-layout-align="center" data-hash="pre-proc-table_cache/html/tbl-preprocessing_c3371cca99fd60afce15394cacd65865">
 <div class="cell-output-display">
 <div id="tbl-preprocessing" class="anchored">
 <table class="table table-sm table-striped small" data-quarto-postprocess="true">
-<caption>Tabla&nbsp;A.1: Preprocessing methods for different models.</caption>
+<caption>Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.</caption>
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">dummy</th>
@@ -592,15 +592,15 @@ div.csl-indent {
 
 </div>
 </div>
-<p>Footnotes:</p>
+<p>Notas a pie de página:</p>
 <ol type="1">
-<li>Decorrelating predictors may not help improve performance. However, fewer correlated predictors can improve the estimation of variance importance scores (see <a href="https://bookdown.org/max/FES/recursive-feature-elimination.html#fig:greedy-rf-imp">Fig. 11.4</a> of <span class="citation" data-cites="fes">Kuhn y Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span>). Essentially, the selection of highly correlated predictors is almost random.</li>
-<li>The needed preprocessing for these models depends on the implementation. Specifically:</li>
+<li>Es posible que la descorrelación de predictores no ayude a mejorar el rendimiento. Sin embargo, menos predictores correlacionados pueden mejorar la estimación de las puntuaciones de importancia de la varianza (ver <a href="https://bookdown.org/max/FES/recursive-feature-elimination.html#fig:greedy-rf-imp">Fig. 11.4</a> de <span class="citation" data-cites="fes">Kuhn y Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span>). Básicamente, la selección de predictores altamente correlacionados es casi aleatoria.</li>
+<li>El preprocesamiento necesario para estos modelos depende de la implementación. Específicamente:</li>
 </ol>
 <ul>
 <li>
-<em>Theoretically</em>, any tree-based model does not require imputation. However, many tree ensemble implementations require imputation.</li>
-<li>While tree-based boosting methods generally do not require the creation of dummy variables, models using the <code>xgboost</code> engine do.</li>
+<em>Teóricamente</em>, cualquier modelo basado en árboles no requiere imputación. Sin embargo, muchas implementaciones de conjuntos de árboles requieren imputación.</li>
+<li>Si bien los métodos de impulso basados en árboles generalmente no requieren la creación de variables ficticias, los modelos que utilizan el motor “xgboost” sí la requieren.</li>
 </ul>
 
 
@@ -911,12 +911,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./21-inferential-analysis.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inferential Analysis</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis inferencial</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./references.html" class="pagination-link">
-        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text">Referencias</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
