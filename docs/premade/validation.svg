@@ -39,21 +39,21 @@
         <ellipse cx="-201.5" cy="3185" rx="57.7500922788345" ry="58.7500938767364" fill="white"/>
         <ellipse cx="-201.5" cy="3185" rx="57.7500922788345" ry="58.7500938767364" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-242.7 3175.776)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="13.496" y="15">All Data</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="-10" y="15">Todos los Datos</tspan>
         </text>
       </g>
       <g id="Graphic_750" filter="url(#Shadow)">
         <path d="M -379.25 3296.75 L -320.99782 3337.3453 L -343.2481 3403.0297 L -415.2519 3403.0297 L -437.5022 3337.3453 Z" fill="#ffeabb"/>
         <path d="M -379.25 3296.75 L -320.99782 3337.3453 L -343.2481 3403.0297 L -415.2519 3403.0297 L -437.5022 3337.3453 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-423.25 3352.151)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="16.144" y="15">Training</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="16.144" y="15">Entrenar</tspan>
         </text>
       </g>
       <g id="Graphic_749" filter="url(#Shadow)">
         <path d="M -10.75 3296.75 L 47.50218 3337.3453 L 25.251893 3403.0297 L -46.75189 3403.0297 L -69.00218 3337.3453 Z" fill="#e5e6ff"/>
         <path d="M -10.75 3296.75 L 47.50218 3337.3453 L 25.251893 3403.0297 L -46.75189 3403.0297 L -69.00218 3337.3453 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-54.75 3352.151)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="18.664" y="15">Testing</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="18.664" y="15">Probar</tspan>
         </text>
       </g>
       <g id="Line_748">
@@ -66,7 +66,7 @@
         <ellipse cx="-203" cy="3355.5" rx="64.0001022657214" ry="35.5000567255173" fill="#e5e6ff"/>
         <ellipse cx="-203" cy="3355.5" rx="64.0001022657214" ry="35.5000567255173" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-249.2 3346.276)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="11.528001" y="15">Validation</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="11.528001" y="15">Validar</tspan>
         </text>
       </g>
       <g id="Line_753">

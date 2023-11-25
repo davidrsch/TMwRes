@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:dc="http://purl.org/dc/elements/1.1/" version="1.1" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" viewBox="-535.5 -701.5 869.75 527.75" width="869.75" height="527.75">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-535.5 -701.5 869.75 527.75" width="869.75" height="527.75">
   <defs>
     <filter id="Shadow" filterUnits="userSpaceOnUse" x="-535.5" y="-701.5">
       <feGaussianBlur in="SourceAlpha" result="blur" stdDeviation="1.308"/>
@@ -39,21 +39,21 @@
         <ellipse cx="-43.5" cy="-641.25" rx="57.7500922788345" ry="58.7500938767363" fill="white"/>
         <ellipse cx="-43.5" cy="-641.25" rx="57.7500922788345" ry="58.7500938767363" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-84.7 -650.474)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="13.496" y="15">All Data</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="-10" y="15">Todos los Datos</tspan>
         </text>
       </g>
       <g id="Graphic_723" filter="url(#Shadow)">
         <path d="M -107.25 -529.5 L -48.99782 -488.9047 L -71.24811 -423.2203 L -143.2519 -423.2203 L -165.50218 -488.9047 Z" fill="#ffeabb"/>
         <path d="M -107.25 -529.5 L -48.99782 -488.9047 L -71.24811 -423.2203 L -143.2519 -423.2203 L -165.50218 -488.9047 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-151.25 -474.099)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="16.144" y="15">Training</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="-5" y="0">Entrenamiento</tspan>
         </text>
       </g>
       <g id="Graphic_722" filter="url(#Shadow)">
         <path d="M 207.25 -529.5 L 265.50218 -488.9047 L 243.2519 -423.2203 L 171.2481 -423.2203 L 148.99782 -488.9047 Z" fill="#e5e6ff"/>
         <path d="M 207.25 -529.5 L 265.50218 -488.9047 L 243.2519 -423.2203 L 171.2481 -423.2203 L 148.99782 -488.9047 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(163.25 -474.099)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="18.664" y="15">Testing</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="23" y="0">Prueba</tspan>
         </text>
       </g>
       <g id="Line_721">
@@ -66,21 +66,21 @@
         <ellipse cx="-335.25" cy="-214.75" rx="61.2500978714911" ry="35.5000567255173" fill="#e5e6ff"/>
         <ellipse cx="-335.25" cy="-214.75" rx="61.2500978714911" ry="35.5000567255173" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-379.25 -223.974)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x=".432" y="15">Assessment</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x=".432" y="15">Evaluación</tspan>
         </text>
       </g>
       <g id="Graphic_718" filter="url(#Shadow)">
         <ellipse cx="-468" cy="-214.75" rx="64.0001022657214" ry="35.5000567255173" fill="#ffeabb"/>
         <ellipse cx="-468" cy="-214.75" rx="64.0001022657214" ry="35.5000567255173" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-514.2 -223.974)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="16.72" y="15">Analysis</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="16.72" y="15">Análisis</tspan>
         </text>
       </g>
       <g id="Graphic_717" filter="url(#Shadow)">
         <rect x="-469.75" y="-359" width="139" height="56.5" fill="white"/>
         <rect x="-469.75" y="-359" width="139" height="56.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-464.75 -339.974)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="22.116" y="15">Resample 1</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="22.116" y="15">Remuestra 1</tspan>
         </text>
       </g>
       <g id="Line_716">
@@ -96,21 +96,21 @@
         <ellipse cx="-37.25" cy="-214.75" rx="64.0001022657214" ry="35.5000567255173" fill="#e5e6ff"/>
         <ellipse cx="-37.25" cy="-214.75" rx="64.0001022657214" ry="35.5000567255173" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-83.45 -223.974)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="2.6320008" y="15">Assessment</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="2.6320008" y="15">Evaluación</tspan>
         </text>
       </g>
       <g id="Graphic_712" filter="url(#Shadow)">
         <ellipse cx="-172.75" cy="-214.75" rx="64.0001022657214" ry="35.5000567255173" fill="#ffeabb"/>
         <ellipse cx="-172.75" cy="-214.75" rx="64.0001022657214" ry="35.5000567255173" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-218.95 -223.974)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="16.72" y="15">Analysis</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="16.72" y="15">Análisis</tspan>
         </text>
       </g>
       <g id="Graphic_711" filter="url(#Shadow)">
         <rect x="-174.5" y="-359" width="139" height="56.5" fill="white"/>
         <rect x="-174.5" y="-359" width="139" height="56.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-169.5 -339.974)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="22.116" y="15">Resample 2</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="22.116" y="15">Remuestra 2</tspan>
         </text>
       </g>
       <g id="Line_710">
@@ -126,21 +126,21 @@
         <ellipse cx="266.75" cy="-214.75" rx="64.0001022657214" ry="35.5000567255173" fill="#e5e6ff"/>
         <ellipse cx="266.75" cy="-214.75" rx="64.0001022657214" ry="35.5000567255173" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(220.55 -223.974)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="2.6320008" y="15">Assessment</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="2.6320008" y="15">Evaluación</tspan>
         </text>
       </g>
       <g id="Graphic_706" filter="url(#Shadow)">
         <ellipse cx="131.25" cy="-214.75" rx="64.0001022657214" ry="35.5000567255173" fill="#ffeabb"/>
         <ellipse cx="131.25" cy="-214.75" rx="64.0001022657214" ry="35.5000567255173" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(85.05 -223.974)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="16.72" y="15">Analysis</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="16.72" y="15">Análisis</tspan>
         </text>
       </g>
       <g id="Graphic_705" filter="url(#Shadow)">
         <rect x="129.5" y="-359" width="139" height="56.5" fill="white"/>
         <rect x="129.5" y="-359" width="139" height="56.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(134.5 -339.974)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="21.084" y="15">Resample </tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="21.084" y="15">Remuestra </tspan>
           <tspan font-family="Helvetica Neue" font-size="16" font-style="italic" font-weight="400" fill="black" y="15">B</tspan>
         </text>
       </g>

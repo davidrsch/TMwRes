@@ -28,7 +28,7 @@
       </g>
       <g id="Graphic_667">
         <text transform="translate(-113.03865 1081)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="29842795e-20" y="15">Original Data (ordered by time)</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="29842795e-20" y="15">Datos Originales (ordenados secuencialmente)</tspan>
         </text>
       </g>
       <g id="Group_2023">
@@ -209,7 +209,7 @@
       </g>
       <g id="Graphic_2055">
         <text transform="translate(-372 1305.552)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="7105427e-21" y="15">Resample 1</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="7105427e-21" y="15">Remuestra 1</tspan>
         </text>
       </g>
       <g id="Graphic_2276"/>
@@ -295,7 +295,7 @@
       </g>
       <g id="Graphic_2260">
         <text transform="translate(-372 1349.552)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="7105427e-21" y="15">Resample 2</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="7105427e-21" y="15">Remuestra 2</tspan>
         </text>
       </g>
       <g id="Graphic_2293"/>
@@ -381,7 +381,7 @@
       </g>
       <g id="Graphic_2277">
         <text transform="translate(-372 1393.552)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="7105427e-21" y="15">Resample 3</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="7105427e-21" y="15">Remuestra 3</tspan>
         </text>
       </g>
       <g id="Graphic_2310"/>
@@ -467,7 +467,7 @@
       </g>
       <g id="Graphic_2294">
         <text transform="translate(-372 1437.552)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="7105427e-21" y="15">Resample 4</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="7105427e-21" y="15">Remuestra 4</tspan>
         </text>
       </g>
       <g id="Graphic_2327"/>
@@ -553,19 +553,19 @@
       </g>
       <g id="Graphic_2311">
         <text transform="translate(-372 1481.552)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="7105427e-21" y="15">Resample 5</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="7105427e-21" y="15">Remuestra 5</tspan>
         </text>
       </g>
       <g id="Graphic_2345">
         <text transform="translate(-140 1241.776)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="7.196" y="15">Model Fit Using</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="7.196" y="15">Ajustar Modelo Usando</tspan>
         </text>
       </g>
       <g id="Graphic_2346">
         <text transform="translate(103 1209.328)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="17.38" y="15">Estimate </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="2.572" y="33.448">Performance </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="27.908" y="51.895996">Using</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="17.38" y="15">Estimar</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="2.572" y="33.448">Rendimiento</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="15" y="51.895996">Usando</tspan>
         </text>
       </g>
       <g id="Line_2347">

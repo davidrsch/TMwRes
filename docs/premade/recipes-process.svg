@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" viewBox="-16 317.5 1093 454.84" width="1093" height="454.84">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="-16 317.5 1093 454.84" width="1093" height="454.84">
   <defs>
     <font-face font-family="Menlo" font-size="40" panose-1="2 11 6 9 3 8 4 2 2 4" units-per-em="1000" underline-position="-63.47656" underline-thickness="43.94531" slope="0" x-height="546.875" cap-height="729.0039" ascent="928.2227" descent="-235.83984" font-weight="400">
       <font-face-src>
@@ -58,25 +58,27 @@
       </g>
       <g id="Graphic_12">
         <text transform="translate(-8 495.92584)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="40" font-weight="700" fill="black" x="30.43" y="39">Defines</tspan>
-          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" y="39"> the </tspan>
-          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" x="9.69" y="87.16028">preprocessing</tspan>
+          <tspan font-family="Helvetica Neue" font-size="40" font-weight="700" fill="black" x="30.43" y="39">Define</tspan>
+          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" y="39"> el </tspan>
+          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" x="15" y="87.16028">preproceso</tspan>
         </text>
       </g>
       <g id="Graphic_13">
         <text transform="translate(387.5 471.86584)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="40" font-weight="700" fill="black" x="36.05" y="39">Calculates</tspan>
+          <tspan font-family="Helvetica Neue" font-size="40" font-weight="700" fill="black" x="36.05" y="39">Calcula</tspan>
           <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" y="39"> </tspan>
-          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" x="11.17" y="87.16028">statistics from </tspan>
-          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" x="4.13" y="135.28027">the training set</tspan>
+          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" x="-20" y="87.16028">estadísticas del</tspan>
+          <tspan xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" x="4.13" y="135.28027">conjunto de</tspan>
+<tspan xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" x="-15" y="183">entrenamiento</tspan>
         </text>
       </g>
       <g id="Graphic_14">
         <text transform="translate(767 471.86584)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="40" font-weight="700" fill="black" x="32.35" y="39">Applies</tspan>
-          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" y="39"> the </tspan>
-          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" x="9.69" y="87.16028">preprocessing </tspan>
-          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" x="31.17" y="135.28027">to data sets</tspan>
+          <tspan font-family="Helvetica Neue" font-size="40" font-weight="700" fill="black" x="32.35" y="39">Aplica</tspan>
+          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" y="39"> el </tspan>
+          <tspan font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" x="9.69" y="87.16028">preproceso</tspan>
+          <tspan xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" x="-20" y="135.28027">a los conjuntos</tspan>
+<tspan xmlns="http://www.w3.org/2000/svg" font-family="Helvetica Neue" font-size="40" font-weight="400" fill="black" x="32.17" y="183">de datos</tspan>
         </text>
       </g>
       <g id="Line_15">
@@ -84,29 +86,29 @@
       </g>
       <g id="Graphic_18">
         <text transform="translate(-11 731.5)" fill="#797979">
-          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="#797979" x="24.52" y="29">(returns a recipe)</tspan>
+          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="#797979" x="24.52" y="29">(devuelve una receta)</tspan>
         </text>
       </g>
       <g id="Graphic_17">
         <text transform="translate(387.5 731.5)" fill="#797979">
-          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="#797979" x="24.52" y="29">(returns a recipe)</tspan>
+          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="#797979" x="-25" y="29">(devuelve una receta)</tspan>
         </text>
       </g>
       <g id="Graphic_16">
         <text transform="translate(767 731.5)" fill="#797979">
-          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="#797979" x="28.405" y="29">(returns a tibble)</tspan>
+          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="#797979" x="-10" y="29">(devuelve un tibble)</tspan>
         </text>
       </g>
       <g id="Graphic_20">
         <text transform="translate(386 673)" fill="#797979">
-          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="#797979" x="4.826699" y="29">Analogous to </tspan>
-          <tspan font-family="Menlo" font-size="26" font-weight="400" fill="#b34400" y="29">fit()</tspan>
+          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="#797979" x="4.826699" y="35">Anólogos a</tspan>
+          <tspan font-family="Menlo" font-size="26" font-weight="400" fill="#b34400" y="35">fit()</tspan>
         </text>
       </g>
       <g id="Graphic_19">
-        <text transform="translate(735.5 673)" fill="#797979">
-          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="#797979" x="5.0200586" y="29">Analogous to </tspan>
-          <tspan font-family="Menlo" font-size="26" font-weight="400" fill="#b34400" y="29">predict()</tspan>
+        <text xmlns="http://www.w3.org/2000/svg" transform="translate(735.5 673)" fill="#797979">
+          <tspan font-family="Helvetica Neue" font-size="30" font-weight="400" fill="#797979" x="45" y="35">Anólogos a</tspan>
+          <tspan font-family="Menlo" font-size="26" font-weight="400" fill="#b34400" y="35">fit()</tspan>
         </text>
       </g>
     </g>

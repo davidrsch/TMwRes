@@ -34,22 +34,22 @@
         <ellipse cx="-136.5" cy="2119" rx="57.7500922788345" ry="58.7500938767365" fill="white"/>
         <ellipse cx="-136.5" cy="2119" rx="57.7500922788345" ry="58.7500938767365" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-177.7 2109.776)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="13.496" y="15">All Data</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="-10" y="15">Todos los Datos</tspan>
         </text>
       </g>
       <g id="Graphic_2374" filter="url(#Shadow)">
         <path d="M -283.25 2230.75 L -224.99782 2271.3453 L -247.2481 2337.0297 L -319.2519 2337.0297 L -341.5022 2271.3453 Z" fill="#ffeabb"/>
         <path d="M -283.25 2230.75 L -224.99782 2271.3453 L -247.2481 2337.0297 L -319.2519 2337.0297 L -341.5022 2271.3453 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-327.25 2276.927)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="31.112" y="15">Not </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="18.664" y="33.448">Testing</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="31.112" y="15">No</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="18.664" y="33.448">Prueba</tspan>
         </text>
       </g>
       <g id="Graphic_2373" filter="url(#Shadow)">
         <path d="M 9.25 2230.75 L 67.50218 2271.3453 L 45.25189 2337.0297 L -26.751893 2337.0297 L -49.00218 2271.3453 Z" fill="#e5e6ff"/>
         <path d="M 9.25 2230.75 L 67.50218 2271.3453 L 45.25189 2337.0297 L -26.751893 2337.0297 L -49.00218 2271.3453 Z" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-34.75 2286.151)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="18.664" y="15">Testing</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="18.664" y="15">Probar</tspan>
         </text>
       </g>
       <g id="Line_2372">
@@ -62,21 +62,21 @@
         <ellipse cx="-213.25" cy="2545.5" rx="64.0001022657214" ry="35.5000567255173" fill="#e5e6ff"/>
         <ellipse cx="-213.25" cy="2545.5" rx="64.0001022657214" ry="35.5000567255173" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-259.45 2536.276)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="11.528001" y="15">Validation</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="11.528001" y="15">Validar</tspan>
         </text>
       </g>
       <g id="Graphic_2363" filter="url(#Shadow)">
         <ellipse cx="-348.75" cy="2545.5" rx="64.0001022657214" ry="35.5000567255173" fill="#ffeabb"/>
         <ellipse cx="-348.75" cy="2545.5" rx="64.0001022657214" ry="35.5000567255173" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-394.95 2536.276)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="18.344" y="15">Training</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="18.344" y="15">Entrenar</tspan>
         </text>
       </g>
       <g id="Graphic_2362" filter="url(#Shadow)">
         <rect x="-350.5" y="2401.25" width="139" height="56.5" fill="white"/>
         <rect x="-350.5" y="2401.25" width="139" height="56.5" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
         <text transform="translate(-345.5 2420.276)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="34.724" y="15">Partition</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="34.724" y="15">Partición</tspan>
         </text>
       </g>
       <g id="Line_2361">

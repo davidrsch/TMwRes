@@ -20,20 +20,20 @@
       <title>Layer 1</title>
       <g id="Graphic_1705">
         <text transform="translate(-347 683.896)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="4.512" y="15">Model Fit </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="17.408" y="33.448">Using</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="-13" y="15">Ajustar Modelo</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="10" y="33.448">Usando</tspan>
         </text>
       </g>
       <g id="Graphic_1704">
         <text transform="translate(-360 835.896)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="17.38" y="15">Estimate </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="2.572" y="33.448">Performance </tspan>
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="27.908" y="51.895996">Using</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="17.38" y="15">Estimar</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="2.572" y="33.448">Rendimiento</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="18" y="51.895996">Usando</tspan>
         </text>
       </g>
       <g id="Graphic_1703">
         <text transform="translate(-223.304 589.328)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Bootstrap Iteration 1</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Iteración Bootstrap 1</tspan>
         </text>
       </g>
       <g id="Line_1514">
@@ -995,12 +995,12 @@
       </g>
       <g id="Graphic_2020">
         <text transform="translate(-31 589)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Bootstrap Iteration 2</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Iteración Bootstrap 2</tspan>
         </text>
       </g>
       <g id="Graphic_2021">
         <text transform="translate(161.304 588.672)" fill="black">
-          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Bootstrap Iteration 3</tspan>
+          <tspan font-family="Helvetica Neue" font-size="16" font-weight="400" fill="black" x="0" y="15">Iteración Bootstrap 3</tspan>
         </text>
       </g>
     </g>
