@@ -683,7 +683,7 @@ En nuestra implementación, la vecindad se determina escalando el candidato actu
 
 Para ilustrar, usaremos los dos parámetros de ajuste principales `r pkg(glmnet)`:
 
--   El importe de la regularización total (`penalty`). El rango predeterminado para este parámetro es $10^{`r penalty()$range\[\[1\]\]`}$ a $10^{`r penalty()$range[[2]]`}$. Es típico utilizar una transformación logarítmica (base-10) para este parámetro.
+-   El importe de la regularización total (`penalty`). El rango predeterminado para este parámetro es $10^{`r penalty()$range[[1]]`}$ a $10^{`r penalty()$range[[2]]`}$. Es típico utilizar una transformación logarítmica (base-10) para este parámetro.
 
 -   La proporción de la pena de lazo (`mixture`). Esto está acotado en cero y uno sin transformación.
 

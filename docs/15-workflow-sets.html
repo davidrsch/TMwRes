@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 15&nbsp; Probando muchos modelos</title>
+<title>Modelado Ordenado con R - 15&nbsp; Probando Muchos Modelos</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -120,7 +120,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">TOOLS FOR CREATING EFFECTIVE MODELS</a></li><li class="breadcrumb-item"><a href="./15-workflow-sets.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando muchos modelos</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./15-workflow-sets.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -181,19 +181,19 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software para modelar</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una introducción tidyverse</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span></a>
   </div>
 </li>
       </ul>
@@ -210,37 +210,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo de Modelado</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería de Características con recipes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar la Eficacia del Modelo</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></a>
   </div>
 </li>
       </ul>
@@ -248,7 +248,7 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">TOOLS FOR CREATING EFFECTIVE MODELS</span></a>
+ <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -257,37 +257,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear para Evaluar el Rendimiento</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación de Modelos con Remuestreo</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste de Modelos y los Peligros del Sobreajuste</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda de cuadrícula</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda iterativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando muchos modelos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></a>
   </div>
 </li>
       </ul>
@@ -295,7 +295,7 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">BEYOND THE BASICS</span></a>
+ <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -304,37 +304,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción de Dimensionalidad</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Encoding Categorical Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explaining Models and Predictions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">When Should You Trust Your Predictions?</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Ensembles of Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inferential Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></a>
   </div>
 </li>
       </ul>
@@ -351,13 +351,13 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Recommended Preprocessing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+ <span class="menu-text">Referencias</span></a>
   </div>
 </li>
       </ul>
@@ -370,17 +370,17 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-<li><a href="#modelado-de-la-resistencia-de-una-mezcla-de-hormig%C3%B3n" id="toc-modelado-de-la-resistencia-de-una-mezcla-de-hormigón" class="nav-link active" data-scroll-target="#modelado-de-la-resistencia-de-una-mezcla-de-hormig%C3%B3n"><span class="header-section-number">15.1</span> Modelado de la resistencia de una mezcla de hormigón</a></li>
-  <li><a href="#crear-el-conjunto-de-flujo-de-trabajo" id="toc-crear-el-conjunto-de-flujo-de-trabajo" class="nav-link" data-scroll-target="#crear-el-conjunto-de-flujo-de-trabajo"><span class="header-section-number">15.2</span> Crear el conjunto de flujo de trabajo</a></li>
-  <li><a href="#ajuste-y-evaluaci%C3%B3n-de-los-modelos" id="toc-ajuste-y-evaluación-de-los-modelos" class="nav-link" data-scroll-target="#ajuste-y-evaluaci%C3%B3n-de-los-modelos"><span class="header-section-number">15.3</span> Ajuste y evaluación de los modelos</a></li>
-  <li><a href="#sec-racing-example" id="toc-sec-racing-example" class="nav-link" data-scroll-target="#sec-racing-example"><span class="header-section-number">15.4</span> Modelos de detección eficiente</a></li>
-  <li><a href="#finalizando-un-modelo" id="toc-finalizando-un-modelo" class="nav-link" data-scroll-target="#finalizando-un-modelo"><span class="header-section-number">15.5</span> Finalizando un modelo</a></li>
-  <li><a href="#sec-workflow-sets-summary" id="toc-sec-workflow-sets-summary" class="nav-link" data-scroll-target="#sec-workflow-sets-summary"><span class="header-section-number">15.6</span> Resumen del capítulo</a></li>
+<li><a href="#modelado-de-la-resistencia-de-una-mezcla-de-hormig%C3%B3n" id="toc-modelado-de-la-resistencia-de-una-mezcla-de-hormigón" class="nav-link active" data-scroll-target="#modelado-de-la-resistencia-de-una-mezcla-de-hormig%C3%B3n"><span class="header-section-number">15.1</span> Modelado De La Resistencia De Una Mezcla De Hormigón</a></li>
+  <li><a href="#crear-el-conjunto-de-flujo-de-trabajo" id="toc-crear-el-conjunto-de-flujo-de-trabajo" class="nav-link" data-scroll-target="#crear-el-conjunto-de-flujo-de-trabajo"><span class="header-section-number">15.2</span> Crear El Conjunto De Flujo De Trabajo</a></li>
+  <li><a href="#ajuste-y-evaluaci%C3%B3n-de-los-modelos" id="toc-ajuste-y-evaluación-de-los-modelos" class="nav-link" data-scroll-target="#ajuste-y-evaluaci%C3%B3n-de-los-modelos"><span class="header-section-number">15.3</span> Ajuste Y Evaluación De Los Modelos</a></li>
+  <li><a href="#sec-racing-example" id="toc-sec-racing-example" class="nav-link" data-scroll-target="#sec-racing-example"><span class="header-section-number">15.4</span> Modelos De Detección Eficiente</a></li>
+  <li><a href="#finalizando-un-modelo" id="toc-finalizando-un-modelo" class="nav-link" data-scroll-target="#finalizando-un-modelo"><span class="header-section-number">15.5</span> Finalizando Un Modelo</a></li>
+  <li><a href="#sec-workflow-sets-summary" id="toc-sec-workflow-sets-summary" class="nav-link" data-scroll-target="#sec-workflow-sets-summary"><span class="header-section-number">15.6</span> Resumen Del Capítulo</a></li>
   </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-workflow-sets" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando muchos modelos</span></span></h1>
+<h1 class="title"><span id="sec-workflow-sets" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></h1>
 </div>
 
 
@@ -393,15 +393,15 @@ div.csl-indent {
   </div>
   
 
-</header><p>Presentamos conjuntos de flujos de trabajo en el <a href="#sec-workflows">Capítulo&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-workflows</span></a> y demostramos cómo usarlos con conjuntos de datos remuestreados en el <a href="#sec-compare">Capítulo&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-compare</span></a>. En este capítulo, analizamos estos conjuntos de múltiples flujos de trabajo de modelado con más detalle y describimos un caso de uso en el que pueden resultar útiles.</p>
+</header><p>Presentamos conjuntos de flujos de trabajo en el <a href="07-the-model-workflow.html">Capítulo&nbsp;<span>7</span></a> y demostramos cómo usarlos con conjuntos de datos remuestreados en el <a href="11-comparing-models.html">Capítulo&nbsp;<span>11</span></a>. En este capítulo, analizamos estos conjuntos de múltiples flujos de trabajo de modelado con más detalle y describimos un caso de uso en el que pueden resultar útiles.</p>
 <p>Para proyectos con nuevos conjuntos de datos que aún no se han comprendido bien, es posible que un profesional de datos necesite examinar muchas combinaciones de modelos y preprocesadores. Es común tener poco o ningún conocimiento <em>a priori</em> sobre qué método funcionará mejor con un conjunto de datos novedoso.</p>
 <div class="rmdnote">
 <p>Una buena estrategia es dedicar un esfuerzo inicial a probar una variedad de enfoques de modelado, determinar qué funciona mejor y luego invertir tiempo adicional ajustando/optimizando un pequeño conjunto de modelos.</p>
 </div>
-<p>Los conjuntos de flujos de trabajo proporcionan una interfaz de usuario para crear y gestionar este proceso. También demostraremos cómo evaluar estos modelos de manera eficiente utilizando los métodos de carrera discutidos en <a href="#sec-racing-example"><span class="quarto-unresolved-ref">sec-racing-example</span></a>.</p>
+<p>Los conjuntos de flujos de trabajo proporcionan una interfaz de usuario para crear y gestionar este proceso. También demostraremos cómo evaluar estos modelos de manera eficiente utilizando los métodos de carrera discutidos en <a href="#sec-racing-example"><span>Sección&nbsp;15.4</span></a>.</p>
 <section id="modelado-de-la-resistencia-de-una-mezcla-de-hormigón" class="level2" data-number="15.1"><h2 data-number="15.1" class="anchored" data-anchor-id="modelado-de-la-resistencia-de-una-mezcla-de-hormigón">
-<span class="header-section-number">15.1</span> Modelado de la resistencia de una mezcla de hormigón</h2>
-<p>Para demostrar cómo filtrar múltiples flujos de trabajo de modelos, usaremos los datos de mezcla de concreto de <em>Applied Predictive Modeling</em> <span class="citation" data-cites="apm">(<a href="#ref-apm" role="doc-biblioref">Kuhn y Johnson 2013</a>)</span> como ejemplo. El capítulo 10 de ese libro demostró modelos para predecir la resistencia a la compresión de mezclas de concreto utilizando los ingredientes como predictores. Se evaluó una amplia variedad de modelos con diferentes conjuntos de predictores y necesidades de preprocesamiento. ¿Cómo pueden los conjuntos de flujos de trabajo facilitar este proceso de pruebas de modelos a gran escala?</p>
+<span class="header-section-number">15.1</span> Modelado De La Resistencia De Una Mezcla De Hormigón</h2>
+<p>Para demostrar cómo filtrar múltiples flujos de trabajo de modelos, usaremos los datos de mezcla de concreto de <em>Applied Predictive Modeling</em> <span class="citation" data-cites="apm">(<a href="references.html#ref-apm" role="doc-biblioref">Kuhn y Johnson 2013</a>)</span> como ejemplo. El capítulo 10 de ese libro demostró modelos para predecir la resistencia a la compresión de mezclas de concreto utilizando los ingredientes como predictores. Se evaluó una amplia variedad de modelos con diferentes conjuntos de predictores y necesidades de preprocesamiento. ¿Cómo pueden los conjuntos de flujos de trabajo facilitar este proceso de pruebas de modelos a gran escala?</p>
 <p>Primero, definamos los esquemas de división y remuestreo de datos.</p>
 <div class="cell" data-layout-align="center" data-hash="15-workflow-sets_cache/html/workflow-sets-data_6e8c2bb8e2bcf90028ab97040120f47f">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
@@ -515,7 +515,7 @@ div.csl-indent {
 <span>   <span class="fu"><a href="https://parsnip.tidymodels.org/reference/cubist_rules.html">cubist_rules</a></span><span class="op">(</span>committees <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span>, neighbors <span class="op">=</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/tune.html">tune</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>   <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"Cubist"</span><span class="op">)</span> </span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>El análisis en <span class="citation" data-cites="apm">Kuhn y Johnson (<a href="#ref-apm" role="doc-biblioref">2013</a>)</span> especifica que la red neuronal debe tener hasta 27 unidades ocultas en la capa. La función <code><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_parameter_set_dials()</a></code> extrae el conjunto de parámetros, que modificamos para tener el rango de parámetros correcto:</p>
+<p>El análisis en <span class="citation" data-cites="apm">Kuhn y Johnson (<a href="references.html#ref-apm" role="doc-biblioref">2013</a>)</span> especifica que la red neuronal debe tener hasta 27 unidades ocultas en la capa. La función <code><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_parameter_set_dials()</a></code> extrae el conjunto de parámetros, que modificamos para tener el rango de parámetros correcto:</p>
 <div class="cell" data-layout-align="center" data-hash="15-workflow-sets_cache/html/workflow-sets-param_1e9634f7232e38f0d2de9dbae8221be1">
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">nnet_param</span> <span class="op">&lt;-</span> </span>
 <span>   <span class="va">nnet_spec</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
@@ -524,7 +524,7 @@ div.csl-indent {
 </div>
 <p>¿Cómo podemos hacer coincidir estos modelos con sus recetas, ajustarlos y luego evaluar su desempeño de manera eficiente? Un conjunto de flujo de trabajo ofrece una solución.</p>
 </section><section id="crear-el-conjunto-de-flujo-de-trabajo" class="level2" data-number="15.2"><h2 data-number="15.2" class="anchored" data-anchor-id="crear-el-conjunto-de-flujo-de-trabajo">
-<span class="header-section-number">15.2</span> Crear el conjunto de flujo de trabajo</h2>
+<span class="header-section-number">15.2</span> Crear El Conjunto De Flujo De Trabajo</h2>
 <p>Los conjuntos de flujos de trabajo toman listas con nombres de preprocesadores y especificaciones de modelos y las combinan en un objeto que contiene múltiples flujos de trabajo. Hay tres tipos posibles de preprocesadores:</p>
 <ul>
 <li>Una fórmula R estándar</li>
@@ -637,7 +637,7 @@ div.csl-indent {
 <span><span class="co">## # ℹ 6 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="ajuste-y-evaluación-de-los-modelos" class="level2" data-number="15.3"><h2 data-number="15.3" class="anchored" data-anchor-id="ajuste-y-evaluación-de-los-modelos">
-<span class="header-section-number">15.3</span> Ajuste y evaluación de los modelos</h2>
+<span class="header-section-number">15.3</span> Ajuste Y Evaluación De Los Modelos</h2>
 <p>Casi todos los miembros de <code>all_workflows</code> contienen parámetros de ajuste. Para evaluar su rendimiento, podemos utilizar las funciones estándar de ajuste o remuestreo (por ejemplo, <code><a href="https://tune.tidymodels.org/reference/tune_grid.html">tune_grid()</a></code>, etc.). La función <code>workflow_map()</code> aplicará la misma función a todos los flujos de trabajo del conjunto; el valor predeterminado es <code><a href="https://tune.tidymodels.org/reference/tune_grid.html">tune_grid()</a></code>.</p>
 <p>Para este ejemplo, la búsqueda de cuadrícula se aplica a cada flujo de trabajo utilizando hasta 25 candidatos de parámetros diferentes. Hay un conjunto de opciones comunes para usar con cada ejecución de <code><a href="https://tune.tidymodels.org/reference/tune_grid.html">tune_grid()</a></code>. Por ejemplo, en el siguiente código usaremos los mismos objetos de remuestreo y control para cada flujo de trabajo, junto con un tamaño de cuadrícula de 25. La función <code>workflow_map()</code> tiene un argumento adicional llamado <code>seed</code>, que se usa para garantizar que cada ejecución de <code><a href="https://tune.tidymodels.org/reference/tune_grid.html">tune_grid()</a></code> consume los mismos números aleatorios.</p>
 <div class="cell" data-layout-align="center" data-hash="15-workflow-sets_cache/html/workflow-sets-grid_1463da9d37a0bc638fc9e71676fbb8f5">
@@ -690,7 +690,7 @@ div.csl-indent {
 <span><span class="co">## # ℹ 246 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Además, de forma predeterminada, la función clasifica todos los conjuntos de candidatos; es por eso que el mismo modelo puede aparecer varias veces en el resultado. Se puede utilizar una opción, llamada <code>select_best</code>, para clasificar los modelos utilizando su mejor combinación de parámetros de ajuste.</p>
-<p>El método <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> traza las clasificaciones; también tiene un argumento <code>select_best</code>. El gráfico en <a href="#fig-workflow-set-ranks">Figura&nbsp;<span class="quarto-unresolved-ref">fig-workflow-set-ranks</span></a> visualiza los mejores resultados para cada modelo y se genera con:</p>
+<p>El método <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> traza las clasificaciones; también tiene un argumento <code>select_best</code>. El gráfico en <a href="#fig-workflow-set-ranks">Figura&nbsp;<span>15.1</span></a> visualiza los mejores resultados para cada modelo y se genera con:</p>
 <div class="cell" data-layout-align="center" data-hash="15-workflow-sets_cache/html/workflow-sets-plot-rank_89d34a055cc0c8fbb571a7e309023368">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span></span>
 <span>   <span class="va">grid_results</span>,</span>
@@ -710,7 +710,7 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>En caso de que desee ver los resultados de los parámetros de ajuste para un modelo específico, como <a href="#fig-workflow-sets-autoplot">Figura&nbsp;<span class="quarto-unresolved-ref">fig-workflow-sets-autoplot</span></a>, el argumento <code>id</code> puede tomar un único valor de la columna <code>wflow_id</code> para qué modelo trazar:</p>
+<p>En caso de que desee ver los resultados de los parámetros de ajuste para un modelo específico, como <a href="#fig-workflow-sets-autoplot">Figura&nbsp;<span>15.2</span></a>, el argumento <code>id</code> puede tomar un único valor de la columna <code>wflow_id</code> para qué modelo trazar:</p>
 <div class="cell" data-layout-align="center" data-hash="15-workflow-sets_cache/html/workflow-sets-plot-model_bdbc1f6081f5c2e0d78a1cff127fbe5c">
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">grid_results</span>, id <span class="op">=</span> <span class="st">"Cubist"</span>, metric <span class="op">=</span> <span class="st">"rmse"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -725,8 +725,8 @@ div.csl-indent {
 <p>También hay métodos para <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions()</a></code> y <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics()</a></code>.</p>
 <p>La selección del modelo de ejemplo con nuestros datos de mezcla de concreto se ajusta a un total de modelos 12,600. Utilizando trabajadores de 4 en paralelo, el proceso de estimación tardó 8.9 horas en completarse.</p>
 </section><section id="sec-racing-example" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="sec-racing-example">
-<span class="header-section-number">15.4</span> Modelos de detección eficiente</h2>
-<p>Un método eficaz para seleccionar un gran conjunto de modelos de manera eficiente es utilizar el enfoque de carreras descrito en <a href="#sec-racing"><span class="quarto-unresolved-ref">sec-racing</span></a>. Con un flujo de trabajo configurado, podemos usar la función <code>workflow_map()</code> para este enfoque de carrera. Recuerde que después de canalizar nuestro conjunto de flujos de trabajo, el argumento que usamos es la función que se aplicará a los flujos de trabajo; en este caso, podemos usar un valor de <code>"tune_race_anova"</code>. También pasamos un objeto de control apropiado; de lo contrario, las opciones serían las mismas que el código de la sección anterior.</p>
+<span class="header-section-number">15.4</span> Modelos De Detección Eficiente</h2>
+<p>Un método eficaz para seleccionar un gran conjunto de modelos de manera eficiente es utilizar el enfoque de carreras descrito en <a href="13-grid-search.html#sec-racing"><span>Sección&nbsp;13.5.5</span></a>. Con un flujo de trabajo configurado, podemos usar la función <code>workflow_map()</code> para este enfoque de carrera. Recuerde que después de canalizar nuestro conjunto de flujos de trabajo, el argumento que usamos es la función que se aplicará a los flujos de trabajo; en este caso, podemos usar un valor de <code>"tune_race_anova"</code>. También pasamos un objeto de control apropiado; de lo contrario, las opciones serían las mismas que el código de la sección anterior.</p>
 <div class="cell" data-layout-align="center" data-hash="15-workflow-sets_cache/html/workflow-sets-race_d07246ba74b52713e1ac99c1d0ae2f9f">
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/finetune">finetune</a></span><span class="op">)</span></span>
 <span></span>
@@ -761,7 +761,7 @@ div.csl-indent {
 <span><span class="co">## 6 Cubist      &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;race[+]&gt;</span></span>
 <span><span class="co">## # ℹ 6 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Las mismas funciones útiles están disponibles para este objeto para interrogar los resultados y, de hecho, el método básico <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> que se muestra en <a href="#fig-workflow-set-racing-ranks">Figura&nbsp;<span class="quarto-unresolved-ref">fig-workflow-set-racing-ranks</span></a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> produce tendencias. similar a <a href="#fig-workflow-set-ranks">Figura&nbsp;<span class="quarto-unresolved-ref">fig-workflow-set-ranks</span></a>. Esto es producido por:</p>
+<p>Las mismas funciones útiles están disponibles para este objeto para interrogar los resultados y, de hecho, el método básico <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> que se muestra en <a href="#fig-workflow-set-racing-ranks">Figura&nbsp;<span>15.3</span></a><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> produce tendencias. similar a <a href="#fig-workflow-set-ranks">Figura&nbsp;<span>15.1</span></a>. Esto es producido por:</p>
 <div class="cell" data-layout-align="center" data-hash="15-workflow-sets_cache/html/workflow-sets-plot-race-rank_14bb48ce1c012b91f903839b53fefc42">
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span></span>
 <span>   <span class="va">race_results</span>,</span>
@@ -782,7 +782,7 @@ div.csl-indent {
 </div>
 </div>
 <p>En general, el enfoque de carreras estimó un total de 900 modelos, 7.14% del conjunto completo de 12,600 modelos en la cuadrícula completa. Como resultado, el enfoque de carrera fue 7-veces más rápido.</p>
-<p>¿Obtuvimos resultados similares? Para ambos objetos, clasificamos los resultados, los fusionamos y los comparamos entre sí en <a href="#fig-racing-concordance">Figura&nbsp;<span class="quarto-unresolved-ref">fig-racing-concordance</span></a>.</p>
+<p>¿Obtuvimos resultados similares? Para ambos objetos, clasificamos los resultados, los fusionamos y los comparamos entre sí en <a href="#fig-racing-concordance">Figura&nbsp;<span>15.4</span></a>.</p>
 <div class="cell" data-layout-align="center" data-hash="15-workflow-sets_cache/html/workflow-sets-racing-concordance_ea8bfe8971d33104053d22c6302e5db9">
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">matched_results</span> <span class="op">&lt;-</span> </span>
 <span>   <span class="fu">rank_results</span><span class="op">(</span><span class="va">race_results</span>, select_best <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
@@ -815,7 +815,7 @@ div.csl-indent {
 </div>
 <p>Si bien el enfoque de carreras seleccionó los mismos parámetros candidatos que la cuadrícula completa solo para 33.33% de los modelos, las métricas de rendimiento de los modelos seleccionados por las carreras eran casi iguales. La correlación de los valores RMSE fue 0.965 y la correlación de rango fue 0.951. Esto indica que, dentro de un modelo, había múltiples combinaciones de parámetros de ajuste que tenían resultados casi idénticos.</p>
 </section><section id="finalizando-un-modelo" class="level2" data-number="15.5"><h2 data-number="15.5" class="anchored" data-anchor-id="finalizando-un-modelo">
-<span class="header-section-number">15.5</span> Finalizando un modelo</h2>
+<span class="header-section-number">15.5</span> Finalizando Un Modelo</h2>
 <p>De manera similar a lo que hemos mostrado en capítulos anteriores, el proceso de elegir el modelo final y ajustarlo al conjunto de entrenamiento es sencillo. El primer paso es elegir un flujo de trabajo para finalizar. Dado que el modelo de árbol mejorado funcionó bien, lo extraeremos del conjunto, actualizaremos los parámetros con la mejor configuración numérica y lo ajustaremos al conjunto de entrenamiento:</p>
 <div class="cell" data-layout-align="center" data-hash="15-workflow-sets_cache/html/workflow-sets-finalize_7b22c3891306158c9673aa7c53482ba8">
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">best_results</span> <span class="op">&lt;-</span> </span>
@@ -834,7 +834,7 @@ div.csl-indent {
 <span>   <span class="fu"><a href="https://tune.tidymodels.org/reference/finalize_model.html">finalize_workflow</a></span><span class="op">(</span><span class="va">best_results</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
 <span>   <span class="fu"><a href="https://tune.tidymodels.org/reference/last_fit.html">last_fit</a></span><span class="op">(</span>split <span class="op">=</span> <span class="va">concrete_split</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Podemos ver los resultados de las métricas del conjunto de pruebas y visualizar las predicciones en <a href="#fig-concrete-test-results">Figura&nbsp;<span class="quarto-unresolved-ref">fig-concrete-test-results</span></a>.</p>
+<p>Podemos ver los resultados de las métricas del conjunto de pruebas y visualizar las predicciones en <a href="#fig-concrete-test-results">Figura&nbsp;<span>15.5</span></a>.</p>
 <div class="cell" data-layout-align="center" data-hash="15-workflow-sets_cache/html/workflow-sets-collect-test-metrics_87be896f8cfb521c0c90733a54be7183">
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="va">boosting_test_results</span><span class="op">)</span></span>
 <span><span class="co">## # A tibble: 2 × 4</span></span>
@@ -862,11 +862,11 @@ div.csl-indent {
 </div>
 <p>Aquí vemos qué tan bien se alinean la resistencia a la compresión observada y prevista para estas mezclas de concreto.</p>
 </section><section id="sec-workflow-sets-summary" class="level2" data-number="15.6"><h2 data-number="15.6" class="anchored" data-anchor-id="sec-workflow-sets-summary">
-<span class="header-section-number">15.6</span> Resumen del capítulo</h2>
+<span class="header-section-number">15.6</span> Resumen Del Capítulo</h2>
 <p>A menudo, un profesional de datos necesita considerar una gran cantidad de posibles enfoques de modelado para una tarea en cuestión, especialmente para nuevos conjuntos de datos y/o cuando hay poco conocimiento sobre qué estrategia de modelado funcionará mejor. Este capítulo ilustró cómo utilizar conjuntos de flujos de trabajo para investigar múltiples modelos o estrategias de ingeniería de características en tal situación. Los métodos de carrera pueden clasificar los modelos de manera más eficiente que ajustar cada modelo candidato que se esté considerando.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-apm" class="csl-entry" role="listitem">
 Kuhn, M, y K Johnson. 2013. <em>Applied Predictive Modeling</em>. Springer.
 </div>
@@ -1175,12 +1175,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./14-iterative-search.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda iterativa</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./16-dimensionality-reduction.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción de Dimensionalidad</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

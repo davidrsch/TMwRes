@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 14&nbsp; Búsqueda iterativa</title>
+<title>Modelado Ordenado con R - 14&nbsp; Búsqueda Iterativa</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -121,7 +121,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">TOOLS FOR CREATING EFFECTIVE MODELS</a></li><li class="breadcrumb-item"><a href="./14-iterative-search.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda iterativa</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./14-iterative-search.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -182,19 +182,19 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software para modelar</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una introducción tidyverse</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span></a>
   </div>
 </li>
       </ul>
@@ -211,37 +211,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo de Modelado</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería de Características con recipes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar la Eficacia del Modelo</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></a>
   </div>
 </li>
       </ul>
@@ -249,7 +249,7 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">TOOLS FOR CREATING EFFECTIVE MODELS</span></a>
+ <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -258,37 +258,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear para Evaluar el Rendimiento</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación de Modelos con Remuestreo</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste de Modelos y los Peligros del Sobreajuste</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda de cuadrícula</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda iterativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando muchos modelos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></a>
   </div>
 </li>
       </ul>
@@ -296,7 +296,7 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">BEYOND THE BASICS</span></a>
+ <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -305,37 +305,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción de Dimensionalidad</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Encoding Categorical Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explaining Models and Predictions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">When Should You Trust Your Predictions?</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Ensembles of Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inferential Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></a>
   </div>
 </li>
       </ul>
@@ -352,13 +352,13 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Recommended Preprocessing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+ <span class="menu-text">Referencias</span></a>
   </div>
 </li>
       </ul>
@@ -371,9 +371,9 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-<li><a href="#sec-svm" id="toc-sec-svm" class="nav-link active" data-scroll-target="#sec-svm"><span class="header-section-number">14.1</span> Un modelo de máquina de vectores de soporte</a></li>
+<li><a href="#sec-svm" id="toc-sec-svm" class="nav-link active" data-scroll-target="#sec-svm"><span class="header-section-number">14.1</span> Un Modelo De Máquina De Vectores De Soporte</a></li>
   <li>
-<a href="#optimizaci%C3%B3n-bayesiana" id="toc-optimización-bayesiana" class="nav-link" data-scroll-target="#optimizaci%C3%B3n-bayesiana"><span class="header-section-number">14.2</span> Optimización bayesiana</a>
+<a href="#optimizaci%C3%B3n-bayesiana" id="toc-optimización-bayesiana" class="nav-link" data-scroll-target="#optimizaci%C3%B3n-bayesiana"><span class="header-section-number">14.2</span> Optimización Bayesiana</a>
   <ul class="collapse">
 <li><a href="#un-modelo-de-proceso-gaussiano" id="toc-un-modelo-de-proceso-gaussiano" class="nav-link" data-scroll-target="#un-modelo-de-proceso-gaussiano"><span class="header-section-number">14.2.1</span> Un modelo de proceso gaussiano</a></li>
   <li><a href="#funciones-de-adquisici%C3%B3n" id="toc-funciones-de-adquisición" class="nav-link" data-scroll-target="#funciones-de-adquisici%C3%B3n"><span class="header-section-number">14.2.2</span> Funciones de adquisición</a></li>
@@ -381,18 +381,18 @@ div.csl-indent {
   </ul>
 </li>
   <li>
-<a href="#recocido-simulado" id="toc-recocido-simulado" class="nav-link" data-scroll-target="#recocido-simulado"><span class="header-section-number">14.3</span> Recocido simulado</a>
+<a href="#recocido-simulado" id="toc-recocido-simulado" class="nav-link" data-scroll-target="#recocido-simulado"><span class="header-section-number">14.3</span> Recocido Simulado</a>
   <ul class="collapse">
 <li><a href="#proceso-de-b%C3%BAsqueda-de-recocido-simulado" id="toc-proceso-de-búsqueda-de-recocido-simulado" class="nav-link" data-scroll-target="#proceso-de-b%C3%BAsqueda-de-recocido-simulado"><span class="header-section-number">14.3.1</span> Proceso de búsqueda de recocido simulado</a></li>
   <li><a href="#sec-tune-sim-anneal" id="toc-sec-tune-sim-anneal" class="nav-link" data-scroll-target="#sec-tune-sim-anneal"><span class="header-section-number">14.3.2</span> La función <code>tune_sim_anneal()</code></a></li>
   </ul>
 </li>
-  <li><a href="#sec-iterative-summary" id="toc-sec-iterative-summary" class="nav-link" data-scroll-target="#sec-iterative-summary"><span class="header-section-number">14.4</span> Resumen del capítulo</a></li>
+  <li><a href="#sec-iterative-summary" id="toc-sec-iterative-summary" class="nav-link" data-scroll-target="#sec-iterative-summary"><span class="header-section-number">14.4</span> Resumen Del Capítulo</a></li>
   </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-iterative-search" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda iterativa</span></span></h1>
+<h1 class="title"><span id="sec-iterative-search" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></h1>
 </div>
 
 
@@ -405,17 +405,17 @@ div.csl-indent {
   </div>
   
 
-</header><p>El <a href="#sec-grid-search">Capítulo&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-grid-search</span></a> demostró cómo la búsqueda en cuadrícula toma un conjunto predefinido de valores candidatos, los evalúa y luego elige la mejor configuración. Los métodos de búsqueda iterativos siguen una estrategia diferente. Durante el proceso de búsqueda, predicen qué valores probar a continuación.</p>
+</header><p>El <a href="13-grid-search.html">Capítulo&nbsp;<span>13</span></a> demostró cómo la búsqueda en cuadrícula toma un conjunto predefinido de valores candidatos, los evalúa y luego elige la mejor configuración. Los métodos de búsqueda iterativos siguen una estrategia diferente. Durante el proceso de búsqueda, predicen qué valores probar a continuación.</p>
 <div class="rmdnote">
 <p>Cuando la búsqueda en cuadrícula no es factible o ineficiente, los métodos iterativos son un enfoque sensato para optimizar los parámetros de ajuste.</p>
 </div>
 <p>Este capítulo describe dos métodos de búsqueda. Primero, analizamos la <em>optimización bayesiana</em>, que utiliza un modelo estadístico para predecir mejores configuraciones de parámetros. Después de eso, el capítulo describe un método de búsqueda global llamado <em>recocido simulado</em>.</p>
 <p>Usamos los mismos datos sobre las características de las células que en el capítulo anterior a modo de ilustración, pero cambiamos el modelo. Este capítulo utiliza un modelo de máquina de vectores de soporte porque proporciona bonitas visualizaciones bidimensionales de los procesos de búsqueda.</p>
 <section id="sec-svm" class="level2" data-number="14.1"><h2 data-number="14.1" class="anchored" data-anchor-id="sec-svm">
-<span class="header-section-number">14.1</span> Un modelo de máquina de vectores de soporte</h2>
-<p>Una vez más utilizamos los datos de segmentación de celdas, descritos en <a href="#sec-evaluating-grid"><span class="quarto-unresolved-ref">sec-evaluating-grid</span></a>, para modelar, con un modelo de máquina de vectores de soporte (SVM) para demostrar métodos de ajuste secuencial. Consulte <span class="citation" data-cites="apm">Kuhn y Johnson (<a href="#ref-apm" role="doc-biblioref">2013</a>)</span> para obtener más información sobre este modelo. Los dos parámetros de ajuste a optimizar son el valor del costo de SVM y el parámetro del núcleo de la función de base radial <span class="math inline">\(\sigma\)</span>. Ambos parámetros pueden tener un efecto profundo en la complejidad y el rendimiento del modelo.</p>
+<span class="header-section-number">14.1</span> Un Modelo De Máquina De Vectores De Soporte</h2>
+<p>Una vez más utilizamos los datos de segmentación de celdas, descritos en <a href="13-grid-search.html#sec-evaluating-grid"><span>Sección&nbsp;13.2</span></a>, para modelar, con un modelo de máquina de vectores de soporte (SVM) para demostrar métodos de ajuste secuencial. Consulte <span class="citation" data-cites="apm">Kuhn y Johnson (<a href="references.html#ref-apm" role="doc-biblioref">2013</a>)</span> para obtener más información sobre este modelo. Los dos parámetros de ajuste a optimizar son el valor del costo de SVM y el parámetro del núcleo de la función de base radial <span class="math inline">\(\sigma\)</span>. Ambos parámetros pueden tener un efecto profundo en la complejidad y el rendimiento del modelo.</p>
 <p>El modelo SVM utiliza un producto escalar y, por este motivo, es necesario centrar y escalar los predictores. Al igual que el modelo de perceptrón multicapa, este modelo se beneficiaría del uso de la extracción de características PCA. Sin embargo, no utilizaremos este tercer parámetro de ajuste en este capítulo para que podamos visualizar el proceso de búsqueda en dos dimensiones.</p>
-<p>Junto con los objetos utilizados anteriormente (que se muestran en <a href="#sec-grid-summary"><span class="quarto-unresolved-ref">sec-grid-summary</span></a>), los objetos tidymodels <code>svm_rec</code>, <code>svm_spec</code> y <code>svm_wflow</code> definen el proceso del modelo:</p>
+<p>Junto con los objetos utilizados anteriormente (que se muestran en <a href="13-grid-search.html#sec-grid-summary"><span>Sección&nbsp;13.6</span></a>), los objetos tidymodels <code>svm_rec</code>, <code>svm_spec</code> y <code>svm_wflow</code> definen el proceso del modelo:</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/iterative-svm-defs_194c09ab5e342e41def84d09c6b9b464">
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -454,7 +454,7 @@ div.csl-indent {
 <span>  <span class="fu">Matrix</span><span class="fu">::</span><span class="fu">update</span><span class="op">(</span>rbf_sigma <span class="op">=</span> <span class="fu">rbf_sigma</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">7</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Antes de analizar detalles específicos sobre la búsqueda iterativa y cómo funciona, exploremos la relación entre los dos parámetros de ajuste de SVM y el área bajo la curva ROC para este conjunto de datos específico. Construimos una cuadrícula regular muy grande, compuesta por 2500 valores candidatos, y evaluamos la cuadrícula mediante remuestreo. Obviamente, esto es poco práctico en el análisis de datos regular y tremendamente ineficiente. Sin embargo, aclara el camino que debe tomar el proceso de búsqueda y dónde ocurren los valores numéricamente óptimos.</p>
-<p><a href="#fig-roc-surface">Figura&nbsp;<span class="quarto-unresolved-ref">fig-roc-surface</span></a> muestra los resultados de la evaluación de esta cuadrícula, donde el color más claro corresponde a un mayor (mejor) rendimiento del modelo. Hay una gran franja en la diagonal inferior del espacio de parámetros que es relativamente plana con un rendimiento deficiente. En la parte superior derecha del espacio se produce una cresta de mejor rendimiento. El punto negro indica la mejor configuración. La transición desde la meseta de los malos resultados a la cima del mejor desempeño es muy pronunciada. También hay una fuerte caída en el área bajo la curva ROC justo a la derecha de la cresta.</p>
+<p><a href="#fig-roc-surface">Figura&nbsp;<span>14.1</span></a> muestra los resultados de la evaluación de esta cuadrícula, donde el color más claro corresponde a un mayor (mejor) rendimiento del modelo. Hay una gran franja en la diagonal inferior del espacio de parámetros que es relativamente plana con un rendimiento deficiente. En la parte superior derecha del espacio se produce una cresta de mejor rendimiento. El punto negro indica la mejor configuración. La transición desde la meseta de los malos resultados a la cima del mejor desempeño es muy pronunciada. También hay una fuerte caída en el área bajo la curva ROC justo a la derecha de la cresta.</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/fig-roc-surface_027d1ac938e76d80e748991c26be5050">
 <div class="cell-output-display">
 <div id="fig-roc-surface" class="quarto-figure quarto-figure-center anchored">
@@ -490,13 +490,13 @@ div.csl-indent {
 </div>
 <p>Esta cuadrícula inicial muestra resultados bastante equivalentes, sin que ningún punto individual sea mucho mejor que los demás. Estos resultados pueden ser absorbidos por las funciones de ajuste iterativas analizadas en las siguientes secciones para usarse como valores iniciales.</p>
 </section><section id="optimización-bayesiana" class="level2" data-number="14.2"><h2 data-number="14.2" class="anchored" data-anchor-id="optimización-bayesiana">
-<span class="header-section-number">14.2</span> Optimización bayesiana</h2>
-<p>Las técnicas de optimización bayesiana analizan los resultados del remuestreo actual y crean un modelo predictivo para sugerir valores de parámetros de ajuste que aún no se han evaluado. A continuación se vuelve a muestrear la combinación de parámetros sugerida. Estos resultados luego se utilizan en otro modelo predictivo que recomienda más valores candidatos para realizar pruebas, y así sucesivamente. El proceso continúa durante un número determinado de iteraciones o hasta que no se produzcan más mejoras. <span class="citation" data-cites="Shahriari">Shahriari et&nbsp;al. (<a href="#ref-Shahriari" role="doc-biblioref">2016</a>)</span> y <span class="citation" data-cites="frazier2018tutorial">Frazier (<a href="#ref-frazier2018tutorial" role="doc-biblioref">2018</a>)</span> son buenas introducciones a la optimización bayesiana.</p>
+<span class="header-section-number">14.2</span> Optimización Bayesiana</h2>
+<p>Las técnicas de optimización bayesiana analizan los resultados del remuestreo actual y crean un modelo predictivo para sugerir valores de parámetros de ajuste que aún no se han evaluado. A continuación se vuelve a muestrear la combinación de parámetros sugerida. Estos resultados luego se utilizan en otro modelo predictivo que recomienda más valores candidatos para realizar pruebas, y así sucesivamente. El proceso continúa durante un número determinado de iteraciones o hasta que no se produzcan más mejoras. <span class="citation" data-cites="Shahriari">Shahriari et&nbsp;al. (<a href="references.html#ref-Shahriari" role="doc-biblioref">2016</a>)</span> y <span class="citation" data-cites="frazier2018tutorial">Frazier (<a href="references.html#ref-frazier2018tutorial" role="doc-biblioref">2018</a>)</span> son buenas introducciones a la optimización bayesiana.</p>
 <p>Cuando se utiliza la optimización bayesiana, las principales preocupaciones son cómo crear el modelo y cómo seleccionar los parámetros recomendados por ese modelo. Primero, consideremos la técnica más comúnmente utilizada para la optimización bayesiana, el modelo de proceso gaussiano.</p>
 <section id="un-modelo-de-proceso-gaussiano" class="level3" data-number="14.2.1"><h3 data-number="14.2.1" class="anchored" data-anchor-id="un-modelo-de-proceso-gaussiano">
 <span class="header-section-number">14.2.1</span> Un modelo de proceso gaussiano</h3>
-<p>Los modelos de proceso gaussiano (GP) <span class="citation" data-cites="SCHULZ20181">(<a href="#ref-SCHULZ20181" role="doc-biblioref">Schulz, Speekenbrink, y Krause 2018</a>)</span> son técnicas estadísticas bien conocidas que tienen una historia en la estadística espacial (bajo el nombre de <em>métodos de kriging</em>). Se pueden derivar de múltiples formas, incluso como modelo bayesiano; consulte <span class="citation" data-cites="RaWi06">Rasmussen y Williams (<a href="#ref-RaWi06" role="doc-biblioref">2006</a>)</span> para obtener una excelente referencia.</p>
-<p>Matemáticamente, un GP es una colección de variables aleatorias cuya distribución de probabilidad conjunta es gaussiana multivariada. En el contexto de nuestra aplicación, esta es la colección de métricas de rendimiento para los valores candidatos de los parámetros de ajuste. Para la cuadrícula inicial anterior de cuatro muestras, la realización de estas cuatro variables aleatorias fue 0.8639, 0.8625, 0.8627, and 0.8659. Se supone que están distribuidos como gaussianos multivariados. Las entradas que definen las variables/predictores independientes para el modelo GP son los valores de los parámetros de ajuste correspondientes (que se muestran en <a href="#tbl-initial-gp-data">Tabla&nbsp;<span class="quarto-unresolved-ref">tbl-initial-gp-data</span></a>).</p>
+<p>Los modelos de proceso gaussiano (GP) <span class="citation" data-cites="SCHULZ20181">(<a href="references.html#ref-SCHULZ20181" role="doc-biblioref">Schulz, Speekenbrink, y Krause 2018</a>)</span> son técnicas estadísticas bien conocidas que tienen una historia en la estadística espacial (bajo el nombre de <em>métodos de kriging</em>). Se pueden derivar de múltiples formas, incluso como modelo bayesiano; consulte <span class="citation" data-cites="RaWi06">Rasmussen y Williams (<a href="references.html#ref-RaWi06" role="doc-biblioref">2006</a>)</span> para obtener una excelente referencia.</p>
+<p>Matemáticamente, un GP es una colección de variables aleatorias cuya distribución de probabilidad conjunta es gaussiana multivariada. En el contexto de nuestra aplicación, esta es la colección de métricas de rendimiento para los valores candidatos de los parámetros de ajuste. Para la cuadrícula inicial anterior de cuatro muestras, la realización de estas cuatro variables aleatorias fue 0.8639, 0.8625, 0.8627, and 0.8659. Se supone que están distribuidos como gaussianos multivariados. Las entradas que definen las variables/predictores independientes para el modelo GP son los valores de los parámetros de ajuste correspondientes (que se muestran en <a href="#tbl-initial-gp-data">Tabla&nbsp;<span>14.1</span></a>).</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/tbl-initial-gp-data_66a247c7438706e5f7dda68c22e743b1">
 <div class="cell-output-display">
 <div id="tbl-initial-gp-data" class="anchored">
@@ -562,7 +562,7 @@ predictors
 <p>Sin embargo, ajustar estos modelos puede resultar difícil en algunos casos y el modelo se vuelve más costoso computacionalmente a medida que aumenta el número de combinaciones de parámetros de ajuste.</p>
 </div>
 <p>Una virtud importante de este modelo es que, dado que se especifica un modelo de probabilidad total, las predicciones de nuevos insumos pueden reflejar la distribución completa del resultado. En otras palabras, se pueden predecir nuevas estadísticas de desempeño tanto en términos de media como de varianza.</p>
-<p>Supongamos que se estuvieran considerando dos nuevos parámetros de ajuste. En <a href="#tbl-tuning-candidates">Tabla&nbsp;<span class="quarto-unresolved-ref">tbl-tuning-candidates</span></a>, el candidato <em>A</em> tiene un valor ROC medio ligeramente mejor que el candidato <em>B</em> (el mejor actual es 0.8659). Sin embargo, su varianza es cuatro veces mayor que <em>B</em>. ¿Esto es bueno o malo? Elegir la opción <em>A</em> es más riesgoso pero tiene un rendimiento potencialmente mayor. El aumento en la varianza también refleja que este nuevo valor está más alejado de los datos existentes que <em>B</em>. La siguiente sección considera con más detalle estos aspectos de las predicciones de GP para la optimización bayesiana.</p>
+<p>Supongamos que se estuvieran considerando dos nuevos parámetros de ajuste. En <a href="#tbl-tuning-candidates">Tabla&nbsp;<span>14.2</span></a>, el candidato <em>A</em> tiene un valor ROC medio ligeramente mejor que el candidato <em>B</em> (el mejor actual es 0.8659). Sin embargo, su varianza es cuatro veces mayor que <em>B</em>. ¿Esto es bueno o malo? Elegir la opción <em>A</em> es más riesgoso pero tiene un rendimiento potencialmente mayor. El aumento en la varianza también refleja que este nuevo valor está más alejado de los datos existentes que <em>B</em>. La siguiente sección considera con más detalle estos aspectos de las predicciones de GP para la optimización bayesiana.</p>
 <div class="cell" data-layout-align="center" data-result="asis" data-hash="14-iterative-search_cache/html/tbl-tuning-candidates_667b4ab7e33c517e91f6f39ead8b0ec6">
 <div class="cell-output-display">
 <div id="tbl-tuning-candidates" class="anchored">
@@ -616,7 +616,7 @@ Predicción GP de ROC AUC
 <li><p>La <em>Exploración</em> sesga la selección hacia regiones donde hay menos (si es que hay alguno) modelos candidatos observados. Esto tiende a dar más peso a los candidatos con mayor variación y se centra en encontrar nuevos resultados.</p></li>
 <li><p>La <em>explotación</em> se basa principalmente en la predicción media para encontrar el mejor valor (medio). Se centra en los resultados existentes.</p></li>
 </ul>
-<p>Para demostrarlo, veamos un ejemplo de juguete con un único parámetro que tiene valores entre [0, 1] y la métrica de rendimiento es <span class="math inline">\(R^2\)</span>. La función verdadera se muestra en <a href="#fig-performance-profile">Figura&nbsp;<span class="quarto-unresolved-ref">fig-performance-profile</span></a>, junto con los valores candidatos five que tienen resultados existentes como puntos.</p>
+<p>Para demostrarlo, veamos un ejemplo de juguete con un único parámetro que tiene valores entre [0, 1] y la métrica de rendimiento es <span class="math inline">\(R^2\)</span>. La función verdadera se muestra en <a href="#fig-performance-profile">Figura&nbsp;<span>14.2</span></a>, junto con los valores candidatos five que tienen resultados existentes como puntos.</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/fig-performance-profile_30bae347289ecca3d73cf5e1cb2a74fe">
 <div class="cell-output-display">
 <div id="fig-performance-profile" class="quarto-figure quarto-figure-center anchored">
@@ -625,7 +625,7 @@ Predicción GP de ROC AUC
 </div>
 </div>
 </div>
-<p>Para estos datos, el ajuste del modelo GP se muestra en <a href="#fig-estimated-profile">Figura&nbsp;<span class="quarto-unresolved-ref">fig-estimated-profile</span></a>. La región sombreada indica el error estándar medio <span class="math inline">\(\pm\)</span> 1. Las dos líneas verticales indican dos puntos candidatos que se examinan con más detalle más adelante.</p>
+<p>Para estos datos, el ajuste del modelo GP se muestra en <a href="#fig-estimated-profile">Figura&nbsp;<span>14.3</span></a>. La región sombreada indica el error estándar medio <span class="math inline">\(\pm\)</span> 1. Las dos líneas verticales indican dos puntos candidatos que se examinan con más detalle más adelante.</p>
 <p>La región de confianza sombreada demuestra la función de varianza exponencial al cuadrado; se vuelve muy grande entre puntos y converge a cero en los puntos de datos existentes.</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/fig-estimated-profile_e5f36d403482763c41b8b21064309917">
 <div class="cell-output-display">
@@ -639,7 +639,7 @@ Predicción GP de ROC AUC
 <p>Desde un punto de vista puramente de explotación, la mejor opción sería seleccionar el valor del parámetro que tenga la mejor predicción media. Aquí, esto sería un valor de 0.106, justo a la derecha del punto mejor observado existente en 0,09.</p>
 <p>Como forma de fomentar la exploración, un enfoque simple (pero no utilizado con frecuencia) es encontrar el parámetro de ajuste asociado con el intervalo de confianza más grande. Por ejemplo, al usar una única desviación estándar para el límite de confianza <span class="math inline">\(R^2\)</span>, el siguiente punto a muestrear sería 0.236. Esto es un poco más en la región sin resultados observados. Aumentar el número de desviaciones estándar utilizadas en el límite superior empujaría la selección hacia regiones vacías.</p>
 <p>Una de las funciones de adquisición más utilizadas es <em>mejora esperada</em>. La noción de mejora requiere un valor para los mejores resultados actuales (a diferencia del enfoque de confianza). Dado que el médico de cabecera puede describir un nuevo punto candidato utilizando una distribución, podemos ponderar las partes de la distribución que muestran una mejora utilizando la probabilidad de que se produzca la mejora.</p>
-<p>Por ejemplo, considere dos valores de parámetros candidatos de 0,10 y 0,25 (indicados por las líneas verticales en <a href="#fig-estimated-profile">Figura&nbsp;<span class="quarto-unresolved-ref">fig-estimated-profile</span></a>). Utilizando el modelo GP ajustado, sus distribuciones <span class="math inline">\(R^2\)</span> previstas se muestran en <a href="#fig-two-candidates">Figura&nbsp;<span class="quarto-unresolved-ref">fig-two-candidates</span></a> junto con una línea de referencia para los mejores resultados actuales.</p>
+<p>Por ejemplo, considere dos valores de parámetros candidatos de 0,10 y 0,25 (indicados por las líneas verticales en <a href="#fig-estimated-profile">Figura&nbsp;<span>14.3</span></a>). Utilizando el modelo GP ajustado, sus distribuciones <span class="math inline">\(R^2\)</span> previstas se muestran en <a href="#fig-two-candidates">Figura&nbsp;<span>14.4</span></a> junto con una línea de referencia para los mejores resultados actuales.</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/fig-two-candidates_c07d4c3ecad86e7f41e9a5480325261b">
 <div class="cell-output-display">
 <div id="fig-two-candidates" class="quarto-figure quarto-figure-center anchored">
@@ -648,7 +648,7 @@ Predicción GP de ROC AUC
 </div>
 </div>
 </div>
-<p>Cuando solo se considera la predicción media de <span class="math inline">\(R^2\)</span>, un valor de parámetro de 0,10 es la mejor opción (consulte <a href="#tbl-two-exp-improve">Tabla&nbsp;<span class="quarto-unresolved-ref">tbl-two-exp-improve</span></a>). Se prevé, en promedio, que la recomendación del parámetro de ajuste de 0,25 será peor que el mejor nivel actual. Sin embargo, dado que tiene una mayor varianza, tiene más área de probabilidad general por encima del mejor nivel actual. Como resultado, tiene una mejora esperada mayor:</p>
+<p>Cuando solo se considera la predicción media de <span class="math inline">\(R^2\)</span>, un valor de parámetro de 0,10 es la mejor opción (consulte <a href="#tbl-two-exp-improve">Tabla&nbsp;<span>14.3</span></a>). Se prevé, en promedio, que la recomendación del parámetro de ajuste de 0,25 será peor que el mejor nivel actual. Sin embargo, dado que tiene una mayor varianza, tiene más área de probabilidad general por encima del mejor nivel actual. Como resultado, tiene una mejora esperada mayor:</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/tbl-two-exp-improve_19c9f96b4dce2cb9e67eb0955089ae73">
 <div class="cell-output-display">
 <div id="tbl-two-exp-improve" class="anchored">
@@ -694,7 +694,7 @@ Predicciones
 
 </div>
 </div>
-<p>Cuando la mejora esperada se calcula en todo el rango del parámetro de ajuste, el punto de muestreo recomendado está mucho más cerca de 0,25 que de 0,10, como se muestra en <a href="#fig-expected-improvement">Figura&nbsp;<span class="quarto-unresolved-ref">fig-expected-improvement</span></a>.</p>
+<p>Cuando la mejora esperada se calcula en todo el rango del parámetro de ajuste, el punto de muestreo recomendado está mucho más cerca de 0,25 que de 0,10, como se muestra en <a href="#fig-expected-improvement">Figura&nbsp;<span>14.5</span></a>.</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/fig-expected-improvement_57ca1a53b10b39cc1beb8df107f9de7d">
 <div class="cell-output-display">
 <div id="fig-expected-improvement" class="quarto-figure quarto-figure-center anchored">
@@ -720,7 +720,7 @@ Predicciones
 <li><p><code>uncertain</code> también es un número entero (o <code>Inf</code>) que tomará una <em>muestra de incertidumbre</em> si no hay mejora dentro de las iteraciones <code>inciertas</code>. Esto seleccionará al siguiente candidato que tenga una gran variación. Tiene el efecto de exploración pura ya que no considera la predicción media.</p></li>
 <li><p><code>verbose</code> es un método lógico que imprimirá información de registro a medida que avanza la búsqueda.</p></li>
 </ul>
-<p>Usemos los primeros resultados de SVM de <a href="#sec-svm"><span class="quarto-unresolved-ref">sec-svm</span></a> como sustrato inicial para el modelo de proceso gaussiano. Recuerde que, para esta aplicación, queremos maximizar el área bajo la curva ROC. Nuestro código es:</p>
+<p>Usemos los primeros resultados de SVM de <a href="#sec-svm"><span>Sección&nbsp;14.1</span></a> como sustrato inicial para el modelo de proceso gaussiano. Recuerde que, para esta aplicación, queremos maximizar el área bajo la curva ROC. Nuestro código es:</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/iterative-cells-bo_1566af054d0ac7cee78cb0a5ccbbb2db">
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ctrl</span> <span class="op">&lt;-</span> <span class="fu">control_bayes</span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
@@ -752,7 +752,7 @@ Predicciones
 <span><span class="co">## 4  31.8   0.00153 roc_auc binary     0.899    10 0.00783 Iter13     13</span></span>
 <span><span class="co">## 5  30.8   0.00163 roc_auc binary     0.899    10 0.00782 Iter15     15</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>La función <code>autoplot()</code> tiene varias opciones para métodos de búsqueda iterativos. <a href="#fig-progress-plot">Figura&nbsp;<span class="quarto-unresolved-ref">fig-progress-plot</span></a> muestra cómo cambió el resultado durante la búsqueda usando <code>autoplot(svm_bo, type = "performance")</code>.</p>
+<p>La función <code>autoplot()</code> tiene varias opciones para métodos de búsqueda iterativos. <a href="#fig-progress-plot">Figura&nbsp;<span>14.6</span></a> muestra cómo cambió el resultado durante la búsqueda usando <code>autoplot(svm_bo, type = "performance")</code>.</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/fig-progress-plot_e54bb51e82e4aae83b436d3e3ef15994">
 <div class="cell-output-display">
 <div id="fig-progress-plot" class="quarto-figure quarto-figure-center anchored">
@@ -770,8 +770,8 @@ Predicciones
 </div>
 <p>Finalmente, si el usuario interrumpe los cálculos de <code>tune_bayes()</code>, la función devuelve los resultados actuales (en lugar de generar un error).</p>
 </section></section><section id="recocido-simulado" class="level2" data-number="14.3"><h2 data-number="14.3" class="anchored" data-anchor-id="recocido-simulado">
-<span class="header-section-number">14.3</span> Recocido simulado</h2>
-<p><em>Recocido simulado</em> (SA) <span class="citation" data-cites="kirkpatrick1983optimization van1987simulated">(<a href="#ref-kirkpatrick1983optimization" role="doc-biblioref">Kirkpatrick, Gelatt, y Vecchi 1983</a>; <a href="#ref-van1987simulated" role="doc-biblioref">Van Laarhoven y Aarts 1987</a>)</span> es una rutina de búsqueda no lineal general inspirada en el proceso en el que se enfría el metal. Es un método de búsqueda global que puede navegar eficazmente por muchos tipos diferentes de entornos de búsqueda, incluidas funciones discontinuas. A diferencia de la mayoría de las rutinas de optimización basadas en gradientes, el recocido simulado puede reevaluar soluciones anteriores.</p>
+<span class="header-section-number">14.3</span> Recocido Simulado</h2>
+<p><em>Recocido simulado</em> (SA) <span class="citation" data-cites="kirkpatrick1983optimization van1987simulated">(<a href="references.html#ref-kirkpatrick1983optimization" role="doc-biblioref">Kirkpatrick, Gelatt, y Vecchi 1983</a>; <a href="references.html#ref-van1987simulated" role="doc-biblioref">Van Laarhoven y Aarts 1987</a>)</span> es una rutina de búsqueda no lineal general inspirada en el proceso en el que se enfría el metal. Es un método de búsqueda global que puede navegar eficazmente por muchos tipos diferentes de entornos de búsqueda, incluidas funciones discontinuas. A diferencia de la mayoría de las rutinas de optimización basadas en gradientes, el recocido simulado puede reevaluar soluciones anteriores.</p>
 <section id="proceso-de-búsqueda-de-recocido-simulado" class="level3" data-number="14.3.1"><h3 data-number="14.3.1" class="anchored" data-anchor-id="proceso-de-búsqueda-de-recocido-simulado">
 <span class="header-section-number">14.3.1</span> Proceso de búsqueda de recocido simulado</h3>
 <p>El proceso de uso del recocido simulado comienza con un valor inicial y se embarca en un recorrido aleatorio controlado a través del espacio de parámetros. Cada nuevo valor de parámetro candidato es una pequeña perturbación del valor anterior que mantiene el nuevo punto dentro de una vecindad local.</p>
@@ -781,7 +781,7 @@ Predicciones
 <div class="rmdnote">
 <p>Las probabilidades de aceptación del recocido simulado permiten que la búsqueda avance en la dirección equivocada, al menos a corto plazo, con el potencial de encontrar una región mucho mejor del espacio de parámetros a largo plazo.</p>
 </div>
-<p>¿Cómo se ven influenciadas las probabilidades de aceptación? El mapa de calor en <a href="#fig-acceptance-prob">Figura&nbsp;<span class="quarto-unresolved-ref">fig-acceptance-prob</span></a> muestra cómo la probabilidad de aceptación puede cambiar a lo largo de las iteraciones, el rendimiento y el coeficiente especificado por el usuario.</p>
+<p>¿Cómo se ven influenciadas las probabilidades de aceptación? El mapa de calor en <a href="#fig-acceptance-prob">Figura&nbsp;<span>14.7</span></a> muestra cómo la probabilidad de aceptación puede cambiar a lo largo de las iteraciones, el rendimiento y el coeficiente especificado por el usuario.</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/fig-acceptance-prob_ede50ca9a0bdb1b773227521b3c9c89b">
 <div class="cell-output-display">
 <div id="fig-acceptance-prob" class="quarto-figure quarto-figure-center anchored">
@@ -792,14 +792,14 @@ Predicciones
 </div>
 <p>El usuario puede ajustar los coeficientes para encontrar un perfil de probabilidad que se adapte a sus necesidades. En <code><a href="https://finetune.tidymodels.org/reference/control_sim_anneal.html">finetune::control_sim_anneal()</a></code>, el valor predeterminado para este argumento <code>cooling_coef</code> es 0.02. Disminuir este coeficiente fomentará que la búsqueda sea más indulgente con los malos resultados.</p>
 <p>Este proceso continúa durante una cantidad determinada de iteraciones, pero puede detenerse si no se obtienen los mejores resultados globales dentro de un número predeterminado de iteraciones. Sin embargo, puede resultar muy útil establecer un <em>umbral de reinicio</em>. Si hay una serie de fallas, esta función revisa la última configuración de parámetros globalmente mejor y comienza de nuevo.</p>
-<p>El principal detalle importante es definir cómo perturbar los parámetros de ajuste de una iteración a otra. Hay una variedad de métodos en la literatura para esto. Seguimos el método dado en <span class="citation" data-cites="gsa">Bohachevsky, Johnson, y Stein (<a href="#ref-gsa" role="doc-biblioref">1986</a>)</span> llamado <em>recocido simulado generalizado</em>. Para parámetros de ajuste continuo, definimos un radio pequeño para especificar el “vecindario” local. Por ejemplo, supongamos que hay dos parámetros de ajuste y cada uno está limitado por cero y uno. El proceso de recocido simulado genera valores aleatorios en el radio circundante y elige aleatoriamente uno como valor candidato actual.</p>
+<p>El principal detalle importante es definir cómo perturbar los parámetros de ajuste de una iteración a otra. Hay una variedad de métodos en la literatura para esto. Seguimos el método dado en <span class="citation" data-cites="gsa">Bohachevsky, Johnson, y Stein (<a href="references.html#ref-gsa" role="doc-biblioref">1986</a>)</span> llamado <em>recocido simulado generalizado</em>. Para parámetros de ajuste continuo, definimos un radio pequeño para especificar el “vecindario” local. Por ejemplo, supongamos que hay dos parámetros de ajuste y cada uno está limitado por cero y uno. El proceso de recocido simulado genera valores aleatorios en el radio circundante y elige aleatoriamente uno como valor candidato actual.</p>
 <p>En nuestra implementación, la vecindad se determina escalando el candidato actual para que esté entre cero y uno según el rango del objeto de parámetro, por lo que los valores de radio entre 0,05 y 0,15 parecen razonables. Para estos valores, lo más rápido que puede ir la búsqueda de un lado al otro del espacio de parámetros es de aproximadamente 10 iteraciones. El tamaño del radio controla la rapidez con la que la búsqueda explora el espacio de parámetros. En nuestra implementación, se especifica un rango de radios para que diferentes magnitudes de “local” definan los nuevos valores candidatos.</p>
 <p>Para ilustrar, usaremos los dos parámetros de ajuste principales <span class="pkg">glmnet</span>:</p>
 <ul>
 <li><p>El importe de la regularización total (<code>penalty</code>). El rango predeterminado para este parámetro es <span class="math inline">\(10^{-10}\)</span> a <span class="math inline">\(10^{0}\)</span>. Es típico utilizar una transformación logarítmica (base-10) para este parámetro.</p></li>
 <li><p>La proporción de la pena de lazo (<code>mixture</code>). Esto está acotado en cero y uno sin transformación.</p></li>
 </ul>
-<p>El proceso comienza con valores iniciales de <code>penalty = 0,025</code> y <code>mixture = 0,050</code>. Utilizando un radio que fluctúa aleatoriamente entre 0,050 y 0,015, los datos se escalan adecuadamente, se generan valores aleatorios en los radios alrededor del punto inicial y luego se elige uno al azar como candidato. A modo de ilustración, asumiremos que todos los valores candidatos son mejoras. Utilizando el nuevo valor, se genera un conjunto de nuevos vecinos aleatorios, se elige uno, y así sucesivamente. <a href="#fig-iterative-neighborhood">Figura&nbsp;<span class="quarto-unresolved-ref">fig-iterative-neighborhood</span></a> muestra six iteraciones a medida que la búsqueda avanza hacia la esquina superior izquierda.</p>
+<p>El proceso comienza con valores iniciales de <code>penalty = 0,025</code> y <code>mixture = 0,050</code>. Utilizando un radio que fluctúa aleatoriamente entre 0,050 y 0,015, los datos se escalan adecuadamente, se generan valores aleatorios en los radios alrededor del punto inicial y luego se elige uno al azar como candidato. A modo de ilustración, asumiremos que todos los valores candidatos son mejoras. Utilizando el nuevo valor, se genera un conjunto de nuevos vecinos aleatorios, se elige uno, y así sucesivamente. <a href="#fig-iterative-neighborhood">Figura&nbsp;<span>14.8</span></a> muestra six iteraciones a medida que la búsqueda avanza hacia la esquina superior izquierda.</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/fig-iterative-neighborhood_0b98648723866b2b5394e56f70248797">
 <div class="cell-output-display">
 <div id="fig-iterative-neighborhood" class="quarto-figure quarto-figure-center anchored">
@@ -2063,7 +2063,7 @@ Predicciones
 ## 
 ## 50 ─ discard suboptimal roc_auc=0.86146 (+/-0.009902)</code></pre>
 </div>
-<p>Al igual que con las otras funciones <code>tune_*()</code>, la función <code>autoplot()</code> correspondiente produce evaluaciones visuales de los resultados. El uso de <code>autoplot(svm_sa, type = "performance")</code> muestra el rendimiento en iteraciones (<a href="#fig-sa-iterations">Figura&nbsp;<span class="quarto-unresolved-ref">fig-sa-iterations</span></a>) mientras que <code>autoplot(svm_sa, type = "parameters")</code> traza el rendimiento versus valores de parámetros de ajuste específicos (<a href="#fig-sa-parameters">Figura&nbsp;<span class="quarto-unresolved-ref">fig-sa-parameters</span></a>).</p>
+<p>Al igual que con las otras funciones <code>tune_*()</code>, la función <code>autoplot()</code> correspondiente produce evaluaciones visuales de los resultados. El uso de <code>autoplot(svm_sa, type = "performance")</code> muestra el rendimiento en iteraciones (<a href="#fig-sa-iterations">Figura&nbsp;<span>14.9</span></a>) mientras que <code>autoplot(svm_sa, type = "parameters")</code> traza el rendimiento versus valores de parámetros de ajuste específicos (<a href="#fig-sa-parameters">Figura&nbsp;<span>14.10</span></a>).</p>
 <div class="cell" data-layout-align="center" data-hash="14-iterative-search_cache/html/fig-sa-iterations_f52ab00909e16cbb32c5044aacf368e9">
 <div class="cell-output-display">
 <div id="fig-sa-iterations" class="quarto-figure quarto-figure-center anchored">
@@ -2083,11 +2083,11 @@ Predicciones
 <p>Una visualización de la ruta de búsqueda ayuda a comprender dónde funcionó bien el proceso de búsqueda y dónde se extravió:</p>
 <video width="720" height="720" controls=""><source src="sa_search.mp4" type="video/mp4"></video><p>Al igual que <code>tune_bayes()</code>, detener manualmente la ejecución devolverá las iteraciones completadas.</p>
 </section></section><section id="sec-iterative-summary" class="level2" data-number="14.4"><h2 data-number="14.4" class="anchored" data-anchor-id="sec-iterative-summary">
-<span class="header-section-number">14.4</span> Resumen del capítulo</h2>
+<span class="header-section-number">14.4</span> Resumen Del Capítulo</h2>
 <p>Este capítulo describió dos métodos de búsqueda iterativos para optimizar los parámetros de ajuste. La optimización de Bayes utiliza un modelo predictivo entrenado en los resultados de remuestreo existentes para sugerir valores de parámetros de ajuste, mientras que el recocido simulado recorre el espacio de hiperparámetros para encontrar buenos valores. Ambos pueden ser eficaces para encontrar buenos valores por sí solos o como método de seguimiento utilizado después de una búsqueda inicial en la cuadrícula para mejorar el rendimiento de <span class="pkg">finetune</span>.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
 <div id="ref-gsa" class="csl-entry" role="listitem">
 Bohachevsky, I, M Johnson, y M Stein. 1986. <span>«Generalized Simulated Annealing for Function Optimization»</span>. <em>Technometrics</em> 28 (3): 209-17.
 </div>
@@ -2417,12 +2417,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./13-grid-search.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda de cuadrícula</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./15-workflow-sets.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando muchos modelos</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

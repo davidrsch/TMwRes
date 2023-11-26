@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 6&nbsp; Creando Modelos con parsnip</title>
+<title>Modelado Ordenado con R - 6&nbsp; Creando Modelos Con parsnip</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -121,7 +121,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./06-fitting-models.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./06-fitting-models.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -182,19 +182,19 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software para modelar</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una introducción tidyverse</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span></a>
   </div>
 </li>
       </ul>
@@ -211,37 +211,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A Model Workflow</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Feature Engineering with recipes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Judging Model Effectiveness</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></a>
   </div>
 </li>
       </ul>
@@ -249,7 +249,7 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
- <span class="menu-text">TOOLS FOR CREATING EFFECTIVE MODELS</span></a>
+ <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -258,37 +258,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Resampling for Evaluating Performance</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparing Models with Resampling</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Model Tuning and the Dangers of Overfitting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Grid Search</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Iterative Search</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Screening Many Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></a>
   </div>
 </li>
       </ul>
@@ -296,7 +296,7 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
- <span class="menu-text">BEYOND THE BASICS</span></a>
+ <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -305,37 +305,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Dimensionality Reduction</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Encoding Categorical Data</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explaining Models and Predictions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">When Should You Trust Your Predictions?</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Ensembles of Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Inferential Analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></a>
   </div>
 </li>
       </ul>
@@ -352,13 +352,13 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Recommended Preprocessing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+ <span class="menu-text">Referencias</span></a>
   </div>
 </li>
       </ul>
@@ -371,17 +371,17 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-<li><a href="#sec-create-a-model" id="toc-sec-create-a-model" class="nav-link active" data-scroll-target="#sec-create-a-model"><span class="header-section-number">6.1</span> Crear un Modelo</a></li>
-  <li><a href="#utilizar-los-resultados-del-modelo" id="toc-utilizar-los-resultados-del-modelo" class="nav-link" data-scroll-target="#utilizar-los-resultados-del-modelo"><span class="header-section-number">6.2</span> Utilizar los Resultados del Modelo</a></li>
+<li><a href="#sec-create-a-model" id="toc-sec-create-a-model" class="nav-link active" data-scroll-target="#sec-create-a-model"><span class="header-section-number">6.1</span> Crear Un Modelo</a></li>
+  <li><a href="#utilizar-los-resultados-del-modelo" id="toc-utilizar-los-resultados-del-modelo" class="nav-link" data-scroll-target="#utilizar-los-resultados-del-modelo"><span class="header-section-number">6.2</span> Utilizar Los Resultados Del Modelo</a></li>
   <li><a href="#sec-parsnip-predictions" id="toc-sec-parsnip-predictions" class="nav-link" data-scroll-target="#sec-parsnip-predictions"><span class="header-section-number">6.3</span> Hacer Predicciones</a></li>
-  <li><a href="#paquetes-de-extensi%C3%B3n-de-parsnip" id="toc-paquetes-de-extensión-de-parsnip" class="nav-link" data-scroll-target="#paquetes-de-extensi%C3%B3n-de-parsnip"><span class="header-section-number">6.4</span> Paquetes de Extensión de parsnip</a></li>
-  <li><a href="#sec-parsnip-addin" id="toc-sec-parsnip-addin" class="nav-link" data-scroll-target="#sec-parsnip-addin"><span class="header-section-number">6.5</span> Crear especificaciones de modelo</a></li>
-  <li><a href="#sec-models-summary" id="toc-sec-models-summary" class="nav-link" data-scroll-target="#sec-models-summary"><span class="header-section-number">6.6</span> Resumen del capítulo</a></li>
+  <li><a href="#paquetes-de-extensi%C3%B3n-de-parsnip" id="toc-paquetes-de-extensión-de-parsnip" class="nav-link" data-scroll-target="#paquetes-de-extensi%C3%B3n-de-parsnip"><span class="header-section-number">6.4</span> Paquetes De Extensión De parsnip</a></li>
+  <li><a href="#sec-parsnip-addin" id="toc-sec-parsnip-addin" class="nav-link" data-scroll-target="#sec-parsnip-addin"><span class="header-section-number">6.5</span> Crear Especificaciones De Modelo</a></li>
+  <li><a href="#sec-models-summary" id="toc-sec-models-summary" class="nav-link" data-scroll-target="#sec-models-summary"><span class="header-section-number">6.6</span> Resumen Del Capítulo</a></li>
   </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-models" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></span></h1>
+<h1 class="title"><span id="sec-models" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></h1>
 </div>
 
 
@@ -397,7 +397,7 @@ div.csl-indent {
 </header><p>El paquete <span class="pkg">parsnip</span>, un de los paquetes de R que es parte del metaapaquete <span class="pkg">tidymodels</span>, proporciona una interfaz fluida y estandarizada para una variedad de modelos diferentes. En este capítulo, damos algunas motivaciones sobre por qué una interfaz común es beneficiosa para comprender y construir modelos en la práctica y mostramos cómo usar el paquete <span class="pkg">parsnip</span>.</p>
 <p>Específicamente, nos centraremos en cómo <code>fit()</code> y <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> directamente con un objeto <span class="pkg">parsnip</span>, que puede ser una buena opción para algunos problemas de modelado sencillos. El próximo capítulo ilustra un mejor enfoque para muchas tareas de modelado al combinar modelos y preprocesadores en algo llamado un objeto de “flujo de trabajo”.</p>
 <section id="sec-create-a-model" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="sec-create-a-model">
-<span class="header-section-number">6.1</span> Crear un Modelo</h2>
+<span class="header-section-number">6.1</span> Crear Un Modelo</h2>
 <p>Una vez que los datos se han codificado en un formato listo para un algoritmo de modelado, como una matriz numérica, se pueden utilizar en el proceso de construcción del modelo.</p>
 <p>Supongamos que nuestra elección inicial fue un modelo de regresión lineal. Esto equivale a especificar que los datos del resultado son numéricos y que los predictores están relacionados con el resultado en términos de pendientes e intersecciones simples:</p>
 <p><span class="math display">\[y_i = \beta_0 + \beta_1 x_{1i} + \ldots + \beta_p x_{pi}\]</span></p>
@@ -412,7 +412,7 @@ div.csl-indent {
 <p>Para estimar con regularización, el segundo caso, se puede ajustar un modelo bayesiano usando el paquete <span class="pkg">rstanarm</span>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">stan_glm</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, family <span class="op">=</span> <span class="st">"gaussian"</span>, <span class="va">...</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>En este caso, las otras opciones pasadas a través de <code>...</code> incluirían argumentos para las distribuciones anteriores de los parámetros, así como detalles sobre los aspectos numéricos del modelo. Al igual que con <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, solo está disponible la interfaz de fórmula.</p>
-<p>Un enfoque popular no bayesiano para la regresión regularizada es el modelo <span class="pkg">glmnet</span> <span class="citation" data-cites="glmnet">(<a href="references.html#ref-glmnet" role="doc-biblioref">Friedman, Hastie, y Tibshirani 2010</a>)</span>. Su sintaxis es:</p>
+<p>Un enfoque popular no bayesiano para la regresión regularizada es el modelo <span class="pkg">glmnet</span> <span class="citation" data-cites="glmnet">(<a href="#ref-glmnet" role="doc-biblioref">Friedman, Hastie, y Tibshirani 2010</a>)</span>. Su sintaxis es:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">glmnet</span><span class="op">(</span>x <span class="op">=</span> <span class="va">matrix</span>, y <span class="op">=</span> <span class="va">vector</span>, family <span class="op">=</span> <span class="st">"gaussian"</span>, <span class="va">...</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>En este caso, los datos del predictor ya deben estar formateados en una matriz numérica; solo hay un método <code>x</code>/<code>y</code> y ningún método de fórmula.</p>
 <p>Tenga en cuenta que estas interfaces son heterogéneas en la forma en que se pasan los datos a la función del modelo o en términos de sus argumentos. El primer problema es que, para ajustar los modelos a diferentes paquetes, los datos deben formatearse de diferentes maneras. <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> y <code>stan_glm()</code> solo tienen interfaces de fórmula mientras que <code>glmnet()</code> no. Para otro tipo de modelos, las interfaces pueden ser aún más dispares. Para una persona que intenta realizar un análisis de datos, estas diferencias requieren la memorización de la sintaxis de cada paquete y pueden resultar muy frustrantes.</p>
@@ -517,7 +517,7 @@ div.csl-indent {
 <span><span class="co">## (Intercept)    Longitude     Latitude  </span></span>
 <span><span class="co">##     -302.97        -2.07         2.71</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><span class="pkg">parsnip</span> no solo permite una interfaz de modelo coherente para diferentes paquetes, sino que también proporciona coherencia en los argumentos del modelo. Es común que diferentes funciones que se ajustan al mismo modelo tengan diferentes nombres de argumentos. Las funciones del modelo de random forest son un buen ejemplo. Tres argumentos comúnmente utilizados son la cantidad de árboles en el conjunto, la cantidad de predictores para muestrear aleatoriamente con cada división dentro de un árbol y la cantidad de puntos de datos necesarios para realizar una división. Para tres paquetes R diferentes que implementan este algoritmo, esos argumentos se muestran en <a href="#tbl-rand-forest-args">Tabla&nbsp;<span>6.1</span></a>.</p>
+<p><span class="pkg">parsnip</span> no solo permite una interfaz de modelo coherente para diferentes paquetes, sino que también proporciona coherencia en los argumentos del modelo. Es común que diferentes funciones que se ajustan al mismo modelo tengan diferentes nombres de argumentos. Las funciones del modelo de random forest son un buen ejemplo. Tres argumentos comúnmente utilizados son la cantidad de árboles en el conjunto, la cantidad de predictores para muestrear aleatoriamente con cada división dentro de un árbol y la cantidad de puntos de datos necesarios para realizar una división. Para tres paquetes R diferentes que implementan este algoritmo, esos argumentos se muestran en <a href="#tbl-rand-forest-args">Tabla&nbsp;<span class="quarto-unresolved-ref">tbl-rand-forest-args</span></a>.</p>
 <div class="cell" data-layout-align="center" data-hash="06-fitting-models_cache/html/tbl-rand-forest-args_a1992301febb92733db47b7883ac2b88">
 <div class="cell-output-display">
 <div id="tbl-rand-forest-args" class="anchored">
@@ -555,7 +555,7 @@ div.csl-indent {
 
 </div>
 </div>
-<p>En un esfuerzo por hacer que la especificación de argumentos sea menos complicada, <span class="pkg">parsnip</span> utiliza nombres de argumentos comunes dentro y entre paquetes. <a href="#tbl-parsnip-args">Tabla&nbsp;<span>6.2</span></a> muestra, para radom forest, qué utilizan los modelos <span class="pkg">parsnip</span>.</p>
+<p>En un esfuerzo por hacer que la especificación de argumentos sea menos complicada, <span class="pkg">parsnip</span> utiliza nombres de argumentos comunes dentro y entre paquetes. <a href="#tbl-parsnip-args">Tabla&nbsp;<span class="quarto-unresolved-ref">tbl-parsnip-args</span></a> muestra, para radom forest, qué utilizan los modelos <span class="pkg">parsnip</span>.</p>
 <div class="cell" data-layout-align="center" data-hash="06-fitting-models_cache/html/tbl-parsnip-args_6141ad313aab5b559a2350c203cb341d">
 <div class="cell-output-display">
 <div id="tbl-parsnip-args" class="anchored">
@@ -631,7 +631,7 @@ div.csl-indent {
 <span><span class="co">## Computational engine: ranger</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="utilizar-los-resultados-del-modelo" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="utilizar-los-resultados-del-modelo">
-<span class="header-section-number">6.2</span> Utilizar los Resultados del Modelo</h2>
+<span class="header-section-number">6.2</span> Utilizar Los Resultados Del Modelo</h2>
 <p>Una vez creado y ajustado el modelo, podemos utilizar los resultados de diversas formas; es posible que queramos trazar, imprimir o examinar de otro modo el resultado del modelo. Varias cantidades se almacenan en un objeto modelo <span class="pkg">parsnip</span>, incluido el modelo ajustado. Esto se puede encontrar en un elemento llamado <code>fit</code>, que se puede devolver usando la función <code>extract_fit_engine()</code>:</p>
 <div class="cell" data-layout-align="center" data-hash="06-fitting-models_cache/html/models-pluck_dbe447ccfc3d853badc371739469fcaa">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_form_fit</span> <span class="op">%&gt;%</span> <span class="fu">extract_fit_engine</span><span class="op">(</span><span class="op">)</span></span>
@@ -652,7 +652,7 @@ div.csl-indent {
 <span><span class="co">## Latitude         -1.424  -0.00060  0.03254</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdwarning">
-<p>Nunca pase el elemento <code>fit</code> de un modelo <span class="pkg">parsnip</span> a una función de predicción del modelo, es decir, use <code>predict(lm_form_fit)</code> pero <em>no</em> use <code>predict(lm_form_fit$fit)</code>. Si los datos fueron preprocesados ​​de alguna manera, se generarán predicciones incorrectas (a veces, sin errores). La función de predicción del modelo subyacente no tiene idea de si se ha realizado alguna transformación en los datos antes de ejecutar el modelo. Consulte <a href="#sec-parsnip-predictions"><span>Sección&nbsp;6.3</span></a> para obtener más información sobre cómo hacer predicciones.</p>
+<p>Nunca pase el elemento <code>fit</code> de un modelo <span class="pkg">parsnip</span> a una función de predicción del modelo, es decir, use <code>predict(lm_form_fit)</code> pero <em>no</em> use <code>predict(lm_form_fit$fit)</code>. Si los datos fueron preprocesados ​​de alguna manera, se generarán predicciones incorrectas (a veces, sin errores). La función de predicción del modelo subyacente no tiene idea de si se ha realizado alguna transformación en los datos antes de ejecutar el modelo. Consulte <a href="#sec-parsnip-predictions"><span class="quarto-unresolved-ref">sec-parsnip-predictions</span></a> para obtener más información sobre cómo hacer predicciones.</p>
 </div>
 <p>Un problema con algunos métodos existentes en base R es que los resultados se almacenan de una manera que puede no ser la más útil. Por ejemplo, el método <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> para objetos <code>lm</code> se puede utilizar para imprimir los resultados del ajuste del modelo, incluida una tabla con los valores de los parámetros, sus estimaciones de incertidumbre y los valores p.&nbsp;Estos resultados particulares también se pueden guardar:</p>
 <div class="cell" data-layout-align="center" data-hash="06-fitting-models_cache/html/models-lm-param_f26d9c8c50aeb171dd8622b5fa35e664">
@@ -726,7 +726,7 @@ div.csl-indent {
 <span><span class="co">## 4       5.28  5.27        4.96        5.59</span></span>
 <span><span class="co">## 5       5.28  5.28        4.97        5.60</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>La motivación para la primera regla proviene de algunos paquetes de R que producen tipos de datos diferentes a partir de funciones de predicción. Por ejemplo, el paquete <span class="pkg">ranger</span> es una excelente herramienta para calcular modelos forestales aleatorios. Sin embargo, en lugar de devolver un marco de datos o un vector como salida, devuelve un objeto especializado que tiene múltiples valores incrustados (incluidos los valores predichos). Este es solo un paso más que el analista de datos debe solucionar en sus scripts. Como otro ejemplo, el modelo nativo <span class="pkg">glmnet</span> puede devolver al menos cuatro tipos de salida diferentes para predicciones, dependiendo de los detalles del modelo y las características de los datos. Estos se muestran en <a href="#tbl-predict-types">Tabla&nbsp;<span>6.3</span></a>.</p>
+<p>La motivación para la primera regla proviene de algunos paquetes de R que producen tipos de datos diferentes a partir de funciones de predicción. Por ejemplo, el paquete <span class="pkg">ranger</span> es una excelente herramienta para calcular modelos forestales aleatorios. Sin embargo, en lugar de devolver un marco de datos o un vector como salida, devuelve un objeto especializado que tiene múltiples valores incrustados (incluidos los valores predichos). Este es solo un paso más que el analista de datos debe solucionar en sus scripts. Como otro ejemplo, el modelo nativo <span class="pkg">glmnet</span> puede devolver al menos cuatro tipos de salida diferentes para predicciones, dependiendo de los detalles del modelo y las características de los datos. Estos se muestran en <a href="#tbl-predict-types">Tabla&nbsp;<span class="quarto-unresolved-ref">tbl-predict-types</span></a>.</p>
 <div class="cell" data-layout-align="center" data-hash="06-fitting-models_cache/html/tbl-predict-types_6c636ea762fcf617eb11a8b6b08efaa5">
 <div class="cell-output-display">
 <div id="tbl-predict-types" class="anchored">
@@ -761,7 +761,7 @@ div.csl-indent {
 </div>
 </div>
 <p>Además, los nombres de las columnas de los resultados contienen valores codificados que se asignan a un vector llamado <code>lambda</code> dentro del objeto del modelo glmnet. Este excelente método estadístico puede resultar desalentador en la práctica debido a todos los casos especiales que un analista puede encontrar y que requieren código adicional para ser útil.</p>
-<p>Para la segunda regla de predicción de tidymodels, los nombres de columnas predecibles para diferentes tipos de predicciones se muestran en <a href="#tbl-predictable-column-names">Tabla&nbsp;<span>6.4</span></a>.</p>
+<p>Para la segunda regla de predicción de tidymodels, los nombres de columnas predecibles para diferentes tipos de predicciones se muestran en <a href="#tbl-predictable-column-names">Tabla&nbsp;<span class="quarto-unresolved-ref">tbl-predictable-column-names</span></a>.</p>
 <div class="cell" data-layout-align="center" data-hash="06-fitting-models_cache/html/tbl-predictable-column-names_3b9db12b9500cd2c68d9fbadc55d92cc">
 <div class="cell-output-display">
 <div id="tbl-predictable-column-names" class="anchored">
@@ -824,10 +824,10 @@ div.csl-indent {
 </div>
 <p>Esto demuestra el beneficio de homogeneizar el proceso de análisis de datos y la sintaxis en diferentes modelos. Permite a los usuarios dedicar su tiempo a los resultados y la interpretación en lugar de tener que centrarse en las diferencias sintácticas entre los paquetes de R.</p>
 </section><section id="paquetes-de-extensión-de-parsnip" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="paquetes-de-extensión-de-parsnip">
-<span class="header-section-number">6.4</span> Paquetes de Extensión de parsnip</h2>
+<span class="header-section-number">6.4</span> Paquetes De Extensión De parsnip</h2>
 <p>El paquete <span class="pkg">parsnip</span> en sí contiene interfaces para varios modelos. Sin embargo, para facilitar la instalación y el mantenimiento del paquete, existen otros paquetes tidymodels que tienen definiciones de modelo <span class="pkg">parsnip</span> para otros conjuntos de modelos. El paquete <span class="pkg">discrim</span> tiene definiciones de modelos para el conjunto de técnicas de clasificación llamadas métodos de análisis discriminante (como análisis discriminante lineal o cuadrático). De esta manera, se reducen las dependencias de paquetes necesarias para instalar <span class="pkg">parsnip</span>. Puede encontrar una lista de todos los modelos que se pueden usar con <span class="pkg">parsnip</span> (en diferentes paquetes que están en CRAN) en <a href="https://www.tidymodels.org/find/" class="uri">https://www.tidymodels.org/find/</a>.</p>
 </section><section id="sec-parsnip-addin" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="sec-parsnip-addin">
-<span class="header-section-number">6.5</span> Crear especificaciones de modelo</h2>
+<span class="header-section-number">6.5</span> Crear Especificaciones De Modelo</h2>
 <p>Puede resultar tedioso escribir muchas especificaciones de modelos o recordar cómo escribir el código para generarlas. El paquete <span class="pkg">parsnip</span> incluye un complemento RStudio<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> que puede ayudar. Ya sea eligiendo este complemento en el menú de la barra de herramientas <em>Addins</em> o ejecutando el código:</p>
 <div class="cell" data-layout-align="center" data-hash="06-fitting-models_cache/html/models-add-in_ed25fe953a8de10db798595c62157d21">
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">parsnip_addin</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -835,7 +835,7 @@ div.csl-indent {
 <p>abrirá una ventana en el panel Viewer de RStudio IDE con una lista de posibles modelos para cada modo de modelo. Estos se pueden escribir en el panel de código fuente.</p>
 <p>La lista de modelos incluye modelos de los paquetes de extensión <span class="pkg">parsnip</span> y <span class="pkg">parsnip</span> que están en CRAN.</p>
 </section><section id="sec-models-summary" class="level2" data-number="6.6"><h2 data-number="6.6" class="anchored" data-anchor-id="sec-models-summary">
-<span class="header-section-number">6.6</span> Resumen del capítulo</h2>
+<span class="header-section-number">6.6</span> Resumen Del Capítulo</h2>
 <p>Este capítulo presentó el paquete <span class="pkg">parsnip</span>, que proporciona una interfaz común para modelos en todos los paquetes R utilizando una sintaxis estándar. La interfaz y los objetos resultantes tienen una estructura predecible.</p>
 <p>El código para modelar los datos de Ames que usaremos en el futuro es:</p>
 <div class="cell" data-layout-align="center" data-hash="06-fitting-models_cache/html/models-summary_7ac8ab209d3d3c24fc4d4d71b065e200">
@@ -852,7 +852,7 @@ div.csl-indent {
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
 <div id="ref-glmnet" class="csl-entry" role="listitem">
 Friedman, J, T Hastie, y R Tibshirani. 2010. <span>«Regularization paths for generalized linear models via coordinate descent»</span>. <em>Journal of statistical Software</em> 33 (1): 1.
 </div>
@@ -860,7 +860,7 @@ Friedman, J, T Hastie, y R Tibshirani. 2010. <span>«Regularization paths for ge
 </section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
 <li id="fn1"><p>Tenga en cuenta que <span class="pkg">parsnip</span> restringe la columna de resultados de un modelo de clasificación para que se codifique como un <em>factor</em>; el uso de valores numéricos binarios generará un error.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>¿Cuáles son las diferencias entre <code>fit()</code> y <code>fit_xy()</code>? La función <code>fit_xy()</code> siempre pasa los datos tal cual a la función del modelo subyacente. No creará variables ficticias/indicadoras antes de hacerlo. Cuando se usa <code>fit()</code> con una especificación de modelo, esto casi siempre significa que se crearán variables ficticias a partir de predictores cualitativos. Si la función subyacente requiere una matriz (como glmnet), creará la matriz. Sin embargo, si la función subyacente usa una fórmula, <code>fit()</code> simplemente pasa la fórmula a esa función. Estimamos que el 99% de las funciones de modelado que utilizan fórmulas generan variables ficticias. El otro 1% incluye métodos basados ​​en árboles que no requieren predictores puramente numéricos. Consulte <a href="07-the-model-workflow.html#sec-workflow-encoding"><span>Sección&nbsp;7.4</span></a> para obtener más información sobre el uso de fórmulas en tidymodels.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>¿Cuáles son las diferencias entre <code>fit()</code> y <code>fit_xy()</code>? La función <code>fit_xy()</code> siempre pasa los datos tal cual a la función del modelo subyacente. No creará variables ficticias/indicadoras antes de hacerlo. Cuando se usa <code>fit()</code> con una especificación de modelo, esto casi siempre significa que se crearán variables ficticias a partir de predictores cualitativos. Si la función subyacente requiere una matriz (como glmnet), creará la matriz. Sin embargo, si la función subyacente usa una fórmula, <code>fit()</code> simplemente pasa la fórmula a esa función. Estimamos que el 99% de las funciones de modelado que utilizan fórmulas generan variables ficticias. El otro 1% incluye métodos basados ​​en árboles que no requieren predictores puramente numéricos. Consulte <a href="#sec-workflow-encoding"><span class="quarto-unresolved-ref">sec-workflow-encoding</span></a> para obtener más información sobre el uso de fórmulas en tidymodels.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p><a href="https://rstudio.github.io/rstudioaddins/" class="uri">https://rstudio.github.io/rstudioaddins/</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol></section></main><!-- /main --><script>
 
@@ -1163,12 +1163,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./05-data-spending.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./07-the-model-workflow.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">A Model Workflow</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

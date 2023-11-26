@@ -5,7 +5,7 @@
 <meta name="generator" content="quarto-1.3.450">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 21&nbsp; Análisis inferencial</title>
+<title>Modelado Ordenado con R - 21&nbsp; Análisis Inferencial</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -120,7 +120,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">MAS ALLÁ DE LO BÁSICO</a></li><li class="breadcrumb-item"><a href="./21-inferential-analysis.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis inferencial</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">MAS ALLÁ DE LO BÁSICO</a></li><li class="breadcrumb-item"><a href="./21-inferential-analysis.html"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -181,19 +181,19 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software para modelar</span></span></a>
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una introducción tidyverse</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una revisión de los fundamentos del modelado con R</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span></a>
   </div>
 </li>
       </ul>
@@ -210,37 +210,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los datos de vivienda de Ames</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar nuestros datos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos con parsnip</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo de Modelado</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería de Características con recipes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar la Eficacia del Modelo</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></a>
   </div>
 </li>
       </ul>
@@ -257,37 +257,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear para Evaluar el Rendimiento</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación de Modelos con Remuestreo</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste de Modelos y los Peligros del Sobreajuste</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda de cuadrícula</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda iterativa</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando muchos modelos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></a>
   </div>
 </li>
       </ul>
@@ -304,37 +304,37 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción de Dimensionalidad</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación de datos categóricos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos y Predicciones</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo debería confiar en sus predicciones?</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos de modelos</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis inferencial</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></a>
   </div>
 </li>
       </ul>
@@ -351,13 +351,13 @@ div.csl-indent {
 <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Recommended Preprocessing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
+ <span class="menu-text">Referencias</span></a>
   </div>
 </li>
       </ul>
@@ -370,17 +370,17 @@ div.csl-indent {
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-<li><a href="#inferencia-para-datos-de-recuento" id="toc-inferencia-para-datos-de-recuento" class="nav-link active" data-scroll-target="#inferencia-para-datos-de-recuento"><span class="header-section-number">21.1</span> Inferencia para datos de recuento</a></li>
-  <li><a href="#comparaciones-con-pruebas-de-dos-muestras" id="toc-comparaciones-con-pruebas-de-dos-muestras" class="nav-link" data-scroll-target="#comparaciones-con-pruebas-de-dos-muestras"><span class="header-section-number">21.2</span> Comparaciones con pruebas de dos muestras</a></li>
+<li><a href="#inferencia-para-datos-de-recuento" id="toc-inferencia-para-datos-de-recuento" class="nav-link active" data-scroll-target="#inferencia-para-datos-de-recuento"><span class="header-section-number">21.1</span> Inferencia Para Datos De Recuento</a></li>
+  <li><a href="#comparaciones-con-pruebas-de-dos-muestras" id="toc-comparaciones-con-pruebas-de-dos-muestras" class="nav-link" data-scroll-target="#comparaciones-con-pruebas-de-dos-muestras"><span class="header-section-number">21.2</span> Comparaciones Con Pruebas De Dos Muestras</a></li>
   <li><a href="#modelos-log-lineales" id="toc-modelos-log-lineales" class="nav-link" data-scroll-target="#modelos-log-lineales"><span class="header-section-number">21.3</span> Modelos log-lineales</a></li>
-  <li><a href="#un-modelo-m%C3%A1s-complejo" id="toc-un-modelo-más-complejo" class="nav-link" data-scroll-target="#un-modelo-m%C3%A1s-complejo"><span class="header-section-number">21.4</span> Un modelo más complejo</a></li>
-  <li><a href="#sec-inference-options" id="toc-sec-inference-options" class="nav-link" data-scroll-target="#sec-inference-options"><span class="header-section-number">21.5</span> Más análisis inferencial</a></li>
-  <li><a href="#sec-inference-summary" id="toc-sec-inference-summary" class="nav-link" data-scroll-target="#sec-inference-summary"><span class="header-section-number">21.6</span> Resumen del capítulo</a></li>
+  <li><a href="#un-modelo-m%C3%A1s-complejo" id="toc-un-modelo-más-complejo" class="nav-link" data-scroll-target="#un-modelo-m%C3%A1s-complejo"><span class="header-section-number">21.4</span> Un Modelo Más Complejo</a></li>
+  <li><a href="#sec-inference-options" id="toc-sec-inference-options" class="nav-link" data-scroll-target="#sec-inference-options"><span class="header-section-number">21.5</span> Más Análisis Inferencial</a></li>
+  <li><a href="#sec-inference-summary" id="toc-sec-inference-summary" class="nav-link" data-scroll-target="#sec-inference-summary"><span class="header-section-number">21.6</span> Resumen Del Capítulo</a></li>
   </ul></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title"><span id="sec-inferential" class="quarto-section-identifier"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis inferencial</span></span></h1>
+<h1 class="title"><span id="sec-inferential" class="quarto-section-identifier"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></h1>
 </div>
 
 
@@ -404,7 +404,7 @@ div.csl-indent {
 </div>
 <p>En este capítulo, describimos cómo usar <span class="pkg">tidymodels</span> para ajustar y evaluar modelos inferenciales. En algunos casos, el marco tidymodels puede ayudar a los usuarios a trabajar con los objetos producidos por sus modelos. En otros, puede ayudar a evaluar la calidad de un modelo determinado.</p>
 <section id="inferencia-para-datos-de-recuento" class="level2" data-number="21.1"><h2 data-number="21.1" class="anchored" data-anchor-id="inferencia-para-datos-de-recuento">
-<span class="header-section-number">21.1</span> Inferencia para datos de recuento</h2>
+<span class="header-section-number">21.1</span> Inferencia Para Datos De Recuento</h2>
 <p>Para comprender cómo se pueden utilizar los paquetes tidymodels para el modelado inferencial, centrémonos en un ejemplo con datos de recuento. Usaremos datos de publicaciones de bioquímica del paquete <span class="pkg">pscl</span>. Estos datos consisten en información sobre 915 Ph.D.&nbsp;se gradúan en bioquímica e intenta explicar los factores que impactan su productividad académica (medida a través del número o recuento de artículos publicados en tres años). Los predictores incluyen el género del graduado, su estado civil, el número de hijos del graduado que tengan al menos cinco años, el prestigio de su departamento y el número de artículos producidos por su mentor en el mismo período de tiempo. Los datos reflejan doctorados en bioquímica que terminaron su educación entre 1956 y 1963. Los datos son una muestra algo sesgada de todos los doctorados en bioquímica otorgados durante este período (basado en la integridad de la información).</p>
 <div class="rmdnote">
 <p>Recuerde que en el <a href="19-when-should-you-trust-predictions.html">Capítulo&nbsp;<span>19</span></a> hicimos la pregunta “¿Es nuestro modelo aplicable para predecir un punto de datos específico?” Es muy importante definir a qué poblaciones se aplica un análisis inferencial. Para estos datos, los resultados probablemente se aplicarían a los doctorados en bioquímica dados aproximadamente en el período en que se recopilaron los datos. ¿Se aplica también a otros tipos de doctorado en química (por ejemplo, química medicinal, etc.)? Éstas son preguntas importantes que se deben abordar (y documentar) al realizar análisis inferenciales.</p>
@@ -430,7 +430,7 @@ div.csl-indent {
 </div>
 <p>Dado que los datos de los resultados son recuentos, la suposición de distribución más común es que el resultado tiene una distribución de Poisson. En este capítulo se utilizarán estos datos para varios tipos de análisis.</p>
 </section><section id="comparaciones-con-pruebas-de-dos-muestras" class="level2" data-number="21.2"><h2 data-number="21.2" class="anchored" data-anchor-id="comparaciones-con-pruebas-de-dos-muestras">
-<span class="header-section-number">21.2</span> Comparaciones con pruebas de dos muestras</h2>
+<span class="header-section-number">21.2</span> Comparaciones Con Pruebas De Dos Muestras</h2>
 <p>Podemos comenzar con la prueba de hipótesis. El objetivo del autor original con este conjunto de datos sobre publicaciones de bioquímica era determinar si existe una diferencia en las publicaciones entre hombres y mujeres <span class="citation" data-cites="Long1992">(<a href="references.html#ref-Long1992" role="doc-biblioref">Long 1992</a>)</span>. Los datos del estudio muestran:</p>
 <div class="cell" data-layout-align="center" data-hash="21-inferential-analysis_cache/html/inferential-counts_c50233afcff5f0b1466cdde474dd9d5d">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">bioChemists</span> <span class="op">%&gt;%</span> </span>
@@ -690,7 +690,7 @@ H_a&amp;: \beta_{phd} \ne 0 \notag
 </div>
 <p>Los resultados son los mismos y, en base a estos y al intervalo de confianza para este parámetro, excluiremos <code>phd</code> de análisis adicionales ya que no parece estar asociado con el resultado.</p>
 </section><section id="un-modelo-más-complejo" class="level2" data-number="21.4"><h2 data-number="21.4" class="anchored" data-anchor-id="un-modelo-más-complejo">
-<span class="header-section-number">21.4</span> Un modelo más complejo</h2>
+<span class="header-section-number">21.4</span> Un Modelo Más Complejo</h2>
 <p>Podemos pasar a modelos aún más complejos dentro de nuestro enfoque de tidymodels. Para los datos de recuento, hay ocasiones en las que el número de recuentos de ceros es mayor de lo que prescribiría una distribución de Poisson simple. Un modelo más complejo apropiado para esta situación es el modelo de Poisson (ZIP) con inflación cero; consulte <span class="citation" data-cites="Mullahy">Mullahy (<a href="references.html#ref-Mullahy" role="doc-biblioref">1986</a>)</span>, <span class="citation" data-cites="Lambert1992">Lambert (<a href="references.html#ref-Lambert1992" role="doc-biblioref">1992</a>)</span> y <span class="citation" data-cites="JSSv027i08">Zeileis, Kleiber, y Jackman (<a href="references.html#ref-JSSv027i08" role="doc-biblioref">2008</a>)</span>. Aquí, hay dos conjuntos de covariables: uno para los datos de recuento y otros que afectan la probabilidad (indicada como <span class="math inline">\(\pi\)</span>) de ceros. La ecuación para la media <span class="math inline">\(\lambda\)</span> es:</p>
 <p><span class="math display">\[\lambda = 0 \pi + (1 - \pi) \lambda_{nz}\]</span></p>
 <p>donde</p>
@@ -851,10 +851,10 @@ H_a&amp;: \text{at least one } \gamma \ne 0  \notag
 </div>
 <p>A partir de estos resultados, podemos tener una buena idea de qué predictores incluir en el modelo de probabilidad de conteo cero. Puede ser sensato reajustar un modelo más pequeño para evaluar si la distribución de arranque para “ment” todavía está sesgada.</p>
 </section><section id="sec-inference-options" class="level2" data-number="21.5"><h2 data-number="21.5" class="anchored" data-anchor-id="sec-inference-options">
-<span class="header-section-number">21.5</span> Más análisis inferencial</h2>
+<span class="header-section-number">21.5</span> Más Análisis Inferencial</h2>
 <p>Este capítulo demostró solo un pequeño subconjunto de lo que está disponible para el análisis inferencial en modelos tidy y se ha centrado en los métodos frecuentistas y de remuestreo. Podría decirse que el análisis bayesiano es un enfoque de inferencia muy eficaz y, a menudo, superior. Hay una variedad de modelos bayesianos disponibles a través de <span class="pkg">parsnip</span>. Además, el paquete <span class="pkg">multilevelmod</span> permite a los usuarios ajustarse a modelos jerárquicos bayesianos y no bayesianos (por ejemplo, modelos mixtos). Los paquetes <span class="pkg">broom.mixed</span> y <span class="pkg">tidybayes</span> son excelentes herramientas para extraer datos para gráficos y resúmenes. Finalmente, para conjuntos de datos con una única jerarquía, como datos de medidas longitudinales o repetidas simples, la función <code>group_vfold_cv()</code> de <span class="pkg">rsample</span> facilita caracterizaciones directas fuera de la muestra del rendimiento del modelo.</p>
 </section><section id="sec-inference-summary" class="level2" data-number="21.6"><h2 data-number="21.6" class="anchored" data-anchor-id="sec-inference-summary">
-<span class="header-section-number">21.6</span> Resumen del capítulo</h2>
+<span class="header-section-number">21.6</span> Resumen Del Capítulo</h2>
 <p>El marco tidymodels sirve para algo más que el modelado predictivo. Los paquetes y funciones de tidymodels se pueden utilizar para probar hipótesis, así como para ajustar y evaluar modelos inferenciales. El marco tidymodels brinda soporte para trabajar con modelos R que no son tidymodels y puede ayudar a evaluar las cualidades estadísticas de sus modelos.</p>
 
 
@@ -1194,12 +1194,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./20-ensemble-models.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos de modelos</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./pre-proc-table.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Recommended Preprocessing</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
