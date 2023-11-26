@@ -9,7 +9,7 @@ source("ames_snippets.R")
 neighborhood_counts <- count(ames_train, Neighborhood)
 ```
 
-# Codificación de datos categóricos {#sec-categorical}
+# Codificación De Datos Categóricos {#sec-categorical}
 
 Para el modelado estadístico en R, la representación preferida para datos categóricos o nominales es un *factor*, que es una variable que puede tomar un número limitado de valores diferentes; internamente, los factores se almacenan como un vector de valores enteros junto con un conjunto de etiquetas de texto.[^17-encoding-categorical-data-1] En @sec-dummies introdujimos enfoques de ingeniería de características para codificar o transformar datos cualitativos o nominales en una representación más adecuada para la mayoría de los algoritmos modelo. Discutimos cómo transformar una variable categórica, como `Bldg_Type` en nuestros datos de vivienda de Ames (con niveles `r knitr::combine_words(glue::backtick(levels(ames_train$Bldg_Type)))`), en un conjunto de Variables ficticias o indicadoras como las que se muestran en @tbl-encoding-dummies.
 
@@ -45,9 +45,9 @@ Muchas implementaciones de modelos requieren dicha transformación a una represe
 [Apéndice @sec-pre-proc-table] presenta una tabla de técnicas de preprocesamiento recomendadas para diferentes modelos; observe cuántos de los modelos de la tabla requieren una codificación numérica para todos los predictores.
 :::
 
-Sin embargo, para algunos conjuntos de datos realistas, las variables ficticias sencillas no son una buena opción. Esto sucede a menudo porque hay *demasiadas* categorías o hay categorías *nuevas* en el momento de la predicción. En este capítulo, analizamos opciones más sofisticadas para codificar predictores categóricos que abordan estos problemas. Estas opciones están disponibles como pasos de recetas de tidymodels en [`r pkg(embed)`](https://embed.tidymodels.org/) y [`r pkg(textrecipes)`](https://textrecipes.tidymodels. org/) paquetes.
+Sin embargo, para algunos conjuntos de datos realistas, las variables ficticias sencillas no son una buena opción. Esto sucede a menudo porque hay *demasiadas* categorías o hay categorías *nuevas* en el momento de la predicción. En este capítulo, analizamos opciones más sofisticadas para codificar predictores categóricos que abordan estos problemas. Estas opciones están disponibles como pasos de recetas de tidymodels en [`r pkg(embed)`](https://embed.tidymodels.org/) y [`r pkg(textrecipes)`](https://textrecipes.tidymodels.%20org/) paquetes.
 
-## ¿Es necesaria una codificación?
+## ¿Es Necesaria Una Codificación?
 
 Una minoría de modelos, como los basados en árboles o reglas, pueden manejar datos categóricos de forma nativa y no requieren codificación ni transformación de este tipo de características. Un modelo basado en árbol puede dividir de forma nativa una variable como `Bldg_Type` en grupos de niveles de factores, tal vez `OneFam` solo en un grupo y `Duplex` y `Twnhs` juntos en otro grupo. Los modelos Naive Bayes son otro ejemplo en el que la estructura del modelo puede tratar variables categóricas de forma nativa; las distribuciones se calculan dentro de cada nivel, por ejemplo, para todos los diferentes tipos de `Bldg_Type` en el conjunto de datos.
 
@@ -57,7 +57,7 @@ Estos modelos que pueden manejar características categóricas de forma nativa *
 Recomendamos comenzar con variables categóricas no transformadas cuando un modelo lo permita; tenga en cuenta que las codificaciones más complejas a menudo no dan como resultado un mejor rendimiento para dichos modelos.
 :::
 
-## Codificación de predictores ordinales
+## Codificación De Predictores Ordinales
 
 A veces, las columnas cualitativas se pueden *ordenar*, como "baja", "media" y "alta". En base R, la estrategia de codificación predeterminada es crear nuevas columnas numéricas que sean expansiones polinómicas de los datos. Para las columnas que tienen cinco valores ordinales, como el ejemplo que se muestra en @tbl-encoding-ordered-table, la columna de factores se reemplaza con columnas para términos lineales, cuadráticos, cúbicos y cuárticos:
 
@@ -83,7 +83,7 @@ bind_cols(ord_data, ord_contrasts) %>%
 
 Si bien esto no es descabellado, no es un enfoque que la gente tienda a encontrar útil. Por ejemplo, un polinomio de 11 grados probablemente no sea la forma más eficaz de codificar un factor ordinal para los meses del año. En su lugar, considere probar pasos de recetas relacionados con factores ordenados, como `step_unorder()`, para convertir a factores regulares, y `step_ordinalscore()`, que asigna valores numéricos específicos a cada nivel de factor.
 
-## Uso del resultado para codificar predictores
+## Uso Del Resultado Para Codificar Predictores
 
 Existen múltiples opciones para codificaciones más complejas que las variables ficticias o indicadoras. Un método llamado *efecto* o *codificaciones de probabilidad* reemplaza las variables categóricas originales con una sola columna numérica que mide el efecto de esos datos [@MicciBarreca2001; @Zumel2019]. Por ejemplo, para el predictor de vecindario en los datos de vivienda de Ames, podemos calcular el precio de venta medio o mediano para cada vecindario (como se muestra en @fig-encoding-mean-price) y sustituir estos medios por los valores de los datos originales:
 
@@ -209,7 +209,7 @@ glm_estimates %>%
 
 Observe en @fig-encoding-compare-pooling que la mayoría de las estimaciones de los efectos de vecindad son aproximadamente las mismas cuando comparamos la agrupación con la no agrupación. Sin embargo, los barrios con menos viviendas se han visto arrastrados (ya sea hacia arriba o hacia abajo) hacia el efecto medio. Cuando utilizamos la agrupación, reducimos las estimaciones del efecto hacia la media porque no tenemos tanta evidencia sobre el precio en esos vecindarios.
 
-## Hashing de características
+## Hashing De Características
 
 Las variables ficticias tradicionales, como se describe en @sec-dummies, requieren que se conozcan todas las categorías posibles para crear un conjunto completo de características numéricas. Los métodos de *hash de funciones* [@weinberger2009feature] también crean variables ficticias, pero solo consideran el valor de la categoría para asignarla a un grupo predefinido de variables ficticias. Miremos nuevamente los valores de `Neighborhood` en Ames y usemos la función `rlang::hash()` para entender más:
 
@@ -302,7 +302,7 @@ El número de vecindades asignadas a cada valor hash varía entre `r xfun::numbe
 Es probable que algunas columnas hash contengan solo ceros, como vemos en este ejemplo. Recomendamos un filtro de variación cero a través de `step_zv()` para filtrar dichas columnas.
 :::
 
-## Más opciones de codificación
+## Más Opciones De Codificación
 
 Hay aún más opciones disponibles para transformar factores a una representación numérica.
 
@@ -316,7 +316,7 @@ Las incrustaciones de una variable categórica se pueden aprender a través de u
 
 Una opción más disponible para abordar un resultado binario es transformar un conjunto de niveles de categorías en función de su asociación con el resultado binario. Esta transformación de *peso de la evidencia* (WoE) [@Good1985] utiliza el logaritmo del "factor Bayes" (la relación entre las probabilidades posteriores y las probabilidades anteriores) y crea un diccionario que asigna cada nivel de categoría a un valor WoE. Las codificaciones WoE se pueden determinar con la función `step_woe()` en `r pkg(embed)`.
 
-## Resumen del capítulo {#sec-categorical-summary}
+## Resumen Del capítulo {#sec-categorical-summary}
 
 En este capítulo, aprendió a utilizar recetas de preprocesamiento para codificar predictores categóricos. La opción más sencilla para transformar una variable categórica en una representación numérica es crear variables ficticias a partir de los niveles, pero esta opción no funciona bien cuando tienes una variable con alta cardinalidad (demasiados niveles) o cuando puedes ver valores novedosos en tiempo de predicción (nuevos niveles). Una opción en tal situación es crear *codificaciones de efectos*, un método de codificación supervisado que utiliza el resultado. Las codificaciones de efectos se pueden aprender agrupando o sin las categorías. Otra opción utiliza una función *hashing* para asignar niveles de categoría a un conjunto nuevo y más pequeño de variables ficticias. El hash de funciones es rápido y ocupa poca memoria. Otras opciones incluyen incorporaciones de entidades (aprendidas a través de una red neuronal) y transformación del peso de la evidencia.
 

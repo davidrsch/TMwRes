@@ -9,11 +9,11 @@ tidymodels_prefer()
 source("ames_snippets.R")
 ```
 
-# Un Flujo de Modelado {#sec-workflows}
+# Un Flujo De Modelado {#sec-workflows}
 
 En el capítulo anterior, analizamos el paquete `r pkg(parsnip)`, que se puede utilizar para definir y ajustar el modelo. Este capítulo presenta un nuevo concepto llamado *flujo de modelado*. El propósito de este concepto (y el objeto tidymodels `workflow()` correspondiente) es encapsular las partes principales del proceso de modelado (discutido en @sec-model-phases). El flujo de trabajo es importante en dos sentidos. En primer lugar, utilizar un concepto de flujo de trabajo fomenta una buena metodología, ya que es un punto de entrada único a los componentes de estimación de un análisis de datos. En segundo lugar, permite al usuario organizar mejor los proyectos. Estos dos puntos se analizan en las siguientes secciones.
 
-## ¿Dónde Comienza y Termina el Modelo? {#sec-begin-model-end}
+## ¿Dónde Comienza Y Termina El Modelo? {#sec-begin-model-end}
 
 Hasta ahora, cuando hemos utilizado el término "el modelo", nos referimos a una ecuación estructural que relaciona algunos predictores con uno o más resultados. Consideremos nuevamente la regresión lineal como ejemplo. Los datos de resultado se indican como $y_i$, donde hay $i = 1 \ldots n$ muestras en el conjunto de entrenamiento. Supongamos que hay $p$ predictores $x_{i1}, \ldots, x_{ip}$ que se utilizan en el modelo. La regresión lineal produce una ecuación modelo de
 
@@ -39,7 +39,7 @@ Es importante centrarse en el *proceso de modelado* más amplio, en lugar de aju
 En otro software, como Python o Spark, colecciones similares de pasos se denominan *pipelines*. En tidymodels, el término "pipeline" ya connota una secuencia de operaciones encadenadas con un operador de pipe (como `%>%` de `r pkg(magrittr)` o el nativo más nuevo `|>`). En lugar de utilizar terminología ambigua en este contexto, llamamos a la secuencia de operaciones computacionales relacionadas con el modelado *flujos de trabajo*.
 :::
 
-Unir los componentes analíticos del análisis de datos es importante por otra razón. Los capítulos futuros demostrarán cómo medir con precisión el rendimiento, así como también cómo optimizar los parámetros estructurales (es decir, ajuste del modelo). Para cuantificar correctamente el rendimiento del modelo en el conjunto de entrenamiento, [Capítulo @ sec-resampling] recomienda el uso de métodos de remuestreo. Para hacer esto correctamente, no se debe excluir de la validación ninguna parte del análisis basada en datos. Para ello, el flujo de trabajo debe incluir todos los pasos de estimación importantes.
+Unir los componentes analíticos del análisis de datos es importante por otra razón. Los capítulos futuros demostrarán cómo medir con precisión el rendimiento, así como también cómo optimizar los parámetros estructurales (es decir, ajuste del modelo). Para cuantificar correctamente el rendimiento del modelo en el conjunto de entrenamiento, \[Capítulo \@ sec-resampling\] recomienda el uso de métodos de remuestreo. Para hacer esto correctamente, no se debe excluir de la validación ninguna parte del análisis basada en datos. Para ello, el flujo de trabajo debe incluir todos los pasos de estimación importantes.
 
 A modo de ejemplo, considere la extracción de señales del análisis de componentes principales (PCA). Hablaremos más sobre esto en @sec-example-steps y en el [Capítulo @sec-dimensionality]; PCA es una forma de reemplazar predictores correlacionados con nuevas características artificiales que no están correlacionadas y capturan la mayor parte de la información del conjunto original. Las nuevas características podrían usarse como predictores y la regresión de mínimos cuadrados podría usarse para estimar los parámetros del modelo.
 
@@ -71,7 +71,7 @@ knitr::include_graphics("premade/proper-workflow.svg")
 
 De esta forma, el preprocesamiento PCA se considera parte del proceso de modelado.
 
-## Conceptos Básicos del Flujo de Trabajo
+## Conceptos Básicos Del Flujo De Trabajo
 
 El paquete `r pkg(workflows)` permite al usuario vincular objetos de modelado y preprocesamiento. Empecemos de nuevo con los datos de Ames y un modelo lineal simple:
 
@@ -129,7 +129,7 @@ lm_fit %>% update_formula(Sale_Price ~ Longitude)
 
 Tenga en cuenta que, en este nuevo objeto, el resultado muestra que el modelo ajustado anterior se eliminó ya que la nueva fórmula es inconsistente con el ajuste del modelo anterior.
 
-## Agregar Variables sin Procesar al `workflow()`
+## Agregar Variables Sin Procesar Al `workflow()`
 
 Hay otra interfaz para pasar datos al modelo, la función `add_variables()`, que usa una sintaxis similar a `r pkg(dplyr)` para elegir variables. La función tiene dos argumentos principales: `outcomes` y `predictors`. Estos utilizan un enfoque de selección similar al backend `r pkg(tidyselect)` de los paquetes `r pkg(tidyverse)` para capturar múltiples selectores usando `c()`.
 
@@ -163,7 +163,7 @@ Si desea que el método de modelado subyacente haga lo que normalmente haría co
 
 En el próximo capítulo, veremos un preprocesador más potente (llamado *recipe*) que también se puede agregar a un flujo de trabajo.
 
-## ¿Cómo Utiliza un `workflow()` la Fórmula? {#sec-workflow-encoding}
+## ¿Cómo Utiliza Un `workflow()` La Fórmula? {#sec-workflow-encoding}
 
 Recuerde de @sec-formula que el método de fórmula en R tiene múltiples propósitos (lo discutiremos más a fondo en el [Capítulo @sec-recipes]). Uno de ellos es codificar correctamente los datos originales en un formato listo para el análisis. Esto puede implicar la ejecución de transformaciones en línea (por ejemplo, `log(x)`), la creación de columnas de variables ficticias, la creación de interacciones u otras expansiones de columnas, etc. Sin embargo, muchos métodos estadísticos requieren diferentes tipos de codificaciones:
 
@@ -250,7 +250,7 @@ parametric_fit
 
 Observe cómo en ambas convocatorias se utilizó la fórmula específica del modelo.
 
-## Crear Múltiples Flujos de Trabajo a la vez {#sec-workflow-sets-intro}
+## Crear Múltiples Flujos De Trabajo A La Vez {#sec-workflow-sets-intro}
 
 En algunas situaciones, los datos requieren numerosos intentos para encontrar un modelo apropiado. Por ejemplo:
 
@@ -299,7 +299,7 @@ Usamos una función `r pkg(purrr)` aquí para mapear nuestros modelos, pero exis
 En general, ¡hay mucho más en los conjuntos de flujos de trabajo! Si bien hemos cubierto los conceptos básicos aquí, los matices y ventajas de los conjuntos de flujo de trabajo no se ilustrarán hasta el [Capítulo @sec-workflow-sets].
 :::
 
-## Evaluación del Conjunto de Prueba
+## Evaluación Del Conjunto De Prueba
 
 Digamos que hemos concluido el desarrollo de nuestro modelo y nos hemos decidido por un modelo final. Hay una función de conveniencia llamada `last_fit()` que *ajustará* el modelo a todo el conjunto de entrenamiento y lo *evaluará* con el conjunto de prueba.
 
@@ -333,7 +333,7 @@ Veremos más sobre `last_fit()` en acción y cómo usarlo nuevamente en @sec-bea
 Cuando se usan conjuntos de validación, `last_fit()` tiene un argumento llamado `add_validation_set` para especificar si debemos entrenar el modelo final únicamente en el conjunto de entrenamiento (el predeterminado) o la combinación de los conjuntos de entrenamiento y validación.
 :::
 
-## Resumen del capítulo {#sec-workflows-summary}
+## Resumen Del capítulo {#sec-workflows-summary}
 
 En este capítulo, aprendió que el proceso de modelado abarca más que simplemente estimar los parámetros de un algoritmo que conecta los predictores con un resultado. Este proceso también incluye pasos de preprocesamiento y operaciones realizadas después de que se ajusta un modelo. Introdujimos un concepto llamado *flujo de trabajo modelo* que puede capturar los componentes importantes del proceso de modelado. También se pueden crear múltiples flujos de trabajo dentro de un *conjunto de flujos de trabajo*. La función `last_fit()` es conveniente para ajustar un modelo final al conjunto de entrenamiento y evaluar con el conjunto de prueba.
 

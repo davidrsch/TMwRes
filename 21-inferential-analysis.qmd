@@ -9,7 +9,7 @@ theme_set(theme_bw())
 data("bioChemists", package = "pscl")
 ```
 
-# Análisis inferencial {#sec-inferential}
+# Análisis Inferencial {#sec-inferential}
 
 ::: rmdnote
 En @sec-model-types, describimos una taxonomía de modelos y dijimos que la mayoría de los modelos pueden clasificarse como descriptivos, inferenciales y/o predictivos.
@@ -27,7 +27,7 @@ En los últimos años ha habido un impulso para alejarse de los valores p en fav
 
 En este capítulo, describimos cómo usar `r pkg(tidymodels)` para ajustar y evaluar modelos inferenciales. En algunos casos, el marco tidymodels puede ayudar a los usuarios a trabajar con los objetos producidos por sus modelos. En otros, puede ayudar a evaluar la calidad de un modelo determinado.
 
-## Inferencia para datos de recuento
+## Inferencia Para Datos De Recuento
 
 Para comprender cómo se pueden utilizar los paquetes tidymodels para el modelado inferencial, centrémonos en un ejemplo con datos de recuento. Usaremos datos de publicaciones de bioquímica del paquete `r pkg(pscl)`. Estos datos consisten en información sobre 915 Ph.D. se gradúan en bioquímica e intenta explicar los factores que impactan su productividad académica (medida a través del número o recuento de artículos publicados en tres años). Los predictores incluyen el género del graduado, su estado civil, el número de hijos del graduado que tengan al menos cinco años, el prestigio de su departamento y el número de artículos producidos por su mentor en el mismo período de tiempo. Los datos reflejan doctorados en bioquímica que terminaron su educación entre 1956 y 1963. Los datos son una muestra algo sesgada de todos los doctorados en bioquímica otorgados durante este período (basado en la integridad de la información).
 
@@ -59,7 +59,7 @@ ggplot(bioChemists, aes(x = art)) +
 
 Dado que los datos de los resultados son recuentos, la suposición de distribución más común es que el resultado tiene una distribución de Poisson. En este capítulo se utilizarán estos datos para varios tipos de análisis.
 
-## Comparaciones con pruebas de dos muestras
+## Comparaciones Con Pruebas De Dos Muestras
 
 Podemos comenzar con la prueba de hipótesis. El objetivo del autor original con este conjunto de datos sobre publicaciones de bioquímica era determinar si existe una diferencia en las publicaciones entre hombres y mujeres [@Long1992]. Los datos del estudio muestran:
 
@@ -79,7 +79,6 @@ H_0&: \lambda_m = \lambda_f \notag \\
 H_a&: \lambda_m \ne \lambda_f \notag
 \end{align}
 ```
-
 donde los valores $\lambda$ son las tasas de publicaciones (durante el mismo período de tiempo).
 
 Una aplicación básica de la prueba es:Una aplicación básica de la prueba es:[^21-inferential-analysis-1]
@@ -100,7 +99,7 @@ poisson.test(c(930, 619)) %>%
 ```
 
 ::: rmdnote
-Entre [`r pkg(broom)`](https://broom.tidymodels.org/) y [`r pkg(broom.mixed)`](https://CRAN.R-project.org/package= broom.mixed), existen métodos `tidy()` para más de 150 modelos.
+Entre [`r pkg(broom)`](https://broom.tidymodels.org/) y [`r pkg(broom.mixed)`](https://CRAN.R-project.org/package=%20broom.mixed), existen métodos `tidy()` para más de 150 modelos.
 :::
 
 Si bien la distribución de Poisson es razonable, es posible que también deseemos evaluarla utilizando menos supuestos distributivos. Dos métodos que podrían resultar útiles son las pruebas de arranque y de permutación [@davison1997bootstrap].
@@ -236,7 +235,6 @@ H_0&: \beta_j = 0 \notag \\
 H_a&: \beta_j \ne 0 \notag
 \end{align}
 ```
-
 para cada uno de los parámetros del modelo. Al observar estos resultados, es posible que el `phd` (el prestigio de su departamento) no tenga ninguna relación con el resultado.
 
 Si bien la distribución de Poisson es el supuesto habitual para datos como estos, puede resultar beneficioso realizar una verificación aproximada de los supuestos del modelo ajustando los modelos sin utilizar la probabilidad de Poisson para calcular los intervalos de confianza. El paquete `r pkg(rsample)` tiene una función conveniente para calcular intervalos de confianza de arranque para los modelos `lm()` y `glm()`. Podemos usar esta función, mientras declaramos explícitamente `family = poisson`, para calcular una gran cantidad de ajustes del modelo. De forma predeterminada, calculamos un intervalo bootstrap-t de confianza del 90% (los intervalos percentiles también están disponibles):
@@ -284,7 +282,6 @@ H_0&: \beta_{phd} = 0 \notag \\
 H_a&: \beta_{phd} \ne 0 \notag
 \end{align}
 ```
-
 Esta hipótesis se probó previamente cuando mostramos los resultados ordenados de `log_lin_fit`. Ese enfoque particular utilizó resultados de un ajuste de modelo único mediante una estadística de Wald (es decir, el parámetro dividido por su error estándar). Para ese enfoque, el valor p era `r tidy(log_lin_fit) |> filter(term == "phd") |> pluck("p.value") |> format.pval()`. Podemos ordenar los resultados del LRT para obtener el valor p:
 
 ```{r inferential-reduced, warning = FALSE}
@@ -302,7 +299,7 @@ anova(
 
 Los resultados son los mismos y, en base a estos y al intervalo de confianza para este parámetro, excluiremos `phd` de análisis adicionales ya que no parece estar asociado con el resultado.
 
-## Un modelo más complejo
+## Un Modelo Más Complejo
 
 Podemos pasar a modelos aún más complejos dentro de nuestro enfoque de tidymodels. Para los datos de recuento, hay ocasiones en las que el número de recuentos de ceros es mayor de lo que prescribiría una distribución de Poisson simple. Un modelo más complejo apropiado para esta situación es el modelo de Poisson (ZIP) con inflación cero; consulte @Mullahy, @Lambert1992 y @JSSv027i08. Aquí, hay dos conjuntos de covariables: uno para los datos de recuento y otros que afectan la probabilidad (indicada como $\pi$) de ceros. La ecuación para la media $\lambda$ es:
 
@@ -316,7 +313,6 @@ donde
 \log\left(\frac{\pi}{1-\pi}\right) &= \gamma_0 + \gamma_1z_1 + \ldots + \gamma_qz_q \notag 
 \end{align}
 ```
-
 y las covariables $x$ afectan los valores de recuento, mientras que las covariables $z$ influyen en la probabilidad de un cero. No es necesario que los dos conjuntos de predictores sean mutuamente excluyentes.
 
 Ajustaremos un modelo con un conjunto completo de covariables $z$:
@@ -340,7 +336,6 @@ H_0&: \gamma_1 = 0, \gamma_2 = 0, \cdots, \gamma_5 = 0 \notag \\
 H_a&: \text{at least one } \gamma \ne 0  \notag
 \end{align}
 ```
-
 Probemos ANOVA nuevamente:
 
 ```{r inference-zip-anova, error = TRUE}
@@ -442,10 +437,10 @@ bootstrap_models %>% int_t(zero_coefs)
 
 A partir de estos resultados, podemos tener una buena idea de qué predictores incluir en el modelo de probabilidad de conteo cero. Puede ser sensato reajustar un modelo más pequeño para evaluar si la distribución de arranque para "ment" todavía está sesgada.
 
-## Más análisis inferencial {#sec-inference-options}
+## Más Análisis Inferencial {#sec-inference-options}
 
 Este capítulo demostró solo un pequeño subconjunto de lo que está disponible para el análisis inferencial en modelos tidy y se ha centrado en los métodos frecuentistas y de remuestreo. Podría decirse que el análisis bayesiano es un enfoque de inferencia muy eficaz y, a menudo, superior. Hay una variedad de modelos bayesianos disponibles a través de `r pkg(parsnip)`. Además, el paquete `r pkg(multilevelmod)` permite a los usuarios ajustarse a modelos jerárquicos bayesianos y no bayesianos (por ejemplo, modelos mixtos). Los paquetes `r pkg(broom.mixed)` y `r pkg(tidybayes)` son excelentes herramientas para extraer datos para gráficos y resúmenes. Finalmente, para conjuntos de datos con una única jerarquía, como datos de medidas longitudinales o repetidas simples, la función `group_vfold_cv()` de `r pkg(rsample)` facilita caracterizaciones directas fuera de la muestra del rendimiento del modelo.
 
-## Resumen del capítulo {#sec-inference-summary}
+## Resumen Del Capítulo {#sec-inference-summary}
 
 El marco tidymodels sirve para algo más que el modelado predictivo. Los paquetes y funciones de tidymodels se pueden utilizar para probar hipótesis, así como para ajustar y evaluar modelos inferenciales. El marco tidymodels brinda soporte para trabajar con modelos R que no son tidymodels y puede ayudar a evaluar las cualidades estadísticas de sus modelos.

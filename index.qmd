@@ -66,7 +66,7 @@ cat(paste0(contributors$desc, collapse = ", "))
 cat(".\n")
 ```
 
-## Usando ejemplos de código {.unnumbered}
+## Usando Ejemplos De Código {.unnumbered}
 
 ```{r pkg-list, echo = FALSE}
 deps <- desc::desc_get_deps()
@@ -89,7 +89,7 @@ Este libro fue escrito con [RStudio](http://www.rstudio.com/ide/) usando [bookdo
 
 Esta versión del libro fue construida con `r R.version.string`, [pandoc](https://pandoc.org/) versión `r rmarkdown::pandoc_version()`, y los siguientes paquetes: `r pkg_info`.
 
-## Sobre la traducción
+## Sobre La Traducción
 
 <a href="https://amzn.to/35Hn96s"><img src="logo.png" alt="Cover image" width="285" height="285" align="right" style="margin: 0 1em 0 1em"/></a> Esta traducción de "Modelado Ordenado con R" es un proyecto personal de [David Díaz Rodríguez](https://github.com/davidrsch) con el objetivo de facilitar el estudio de construcción de modelos mediante el uso de R, tanto al propio traductor como a todas aquellas personas de habla hispana que deseen aprender sobre este tema.
 

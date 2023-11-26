@@ -27,7 +27,7 @@ rf_fit <- rf_wflow %>% fit(data = ames_train)
 lm_fit <- lm_wflow %>% fit(data = ames_train)
 ```
 
-# Explicando Modelos y Predicciones {#sec-explain}
+# Explicando Modelos Y Predicciones {#sec-explain}
 
 En @sec-model-types, describimos una taxonomía de modelos y sugerimos que los modelos generalmente se construyen como uno o más descriptivos, inferenciales o predictivos. Sugerimos que el rendimiento del modelo, medido mediante métricas apropiadas (como RMSE para regresión o área bajo la curva ROC para clasificación), puede ser importante para todas las aplicaciones de modelado. De manera similar, las explicaciones del modelo, que responden *por qué* un modelo hace las predicciones que hace, pueden ser importantes ya sea que el propósito de su modelo sea en gran medida descriptivo, probar una hipótesis o hacer una predicción. Respondiendo a la pregunta "¿por qué?" permite a los profesionales del modelado comprender qué características fueron importantes en las predicciones e incluso cómo cambiarían las predicciones del modelo bajo diferentes valores de las características. Este capítulo cubre cómo preguntarle a un modelo por qué hace las predicciones que hace.
 
@@ -37,7 +37,7 @@ Para algunos modelos, como la regresión lineal, suele estar claro cómo explica
 Hay dos tipos de explicaciones de modelos, *global* y *local*. Las explicaciones del modelo global proporcionan una comprensión general agregada de un conjunto completo de observaciones; Las explicaciones del modelo local proporcionan información sobre una predicción para una sola observación.
 :::
 
-## Software para explicaciones de modelos
+## Software Para Explicaciones De Modelos
 
 El marco tidymodels no contiene software para explicaciones de modelos. En cambio, los modelos entrenados y evaluados con tidymodels se pueden explicar con otro software complementario en paquetes R como [`r pkg(lime)`](https://lime.data-imaginist.com/), [`r pkg( vip)`](https://koalaverse.github.io/vip/) y [`r pkg(DALEX)`](https://dalex.drwhy.ai/). A menudo elegimos:
 
@@ -103,7 +103,7 @@ Tratar con importantes transformaciones de ingeniería de características duran
 -   *predictores básicos originales* tal como existían sin transformaciones significativas de ingeniería de características, o
 -   *características derivadas*, como las creadas mediante reducción de dimensionalidad ([Capítulo @sec-dimensionality]) o interacciones y términos spline, como en este ejemplo.
 
-## Explicaciones locales
+## Explicaciones Locales
 
 Las explicaciones de los modelos locales proporcionan información sobre una predicción para una sola observación. Por ejemplo, consideremos un dúplex antiguo en el vecindario de North Ames (@sec-exploring-features-of-homes-in-ames):
 
@@ -227,7 +227,7 @@ shap_house %>%
   labs(y = NULL)
 ```
 
-## Explicaciones globales
+## Explicaciones Globales
 
 Las explicaciones del modelo global, también llamadas importancia de característica global o importancia variable, nos ayudan a comprender qué características son más importantes para impulsar las predicciones de los modelos forestales lineales y aleatorios en general, agregados en todo el conjunto de entrenamiento. Si bien la sección anterior abordó qué variables o características son más importantes para predecir el precio de venta de una vivienda individual, la importancia de las características globales aborda las variables más importantes para un modelo en conjunto.
 
@@ -302,7 +302,7 @@ ggplot_imp(vip_lm, vip_rf)
 
 La línea discontinua en cada panel de @fig-global-rf muestra el RMSE para el modelo completo, ya sea el modelo lineal o el modelo de bosque aleatorio. Las características más a la derecha son más importantes porque permutarlas da como resultado un RMSE más alto. Hay bastante información interesante que aprender de esta trama; por ejemplo, la vecindad es bastante importante en el modelo lineal con interacciones/splines, pero es la segunda característica menos importante para el modelo de bosque aleatorio.
 
-## Construyendo explicaciones globales a partir de explicaciones locales
+## Construyendo Explicaciones Globales A Partir De Explicaciones Locales
 
 Hasta ahora en este capítulo, nos hemos centrado en explicaciones de modelos locales para una sola observación (a través de explicaciones aditivas de Shapley) y explicaciones de modelos globales para un conjunto de datos en su conjunto (a través de características de permutación). También es posible construir explicaciones de modelos globales agregando explicaciones de modelos locales, como con los *perfiles de dependencia parcial*.
 
@@ -413,7 +413,7 @@ as_tibble(pdp_liv$agr_profiles) %>%
 
 No existe un único enfoque correcto para crear explicaciones de modelos y las opciones descritas en este capítulo no son exhaustivas. Hemos destacado buenas opciones para explicaciones tanto a nivel individual como global, así como también cómo tender un puente entre uno y otro, y le remitimos a @Biecek2021 y @Molnar2021 para obtener más información.
 
-## ¡De vuelta a los frijoles!
+## ¡De Vuelta A Los Frijoles!
 
 En el [Capítulo @sec-dimensionality], analizamos cómo utilizar la reducción de dimensionalidad como un paso de preprocesamiento o ingeniería de características al modelar datos de alta dimensión. Para nuestro conjunto de datos de ejemplo de medidas de morfología de frijoles secos que predicen el tipo de frijol, vimos excelentes resultados de la reducción de la dimensionalidad de mínimos cuadrados parciales (PLS) combinada con un modelo de análisis discriminante regularizado. ¿Cuáles de esas características morfológicas fueron *más* importantes en las predicciones del tipo de frijol? Podemos usar el mismo enfoque descrito a lo largo de este capítulo para crear un explicador independiente del modelo y calcular, por ejemplo, explicaciones del modelo global a través de `model_parts()`:
 
@@ -462,7 +462,7 @@ $$\text{SF4} = \frac{A}{\pi(L/2)(l/2)}$$
 
 Podemos ver en @fig-bean-explainer que el factor de forma 1 (la relación entre el eje mayor y el área), la longitud del eje menor y la redondez son las siguientes características más importantes del frijol para predecir la variedad de frijol.
 
-## Resumen del Capítulo {#sec-explain-summary}
+## Resumen Del Capítulo {#sec-explain-summary}
 
 Para algunos tipos de modelos, la respuesta a por qué un modelo hizo una determinada predicción es sencilla, pero para otros tipos de modelos, debemos usar algoritmos explicativos separados para comprender qué características son relativamente más importantes para las predicciones. Puede generar dos tipos principales de explicaciones de modelo a partir de un modelo entrenado. Las explicaciones globales brindan información agregada sobre un conjunto de datos completo, mientras que las explicaciones locales brindan comprensión sobre las predicciones de un modelo para una sola observación.
 

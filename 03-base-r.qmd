@@ -1,4 +1,4 @@
-# Una revisión de los fundamentos del modelado con R {#sec-base-r}
+# Una Revisión De Los Fundamentos Del Modelado Con R {#sec-base-r}
 
 ```{r base-r-setup, include = FALSE}
 knitr::opts_chunk$set(fig.path = "figures/")
@@ -11,7 +11,7 @@ Antes de describir cómo usar tidymodels para aplicar principios de datos ordena
 
 El lenguaje S, en el que se basa R, ha tenido un rico entorno de análisis de datos desde la publicación de @WhiteBook (comúnmente conocido como El Libro Blanco). Esta versión de S introdujo componentes de infraestructura estándar familiares para los usuarios de R hoy en día, como fórmulas de modelos simbólicos, matrices de modelos y marcos de datos, así como métodos de programación estándar orientados a objetos para el análisis de datos. Estas interfaces de usuario no han cambiado sustancialmente desde entonces.
 
-## Un ejemplo
+## Un Ejemplo
 
 Para demostrar algunos fundamentos del modelado en base R, usemos datos experimentales de @mcdonald2009, a través de @mangiafico2015, sobre la relación entre la temperatura ambiente y la tasa de chirridos de los grillos por minuto. Se recolectaron datos para dos especies: *O. exclamationis* y *O. niveus*. Los datos están contenidos en un marco de datos llamado "crickets" (grillos en español) con un total de puntos de datos "r nrow(crickets)". Estos datos se muestran en @fig-cricket-plot usando el siguiente código `r pkg(ggplot2)`.
 
@@ -189,7 +189,7 @@ Si bien este análisis obviamente no ha sido una demostración exhaustiva de las
 
 Finalmente, como se mencionó anteriormente, este marco se publicó por primera vez en 1992. La mayoría de estas ideas y métodos se desarrollaron en ese período, pero siguen siendo notablemente relevantes hasta el día de hoy. Destaca que el lenguaje S y, por extensión, R, ha sido diseñado para el análisis de datos desde sus inicios.
 
-## ¿Qué hace la fórmula R? {#sec-formula}
+## ¿Qué Hace La Fórmula R? {#sec-formula}
 
 Muchos paquetes de modelado utilizan la fórmula del modelo R. Suele tener múltiples propósitos:
 
@@ -211,7 +211,7 @@ Nuestro enfoque, al ver esto, es que hay dos predictores y el modelo debe conten
 Este es un punto importante que surgirá varias veces en este texto, especialmente cuando analicemos la ingeniería de funciones más compleja en el [Capítulo @sec-recipes] y más allá. La fórmula en R tiene algunas limitaciones y nuestros enfoques para superarlas se enfrentan a los tres aspectos.
 :::
 
-## Por qué el orden es importante para modelar {#sec-tidiness-modeling}
+## ¿Por Qué El Orden Es Importante Para Modelar? {#sec-tidiness-modeling}
 
 Uno de los puntos fuertes de R es que anima a los desarrolladores a crear una interfaz de usuario que se ajuste a sus necesidades. A modo de ejemplo, aquí se muestran tres métodos comunes para crear un diagrama de dispersión de dos variables numéricas en un marco de datos llamado `plot_data`:
 
@@ -343,7 +343,7 @@ corr_res %>%
 
 Es posible crear un gráfico de este tipo utilizando las funciones básicas del lenguaje R, pero reformatear automáticamente los resultados genera un código más conciso con menos posibilidades de errores.
 
-## Combinando modelos Base R y Tidyverse
+## Combinando Modelos Base R Y Tidyverse
 
 Las funciones de modelado de R del lenguaje central u otros paquetes de R se pueden usar junto con tidyverse, especialmente con los paquetes `r pkg(dplyr)`, `r pkg(purrr)` y `r pkg(tidyr)`. Por ejemplo, si quisiéramos ajustar modelos separados para cada especie de grillo, primero podemos desglosar los datos del grillo en esta columna usando `dplyr::group_nest()`:
 
@@ -376,7 +376,7 @@ model_by_species %>%
 Las columnas de lista pueden ser muy poderosas en proyectos de modelado. Las columnas de lista proporcionan contenedores para cualquier tipo de objetos R, desde un modelo ajustado hasta la importante estructura del marco de datos.
 :::
 
-## El metapaquete tidymodels
+## El Metapaquete Tidymodels
 
 El tidyverse ([Capítulo @sec-tidyverse]) está diseñado como un conjunto de paquetes R modulares, cada uno con un alcance bastante limitado. El marco tidymodels sigue un diseño similar. Por ejemplo, el paquete `r pkg(rsample)` se centra en la división y el remuestreo de datos. Aunque los métodos de remuestreo son críticos para otras actividades de modelado (por ejemplo, medir el desempeño), residen en un solo paquete y las métricas de desempeño están contenidas en un paquete diferente e independiente, `r pkg(yardstick)`. Hay muchos beneficios al adoptar esta filosofía de paquetes modulares, desde una implementación de modelos menos inflada hasta un mantenimiento de paquetes más fluido.
 
@@ -419,6 +419,6 @@ tidymodels_prefer(quiet = FALSE)
 Tenga en cuenta que el uso de esta función le permite optar por utilizar `conflicted::conflict_prefer()` para todos los conflictos de espacios de nombres, lo que convierte cada conflicto en un error y le obliga a elegir qué función utilizar. La función `tidymodels::tidymodels_prefer()` maneja los conflictos más comunes de las funciones de tidymodels, pero necesitarás manejar otros conflictos en tu sesión de R tú mismo.
 :::
 
-## Resumen del capítulo
+## Resumen Del Capítulo
 
 Este capítulo revisó las convenciones básicas del lenguaje R para crear y usar modelos que son una base importante para el resto de este libro. El operador de fórmula es un aspecto expresivo e importante del ajuste de modelos en R y, a menudo, sirve para múltiples propósitos en funciones que no son de tidymodels. Los enfoques tradicionales de R para modelar tienen algunas limitaciones, especialmente cuando se trata de manejar y visualizar con fluidez los resultados del modelo. El metapaquete `r pkg(tidymodels)` aplica la filosofía de diseño tidyverse a los paquetes de modelado.

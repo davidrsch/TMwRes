@@ -1,4 +1,4 @@
-# Una introducción tidyverse {#sec-tidyverse}
+# Una Introducción Tidyverse {#sec-tidyverse}
 
 ```{r tidyverse-setup, include = FALSE}
 knitr::opts_chunk$set(fig.path = "figures/")
@@ -12,7 +12,7 @@ library(lubridate)
 
 En este capítulo, analizamos brevemente principios importantes de la filosofía de diseño de tidyverse y cómo se aplican en el contexto del software de modelado para que sea fácil de usar correctamente y respalde las buenas prácticas estadísticas, como lo describimos en el [Capítulo @sec-software-modeling]. El siguiente capítulo cubre las convenciones de modelado del lenguaje principal R. Juntos, pueden utilizar estas discusiones para comprender las relaciones entre tidyverse, tidymodels y el lenguaje principal o básico, R. Tanto tidymodels como tidyverse se basan en el lenguaje R, y tidymodels aplica los principios de tidyverse para construir modelos.
 
-## Principios de Tidyverse
+## Principios De Tidyverse
 
 El conjunto completo de estrategias y tácticas para escribir código R en el estilo tidyverse se puede encontrar en el sitio web <https://design.tidyverse.org>. Aquí podemos describir brevemente varios de los principios generales de diseño de tidyverse, su motivación y cómo pensamos sobre el modelado como una aplicación de estos principios.
 
@@ -188,7 +188,7 @@ Estos ejemplos han sido triviales pero, en secciones posteriores, se aplicarán 
 Para la programación funcional en el modelado ordenado, las funciones deben definirse de modo que funciones como `map()` puedan usarse para cálculos iterativos.
 :::
 
-## Ejemplos de sintaxis de Tidyverse {#sec-examples-of-tidyverse-syntax}
+## Ejemplos De Sintaxis De Tidyverse {#sec-examples-of-tidyverse-syntax}
 
 Comencemos nuestra discusión sobre la sintaxis de tidyverse explorando más profundamente qué es un tibble y cómo funcionan. Los tibbles tienen reglas ligeramente diferentes a los marcos de datos básicos en R. Por ejemplo, los tibbles funcionan naturalmente con nombres de columnas que no son nombres de variables sintácticamente válidos:
 
@@ -281,6 +281,6 @@ all_stations <-
 
 Esta canalización de operaciones ilustra por qué tidyverse es popular. Se utiliza una serie de manipulaciones de datos que tienen funciones simples y fáciles de entender para cada transformación; La serie se presenta de forma simplificada y legible. La atención se centra en cómo el usuario interactúa con el software. Este enfoque permite que más personas aprendan R y alcancen sus objetivos de análisis, y adoptar estos mismos principios para modelar en R tiene los mismos beneficios.
 
-## Resumen del capítulo
+## Resumen Del Capítulo
 
 Este capítulo presentó tidyverse, centrándose en las aplicaciones para modelado y cómo los principios de diseño de tidyverse informan el marco de trabajo de tidymodels. Piense en el marco de tidymodels como una aplicación de los principios de tidyverse al dominio de la construcción de modelos. Describimos las diferencias en las convenciones entre tidyverse y base R, e introdujimos dos componentes importantes del sistema tidyverse, tibbles y el operador de canalización `%>%`. La limpieza y el procesamiento de datos pueden parecer mundanos a veces, pero estas tareas son importantes para el modelado en el mundo real; Ilustramos cómo usar las funciones tibbles, pipe y tidyverse en un ejercicio de ejemplo de importación y procesamiento de datos.

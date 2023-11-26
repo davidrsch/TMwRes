@@ -11,7 +11,7 @@ source("ames_snippets.R")
 load("RData/lm_fit.RData")
 ```
 
-# Remuestrear para Evaluar el Rendimiento {#sec-resampling}
+# Remuestrear Para Evaluar El Rendimiento {#sec-resampling}
 
 Ya hemos cubierto varias piezas que se deben juntar para evaluar el desempeño de un modelo. El [Capítulo @sec-performance] describió estadísticas para medir el rendimiento del modelo. El [Capítulo @sec-splitting] introdujo la idea del gasto de datos y recomendamos el conjunto de pruebas para obtener una estimación imparcial del rendimiento. Sin embargo, normalmente necesitamos comprender el rendimiento de un modelo o incluso de varios modelos *antes de utilizar el conjunto de prueba*.
 
@@ -23,7 +23,7 @@ En este capítulo, describimos un enfoque llamado remuestreo que puede llenar es
 
 Para apreciar plenamente el valor del remuestreo, primero echemos un vistazo al enfoque de resustitución, que a menudo puede fallar.
 
-## El Enfoque de la Resustitución {#sec-resampling-resubstition}
+## El Enfoque De La Resustitución {#sec-resampling-resubstition}
 
 Cuando medimos el rendimiento con los mismos datos que utilizamos para el entrenamiento (a diferencia de datos nuevos o datos de prueba), decimos que hemos *resustituido* los datos. Utilicemos nuevamente los datos de vivienda de Ames para demostrar estos conceptos. @sec-recipes-summary resume el estado actual de nuestro análisis de Ames. Incluye un objeto de receta llamado `ames_rec`, un modelo lineal y un flujo de trabajo que usa esa receta y modelo llamado `lm_wflow`. Este flujo de trabajo se ajustó al conjunto de entrenamiento, lo que dio como resultado `lm_fit`.
 
@@ -137,7 +137,7 @@ La principal conclusión de este ejemplo es que repredecir el conjunto de entren
 
 Si el conjunto de prueba no se debe utilizar de inmediato y repredecir el conjunto de entrenamiento es una mala idea, ¿qué se debe hacer? Los métodos de remuestreo, como la validación cruzada o los conjuntos de validación, son la solución.
 
-## Métodos de Remuestreo
+## Métodos De Remuestreo
 
 Los métodos de remuestreo son sistemas de simulación empíricos que emulan el proceso de utilizar algunos datos para modelar y diferentes datos para evaluación. La mayoría de los métodos de remuestreo son iterativos, lo que significa que este proceso se repite varias veces. El diagrama en @fig-resampling-scheme ilustra cómo funcionan generalmente los métodos de remuestreo.
 
@@ -413,13 +413,13 @@ map_dfr(time_slices$splits, ~   analysis(.x) %>% data_range())
 map_dfr(time_slices$splits, ~ assessment(.x) %>% data_range())
 ```
 
-## Estimación del rendimiento {#sec-resampling-performance}
+## Estimación Del Rendimiento {#sec-resampling-performance}
 
 Cualquiera de los métodos de remuestreo discutidos en este capítulo se puede utilizar para evaluar el proceso de modelado (incluido el preprocesamiento, el ajuste del modelo, etc.). Estos métodos son eficaces porque se utilizan diferentes grupos de datos para entrenar el modelo y evaluarlo. Para reiterar, el proceso para utilizar el remuestreo es:
 
 1.  Durante el remuestreo, el conjunto de análisis se utiliza para preprocesar los datos, aplicar el preprocesamiento a sí mismo y utilizar estos datos procesados para ajustarse al modelo.
 
-2. Las estadísticas de preprocesamiento producidas por el conjunto de análisis se aplican al conjunto de evaluación. Las predicciones del conjunto de evaluación estiman el rendimiento con datos nuevos.
+2.  Las estadísticas de preprocesamiento producidas por el conjunto de análisis se aplican al conjunto de evaluación. Las predicciones del conjunto de evaluación estiman el rendimiento con datos nuevos.
 
 Esta secuencia se repite para cada nuevo muestreo. Si hay *B* remuestreos, hay *B* réplicas de cada una de las métricas de rendimiento. La estimación final del remuestreo es el promedio de estas estadísticas *B*. Si *B* = 1, como ocurre con un conjunto de validación, las estadísticas individuales representan el rendimiento general.
 
@@ -555,9 +555,9 @@ Estos resultados también están mucho más cerca de los resultados del conjunto
 En estos análisis, los resultados del remuestreo son muy cercanos a los resultados del conjunto de pruebas. Los dos tipos de estimaciones tienden a estar bien correlacionados. Sin embargo, esto podría deberse al azar. Un valor inicial de "55" fijó los números aleatorios antes de crear las nuevas muestras. Intente cambiar este valor y vuelva a ejecutar los análisis para investigar si las estimaciones remuestreadas también coinciden con los resultados del conjunto de pruebas.
 :::
 
-## Procesamiento en paralelo {#sec-parallel}
+## Procesamiento En Paralelo {#sec-parallel}
 
-Los modelos creados durante el remuestreo son independientes entre sí. Los cálculos de este tipo a veces se denominan *vergonzosamente paralelos*; cada modelo podría adaptarse simultáneamente sin problemas.[^10-resampling-9] El paquete `r pkg(tune)` usa [`r pkg(foreach)`](https://CRAN.R-project.org/ package=foreach) paquete para facilitar los cálculos paralelos. Estos cálculos podrían dividirse entre procesadores de la misma computadora o entre computadoras diferentes, según la tecnología elegida.
+Los modelos creados durante el remuestreo son independientes entre sí. Los cálculos de este tipo a veces se denominan *vergonzosamente paralelos*; cada modelo podría adaptarse simultáneamente sin problemas.[^10-resampling-9] El paquete `r pkg(tune)` usa [`r pkg(foreach)`](https://CRAN.R-project.org/%20package=foreach) paquete para facilitar los cálculos paralelos. Estos cálculos podrían dividirse entre procesadores de la misma computadora o entre computadoras diferentes, según la tecnología elegida.
 
 [^10-resampling-9]: @parallel ofrece una descripción técnica de estas tecnologías.
 
@@ -615,7 +615,7 @@ El procesamiento paralelo con el paquete `r pkg(tune)` tiende a proporcionar ace
 
 Concluyamos con una nota final sobre el paralelismo. Para cada una de estas tecnologías, los requisitos de memoria se multiplican por cada núcleo adicional utilizado. Por ejemplo, si el conjunto de datos actual tiene 2 GB de memoria y se utilizan tres núcleos, el requisito total de memoria es de 8 GB (2 para cada proceso de trabajo más el original). El uso de demasiados núcleos puede hacer que los cálculos (y la computadora) se ralenticen considerablemente.
 
-## Guardar los objetos remuestreados {#sec-extract}
+## Guardar Los Objetos Remuestreados {#sec-extract}
 
 Los modelos creados durante el remuestreo no se conservan. Estos modelos se entrenan con el fin de evaluar el desempeño y, por lo general, no los necesitamos después de haber calculado las estadísticas de desempeño. Si un enfoque de modelado particular resulta ser la mejor opción para nuestro conjunto de datos, entonces la mejor opción es ajustar nuevamente todo el conjunto de entrenamiento para que los parámetros del modelo puedan estimarse con más datos.
 
@@ -684,7 +684,7 @@ filter(all_coef, term == "Year_Built")
 
 Los capítulos [-@sec-grid-search] y [-@sec-iterative-search] analizan un conjunto de funciones para ajustar modelos. Sus interfaces son similares a `fit_resamples()` y muchas de las características descritas aquí se aplican a esas funciones.
 
-## Resumen del capítulo {#sec-resampling-summary}
+## Resumen Del Capítulo {#sec-resampling-summary}
 
 Este capítulo describe una de las herramientas fundamentales del análisis de datos, la capacidad de medir el rendimiento y la variación en los resultados del modelo. El remuestreo nos permite determinar qué tan bien funciona el modelo sin utilizar el conjunto de prueba.
 

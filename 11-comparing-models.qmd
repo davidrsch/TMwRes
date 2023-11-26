@@ -19,13 +19,13 @@ load("RData/post_intervals.RData")
 keep_pred <- control_resamples(save_pred = TRUE)
 ```
 
-# Comparación de Modelos con Remuestreo {#sec-compare}
+# Comparación De Modelos Con Remuestreo {#sec-compare}
 
 Una vez que creamos dos o más modelos, el siguiente paso es compararlos para entender cuál es mejor. En algunos casos, las comparaciones pueden ser *dentro del modelo*, donde el mismo modelo puede evaluarse con diferentes características o métodos de preprocesamiento. Alternativamente, las comparaciones *entre modelos*, como cuando comparamos modelos de regresión lineal y de random forest en el [Capítulo @sec-resampling], son el escenario más común.
 
 En cualquier caso, el resultado es una colección de estadísticas resumidas remuestreadas (por ejemplo, RMSE, precisión, etc.) para cada modelo. En este capítulo, primero demostraremos cómo se pueden usar conjuntos de flujos de trabajo para ajustarse a múltiples modelos. Luego, discutiremos aspectos importantes de las estadísticas de remuestreo. Finalmente, veremos cómo comparar modelos formalmente (usando pruebas de hipótesis o un enfoque bayesiano).
 
-## Crear Múltiples Modelos con Conjuntos de Flujo de Trabajo {#sec-workflow-set}
+## Crear Múltiples Modelos Con Conjuntos De Flujo De Trabajo {#sec-workflow-set}
 
 En @sec-workflow-sets-intro describimos la idea de un conjunto de flujo de trabajo donde se pueden generar combinatoriamente diferentes preprocesadores y/o modelos. En el [Capítulo @sec-resampling], utilizamos una receta para los datos de Ames que incluía un término de interacción así como funciones spline para longitud y latitud. Para demostrar más con los conjuntos de flujos de trabajo, creemos tres modelos lineales diferentes que agreguen estos pasos de preprocesamiento de forma incremental; Podemos probar si estos términos adicionales mejoran los resultados del modelo. Crearemos tres recetas y luego las combinaremos en un conjunto de flujo de trabajo:
 
@@ -110,7 +110,7 @@ En este gráfico de intervalos de confianza $R^2$, podemos ver que el método de
 
 Ahora que tenemos 10 estimaciones de rendimiento remuestreadas para cada uno de los cuatro modelos, estas estadísticas resumidas se pueden utilizar para realizar comparaciones entre modelos.
 
-## Comparación de estadísticas de rendimiento remuestreadas {#sec-resampled-stats}
+## Comparación De Estadísticas De Rendimiento Remuestreadas {#sec-resampled-stats}
 
 Teniendo en cuenta los resultados anteriores para los tres modelos lineales, parece que los términos adicionales no mejoran profundamente las estadísticas medias de RMSE o $R^2$ para los modelos lineales. La diferencia es pequeña, pero podría ser mayor que el ruido experimental en el sistema, es decir, considerarse estadísticamente significativa. Podemos probar formalmente la hipótesis de que los términos adicionales aumentan $R^2$.
 
@@ -187,7 +187,7 @@ Antes de realizar comparaciones de modelos o observar los resultados del remuest
 
 La importancia práctica es subjetiva; dos personas pueden tener ideas muy diferentes en el umbral de la importancia. Sin embargo, más adelante mostraremos que esta consideración puede resultar muy útil a la hora de decidir entre modelos.
 
-## Métodos simples de prueba de hipótesis
+## Métodos Simples De Prueba De Hipótesis
 
 Podemos utilizar pruebas de hipótesis simples para hacer comparaciones formales entre modelos. Considere el conocido modelo estadístico lineal:
 
@@ -269,12 +269,12 @@ lm_t <-
 Podríamos evaluar cada diferencia por pares de esta manera. Tenga en cuenta que el valor p indica una señal *estadísticamente significativa*; la colección de términos splines para longitud y latitud parece tener un efecto. Sin embargo, la diferencia en $R^2$ se estima en `r round(lm_t$estimate * 100, 2)`%. Si nuestro tamaño de efecto práctico fuera del 2%, es posible que no consideráramos que valga la pena incluir estos términos en el modelo.
 
 ::: rmdnote
-Ya hemos mencionado brevemente los valores p, pero ¿qué son realmente? De @pvalue: "Informalmente, un valor p es la probabilidad, según un modelo estadístico específico, de que un resumen estadístico de los datos (por ejemplo, la diferencia de medias muestrales entre dos grupos comparados) sea igual o más extremo que su valor observado. "
+Ya hemos mencionado brevemente los valores p, pero ¿qué son realmente? De @pvalue: "Informalmente, un valor p es la probabilidad, según un modelo estadístico específico, de que un resumen estadístico de los datos (por ejemplo, la diferencia de medias muestrales entre dos grupos comparados) sea igual o más extremo que su valor observado."
 
 En otras palabras, si este análisis se repitiera una gran cantidad de veces bajo la hipótesis nula de que no hay diferencias, el valor p refleja cuán extremos serían nuestros resultados observados en comparación.
 :::
 
-## Métodos bayesianos {#sec-tidyposterior}
+## Métodos Bayesianos {#sec-tidyposterior}
 
 Simplemente utilizamos pruebas de hipótesis para comparar modelos formalmente, pero también podemos adoptar un enfoque más general para realizar estas comparaciones formales utilizando efectos aleatorios y estadísticas bayesianas [@mcelreath2020statistical]. Si bien el modelo es más complejo que el método ANOVA, la interpretación es más simple y directa que el método del valor p. El modelo ANOVA anterior tenía la forma:
 
@@ -503,6 +503,6 @@ ggplot(intervals,
 
 El ancho de los intervalos disminuye a medida que se agregan más muestras. Claramente, pasar de diez remuestreos a treinta tiene un impacto mayor que pasar de ochenta a 100. Hay rendimientos decrecientes por utilizar un número "grande" de remuestreos ("grande" será diferente para diferentes conjuntos de datos).
 
-## Resumen del capítulo {#sec-compare-summary}
+## Resumen Del Capítulo {#sec-compare-summary}
 
 Este capítulo describió métodos estadísticos formales para probar diferencias en el rendimiento entre modelos. Demostramos el efecto dentro de la nueva muestra, donde los resultados para la misma nueva muestra tienden a ser similares; este aspecto de las estadísticas resumidas remuestreadas requiere un análisis apropiado para realizar comparaciones de modelos válidas. Además, aunque la significación estadística y la significancia práctica son conceptos importantes para las comparaciones de modelos, son diferentes.

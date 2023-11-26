@@ -15,11 +15,11 @@ registerDoMC(cores = parallel::detectCores())
 tidymodels_prefer()
 ```
 
-# Reducción de Dimensionalidad {#sec-dimensionality}
+# Reducción De Dimensionalidad {#sec-dimensionality}
 
 La reducción de dimensionalidad transforma un conjunto de datos de un espacio de alta dimensión a un espacio de baja dimensión y puede ser una buena opción cuando se sospecha que hay "demasiadas" variables. Un exceso de variables, normalmente predictores, puede ser un problema porque resulta difícil comprender o visualizar datos en dimensiones superiores.
 
-## ¿Qué problemas puede resolver la reducción de dimensionalidad?
+## ¿Qué Problemas Puede Resolver La Reducción De Dimensionalidad?
 
 La reducción de dimensionalidad se puede utilizar en ingeniería de características o en análisis de datos exploratorios. Por ejemplo, en experimentos de biología de alta dimensión, una de las primeras tareas, antes de cualquier modelado, es determinar si hay tendencias no deseadas en los datos (por ejemplo, efectos no relacionados con la cuestión de interés, como la transferencia de laboratorio a laboratorio). diferencias de laboratorio). Depurar los datos es difícil cuando hay cientos de miles de dimensiones y la reducción de la dimensionalidad puede ser una ayuda para el análisis exploratorio de datos.
 
@@ -49,7 +49,7 @@ Además del paquete `r pkg(tidymodels)`, este capítulo utiliza los siguientes p
 
 [^16-dimensionality-reduction-2]: El paquete `r pkg(mixOmics)` no está disponible en CRAN, sino en Bioconductor: <https://doi.org/doi:10.18129/B9.bioc.mixOmics>
 
-## Una imagen vale más que mil... Frijoles {#sec-beans}
+## Una Imagen Vale Más Que Mil... Frijoles {#sec-beans}
 
 Veamos cómo usar la reducción de dimensionalidad con `r pkg(recipes)` para ver un conjunto de datos de ejemplo. @beans publicó un conjunto de datos de características visuales de los frijoles secos y describió métodos para determinar las variedades de frijoles secos en una imagen. Si bien la dimensionalidad de estos datos no es muy grande en comparación con muchos problemas de modelado del mundo real, proporciona un buen ejemplo práctico para demostrar cómo reducir la cantidad de funciones. De su manuscrito:
 
@@ -163,7 +163,7 @@ Recuerde que al invocar la función `recipe()` los pasos no se estiman ni ejecut
 
 Esta receta se ampliará con pasos adicionales para los análisis de reducción de dimensionalidad. Antes de hacerlo, repasemos cómo se puede utilizar una receta fuera de un flujo de trabajo.
 
-## Recetas en la naturaleza {#sec-recipe-functions}
+## Recetas En La Naturaleza {#sec-recipe-functions}
 
 Como se menciona en @sec-using-recipes, un flujo de trabajo que contiene una receta usa `fit()` para estimar la receta y el modelo, luego `predict()` para procesar los datos y hacer predicciones del modelo. Hay funciones análogas en el paquete `r pkg(recipes)` que se pueden usar para el mismo propósito:
 
@@ -275,7 +275,7 @@ En segundo lugar, se pueden utilizar selectores adicionales en la llamada para e
 
 Usaremos `prep()` y `bake()` en la siguiente sección para ilustrar algunas de estas opciones.
 
-## Técnicas de extracción de características
+## Técnicas De Extracción De Características
 
 Dado que las recetas son la opción principal en tidymodels para la reducción de dimensionalidad, escribamos una función que estime la transformación y represente los datos resultantes en una matriz de diagrama de dispersión a través del paquete `r pkg(ggforce)`:
 
@@ -600,6 +600,6 @@ collect_metrics(rda_res)
 save(rda_wflow_fit, bean_train, file = "RData/rda_fit.RData", version = 2, compress = "xz")
 ```
 
-## Resumen del capítulo {#sec-dimensionality-summary}
+## Resumen Del Capítulo {#sec-dimensionality-summary}
 
 La reducción de dimensionalidad puede ser un método útil para el análisis exploratorio de datos y el modelado. Los paquetes `r pkg(recipes)` y `r pkg(embed)` contienen pasos para una variedad de métodos diferentes y `r pkg(workflowsets)` facilita la elección de un método apropiado para un conjunto de datos. Este capítulo también analizó cómo se pueden usar recetas por sí solas, ya sea para depurar problemas con una receta o directamente para análisis exploratorio de datos y visualización de datos.

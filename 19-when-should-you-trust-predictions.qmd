@@ -8,7 +8,7 @@ load("RData/Chicago_2020.RData")
 data(Chicago)
 ```
 
-# ¿Cuándo debería confiar en sus predicciones? {#sec-trust}
+# ¿Cuándo Debería Confiar En Sus Predicciones? {#sec-trust}
 
 Un modelo predictivo casi siempre puede producir una predicción, dados los datos de entrada. Sin embargo, en muchas situaciones resulta inapropiado realizar tal predicción. Cuando un nuevo punto de datos está muy fuera del rango de datos utilizados para crear el modelo, hacer una predicción puede ser una *extrapolación* inapropiada. Un ejemplo más cualitativo de una predicción inapropiada sería cuando el modelo se utiliza en un contexto completamente diferente. Los datos de segmentación celular utilizados en el [Capítulo @sec-iterative-search] indican cuándo las células de cáncer de mama humano pueden o no aislarse con precisión dentro de una imagen. Un modelo construido a partir de estos datos podría aplicarse de manera inapropiada a las células del estómago con el mismo propósito. Podemos producir una predicción, pero es poco probable que sea aplicable a los diferentes tipos de células.
 
@@ -17,7 +17,7 @@ Este capítulo analiza dos métodos para cuantificar la calidad potencial de una
 -   Las *zonas equívocas* utilizan los valores previstos para alertar al usuario de que los resultados pueden ser sospechosos.
 -   *Aplicabilidad* utiliza los predictores para medir la cantidad de extrapolación (si la hay) para nuevas muestras.
 
-## Resultados equívocos {#sec-equivocal-zones}
+## Resultados Equívocos {#sec-equivocal-zones}
 
 ::: rmdwarning
 En algunos casos, la cantidad de incertidumbre asociada con una predicción es demasiado alta para confiar en ella.
@@ -218,11 +218,11 @@ grid_pred %>%
 
 El uso del error estándar como medida para evitar que se predigan muestras también se puede aplicar a modelos con resultados numéricos. Sin embargo, como se muestra en la siguiente sección, es posible que esto no siempre funcione.
 
-## Determinación de la aplicabilidad del modelo {#sec-applicability-domains}
+## Determinación De La Aplicabilidad Del Modelo {#sec-applicability-domains}
 
-Las zonas equívocas intentan medir la confiabilidad de una predicción basada en los resultados del modelo. Puede ser que las estadísticas del modelo, como el error estándar de predicción, no puedan medir el impacto de la extrapolación, por lo que necesitamos otra forma de evaluar si debemos confiar en una predicción y responder: "¿Es nuestro modelo aplicable para predecir un punto de datos específico? " Tomemos los datos del tren de Chicago utilizados ampliamente en [Kuhn y Johnson (2019)](https://bookdown.org/max/FES/chicago-intro.html) y mostrados por primera vez en @sec-examples-of-tidyverse-syntax . El objetivo es predecir la cantidad de clientes que ingresan a la estación de tren de Clark y Lake cada día.
+Las zonas equívocas intentan medir la confiabilidad de una predicción basada en los resultados del modelo. Puede ser que las estadísticas del modelo, como el error estándar de predicción, no puedan medir el impacto de la extrapolación, por lo que necesitamos otra forma de evaluar si debemos confiar en una predicción y responder: "¿Es nuestro modelo aplicable para predecir un punto de datos específico?" Tomemos los datos del tren de Chicago utilizados ampliamente en [Kuhn y Johnson (2019)](https://bookdown.org/max/FES/chicago-intro.html) y mostrados por primera vez en @sec-examples-of-tidyverse-syntax . El objetivo es predecir la cantidad de clientes que ingresan a la estación de tren de Clark y Lake cada día.
 
-El conjunto de datos en el paquete `r pkg(modeldata)` (un paquete tidymodels con conjuntos de datos de ejemplo) tiene valores diarios entre `r format(min(Chicago$date), "%B %d, %Y")` y ` formato r(max(Chicago$fecha), "%B %d, %Y")`. Creemos un pequeño conjunto de pruebas utilizando las últimas dos semanas de datos:
+El conjunto de datos en el paquete `r pkg(modeldata)` (un paquete tidymodels con conjuntos de datos de ejemplo) tiene valores diarios entre `r format(min(Chicago$date), "%B %d, %Y")` y `formato r(max(Chicago$fecha), "%B %d, %Y")`. Creemos un pequeño conjunto de pruebas utilizando las últimas dos semanas de datos:
 
 ```{r trust-chicago-data}
 ## loads tanto el conjunto de datos de "Chicago" como las "estaciones"
@@ -552,7 +552,7 @@ Los valores de distancia de 2020 indican que estos valores predictivos están fu
 Un aspecto importante de este análisis se refiere a qué predictores se utilizan para desarrollar el modelo de dominio de aplicabilidad. En nuestro análisis, utilizamos las columnas predictoras sin procesar. Sin embargo, al construir el modelo, se utilizaron en su lugar características de puntuación PLS. ¿Cuál de estos debería usar `apd_pca()`? La función `apd_pca()` también puede tomar una receta como entrada (en lugar de una fórmula) para que las distancias reflejen las puntuaciones PLS en lugar de las columnas predictivas individuales. Puede evaluar ambos métodos para comprender cuál ofrece resultados más relevantes.
 :::
 
-## Resumen del capítulo {#sec-trust-summary}
+## Resumen Del Capítulo {#sec-trust-summary}
 
 Este capítulo mostró dos métodos para evaluar si las predicciones deben informarse a los consumidores de modelos. Las zonas equívocas se ocupan de resultados/predicciones y pueden resultar útiles cuando la cantidad de incertidumbre en una predicción es demasiado grande.
 

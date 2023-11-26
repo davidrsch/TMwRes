@@ -10,13 +10,13 @@ tidymodels_prefer()
 source("ames_snippets.R")
 ```
 
-# Creando Modelos con parsnip {#sec-models}
+# Creando Modelos Con parsnip {#sec-models}
 
 El paquete `r pkg(parsnip)`, un de los paquetes de R que es parte del metaapaquete `r pkg(tidymodels)`, proporciona una interfaz fluida y estandarizada para una variedad de modelos diferentes. En este capítulo, damos algunas motivaciones sobre por qué una interfaz común es beneficiosa para comprender y construir modelos en la práctica y mostramos cómo usar el paquete `r pkg(parsnip)`.
 
 Específicamente, nos centraremos en cómo `fit()` y `predict()` directamente con un objeto `r pkg(parsnip)`, que puede ser una buena opción para algunos problemas de modelado sencillos. El próximo capítulo ilustra un mejor enfoque para muchas tareas de modelado al combinar modelos y preprocesadores en algo llamado un objeto de "flujo de trabajo".
 
-## Crear un Modelo {#sec-create-a-model}
+## Crear Un Modelo {#sec-create-a-model}
 
 Una vez que los datos se han codificado en un formato listo para un algoritmo de modelado, como una matriz numérica, se pueden utilizar en el proceso de construcción del modelo.
 
@@ -205,7 +205,7 @@ rand_forest(trees = 1000, min_n = 5) %>%
   set_mode("regression") 
 ```
 
-## Utilizar los Resultados del Modelo
+## Utilizar Los Resultados Del Modelo
 
 Una vez creado y ajustado el modelo, podemos utilizar los resultados de diversas formas; es posible que queramos trazar, imprimir o examinar de otro modo el resultado del modelo. Varias cantidades se almacenan en un objeto modelo `r pkg(parsnip)`, incluido el modelo ajustado. Esto se puede encontrar en un elemento llamado `fit`, que se puede devolver usando la función `extract_fit_engine()`:
 
@@ -343,11 +343,11 @@ ames_test_small %>%
 
 Esto demuestra el beneficio de homogeneizar el proceso de análisis de datos y la sintaxis en diferentes modelos. Permite a los usuarios dedicar su tiempo a los resultados y la interpretación en lugar de tener que centrarse en las diferencias sintácticas entre los paquetes de R.
 
-## Paquetes de Extensión de parsnip
+## Paquetes De Extensión De parsnip
 
 El paquete `r pkg(parsnip)` en sí contiene interfaces para varios modelos. Sin embargo, para facilitar la instalación y el mantenimiento del paquete, existen otros paquetes tidymodels que tienen definiciones de modelo `r pkg(parsnip)` para otros conjuntos de modelos. El paquete `r pkg(discrim)` tiene definiciones de modelos para el conjunto de técnicas de clasificación llamadas métodos de análisis discriminante (como análisis discriminante lineal o cuadrático). De esta manera, se reducen las dependencias de paquetes necesarias para instalar `r pkg(parsnip)`. Puede encontrar una lista de todos los modelos que se pueden usar con `r pkg(parsnip)` (en diferentes paquetes que están en CRAN) en <https://www.tidymodels.org/find/>.
 
-## Crear especificaciones de modelo {#sec-parsnip-addin}
+## Crear Especificaciones De Modelo {#sec-parsnip-addin}
 
 Puede resultar tedioso escribir muchas especificaciones de modelos o recordar cómo escribir el código para generarlas. El paquete `r pkg(parsnip)` incluye un complemento RStudio[^06-fitting-models-3] que puede ayudar. Ya sea eligiendo este complemento en el menú de la barra de herramientas *Addins* o ejecutando el código:
 
@@ -361,7 +361,7 @@ abrirá una ventana en el panel Viewer de RStudio IDE con una lista de posibles 
 
 La lista de modelos incluye modelos de los paquetes de extensión `r pkg(parsnip)` y `r pkg(parsnip)` que están en CRAN.
 
-## Resumen del capítulo {#sec-models-summary}
+## Resumen Del Capítulo {#sec-models-summary}
 
 Este capítulo presentó el paquete `r pkg(parsnip)`, que proporciona una interfaz común para modelos en todos los paquetes R utilizando una sintaxis estándar. La interfaz y los objetos resultantes tienen una estructura predecible.
 

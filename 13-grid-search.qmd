@@ -19,13 +19,13 @@ tidymodels_prefer()
 load("RData/mlp_times.RData")
 ```
 
-# Búsqueda de cuadrícula {#sec-grid-search}
+# Búsqueda De Cuadrícula {#sec-grid-search}
 
 En el [Capítulo @sec-tuning] demostramos cómo los usuarios pueden marcar o etiquetar argumentos en recetas de preprocesamiento y/o especificaciones de modelo para optimización usando la función `tune()`. Una vez que sabemos qué optimizar, es hora de abordar la cuestión de cómo optimizar los parámetros. Este capítulo describe los métodos de *búsqueda en cuadrícula* que especifican los posibles valores de los parámetros *a priori*. [Capítulo @sec-iterative-search] continuará la discusión describiendo los métodos de búsqueda iterativa).
 
 Comencemos viendo dos enfoques principales para ensamblar una cuadrícula.
 
-## Cuadrículas regulares y no regulares {#sec-grids}
+## Cuadrículas Regulares Y No Regulares {#sec-grids}
 
 Hay dos tipos principales de cuadrículas. Una cuadrícula regular combina cada parámetro (con su correspondiente conjunto de valores posibles) factorialmente, es decir, utilizando todas las combinaciones de los conjuntos. Alternativamente, una cuadrícula no regular es aquella en la que las combinaciones de parámetros no se forman a partir de un pequeño conjunto de puntos.
 
@@ -166,7 +166,7 @@ Si bien no es perfecto, este diseño de hipercubo latino aleja los puntos entre 
 
 Los diseños que llenan el espacio pueden ser muy eficaces para representar el espacio de parámetros. El diseño predeterminado utilizado por el paquete `r pkg(tune)` es el diseño de máxima entropía. Estos tienden a producir cuadrículas que cubren bien el espacio candidato y aumentan drásticamente las posibilidades de encontrar buenos resultados.
 
-## Evaluación de la cuadrícula {#sec-evaluating-grid}
+## Evaluación De La Cuadrícula {#sec-evaluating-grid}
 
 Para elegir la mejor combinación de parámetros de ajuste, cada conjunto candidato se evalúa utilizando datos que no se utilizaron para entrenar ese modelo. Los métodos de remuestreo o un único conjunto de validación funcionan bien para este propósito. El proceso (y la sintaxis) se parece mucho al enfoque en @sec-resampling-performance que utilizó la función `fit_resamples()` del paquete `r pkg(tune)`.
 
@@ -322,7 +322,7 @@ Generalmente, es una buena idea evaluar los modelos según múltiples métricas 
 
 Al igual que con los resultados de `fit_resamples()`, normalmente no tiene ningún valor conservar los ajustes del modelo intermediario entre los remuestreos y los parámetros de ajuste. Sin embargo, como antes, la opción `extraer` de `control_grid()` permite conservar los modelos y/o recetas ajustados. Además, configurar la opción `save_pred` en `TRUE` conserva las predicciones del conjunto de evaluación y se puede acceder a ellas usando `collect_predictions()`.
 
-## Finalizando el modelo
+## Finalizando El Modelo
 
 Si uno de los conjuntos de posibles parámetros del modelo encontrados mediante `show_best()` fuera una opción final atractiva para estos datos, es posible que deseemos evaluar qué tan bien funciona en el conjunto de prueba. Sin embargo, los resultados de `tune_grid()` solo proporcionan el sustrato para elegir los parámetros de ajuste apropiados. La función *no se ajusta* a un modelo final.
 
@@ -366,7 +366,7 @@ Este objeto ahora se puede utilizar para hacer predicciones futuras sobre nuevos
 
 Si no usó un flujo de trabajo, la finalización de un modelo y/o receta se realiza usando `finalize_model()` y `finalize_recipe()`.
 
-## Herramientas para crear especificaciones de ajuste {#sec-tuning-usemodels}
+## Herramientas Para Crear Especificaciones De Ajuste {#sec-tuning-usemodels}
 
 El paquete `r pkg(usemodels)` puede tomar un marco de datos y una fórmula de modelo, luego escribir código R para ajustar el modelo. El código también crea una receta adecuada cuyos pasos dependen del modelo solicitado, así como de los datos del predictor.
 
@@ -423,7 +423,7 @@ Según lo que entiende `r pkg(usemodels)` sobre los datos, este código es el pr
 El paquete `r pkg(usemodels)` también se puede utilizar para crear código de ajuste de modelo sin ajuste estableciendo el argumento `tune = FALSE`.
 :::
 
-## Herramientas para una búsqueda eficiente en la cuadrícula {#sec-efficient-grids}
+## Herramientas Para Una Búsqueda Eficiente En La Cuadrícula {#sec-efficient-grids}
 
 Es posible hacer que la búsqueda en cuadrícula sea más eficiente desde el punto de vista computacional aplicando algunos trucos y optimizaciones diferentes. Esta sección describe varias técnicas.
 
@@ -948,7 +948,7 @@ show_best(mlp_sfd_race, n = 10)
 
 Existen otras técnicas de análisis intermedio para descartar configuraciones. Por ejemplo, @krueger15a usa métodos de análisis secuencial tradicionales, mientras que @kuhn2014futility trata los datos como una competencia deportiva y usa el modelo Bradley-Terry [@bradley1952rank] para medir la capacidad ganadora de la configuración de parámetros.
 
-## Resumen del capítulo {#sec-grid-summary}
+## Resumen Del Capítulo {#sec-grid-summary}
 
 Este capítulo analizó las dos clases principales de búsqueda de cuadrículas (regular y no regular) que se pueden usar para ajustar el modelo y demostró cómo construir estas cuadrículas, ya sea manualmente o usando la familia de funciones `grid_*()`. La función `tune_grid()` puede evaluar estos conjuntos candidatos de parámetros del modelo mediante remuestreo. El capítulo también mostró cómo finalizar un modelo, receta o flujo de trabajo para actualizar los valores de los parámetros para el ajuste final. La búsqueda en cuadrícula puede ser costosa desde el punto de vista computacional, pero las decisiones bien pensadas en el diseño experimental de dichas búsquedas pueden hacerlas manejables.
 

@@ -5,7 +5,7 @@ data(ames)
 tidymodels_prefer()
 ```
 
-# Los datos de vivienda de Ames {#sec-ames}
+# Los Datos De Vivienda De Ames {#sec-ames}
 
 En este capítulo, presentaremos el conjunto de datos de vivienda de Ames [@ames], que usaremos en ejemplos de modelado a lo largo de este libro. El análisis exploratorio de datos, como el que analizamos en este capítulo, es un primer paso importante para construir un modelo confiable. El conjunto de datos contiene información sobre las propiedades `r format(nrow(ames), big.mark = ",")` en Ames, Iowa, incluidas columnas relacionadas con:
 
@@ -41,7 +41,7 @@ data(ames, package = "modeldata")
 dim(ames)
 ```
 
-## Explorando las características de las casas en Ames {#sec-exploring-features-of-homes-in-ames}
+## Explorando Las Características De Las Casas En Ames {#sec-exploring-features-of-homes-in-ames}
 
 Comencemos nuestro análisis exploratorio de datos centrándonos en el resultado que queremos predecir: el último precio de venta de la casa (en USD). Podemos crear un histograma para ver la distribución de los precios de venta en @fig-ames-sale-price-hist.
 
@@ -191,7 +191,7 @@ Como se describe en el [Capítulo @sec-software-modeling], es fundamental realiz
 
 Muchas de estas preguntas serán revisadas a medida que estos datos se utilicen a lo largo de este libro.
 
-## Resumen del capítulo {#sec-ames-summary}
+## Resumen Del Capítulo {#sec-ames-summary}
 
 Este capítulo presentó el conjunto de datos de vivienda de Ames e investigó algunas de sus características. Este conjunto de datos se utilizará en capítulos posteriores para demostrar la sintaxis de tidymodels. El análisis de datos exploratorios como este es un componente esencial de cualquier proyecto de modelado; EDA descubre información que contribuye a una mejor práctica de modelado.
 

@@ -11,7 +11,7 @@ set.seed(245)
 ad_folds <- vfold_cv(ad_data, repeats = 5)
 ```
 
-# Juzgar la Eficacia del Modelo {#sec-performance}
+# Juzgar La Eficacia Del Modelo {#sec-performance}
 
 Una vez que tenemos un modelo, necesitamos saber qué tan bien funciona. Un enfoque cuantitativo para estimar la efectividad nos permite comprender el modelo, comparar diferentes modelos o modificar el modelo para mejorar el rendimiento. Nuestro enfoque en tidymodels está en la validación empírica; Esto generalmente significa usar datos que no se usaron para crear el modelo como sustrato para medir la efectividad.
 
@@ -54,7 +54,7 @@ Un modelo optimizado para RMSE tiene más variabilidad pero tiene una precisión
 
 Este capítulo demostrará el paquete `r pkg(yardstick)`, un paquete central de tidymodels cuyo objetivo es medir el rendimiento del modelo. Antes de ilustrar la sintaxis, exploremos si vale la pena la validación empírica mediante métricas de rendimiento cuando un modelo se centra en la inferencia en lugar de la predicción.
 
-## Métricas de rendimiento e inferencia
+## Métricas De Rendimiento E Inferencia
 
 ```{r performance ad-model, include = FALSE}
 ad_mod <- logistic_reg() %>% set_engine("glm") 
@@ -118,7 +118,7 @@ El objetivo de este análisis es demostrar la idea de que la optimización de la
 
 En el resto de este capítulo, discutiremos enfoques generales para evaluar modelos mediante validación empírica. Estos enfoques se agrupan según la naturaleza de los datos de resultados: puramente numéricos, clases binarias y tres o más niveles de clase.
 
-## Métricas de regresión
+## Métricas De Regresión
 
 Recuerde de @sec-parsnip-predictions que las funciones de predicción de tidymodels producen tibbles con columnas para los valores predichos. Estas columnas tienen nombres consistentes y las funciones en el paquete `r pkg(yardstick)` que producen métricas de rendimiento tienen interfaces consistentes. Las funciones están basadas en marcos de datos, a diferencia de vectores, con la sintaxis general de:
 
@@ -187,7 +187,7 @@ Este formato de datos ordenado apila las métricas verticalmente. Las métricas 
 El paquete `r pkg(yardstick)` *no* contiene una función para $R^2$ ajustado. Esta modificación del coeficiente de determinación se utiliza comúnmente cuando los mismos datos utilizados para ajustar el modelo se utilizan para evaluar el modelo. Esta métrica no es totalmente compatible con tidymodels porque siempre es un mejor enfoque para calcular el rendimiento en un conjunto de datos separado que el utilizado para ajustar el modelo.
 :::
 
-## Métricas de clasificación binaria
+## Métricas De Clasificación Binaria
 
 Para ilustrar otras formas de medir el rendimiento del modelo, cambiaremos a un ejemplo diferente. El paquete `r pkg(modeldata)` (otro de los paquetes tidymodels) contiene predicciones de ejemplo de un conjunto de datos de prueba con dos clases ("Class1" y "Class2"):
 
@@ -261,7 +261,7 @@ Si la curva estuviera cerca de la línea diagonal, entonces las predicciones del
 
 Hay otras funciones que utilizan estimaciones de probabilidad, incluidas `gain_curve()`, `lift_curve()` y `pr_curve()`.
 
-## Métricas de Clasificación Multiclase
+## Métricas De Clasificación Multiclase
 
 ¿Qué pasa con los datos con tres o más clases? Para demostrarlo, exploremos un conjunto de datos de ejemplo diferente que tiene cuatro clases:
 
@@ -373,6 +373,6 @@ hpc_cv %>%
 
 Esta visualización nos muestra que todos los diferentes grupos se desempeñan más o menos igual, pero que la clase `VF` se predice mejor que las clases `F` o `M`, ya que las curvas ROC `VF` están más en la esquina superior izquierda. . Este ejemplo utiliza remuestreos como grupos, pero se puede utilizar cualquier agrupación de sus datos. Este método `autoplot()` puede ser un método de visualización rápida para la efectividad del modelo en todas las clases y/o grupos de resultados.
 
-## Resumen del capítulo {#sec-performance-summary}
+## Resumen Del Capítulo {#sec-performance-summary}
 
 Diferentes métricas miden diferentes aspectos del ajuste de un modelo, por ejemplo, RMSE mide la precisión mientras que $R^2$ mide la correlación. Medir el rendimiento del modelo es importante incluso cuando un modelo determinado no se utilizará principalmente para predicción; el poder predictivo también es importante para los modelos inferenciales o descriptivos. Las funciones del paquete `r pkg(yardstick)` miden la efectividad de un modelo utilizando datos. La interfaz principal de tidymodels utiliza principios de tidyverse y marcos de datos (en lugar de tener argumentos vectoriales). Diferentes métricas son apropiadas para las métricas de regresión y clasificación y, dentro de ellas, a veces hay diferentes formas de estimar las estadísticas, como para resultados multiclase.

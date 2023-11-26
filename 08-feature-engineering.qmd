@@ -19,7 +19,7 @@ lm_wflow <-
   add_variables(outcome = Sale_Price, predictors = c(Longitude, Latitude))
 ```
 
-# Ingeniería de Características con recipes {#sec-recipes}
+# Ingeniería De Características Con recipes {#sec-recipes}
 
 La ingeniería de características implica reformatear los valores de los predictores para que sea más fácil de usar para un modelo de manera efectiva. Esto incluye transformaciones y codificaciones de los datos para representar mejor sus características importantes. Imagine que tiene dos predictores en un conjunto de datos que pueden representarse más eficazmente en su modelo como una proporción; crear un nuevo predictor a partir de la proporción de los dos originales es un ejemplo simple de ingeniería de características.
 
@@ -43,7 +43,7 @@ En este capítulo, presentamos el paquete [`r pkg(recipes)`](https://recipes.tid
 
 Este capítulo utiliza los datos de alojamiento de Ames y los objetos R creados en el libro hasta ahora, como se resume en @sec-workflows-summary.
 
-## Una `recipe()` Simple para los Datos de Vivienda de Ames
+## Una `recipe()` Simple Para Los Datos De Vivienda De Ames
 
 En esta sección, nos centraremos en un pequeño subconjunto de los predictores disponibles en los datos de vivienda de Ames:
 
@@ -162,7 +162,7 @@ lm_fit %>%
 Las herramientas para usar (y depurar) recetas fuera de los objetos del flujo de trabajo se describen en @sec-recipe-functions.
 :::
 
-## Cómo se Utilizan los Datos en `recipe()`
+## Cómo Se Utilizan Los Datos En `recipe()`
 
 Los datos se pasan a recetas en diferentes etapas.
 
@@ -176,7 +176,7 @@ Todos los pasos de preprocesamiento e ingeniería de funciones utilizan *solo* l
 
 Finalmente, cuando se usa `predict(workflow, new_data)`, ningún modelo o parámetro de preprocesador como los de las recetas se reestima usando los valores en `new_data`. Tome el centrado y el escalado usando `step_normalize()` como ejemplo. Con este paso, las medias y las desviaciones estándar de las columnas apropiadas se determinan a partir del conjunto de entrenamiento; Las nuevas muestras en el momento de la predicción se estandarizan utilizando estos valores del entrenamiento cuando se invoca `predict()`.
 
-## Ejemplos de Pasos de Recetas {#sec-example-steps}
+## Ejemplos De Pasos De Recetas {#sec-example-steps}
 
 Antes de continuar, hagamos un recorrido extenso por las capacidades de `r pkg(recipes)` y exploremos algunas de las funciones más importantes de `step_*()`. Cada una de estas funciones de pasos de recetas especifica un posible paso específico en un proceso de ingeniería de características, y diferentes pasos de recetas pueden tener diferentes efectos en las columnas de datos.
 
@@ -310,7 +310,7 @@ Supongamos que, en una receta, todavía no hemos creado variables ficticias para
 Esto le dice al código subyacente (base R) utilizado por `step_interact()` para crear variables ficticias y luego formar las interacciones. De hecho, si esto ocurre, una advertencia indica que esto podría generar resultados inesperados.
 
 ::: rmdwarning
-Este comportamiento le brinda más control, pero es diferente de la fórmula del modelo estándar de R. 
+Este comportamiento le brinda más control, pero es diferente de la fórmula del modelo estándar de R.
 :::
 
 Al igual que con el nombre de variables ficticias, `r pkg(recipes)` proporciona nombres más coherentes para los términos de interacción. En este caso, la interacción se denomina `Gr_Liv_Area_x_Bldg_Type_Duplex` en lugar de `Gr_Liv_Area:Bldg_TypeDuplex` (que no es un nombre de columna válido para un marco de datos).
@@ -421,7 +421,7 @@ Al utilizar este paso flexible, tenga especial cuidado para evitar la fuga de da
 
 Las recetas también pueden manejar datos que no están en la estructura tradicional donde las columnas son características. Por ejemplo, el paquete [`r pkg(textrecipes)`](https://textrecipes.tidymodels.org/) puede aplicar métodos de procesamiento de lenguaje natural a los datos. La columna de entrada suele ser una cadena de texto y se pueden utilizar diferentes pasos para tokenizar los datos (por ejemplo, dividir el texto en palabras separadas), filtrar tokens y crear nuevas características apropiadas para el modelado.
 
-## Saltarse pasos para obtener nuevos datos {#sec-skip-equals-true}
+## Saltarse Pasos Para Obtener Nuevos Datos {#sec-skip-equals-true}
 
 Los datos del precio de venta ya están transformados logarítmicamente en el marco de datos "ames". ¿Por qué no utilizar?
 
@@ -530,7 +530,7 @@ tidy(estimated_recipe, number = 2)
 
 Cada método `tidy()` devuelve la información relevante sobre ese paso. Por ejemplo, el método `tidy()` para `step_dummy()` devuelve una columna con las variables que se convirtieron en variables ficticias y otra columna con todos los niveles conocidos para cada columna.
 
-## Roles de columna
+## Roles De Columna
 
 Cuando se usa una fórmula con la llamada inicial a `receta()`, asigna *roles* a cada una de las columnas, dependiendo de en qué lado de la tilde se encuentran. Esos roles son `"predictor"` o `"outcome"`. Sin embargo, se pueden asignar otros roles según sea necesario.
 
@@ -550,7 +550,7 @@ Esto puede resultar útil cuando los datos se *vuelven a muestrear*. Ayuda a man
 
 Finalmente, todas las funciones de paso tienen un campo "rol" que puede asignar roles a los resultados del paso. En muchos casos, las columnas afectadas por un paso conservan su función actual. Por ejemplo, las llamadas `step_log()` a nuestro objeto `ames_rec` afectaron la columna `Gr_Liv_Area`. Para ese paso, el comportamiento predeterminado es mantener la función existente para esta columna, ya que no se crea ninguna columna nueva. Como contraejemplo, el paso para producir splines establece de forma predeterminada que las nuevas columnas tengan una función de `"predictor"` ya que así es como normalmente se usan las columnas spline en un modelo. La mayoría de los pasos tienen valores predeterminados razonables pero, dado que los valores predeterminados pueden ser diferentes, asegúrese de consultar la página de documentación para comprender qué roles se asignarán.
 
-## Resumen del capítulo {#sec-recipes-summary}
+## Resumen Del Capítulo {#sec-recipes-summary}
 
 En este capítulo, aprendió a usar `r pkg(recipes)` para ingeniería de funciones flexible y preprocesamiento de datos, desde la creación de variables ficticias hasta el manejo del desequilibrio de clases y más. La ingeniería de características es una parte importante del proceso de modelado donde puede ocurrir fácilmente una fuga de información y se deben adoptar buenas prácticas. Entre el paquete `r pkg(recipes)` y otros paquetes que amplían recetas, hay más de 100 pasos disponibles. Todos los pasos posibles de la receta se enumeran en [`tidymodels.org/find`](https://www.tidymodels.org/find/). El marco `r pkg(recipes)` proporciona un rico entorno de manipulación de datos para preprocesar y transformar datos antes del modelado. Además, [`tidymodels.org/learn/develop/recipes/`](https://www.tidymodels.org/learn/develop/recipes/) muestra cómo se pueden crear pasos personalizados.
 

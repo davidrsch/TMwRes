@@ -22,7 +22,7 @@ cell_folds <- vfold_cv(cells)
 roc_res <- metric_set(roc_auc)
 ```
 
-# Búsqueda iterativa {#sec-iterative-search}
+# Búsqueda Iterativa {#sec-iterative-search}
 
 El [Capítulo @sec-grid-search] demostró cómo la búsqueda en cuadrícula toma un conjunto predefinido de valores candidatos, los evalúa y luego elige la mejor configuración. Los métodos de búsqueda iterativos siguen una estrategia diferente. Durante el proceso de búsqueda, predicen qué valores probar a continuación.
 
@@ -34,7 +34,7 @@ Este capítulo describe dos métodos de búsqueda. Primero, analizamos la *optim
 
 Usamos los mismos datos sobre las características de las células que en el capítulo anterior a modo de ilustración, pero cambiamos el modelo. Este capítulo utiliza un modelo de máquina de vectores de soporte porque proporciona bonitas visualizaciones bidimensionales de los procesos de búsqueda.
 
-## Un modelo de máquina de vectores de soporte {#sec-svm}
+## Un Modelo De Máquina De Vectores De Soporte {#sec-svm}
 
 Una vez más utilizamos los datos de segmentación de celdas, descritos en @sec-evaluating-grid, para modelar, con un modelo de máquina de vectores de soporte (SVM) para demostrar métodos de ajuste secuencial. Consulte @apm para obtener más información sobre este modelo. Los dos parámetros de ajuste a optimizar son el valor del costo de SVM y el parámetro del núcleo de la función de base radial $\sigma$. Ambos parámetros pueden tener un efecto profundo en la complejidad y el rendimiento del modelo.
 
@@ -116,7 +116,7 @@ collect_metrics(svm_initial)
 
 Esta cuadrícula inicial muestra resultados bastante equivalentes, sin que ningún punto individual sea mucho mejor que los demás. Estos resultados pueden ser absorbidos por las funciones de ajuste iterativas analizadas en las siguientes secciones para usarse como valores iniciales.
 
-## Optimización bayesiana
+## Optimización Bayesiana
 
 Las técnicas de optimización bayesiana analizan los resultados del remuestreo actual y crean un modelo predictivo para sugerir valores de parámetros de ajuste que aún no se han evaluado. A continuación se vuelve a muestrear la combinación de parámetros sugerida. Estos resultados luego se utilizan en otro modelo predictivo que recomienda más valores candidatos para realizar pruebas, y así sucesivamente. El proceso continúa durante un número determinado de iteraciones o hasta que no se produzcan más mejoras. @Shahriari y @frazier2018tutorial son buenas introducciones a la optimización bayesiana.
 
@@ -147,7 +147,7 @@ Los modelos de procesos gaussianos se especifican por sus funciones de media y c
 
 [^14-iterative-search-1]: Esta ecuación también es la misma que la *función de base radial* utilizada en los métodos del núcleo, como el modelo SVM que se utiliza actualmente. Esto es una coincidencia; esta función de covarianza no está relacionada con el parámetro de ajuste SVM que estamos usando.
 
-$$\operatorname{cov}(\boldsymbol{x}_i, \boldsymbol{x}_j) = \exp\left(-\frac{1}{2}|\boldsymbol{x}_i - \boldsymbol{x}_j|^2\right) + \sigma^2_{ij}$$ 
+$$\operatorname{cov}(\boldsymbol{x}_i, \boldsymbol{x}_j) = \exp\left(-\frac{1}{2}|\boldsymbol{x}_i - \boldsymbol{x}_j|^2\right) + \sigma^2_{ij}$$
 
 donde $\sigma^2_{ij}$ es un término de varianza de error constante que es cero cuando $i=j$. Esta ecuación se traduce en:
 
@@ -618,7 +618,7 @@ Si la búsqueda se basa en una cuadrícula inicial, un diseño que llene el espa
 
 Finalmente, si el usuario interrumpe los cálculos de `tune_bayes()`, la función devuelve los resultados actuales (en lugar de generar un error).
 
-## Recocido simulado
+## Recocido Simulado
 
 *Recocido simulado* (SA) [@kirkpatrick1983optimization; @van1987simulated] es una rutina de búsqueda no lineal general inspirada en el proceso en el que se enfría el metal. Es un método de búsqueda global que puede navegar eficazmente por muchos tipos diferentes de entornos de búsqueda, incluidas funciones discontinuas. A diferencia de la mayoría de las rutinas de optimización basadas en gradientes, el recocido simulado puede reevaluar soluciones anteriores.
 
@@ -683,7 +683,7 @@ En nuestra implementación, la vecindad se determina escalando el candidato actu
 
 Para ilustrar, usaremos los dos parámetros de ajuste principales `r pkg(glmnet)`:
 
--   El importe de la regularización total (`penalty`). El rango predeterminado para este parámetro es $10^{`r penalty()$range[[1]]`}$ a $10^{`r penalty()$range[[2]]`}$. Es típico utilizar una transformación logarítmica (base-10) para este parámetro.
+-   El importe de la regularización total (`penalty`). El rango predeterminado para este parámetro es $10^{`r penalty()$range\[\[1\]\]`}$ a $10^{`r penalty()$range[[2]]`}$. Es típico utilizar una transformación logarítmica (base-10) para este parámetro.
 
 -   La proporción de la pena de lazo (`mixture`). Esto está acotado en cero y uno sin transformación.
 
@@ -962,6 +962,6 @@ av_capture_graphics(
 
 Al igual que `tune_bayes()`, detener manualmente la ejecución devolverá las iteraciones completadas.
 
-## Resumen del capítulo {#sec-iterative-summary}
+## Resumen Del Capítulo {#sec-iterative-summary}
 
 Este capítulo describió dos métodos de búsqueda iterativos para optimizar los parámetros de ajuste. La optimización de Bayes utiliza un modelo predictivo entrenado en los resultados de remuestreo existentes para sugerir valores de parámetros de ajuste, mientras que el recocido simulado recorre el espacio de hiperparámetros para encontrar buenos valores. Ambos pueden ser eficaces para encontrar buenos valores por sí solos o como método de seguimiento utilizado después de una búsqueda inicial en la cuadrícula para mejorar el rendimiento de `r pkg(finetune)`.

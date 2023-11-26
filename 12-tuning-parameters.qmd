@@ -23,11 +23,11 @@ data_grid <- crossing(A = seq(0.4, 4, length = 200), B = seq(.14, 3.9, length = 
 load("RData/search_examples.RData")
 ```
 
-# Ajuste de Modelos y los Peligros del Sobreajuste {#sec-tuning}
+# Ajuste De Modelos Y Los Peligros Del Sobreajuste {#sec-tuning}
 
 Para utilizar un modelo de predicción, se deben estimar los parámetros de ese modelo. Algunos de estos parámetros se pueden estimar directamente a partir de los datos de entrenamiento, pero otros parámetros, llamados *parámetros de ajuste* o *hiperparámetros*, deben especificarse con anticipación y no se pueden encontrar directamente a partir de los datos de entrenamiento. Se trata de valores estructurales o de otro tipo desconocidos que tienen un impacto significativo en el modelo pero que no pueden estimarse directamente a partir de los datos. Este capítulo proporcionará ejemplos de parámetros de ajuste y mostrará cómo usamos las funciones de tidymodels para crear y manejar parámetros de ajuste. También demostraremos cómo una mala elección de estos valores conduce a un sobreajuste e introduciremos varias tácticas para encontrar valores óptimos de los parámetros de ajuste. Los capítulos [-@sec-grid-search] y [-@sec-iterative-search] detallan más métodos de optimización específicos para el ajuste.
 
-## Parámetros del modelo
+## Parámetros Del Modelo
 
 En la regresión lineal ordinaria, hay dos parámetros $\beta_0$ y $\beta_1$ del modelo:
 
@@ -55,7 +55,7 @@ donde $K$ es el número de vecinos y $x_\ell^*$ son los valores de $K$ más cerc
 
 El número de vecinos más cercanos es un buen ejemplo de parámetro de ajuste o hiperparámetro que no se puede estimar directamente a partir de los datos.
 
-## Parámetros de ajuste para diferentes tipos de modelos {#sec-tuning-parameter-examples}
+## Parámetros De Ajuste Para Diferentes Tipos De Modelos {#sec-tuning-parameter-examples}
 
 Hay muchos ejemplos de ajuste de parámetros o hiperparámetros en diferentes modelos estadísticos y de aprendizaje automático:
 
@@ -273,7 +273,7 @@ Este ejercicio enfatiza que diferentes métricas pueden conducir a diferentes de
 
 > La eficacia irrazonable de la optimización de métricas en los enfoques actuales de IA es un desafío fundamental para el campo y genera una contradicción inherente: la optimización exclusiva de las métricas conduce a resultados que distan mucho de ser óptimos.
 
-## Las consecuencias de las malas estimaciones de parámetros {#sec-overfitting-bad}
+## Las Consecuencias De Las Malas Estimaciones De Parámetros {#sec-overfitting-bad}
 
 Muchos parámetros de ajuste modulan la cantidad de complejidad del modelo. Una mayor complejidad a menudo implica una mayor maleabilidad en los patrones que un modelo puede emular. Por ejemplo, como se muestra en @sec-spline-functions, agregar grados de libertad en una función spline aumenta la complejidad de la ecuación de predicción. Si bien esto es una ventaja cuando los motivos subyacentes de los datos son complejos, también puede conducir a una sobreinterpretación de patrones aleatorios que no se reproducirían en datos nuevos. *Sobreajuste* es la situación en la que un modelo se adapta demasiado a los datos de entrenamiento; funciona bien con los datos utilizados para construir el modelo, pero mal con datos nuevos.
 
@@ -389,7 +389,7 @@ La solución para detectar cuándo un modelo está exagerando el conjunto de ent
 
 En lugar de utilizar el conjunto de prueba, se requiere algún tipo de remuestreo. Esto podría significar un enfoque iterativo (por ejemplo, una validación cruzada de 10 veces) o una única fuente de datos (por ejemplo, un conjunto de validación).
 
-## Dos estrategias generales para la optimización.
+## Dos Estrategias Generales Para La Optimización.
 
 La optimización de los parámetros de ajuste generalmente se divide en una de dos categorías: búsqueda en cuadrícula y búsqueda iterativa.
 
@@ -446,7 +446,7 @@ Las estrategias híbridas también son una opción y pueden funcionar bien. Desp
 
 En los dos capítulos siguientes se analizan en detalle ejemplos de estas estrategias. Antes de continuar, aprendamos cómo trabajar con objetos de parámetros de ajuste en tidymodels, usando el paquete `r pkg(dials)`.
 
-## Ajuste de parámetros en tidymodels {#sec-tuning-params-tidymodels}
+## Ajuste De Parámetros En tidymodels {#sec-tuning-params-tidymodels}
 
 Ya hemos tratado un buen número de argumentos que corresponden a parámetros de ajuste para especificaciones de recetas y modelos en capítulos anteriores. Es posible sintonizar:
 
@@ -634,6 +634,6 @@ La escala se puede cambiar si se desea con el argumento `trans`. Puedes usar uni
 penalty(trans = NULL, range = 10^c(-10, 0))
 ```
 
-## Resumen del capítulo
+## Resumen Del Capítulo
 
 Este capítulo presentó el proceso de ajuste de los hiperparámetros del modelo que no se pueden estimar directamente a partir de los datos. Ajustar dichos parámetros puede conducir a un sobreajuste, a menudo al permitir que un modelo se vuelva demasiado complejo, por lo que es importante utilizar conjuntos de datos remuestreados junto con métricas apropiadas para la evaluación. Hay dos estrategias generales para determinar los valores correctos, la búsqueda en cuadrícula y la búsqueda iterativa, que exploraremos en profundidad en los dos capítulos siguientes. En tidymodels, la función `tune()` se usa para identificar parámetros para optimización, y las funciones del paquete `r pkg(dials)` pueden extraer e interactuar con objetos de parámetros de ajuste.

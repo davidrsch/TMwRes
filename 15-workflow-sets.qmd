@@ -19,7 +19,7 @@ if (!grepl("mingw32", R.Version()$platform)) {
 }
 ```
 
-# Probando muchos modelos {#sec-workflow-sets}
+# Probando Muchos Modelos {#sec-workflow-sets}
 
 Presentamos conjuntos de flujos de trabajo en el [Capítulo @sec-workflows] y demostramos cómo usarlos con conjuntos de datos remuestreados en el [Capítulo @sec-compare]. En este capítulo, analizamos estos conjuntos de múltiples flujos de trabajo de modelado con más detalle y describimos un caso de uso en el que pueden resultar útiles.
 
@@ -31,7 +31,7 @@ Una buena estrategia es dedicar un esfuerzo inicial a probar una variedad de enf
 
 Los conjuntos de flujos de trabajo proporcionan una interfaz de usuario para crear y gestionar este proceso. También demostraremos cómo evaluar estos modelos de manera eficiente utilizando los métodos de carrera discutidos en @sec-racing-example.
 
-## Modelado de la resistencia de una mezcla de hormigón
+## Modelado De La Resistencia De Una Mezcla De Hormigón
 
 Para demostrar cómo filtrar múltiples flujos de trabajo de modelos, usaremos los datos de mezcla de concreto de *Applied Predictive Modeling* [@apm] como ejemplo. El capítulo 10 de ese libro demostró modelos para predecir la resistencia a la compresión de mezclas de concreto utilizando los ingredientes como predictores. Se evaluó una amplia variedad de modelos con diferentes conjuntos de predictores y necesidades de preprocesamiento. ¿Cómo pueden los conjuntos de flujos de trabajo facilitar este proceso de pruebas de modelos a gran escala?
 
@@ -159,7 +159,7 @@ nnet_param <-
 
 ¿Cómo podemos hacer coincidir estos modelos con sus recetas, ajustarlos y luego evaluar su desempeño de manera eficiente? Un conjunto de flujo de trabajo ofrece una solución.
 
-## Crear el conjunto de flujo de trabajo
+## Crear El Conjunto De Flujo De Trabajo
 
 Los conjuntos de flujos de trabajo toman listas con nombres de preprocesadores y especificaciones de modelos y las combinan en un objeto que contiene múltiples flujos de trabajo. Hay tres tipos posibles de preprocesadores:
 
@@ -236,7 +236,7 @@ all_workflows <-
 all_workflows
 ```
 
-## Ajuste y evaluación de los modelos
+## Ajuste Y Evaluación De Los Modelos
 
 Casi todos los miembros de `all_workflows` contienen parámetros de ajuste. Para evaluar su rendimiento, podemos utilizar las funciones estándar de ajuste o remuestreo (por ejemplo, `tune_grid()`, etc.). La función `workflow_map()` aplicará la misma función a todos los flujos de trabajo del conjunto; el valor predeterminado es `tune_grid()`.
 
@@ -350,7 +350,7 @@ También hay métodos para `collect_predictions()` y `collect_metrics()`.
 
 La selección del modelo de ejemplo con nuestros datos de mezcla de concreto se ajusta a un total de modelos `r format(num_grid_models, big.mark = ",")`. Utilizando trabajadores de `r cores` en paralelo, el proceso de estimación tardó `r round(full_results_time[3]/60/60, 1)` horas en completarse.
 
-## Modelos de detección eficiente {#sec-racing-example}
+## Modelos De Detección Eficiente {#sec-racing-example}
 
 Un método eficaz para seleccionar un gran conjunto de modelos de manera eficiente es utilizar el enfoque de carreras descrito en @sec-racing. Con un flujo de trabajo configurado, podemos usar la función `workflow_map()` para este enfoque de carrera. Recuerde que después de canalizar nuestro conjunto de flujos de trabajo, el argumento que usamos es la función que se aplicará a los flujos de trabajo; en este caso, podemos usar un valor de `"tune_race_anova"`. También pasamos un objeto de control apropiado; de lo contrario, las opciones serían las mismas que el código de la sección anterior.
 
@@ -466,7 +466,7 @@ matched_results %>%
 
 Si bien el enfoque de carreras seleccionó los mismos parámetros candidatos que la cuadrícula completa solo para `r round(mean(matched_results$config_race == matched_results$config_complete) * 100, 2)`% de los modelos, las métricas de rendimiento de los modelos seleccionados por las carreras eran casi iguales. La correlación de los valores RMSE fue `r signif(cor(matched_results$race, matched_results$complete), 3)` y la correlación de rango fue `r signif(cor(matched_results$race, matched_results$complete, method = "spearman"), 3)`. Esto indica que, dentro de un modelo, había múltiples combinaciones de parámetros de ajuste que tenían resultados casi idénticos.
 
-## Finalizando un modelo
+## Finalizando Un Modelo
 
 De manera similar a lo que hemos mostrado en capítulos anteriores, el proceso de elegir el modelo final y ajustarlo al conjunto de entrenamiento es sencillo. El primer paso es elegir un flujo de trabajo para finalizar. Dado que el modelo de árbol mejorado funcionó bien, lo extraeremos del conjunto, actualizaremos los parámetros con la mejor configuración numérica y lo ajustaremos al conjunto de entrenamiento:
 
@@ -511,7 +511,7 @@ boosting_test_results %>%
 
 Aquí vemos qué tan bien se alinean la resistencia a la compresión observada y prevista para estas mezclas de concreto.
 
-## Resumen del capítulo {#sec-workflow-sets-summary}
+## Resumen Del Capítulo {#sec-workflow-sets-summary}
 
 A menudo, un profesional de datos necesita considerar una gran cantidad de posibles enfoques de modelado para una tarea en cuestión, especialmente para nuevos conjuntos de datos y/o cuando hay poco conocimiento sobre qué estrategia de modelado funcionará mejor. Este capítulo ilustró cómo utilizar conjuntos de flujos de trabajo para investigar múltiples modelos o estrategias de ingeniería de características en tal situación. Los métodos de carrera pueden clasificar los modelos de manera más eficiente que ajustar cada modelo candidato que se esté considerando.
 

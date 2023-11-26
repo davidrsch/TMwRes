@@ -6,7 +6,7 @@ tidymodels_prefer()
 source("ames_snippets.R")
 ```
 
-# Gastar nuestros datos {#sec-splitting}
+# Gastar Nuestros Datos {#sec-splitting}
 
 Hay varios pasos para crear un modelo útil, incluida la estimación de parámetros, la selección y ajuste del modelo y la evaluación del desempeño. Al comienzo de un nuevo proyecto, generalmente hay un conjunto inicial finito de datos disponibles para todas estas tareas, que podemos considerar como un presupuesto de datos disponible. ¿Cómo se deben aplicar los datos a diferentes pasos o tareas? La idea de *gasto de datos* es una primera consideración importante al modelar, especialmente en lo que se refiere a la validación empírica.
 
@@ -18,7 +18,7 @@ Cuando hay grandes cantidades de datos disponibles, una estrategia inteligente e
 
 Este capítulo demuestra los conceptos básicos de *división* (es decir, creación de un presupuesto de datos) para nuestro conjunto inicial de muestras para diferentes propósitos.
 
-## Métodos comunes para dividir datos {#sec-splitting-methods}
+## Métodos Comunes Para Dividir Datos {#sec-splitting-methods}
 
 El enfoque principal para la validación del modelo empírico es dividir el conjunto de datos existente en dos conjuntos distintos, el conjunto de entrenamiento y el conjunto de prueba. Una parte de los datos se utiliza para desarrollar y optimizar el modelo. Este *conjunto de entrenamiento* suele ser la mayoría de los datos. Estos datos son una zona de pruebas para la construcción de modelos donde se pueden ajustar diferentes modelos, se investigan estrategias de ingeniería de características, etc. Como profesionales del modelado, pasamos la gran mayor parte del proceso de modelado utilizando el conjunto de entrenamiento como sustrato para desarrollar el modelo.
 
@@ -103,21 +103,19 @@ El uso del muestreo estratificado tiene muy pocas desventajas.
 La proporción de datos que deben asignarse para la división depende en gran medida del contexto del problema en cuestión. Muy pocos datos en el conjunto de entrenamiento obstaculizan la capacidad del modelo para encontrar estimaciones de parámetros apropiadas. Por el contrario, muy pocos datos en el conjunto de pruebas reducen la calidad de las estimaciones de rendimiento. Partes de la comunidad estadística evitan los conjuntos de pruebas en general porque creen que todos los datos deben usarse para la estimación de parámetros. Si bien este argumento tiene sus méritos, es una buena práctica de modelado tener un conjunto imparcial de observaciones como árbitro final de la calidad del modelo. Se debe evitar un conjunto de pruebas sólo cuando los datos sean patológicamente pequeños.
 :::
 
-## ¿Qué pasa con un conjunto de validación? {#sec-what-about-a-validation-set}
+## ¿Qué Pasa Con Un Conjunto De Validación? {#sec-what-about-a-validation-set}
 
 Al describir los objetivos de la división de datos, seleccionamos el conjunto de pruebas como los datos que deben usarse para evaluar adecuadamente el desempeño del modelo en los modelos finales. Esto plantea la pregunta: "¿Cómo podemos saber qué es mejor si no medimos el rendimiento hasta el conjunto de pruebas?"
 
-Es común escuchar acerca de *conjuntos de validación* como respuesta a esta pregunta, especialmente en la literatura sobre redes neuronales y aprendizaje profundo. Durante los primeros días de las redes neuronales, los investigadores se dieron cuenta de que medir el rendimiento reprediciendo las muestras del conjunto de entrenamiento conducía a resultados demasiado optimistas (de manera significativa y poco realista). Esto llevó a modelos que se sobreajustaron, lo que significa que tuvieron un desempeño muy bueno en el conjunto de entrenamiento pero pobre en el conjunto de prueba.[^05-data-spend-1] Para combatir este problema, se retuvo y utilizó un pequeño conjunto de datos de validación. para medir el desempeño a medida que se entrenaba la red. Una vez que la tasa de error del conjunto de validación comenzara a aumentar, el entrenamiento se detendría. En otras palabras, el conjunto de validación era un medio para tener una idea aproximada de qué tan bien se desempeñaba el modelo antes del conjunto de prueba.
-
-[^05-data-spending-1]: Esto se analiza con mucho más detalle en @sec-overfitting-bad.
+Es común escuchar acerca de *conjuntos de validación* como respuesta a esta pregunta, especialmente en la literatura sobre redes neuronales y aprendizaje profundo. Durante los primeros días de las redes neuronales, los investigadores se dieron cuenta de que medir el rendimiento reprediciendo las muestras del conjunto de entrenamiento conducía a resultados demasiado optimistas (de manera significativa y poco realista). Esto llevó a modelos que se sobreajustaron, lo que significa que tuvieron un desempeño muy bueno en el conjunto de entrenamiento pero pobre en el conjunto de prueba.\[\^05-data-spend-1\] Para combatir este problema, se retuvo y utilizó un pequeño conjunto de datos de validación. para medir el desempeño a medida que se entrenaba la red. Una vez que la tasa de error del conjunto de validación comenzara a aumentar, el entrenamiento se detendría. En otras palabras, el conjunto de validación era un medio para tener una idea aproximada de qué tan bien se desempeñaba el modelo antes del conjunto de prueba.
 
 ::: rmdnote
 Si los conjuntos de validación son un subconjunto del conjunto de entrenamiento o una tercera asignación en la división inicial de los datos se reduce en gran medida a la semántica.
 :::
 
-Los conjuntos de validación se analizan más en @sec-validation como un caso especial de métodos de *remuestreo* que se utilizan en el conjunto de entrenamiento. Si va a utilizar un conjunto de validación, puede comenzar con una función de división diferente [^05-data-spending-2]:
+Los conjuntos de validación se analizan más en @sec-validation como un caso especial de métodos de *remuestreo* que se utilizan en el conjunto de entrenamiento. Si va a utilizar un conjunto de validación, puede comenzar con una función de división diferente [^05-data-spending-1]:
 
-[^05-data-spending-2]: Esta interfaz está disponible a partir de la versión 1.2.0 de rsample (alrededor de septiembre de 2023).
+[^05-data-spending-1]: Esta interfaz está disponible a partir de la versión 1.2.0 de rsample (alrededor de septiembre de 2023).
 
 ```{r ames-val-split, message = FALSE, warning = FALSE}
 set.seed(52)
@@ -138,7 +136,7 @@ ames_val <- validation(ames_val_split)
 
 @sec-validation demostrará cómo utilizar el objeto `ames_val_split` para remuestreo y optimización del modelo.
 
-## Datos multinivel
+## Datos Multinivel
 
 Con los datos de vivienda de Ames, una propiedad se considera la *unidad experimental independiente*. Es seguro asumir que, estadísticamente, los datos de una propiedad son independientes de otras propiedades. Para otras aplicaciones, ese no es siempre el caso:
 
@@ -152,7 +150,7 @@ El capítulo 9 de @fes contiene otros ejemplos.
 
 En estas situaciones, el conjunto de datos tendrá varias filas por unidad experimental. Un simple remuestreo entre filas llevaría a que algunos datos dentro de una unidad experimental estuvieran en el conjunto de entrenamiento y otros en el conjunto de prueba. La división de datos debe ocurrir en el nivel de unidad experimental independiente de los datos. Por ejemplo, para producir una división 80/20 del conjunto de datos de vivienda de Ames, el 80% de las propiedades deben asignarse al conjunto de entrenamiento.
 
-## Otras Consideraciones para un Presupuesto de Datos
+## Otras Consideraciones Para Un Presupuesto De Datos
 
 Al decidir cómo gastar los datos disponibles, tenga en cuenta algunas cosas más. En primer lugar, es fundamental poner en cuarentena el conjunto de pruebas de cualquier actividad de construcción de modelos. Mientras lee este libro, observe qué datos están expuestos al modelo en un momento dado.
 
@@ -168,7 +166,7 @@ A continuación, al comienzo de este capítulo, advertimos sobre el uso de los m
 
 Finalmente, las consideraciones de este capítulo se aplican al desarrollo y elección de un modelo confiable, el tema principal de este libro. Al entrenar un modelo elegido final para producción, después de determinar el rendimiento esperado con nuevos datos, los profesionales suelen utilizar todos los datos disponibles para una mejor estimación de los parámetros.
 
-## Resumen del capítulo {#sec-splitting-summary}
+## Resumen Del Capítulo {#sec-splitting-summary}
 
 La división de datos es la estrategia fundamental para la validación empírica de modelos. Incluso en la era de la recopilación de datos desenfrenada, un proyecto de modelado típico tiene una cantidad limitada de datos apropiados, y es necesario gastar sabiamente los datos de un proyecto. En este capítulo, analizamos varias estrategias para dividir los datos en distintos grupos para modelado y evaluación.
 

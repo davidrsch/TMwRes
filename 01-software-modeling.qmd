@@ -1,4 +1,4 @@
-# Software para modelar {#sec-software-modeling}
+# Software Para Modelar {#sec-software-modeling}
 
 ```{r software-setup, include = FALSE}
 knitr::opts_chunk$set(fig.path = "figures/")
@@ -24,7 +24,7 @@ Hay dos razones por las que los modelos impregnan nuestras vidas hoy en día:
 
 Este libro se centra principalmente en el software. Obviamente, es fundamental que el software produzca las relaciones correctas para representar los datos. En general, es posible determinar la corrección matemática, pero la creación fiable de modelos apropiados requiere más. En este capítulo, describimos consideraciones para crear o elegir software de modelado, los propósitos de los modelos y dónde se ubica el modelado en el proceso más amplio de análisis de datos.
 
-## Fundamentos del software de modelado
+## Fundamentos Del Software De Modelado
 
 Es importante que el software de modelado que utilice sea fácil de utilizar correctamente. La interfaz de usuario no debe estar tan mal diseñada que el usuario no sepa que la utilizó de manera inapropiada. Por ejemplo, @baggerly2009 informa innumerables problemas en los análisis de datos de una publicación de biología computacional de alto perfil. Uno de los problemas estaba relacionado con cómo se requería que los usuarios agregaran los nombres de las entradas del modelo. La interfaz de usuario del software facilitó la compensación de los nombres de las columnas de datos de las columnas de datos reales. Esto dio lugar a que se identificaran genes equivocados como importantes para el tratamiento de pacientes con cáncer y, finalmente, contribuyó a la interrupción de varios ensayos clínicos. [@Carlson2012].
 
@@ -52,7 +52,7 @@ R es de código abierto y gratuito. Es un poderoso lenguaje de programación que
 
 Una colección de paquetes se llama *tidyverse* [@tidyverse]. Tidyverse es una colección obstinada de paquetes R diseñados para la ciencia de datos. Todos los paquetes comparten una filosofía de diseño, gramática y estructuras de datos subyacentes. Varias de estas filosofías de diseño están directamente informadas por los aspectos del software para modelado descritos en este capítulo. Si nunca ha usado los paquetes tidyverse, el [Capítulo @sec-tidyverse] contiene una revisión de los conceptos básicos. Dentro de tidyverse, el subconjunto de paquetes centrados específicamente en el modelado se conoce como paquetes *tidymodels*. Este libro es una guía práctica para realizar modelados utilizando los paquetes tidyverse y tidymodels. Muestra cómo utilizar un conjunto de paquetes, cada uno con su propósito específico, juntos para crear modelos de alta calidad.
 
-## Tipos de modelos {#sec-model-types}
+## Tipos De Modelos {#sec-model-types}
 
 Antes de continuar, describamos una taxonomía de tipos de modelos, agrupados por propósito. Esta taxonomía informa tanto cómo se utiliza un modelo como muchos aspectos de cómo se puede crear o evaluar el modelo. Si bien esta lista no es exhaustiva, la mayoría de los modelos caen en al menos una de estas categorías:
 
@@ -143,7 +143,7 @@ Se podría derivar un *modelo mecanicista* utilizando primeros principios para p
 
 *Modelos impulsados empíricamente* se crean con suposiciones más vagas. Estos modelos tienden a caer en la categoría de aprendizaje automático. Un buen ejemplo es el modelo *K*-vecino más cercano (KNN). Dado un conjunto de datos de referencia, se predice una nueva muestra utilizando los valores de los *K* datos más similares en el conjunto de referencia. Por ejemplo, si un comprador de libros necesita una predicción para un libro nuevo, es posible que haya disponibles datos históricos de libros existentes. Un modelo de cinco vecinos más cercanos estimaría el número de libros nuevos a comprar basándose en las cifras de ventas de los cinco libros que son más similares al nuevo (para alguna definición de "similar"). Este modelo se define únicamente por la estructura de la predicción (el promedio de cinco libros similares). No se hacen suposiciones teóricas o probabilísticas sobre las cifras de ventas o las variables que se utilizan para definir la similitud. De hecho, el método principal para evaluar la idoneidad del modelo es evaluar su precisión utilizando datos existentes. Si la estructura de este tipo de modelo fuera una buena elección, las predicciones se aproximarían a los valores reales.
 
-## Conexiones entre tipos de modelos
+## Conexiones Entre Tipos De Modelos
 
 ::: rmdnote
 Tenga en cuenta que hemos definido el tipo de modelo por cómo se utiliza, más que por sus cualidades matemáticas.
@@ -187,7 +187,7 @@ Diferentes variables pueden tener diferentes *roles*, especialmente en un análi
 
 En términos de los datos o variables en sí, ya sea que se utilicen para modelos supervisados ​​o no supervisados, como predictores o resultados, las dos categorías principales son cuantitativas y cualitativas. Ejemplos del primero son números reales como "3.14159" y números enteros como "42". Los valores cualitativos, también conocidos como datos nominales, son aquellos que representan algún tipo de estado discreto que no se puede ubicar naturalmente en una escala numérica, como "rojo", "verde" y "azul".
 
-## ¿Cómo encaja el modelado en el proceso de análisis de datos? {#sec-model-phases}
+## ¿Cómo Encaja El Modelado En El Proceso De Análisis de Datos? {#sec-model-phases}
 
 ¿En qué circunstancias se crean los modelos? ¿Hay pasos que preceden a tal empresa? ¿Es la creación de modelos el primer paso en el análisis de datos?
 
@@ -304,6 +304,6 @@ if (knitr::is_html_output()) {
 tab
 ```
 
-## Resumen del capítulo {#sec-software-summary}
+## Resumen Del Capítulo {#sec-software-summary}
 
 Este capítulo se centró en cómo los modelos describen relaciones en los datos y en diferentes tipos de modelos, como modelos descriptivos, modelos inferenciales y modelos predictivos. La capacidad predictiva de un modelo puede utilizarse para evaluarlo, incluso cuando su objetivo principal no sea la predicción. El modelado en sí forma parte del proceso más amplio de análisis de datos, y el análisis de datos exploratorio es una parte clave de la construcción de modelos de alta calidad.
