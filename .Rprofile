@@ -1,2 +1,5 @@
 source("renv/activate.R")
-source("_common.R")
+if (Sys.getenv("CI") != "true") {
+  source("_common.R")
+}
+
