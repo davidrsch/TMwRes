@@ -4,23 +4,23 @@
     "Repositories": [
       {
         "Name": "BioCsoft",
-        "URL": "https://bioconductor.org/packages/3.18/bioc"
+        "URL": "https://bioconductor.org/packages/3.17/bioc"
       },
       {
         "Name": "BioCann",
-        "URL": "https://bioconductor.org/packages/3.18/data/annotation"
+        "URL": "https://bioconductor.org/packages/3.17/data/annotation"
       },
       {
         "Name": "BioCexp",
-        "URL": "https://bioconductor.org/packages/3.18/data/experiment"
+        "URL": "https://bioconductor.org/packages/3.17/data/experiment"
       },
       {
         "Name": "BioCworkflows",
-        "URL": "https://bioconductor.org/packages/3.18/workflows"
+        "URL": "https://bioconductor.org/packages/3.17/workflows"
       },
       {
         "Name": "BioCbooks",
-        "URL": "https://bioconductor.org/packages/3.18/books"
+        "URL": "https://bioconductor.org/packages/3.17/books"
       },
       {
         "Name": "CRAN",
@@ -38,6 +38,31 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "a8235afbcd6316e6e91433ea47661013"
+    },
+    "Biobase": {
+      "Package": "Biobase",
+      "Version": "2.62.0",
+      "Source": "Bioconductor",
+      "Requirements": [
+        "BiocGenerics",
+        "R",
+        "methods",
+        "utils"
+      ],
+      "Hash": "38252a34e82d3ff6bb46b4e2252d2dce"
+    },
+    "BiocGenerics": {
+      "Package": "BiocGenerics",
+      "Version": "0.48.1",
+      "Source": "Bioconductor",
+      "Requirements": [
+        "R",
+        "graphics",
+        "methods",
+        "stats",
+        "utils"
+      ],
+      "Hash": "e34278c65d7dffcc08f737bf0944ca9a"
     },
     "BiocManager": {
       "Package": "BiocManager",
@@ -585,6 +610,37 @@
         "utils"
       ],
       "Hash": "4f57884290cc75ab22f4af9e9d4ca862"
+    },
+    "affy": {
+      "Package": "affy",
+      "Version": "1.78.2",
+      "Source": "Bioconductor",
+      "Requirements": [
+        "Biobase",
+        "BiocGenerics",
+        "BiocManager",
+        "R",
+        "affyio",
+        "grDevices",
+        "graphics",
+        "methods",
+        "preprocessCore",
+        "stats",
+        "utils",
+        "zlibbioc"
+      ],
+      "Hash": "8dc58f7e9086da714fbfcaf100b95304"
+    },
+    "affyio": {
+      "Package": "affyio",
+      "Version": "1.72.0",
+      "Source": "Bioconductor",
+      "Requirements": [
+        "R",
+        "methods",
+        "zlibbioc"
+      ],
+      "Hash": "63280d6f5ba6b3a6665a3d00f0a738dc"
     },
     "applicable": {
       "Package": "applicable",
@@ -1931,6 +1987,16 @@
         "withr"
       ],
       "Hash": "66488692cb8621bc78df1b9b819497a6"
+    },
+    "gitcreds": {
+      "Package": "gitcreds",
+      "Version": "0.1.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R"
+      ],
+      "Hash": "ab08ac61f3e1be454ae21911eb8bc2fe"
     },
     "glmnet": {
       "Package": "glmnet",
@@ -3470,6 +3536,15 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "a555924add98c99d2f411e37e7d25e9f"
+    },
+    "preprocessCore": {
+      "Package": "preprocessCore",
+      "Version": "1.64.0",
+      "Source": "Bioconductor",
+      "Requirements": [
+        "stats"
+      ],
+      "Hash": "0a2241c04babfab4e0a1f43cfca33fbf"
     },
     "prettyunits": {
       "Package": "prettyunits",
@@ -5575,6 +5650,13 @@
       "Source": "Repository",
       "Repository": "RSPM",
       "Hash": "ee9b643aa8331c45d8d82eb3a137c9bc"
+    },
+    "zlibbioc": {
+      "Package": "zlibbioc",
+      "Version": "1.48.2",
+      "Source": "Bioconductor",
+      "Repository": "Bioconductor 3.18",
+      "Hash": "2344be62c2da4d9e9942b5d8db346e59"
     },
     "zoo": {
       "Package": "zoo",
