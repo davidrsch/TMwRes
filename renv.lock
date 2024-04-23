@@ -3,13 +3,33 @@
     "Version": "4.3.3",
     "Repositories": [
       {
+        "Name": "BioCsoft",
+        "URL": "https://bioconductor.org/packages/3.18/bioc"
+      },
+      {
+        "Name": "BioCann",
+        "URL": "https://bioconductor.org/packages/3.18/data/annotation"
+      },
+      {
+        "Name": "BioCexp",
+        "URL": "https://bioconductor.org/packages/3.18/data/experiment"
+      },
+      {
+        "Name": "BioCworkflows",
+        "URL": "https://bioconductor.org/packages/3.18/workflows"
+      },
+      {
+        "Name": "BioCbooks",
+        "URL": "https://bioconductor.org/packages/3.18/books"
+      },
+      {
         "Name": "CRAN",
         "URL": "https://packagemanager.posit.co/cran/latest"
       }
     ]
   },
   "Bioconductor": {
-    "Version": "3.17"
+    "Version": "3.18"
   },
   "Packages": {
     "BH": {
@@ -28,6 +48,33 @@
         "utils"
       ],
       "Hash": "d57e43105a1aa9cb54fdb4629725acb1"
+    },
+    "BiocParallel": {
+      "Package": "BiocParallel",
+      "Version": "1.34.2",
+      "Source": "Bioconductor",
+      "Requirements": [
+        "BH",
+        "R",
+        "codetools",
+        "cpp11",
+        "futile.logger",
+        "methods",
+        "parallel",
+        "snow",
+        "stats",
+        "utils"
+      ],
+      "Hash": "84347b6a8118ba2182b148298b118f0e"
+    },
+    "BiocVersion": {
+      "Package": "BiocVersion",
+      "Version": "3.18.1",
+      "Source": "Bioconductor",
+      "Requirements": [
+        "R"
+      ],
+      "Hash": "2ecaed86684f5fae76ed5530f9d29c4a"
     },
     "C50": {
       "Package": "C50",
@@ -1072,6 +1119,17 @@
       ],
       "Hash": "bb097fccb22d156624fd07cd2894ddb6"
     },
+    "corpcor": {
+      "Package": "corpcor",
+      "Version": "1.6.10",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "stats"
+      ],
+      "Hash": "17ebe3b6d75d09c5bab3891880b34237"
+    },
     "corrplot": {
       "Package": "corrplot",
       "Version": "0.92",
@@ -1456,6 +1514,18 @@
       ],
       "Hash": "5b2ef64995e87f97cbd893d469165311"
     },
+    "ellipse": {
+      "Package": "ellipse",
+      "Version": "0.5.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "graphics",
+        "stats"
+      ],
+      "Hash": "4aa52573ccedf7dc635a0eb471944a36"
+    },
     "ellipsis": {
       "Package": "ellipsis",
       "Version": "0.3.2",
@@ -1632,6 +1702,29 @@
       ],
       "Hash": "618609b42c9406731ead03adf5379850"
     },
+    "foreign": {
+      "Package": "foreign",
+      "Version": "0.8-86",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "methods",
+        "stats",
+        "utils"
+      ],
+      "Hash": "550170303dbb19d07b2bcc288068e7dc"
+    },
+    "formatR": {
+      "Package": "formatR",
+      "Version": "1.14",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R"
+      ],
+      "Hash": "63cb26d12517c7863f5abb006c5e0f25"
+    },
     "fs": {
       "Package": "fs",
       "Version": "1.6.3",
@@ -1658,6 +1751,29 @@
         "vctrs"
       ],
       "Hash": "da7a4c32196cb2262a41dd5a25d486ff"
+    },
+    "futile.logger": {
+      "Package": "futile.logger",
+      "Version": "1.4.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "futile.options",
+        "lambda.r",
+        "utils"
+      ],
+      "Hash": "99f0ace8c05ec7d3683d27083c4f1e7e"
+    },
+    "futile.options": {
+      "Package": "futile.options",
+      "Version": "1.0.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R"
+      ],
+      "Hash": "0d9bf02413ddc2bbe8da9ce369dcdd2b"
     },
     "future": {
       "Package": "future",
@@ -2474,6 +2590,17 @@
       ],
       "Hash": "98e671a8a8832e8a3e48f87b41142765"
     },
+    "lambda.r": {
+      "Package": "lambda.r",
+      "Version": "1.2.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "formatR"
+      ],
+      "Hash": "b1e925c4b9ffeb901bacf812cbe9a6ad"
+    },
     "later": {
       "Package": "later",
       "Version": "1.3.2",
@@ -2872,6 +2999,37 @@
         "Rcpp"
       ],
       "Hash": "f48238f8d4740426ca12f53f27d004dd"
+    },
+    "mixOmics": {
+      "Package": "mixOmics",
+      "Version": "6.26.0",
+      "Source": "Bioconductor",
+      "Repository": "Bioconductor",
+      "Requirements": [
+        "BiocParallel",
+        "MASS",
+        "R",
+        "RColorBrewer",
+        "corpcor",
+        "dplyr",
+        "ellipse",
+        "ggplot2",
+        "ggrepel",
+        "grDevices",
+        "graphics",
+        "gridExtra",
+        "igraph",
+        "lattice",
+        "matrixStats",
+        "methods",
+        "parallel",
+        "rARPACK",
+        "reshape2",
+        "stats",
+        "tidyr",
+        "utils"
+      ],
+      "Hash": "ad231b834a05a0d2f6315d0a38fdea70"
     },
     "mlapi": {
       "Package": "mlapi",
@@ -3536,6 +3694,16 @@
         "utils"
       ],
       "Hash": "22f4e24806d7d2112f10927a4ee64786"
+    },
+    "rARPACK": {
+      "Package": "rARPACK",
+      "Version": "0.11-0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "RSpectra"
+      ],
+      "Hash": "fa4822bb52e2a6b5a7a6f9611e3a6739"
     },
     "rJava": {
       "Package": "rJava",
@@ -4378,6 +4546,17 @@
       ],
       "Hash": "58767e44739b76965332e8a4fe3f91f1"
     },
+    "snow": {
+      "Package": "snow",
+      "Version": "0.4-4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "utils"
+      ],
+      "Hash": "40b74690debd20c57d93d8c246b305d4"
+    },
     "sortable": {
       "Package": "sortable",
       "Version": "0.5.0",
@@ -4432,6 +4611,19 @@
         "Rcpp"
       ],
       "Hash": "30850588bdc225885f2417fb1e7c8ee3"
+    },
+    "spatial": {
+      "Package": "spatial",
+      "Version": "7.3-17",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "graphics",
+        "stats",
+        "utils"
+      ],
+      "Hash": "1229a01b4ec059e9f2396724f2ec9010"
     },
     "stabs": {
       "Package": "stabs",
