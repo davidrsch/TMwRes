@@ -23,7 +23,9 @@ jobs:
           sudo apt-get install libavfilter-dev
           sudo apt-get install libgdal-dev
           sudo apt-get install libgeos-dev
-          sudo apt-get install libproj-dev 
+          sudo apt-get install libproj-dev
+          sudo apt-get install libgl1-mesa-dev
+          sudo apt-get install libglu1-mesa-dev
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
