@@ -36,13 +36,8 @@ jobs:
         with:
           r-version: '4.3.3'
 
-      - name: Install R Dependencies renv
-        uses: r-lib/actions/setup-renv@v2
-        with:
-          cache-version: 1
-          
-      - name: Source file
-        run: R -e 'source("_common.R")'
+      - name: Install R Dependencies
+        run: R -e 'source("renv/activate.R")'
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
