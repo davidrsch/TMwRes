@@ -40,6 +40,9 @@ jobs:
         uses: r-lib/actions/setup-renv@v2
         with:
           cache-version: 1
+          
+      - name: Source file
+        run: R -e 'source("_common.R")'
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
