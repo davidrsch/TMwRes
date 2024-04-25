@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.553">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Max Kuhn, y Julia Silge">
-
 <title>Modelado Ordenado con R - 12&nbsp; Ajuste De Modelos Y Los Peligros Del Sobreajuste</title>
 <style>
 code{white-space: pre-wrap;}
@@ -77,7 +74,6 @@ div.csl-indent {
   margin-left: 2em;
 }</style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -95,8 +91,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -122,12 +117,7 @@ div.csl-indent {
     "search-submit-button-title": "Enviar",
     "search-label": "Buscar"
   }
-}</script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -152,18 +142,13 @@ const typesetMath = (el) => {
 window.Quarto = {
   typesetMath
 };
-</script>
-
-<link rel="stylesheet" href="style.css">
+</script><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -174,20 +159,16 @@ window.Quarto = {
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
     <div class="dropdown">
       <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-          <li>
+<li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
             Original
             </a>
@@ -198,7 +179,7 @@ window.Quarto = {
             </a>
           </li>
       </ul>
-    </div>
+</div>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -214,7 +195,7 @@ window.Quarto = {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Hola Mundo</span></a>
@@ -228,8 +209,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
@@ -248,7 +229,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
@@ -257,8 +238,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
@@ -295,7 +276,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
@@ -304,8 +285,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
@@ -342,7 +323,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
@@ -351,8 +332,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
@@ -389,7 +370,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
@@ -398,8 +379,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
@@ -412,32 +393,26 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Tabla de contenidos</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-  <li><a href="#parámetros-del-modelo" id="toc-parámetros-del-modelo" class="nav-link active" data-scroll-target="#parámetros-del-modelo"><span class="header-section-number">12.1</span> Parámetros Del Modelo</a></li>
+<li><a href="#par%C3%A1metros-del-modelo" id="toc-parámetros-del-modelo" class="nav-link active" data-scroll-target="#par%C3%A1metros-del-modelo"><span class="header-section-number">12.1</span> Parámetros Del Modelo</a></li>
   <li><a href="#sec-tuning-parameter-examples" id="toc-sec-tuning-parameter-examples" class="nav-link" data-scroll-target="#sec-tuning-parameter-examples"><span class="header-section-number">12.2</span> Parámetros De Ajuste Para Diferentes Tipos De Modelos</a></li>
   <li><a href="#sec-what-to-optimize" id="toc-sec-what-to-optimize" class="nav-link" data-scroll-target="#sec-what-to-optimize"><span class="header-section-number">12.3</span> ¿Qué Optimizamos?</a></li>
   <li><a href="#sec-overfitting-bad" id="toc-sec-overfitting-bad" class="nav-link" data-scroll-target="#sec-overfitting-bad"><span class="header-section-number">12.4</span> Las Consecuencias De Las Malas Estimaciones De Parámetros</a></li>
-  <li><a href="#dos-estrategias-generales-para-la-optimización." id="toc-dos-estrategias-generales-para-la-optimización." class="nav-link" data-scroll-target="#dos-estrategias-generales-para-la-optimización."><span class="header-section-number">12.5</span> Dos Estrategias Generales Para La Optimización.</a></li>
+  <li><a href="#dos-estrategias-generales-para-la-optimizaci%C3%B3n." id="toc-dos-estrategias-generales-para-la-optimización." class="nav-link" data-scroll-target="#dos-estrategias-generales-para-la-optimizaci%C3%B3n."><span class="header-section-number">12.5</span> Dos Estrategias Generales Para La Optimización.</a></li>
   <li><a href="#sec-tuning-params-tidymodels" id="toc-sec-tuning-params-tidymodels" class="nav-link" data-scroll-target="#sec-tuning-params-tidymodels"><span class="header-section-number">12.6</span> Ajuste De Parámetros En tidymodels</a></li>
-  <li><a href="#resumen-del-capítulo" id="toc-resumen-del-capítulo" class="nav-link" data-scroll-target="#resumen-del-capítulo"><span class="header-section-number">12.7</span> Resumen Del Capítulo</a></li>
-  </ul>
-</nav>
+  <li><a href="#resumen-del-cap%C3%ADtulo" id="toc-resumen-del-capítulo" class="nav-link" data-scroll-target="#resumen-del-cap%C3%ADtulo"><span class="header-section-number">12.7</span> Resumen Del Capítulo</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./12-tuning-parameters.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></a></li></ol></nav>
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./12-tuning-parameters.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-tuning" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></h1>
 </div>
 
@@ -452,12 +427,9 @@ window.Quarto = {
   
 
 
-</header>
-
-
-<p>Para utilizar un modelo de predicción, se deben estimar los parámetros de ese modelo. Algunos de estos parámetros se pueden estimar directamente a partir de los datos de entrenamiento, pero otros parámetros, llamados <em>parámetros de ajuste</em> o <em>hiperparámetros</em>, deben especificarse con anticipación y no se pueden encontrar directamente a partir de los datos de entrenamiento. Se trata de valores estructurales o de otro tipo desconocidos que tienen un impacto significativo en el modelo pero que no pueden estimarse directamente a partir de los datos. Este capítulo proporcionará ejemplos de parámetros de ajuste y mostrará cómo usamos las funciones de tidymodels para crear y manejar parámetros de ajuste. También demostraremos cómo una mala elección de estos valores conduce a un sobreajuste e introduciremos varias tácticas para encontrar valores óptimos de los parámetros de ajuste. Los capítulos <a href="13-grid-search.html" class="quarto-xref"><span>13</span></a> y <a href="14-iterative-search.html" class="quarto-xref"><span>14</span></a> detallan más métodos de optimización específicos para el ajuste.</p>
-<section id="parámetros-del-modelo" class="level2" data-number="12.1">
-<h2 data-number="12.1" class="anchored" data-anchor-id="parámetros-del-modelo"><span class="header-section-number">12.1</span> Parámetros Del Modelo</h2>
+</header><p>Para utilizar un modelo de predicción, se deben estimar los parámetros de ese modelo. Algunos de estos parámetros se pueden estimar directamente a partir de los datos de entrenamiento, pero otros parámetros, llamados <em>parámetros de ajuste</em> o <em>hiperparámetros</em>, deben especificarse con anticipación y no se pueden encontrar directamente a partir de los datos de entrenamiento. Se trata de valores estructurales o de otro tipo desconocidos que tienen un impacto significativo en el modelo pero que no pueden estimarse directamente a partir de los datos. Este capítulo proporcionará ejemplos de parámetros de ajuste y mostrará cómo usamos las funciones de tidymodels para crear y manejar parámetros de ajuste. También demostraremos cómo una mala elección de estos valores conduce a un sobreajuste e introduciremos varias tácticas para encontrar valores óptimos de los parámetros de ajuste. Los capítulos <a href="13-grid-search.html" class="quarto-xref"><span>13</span></a> y <a href="14-iterative-search.html" class="quarto-xref"><span>14</span></a> detallan más métodos de optimización específicos para el ajuste.</p>
+<section id="parámetros-del-modelo" class="level2" data-number="12.1"><h2 data-number="12.1" class="anchored" data-anchor-id="parámetros-del-modelo">
+<span class="header-section-number">12.1</span> Parámetros Del Modelo</h2>
 <p>En la regresión lineal ordinaria, hay dos parámetros <span class="math inline">\(\beta_0\)</span> y <span class="math inline">\(\beta_1\)</span> del modelo:</p>
 <p><span class="math display">\[ y_i = \beta_0 + \beta_1 x_i + \epsilon_i\]</span></p>
 <p>Cuando tenemos los datos del resultado (<span class="math inline">\(y\)</span>) y del predictor (<span class="math inline">\(x\)</span>), podemos estimar los dos parámetros <span class="math inline">\(\beta_0\)</span> y <span class="math inline">\(\beta_1\)</span>:</p>
@@ -472,9 +444,8 @@ window.Quarto = {
 <p><span class="math display">\[\hat y = \frac{1}{K}\sum_{\ell = 1}^K x_\ell^*\]</span></p>
 <p>donde <span class="math inline">\(K\)</span> es el número de vecinos y <span class="math inline">\(x_\ell^*\)</span> son los valores de <span class="math inline">\(K\)</span> más cercanos a <span class="math inline">\(x_0\)</span> en el conjunto de entrenamiento. El modelo en sí no está definido por una ecuación modelo; en cambio, la ecuación de predicción anterior lo define. Esta característica, junto con la posible intratabilidad de la medida de distancia, hace imposible crear un conjunto de ecuaciones que puedan resolverse para <span class="math inline">\(K\)</span> (de forma iterativa o no). El número de vecinos tiene un profundo impacto en el modelo; gobierna la flexibilidad de la frontera de clase. Para valores pequeños de <span class="math inline">\(K\)</span>, el límite es muy elaborado, mientras que para valores grandes, puede ser bastante suave.</p>
 <p>El número de vecinos más cercanos es un buen ejemplo de parámetro de ajuste o hiperparámetro que no se puede estimar directamente a partir de los datos.</p>
-</section>
-<section id="sec-tuning-parameter-examples" class="level2" data-number="12.2">
-<h2 data-number="12.2" class="anchored" data-anchor-id="sec-tuning-parameter-examples"><span class="header-section-number">12.2</span> Parámetros De Ajuste Para Diferentes Tipos De Modelos</h2>
+</section><section id="sec-tuning-parameter-examples" class="level2" data-number="12.2"><h2 data-number="12.2" class="anchored" data-anchor-id="sec-tuning-parameter-examples">
+<span class="header-section-number">12.2</span> Parámetros De Ajuste Para Diferentes Tipos De Modelos</h2>
 <p>Hay muchos ejemplos de ajuste de parámetros o hiperparámetros en diferentes modelos estadísticos y de aprendizaje automático:</p>
 <ul>
 <li><p>Boosting es un método conjunto que combina una serie de modelos base, cada uno de los cuales se crea secuencialmente y depende de los modelos anteriores. El número de iteraciones de impulso es un parámetro de ajuste importante que normalmente requiere optimización.</p></li>
@@ -495,9 +466,8 @@ window.Quarto = {
 <div class="rmdwarning">
 <p>Otro contraejemplo (quizás más discutible) de un parámetro que <em>no</em> necesita ser ajustado es el número de árboles en un randm forest o en un modelo de embolsado. En cambio, este valor debe elegirse para que sea lo suficientemente grande como para garantizar la estabilidad numérica en los resultados; ajustarlo no puede mejorar el rendimiento siempre que el valor sea lo suficientemente grande como para producir resultados confiables. Para random forest, este valor suele ser de miles, mientras que la cantidad de árboles necesarios para el embolsado es de alrededor de 50 a 100.</p>
 </div>
-</section>
-<section id="sec-what-to-optimize" class="level2" data-number="12.3">
-<h2 data-number="12.3" class="anchored" data-anchor-id="sec-what-to-optimize"><span class="header-section-number">12.3</span> ¿Qué Optimizamos?</h2>
+</section><section id="sec-what-to-optimize" class="level2" data-number="12.3"><h2 data-number="12.3" class="anchored" data-anchor-id="sec-what-to-optimize">
+<span class="header-section-number">12.3</span> ¿Qué Optimizamos?</h2>
 <p>¿Cómo debemos evaluar los modelos cuando optimizamos los parámetros de ajuste? Depende del modelo y del propósito del modelo.</p>
 <p>Para los casos en los que las propiedades estadísticas del parámetro de ajuste son manejables, se pueden utilizar propiedades estadísticas comunes como función objetivo. Por ejemplo, en el caso de la regresión logística binaria, la función de enlace se puede elegir maximizando la probabilidad o los criterios de información. Sin embargo, es posible que estas propiedades estadísticas no se alineen con los resultados obtenidos utilizando propiedades orientadas a la precisión. Como ejemplo, <span class="citation" data-cites="FriedmanGFA">Friedman (<a href="references.html#ref-FriedmanGFA" role="doc-biblioref">2001</a>)</span> optimizó la cantidad de árboles en un conjunto de árboles mejorado y encontró resultados diferentes al maximizar la probabilidad y la precisión:</p>
 <blockquote class="blockquote">
@@ -507,14 +477,12 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-two-class-dat" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un ejemplo de conjunto de datos de clasificación de dos clases con dos predictores. Los dos predictores tienen una correlación moderada y existen algunos puntos de separación entre las clases.">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-two-class-dat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-two-class-dat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-two-class-dat-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Un ejemplo de conjunto de datos de clasificación de dos clases con dos predictores. Los dos predictores tienen una correlación moderada y existen algunos puntos de separación entre las clases." width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-class-dat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;12.1: Un ejemplo de conjunto de datos de clasificación de dos clases con dos predictores
-</figcaption>
-</figure>
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -525,103 +493,99 @@ Figura&nbsp;12.1: Un ejemplo de conjunto de datos de clasificación de dos clase
 <p>donde <span class="math inline">\(\Phi\)</span> es la función normal estándar acumulativa, así como el modelo <em>log-log</em> complementario:</p>
 <p><span class="math display">\[\log(-\log(1-\pi)) = \beta_0 + \beta_1x_1 + \ldots + \beta_px_p\]</span></p>
 <p>Cada uno de estos modelos da como resultado límites de clase lineales. ¿Cuál deberíamos usar? Dado que, para estos datos, el número de parámetros del modelo no varía, el enfoque estadístico es calcular la probabilidad (logaritmo) de cada modelo y determinar el modelo con el valor más grande. Tradicionalmente, la probabilidad se calcula utilizando los mismos datos que se utilizaron para estimar los parámetros, sin utilizar enfoques como la división de datos o el remuestreo de los Capítulos <a href="05-data-spending.html" class="quarto-xref"><span>5</span></a> y <a href="10-resampling.html" class="quarto-xref"><span>10</span></a>.</p>
-<p>Para un marco de datos <code>training_set</code>, creemos una función para calcular los diferentes modelos y extraer las estadísticas de probabilidad para el conjunto de entrenamiento (usando <code>broom::glance()</code>):</p>
+<p>Para un marco de datos <code>training_set</code>, creemos una función para calcular los diferentes modelos y extraer las estadísticas de probabilidad para el conjunto de entrenamiento (usando <code><a href="https://generics.r-lib.org/reference/glance.html">broom::glance()</a></code>):</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>llhood <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">logistic_reg</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_engine</span>(<span class="st">"glm"</span>, ...) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit</span>(Class <span class="sc">~</span> ., <span class="at">data =</span> training_set) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">glance</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(logLik)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">bind_rows</span>(</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">llhood</span>(),</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">llhood</span>(<span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"probit"</span>)),</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">llhood</span>(<span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"cloglog"</span>))</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">link =</span> <span class="fu">c</span>(<span class="st">"logit"</span>, <span class="st">"probit"</span>, <span class="st">"c-log-log"</span>))  <span class="sc">%&gt;%</span> </span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(logLik))</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 2</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="do">##   logLik link     </span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;dbl&gt; &lt;chr&gt;    </span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  -258. logit    </span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  -262. probit   </span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  -270. c-log-log</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">llhood</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu">logistic_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>    <span class="fu">set_engine</span><span class="op">(</span><span class="st">"glm"</span>, <span class="va">...</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>    <span class="fu">fit</span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">training_set</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>    <span class="fu">glance</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>    <span class="fu">select</span><span class="op">(</span><span class="va">logLik</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">bind_rows</span><span class="op">(</span></span>
+<span>  <span class="fu">llhood</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="fu">llhood</span><span class="op">(</span>family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"probit"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  <span class="fu">llhood</span><span class="op">(</span>family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"cloglog"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>link <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"logit"</span>, <span class="st">"probit"</span>, <span class="st">"c-log-log"</span><span class="op">)</span><span class="op">)</span>  <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">arrange</span><span class="op">(</span><span class="fu">desc</span><span class="op">(</span><span class="va">logLik</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## # A tibble: 3 × 2</span></span>
+<span><span class="co">##   logLik link     </span></span>
+<span><span class="co">##    &lt;dbl&gt; &lt;chr&gt;    </span></span>
+<span><span class="co">## 1  -258. logit    </span></span>
+<span><span class="co">## 2  -262. probit   </span></span>
+<span><span class="co">## 3  -270. c-log-log</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Según estos resultados, el modelo logístico tiene las mejores propiedades estadísticas.</p>
 <p>A partir de la escala de los valores de probabilidad logarítmica, es difícil entender si estas diferencias son importantes o insignificantes. Una forma de mejorar este análisis es volver a muestrear las estadísticas y separar los datos del modelado de los datos utilizados para la estimación del desempeño. Con este pequeño conjunto de datos, la validación cruzada repetida 10 veces es una buena opción para el remuestreo. En el paquete <span class="pkg">yardstick</span>, la función <code>mn_log_loss()</code> se usa para estimar la probabilidad logarítmica negativa, y nuestros resultados se muestran en <a href="#fig-resampled-log-lhood" class="quarto-xref">Figura&nbsp;<span>12.2</span></a>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1201</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>rs <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(training_set, <span class="at">repeats =</span> <span class="dv">10</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Devuelva las estimaciones de rendimiento individuales remuestreadas:</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>lloss <span class="ot">&lt;-</span> <span class="cf">function</span>(...) {</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  perf_meas <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(roc_auc, mn_log_loss)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">logistic_reg</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_engine</span>(<span class="st">"glm"</span>, ...) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">fit_resamples</span>(Class <span class="sc">~</span> A <span class="sc">+</span> B, rs, <span class="at">metrics =</span> perf_meas) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">collect_metrics</span>(<span class="at">summarize =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(id, id2, .metric, .estimate)</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>resampled_res <span class="ot">&lt;-</span> </span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lloss</span>()                                    <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"logistic"</span>),</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lloss</span>(<span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"probit"</span>))  <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"probit"</span>),</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lloss</span>(<span class="at">family =</span> <span class="fu">binomial</span>(<span class="at">link =</span> <span class="st">"cloglog"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">model =</span> <span class="st">"c-log-log"</span>)     </span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convierta la pérdida logarítmica en probabilidad logarítmica:</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">.estimate =</span> <span class="fu">ifelse</span>(.metric <span class="sc">==</span> <span class="st">"mn_log_loss"</span>, <span class="sc">-</span>.estimate, .estimate)) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(model, .metric) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(.estimate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">std_err =</span> <span class="fu">sd</span>(.estimate, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">n</span>()), </span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>resampled_res <span class="sc">%&gt;%</span> </span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">"mn_log_loss"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mean, <span class="at">y =</span> model)) <span class="sc">+</span> </span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> mean <span class="sc">-</span> <span class="fl">1.64</span> <span class="sc">*</span> std_err, <span class="at">xmax =</span> mean <span class="sc">+</span> <span class="fl">1.64</span> <span class="sc">*</span> std_err),</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> .<span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">x =</span> <span class="st">"log-likelihood"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1201</span><span class="op">)</span></span>
+<span><span class="va">rs</span> <span class="op">&lt;-</span> <span class="fu">vfold_cv</span><span class="op">(</span><span class="va">training_set</span>, repeats <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Devuelva las estimaciones de rendimiento individuales remuestreadas:</span></span>
+<span><span class="va">lloss</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">perf_meas</span> <span class="op">&lt;-</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">roc_auc</span>, <span class="va">mn_log_loss</span><span class="op">)</span></span>
+<span>    </span>
+<span>  <span class="fu">logistic_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>    <span class="fu">set_engine</span><span class="op">(</span><span class="st">"glm"</span>, <span class="va">...</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>    <span class="fu">fit_resamples</span><span class="op">(</span><span class="va">Class</span> <span class="op">~</span> <span class="va">A</span> <span class="op">+</span> <span class="va">B</span>, <span class="va">rs</span>, metrics <span class="op">=</span> <span class="va">perf_meas</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>    <span class="fu">collect_metrics</span><span class="op">(</span>summarize <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>    <span class="fu">select</span><span class="op">(</span><span class="va">id</span>, <span class="va">id2</span>, <span class="va">.metric</span>, <span class="va">.estimate</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="va">resampled_res</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">bind_rows</span><span class="op">(</span></span>
+<span>    <span class="fu">lloss</span><span class="op">(</span><span class="op">)</span>                                    <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>model <span class="op">=</span> <span class="st">"logistic"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">lloss</span><span class="op">(</span>family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"probit"</span><span class="op">)</span><span class="op">)</span>  <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>model <span class="op">=</span> <span class="st">"probit"</span><span class="op">)</span>,</span>
+<span>    <span class="fu">lloss</span><span class="op">(</span>family <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span><span class="op">(</span>link <span class="op">=</span> <span class="st">"cloglog"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">mutate</span><span class="op">(</span>model <span class="op">=</span> <span class="st">"c-log-log"</span><span class="op">)</span>     </span>
+<span>  <span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="co"># Convierta la pérdida logarítmica en probabilidad logarítmica:</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>.estimate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">.metric</span> <span class="op">==</span> <span class="st">"mn_log_loss"</span>, <span class="op">-</span><span class="va">.estimate</span>, <span class="va">.estimate</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">group_by</span><span class="op">(</span><span class="va">model</span>, <span class="va">.metric</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">summarize</span><span class="op">(</span></span>
+<span>    mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">.estimate</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    std_err <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">.estimate</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fu">n</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>, </span>
+<span>    .groups <span class="op">=</span> <span class="st">"drop"</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">resampled_res</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html">filter</a></span><span class="op">(</span><span class="va">.metric</span> <span class="op">==</span> <span class="st">"mn_log_loss"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">ggplot</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">mean</span>, y <span class="op">=</span> <span class="va">model</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">geom_errorbar</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">mean</span> <span class="op">-</span> <span class="fl">1.64</span> <span class="op">*</span> <span class="va">std_err</span>, xmax <span class="op">=</span> <span class="va">mean</span> <span class="op">+</span> <span class="fl">1.64</span> <span class="op">*</span> <span class="va">std_err</span><span class="op">)</span>,</span>
+<span>                width <span class="op">=</span> <span class="fl">.1</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"log-likelihood"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-resampled-log-lhood" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Medias e intervalos de confianza aproximados del 90% para la probabilidad logarítmica binomial remuestreada con tres funciones de enlace diferentes. El enlace logit tiene el valor más grande, seguido del enlace probit. El enlace de registro complementario tiene valores mucho más bajos.">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-resampled-log-lhood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-resampled-log-lhood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-resampled-log-lhood-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Medias e intervalos de confianza aproximados del 90% para la probabilidad logarítmica binomial remuestreada con tres funciones de enlace diferentes. El enlace logit tiene el valor más grande, seguido del enlace probit. El enlace de registro complementario tiene valores mucho más bajos." width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-resampled-log-lhood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;12.2: Medias e intervalos de confianza aproximados del 90% para la probabilidad logarítmica binomial remuestreada con tres funciones de enlace diferentes
-</figcaption>
-</figure>
+</figcaption></figure>
 </div>
 </div>
 </div>
 <div class="rmdnote">
-<p>La escala de estos valores es diferente a los valores anteriores ya que se calculan en un conjunto de datos más pequeño; el valor producido por <code>broom::glance()</code> es una suma mientras que <code>yardstick::mn_log_loss()</code> es un promedio.</p>
+<p>La escala de estos valores es diferente a los valores anteriores ya que se calculan en un conjunto de datos más pequeño; el valor producido por <code><a href="https://generics.r-lib.org/reference/glance.html">broom::glance()</a></code> es una suma mientras que <code><a href="https://yardstick.tidymodels.org/reference/mn_log_loss.html">yardstick::mn_log_loss()</a></code> es un promedio.</p>
 </div>
 <p>Estos resultados muestran evidencia de que la elección de la función de enlace es algo importante. Aunque existe una superposición en los intervalos de confianza, el modelo logístico tiene los mejores resultados.</p>
 <p>¿Qué tal una métrica diferente? También calculamos el área bajo la curva ROC para cada remuestreo. Estos resultados, que reflejan la capacidad discriminativa de los modelos a través de numerosos umbrales de probabilidad, muestran una falta de diferencia en <a href="#fig-resampled-roc" class="quarto-xref">Figura&nbsp;<span>12.3</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-resampled-roc" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Medias e intervalos de confianza aproximados del 90% para el área remuestreada bajo la curva ROC con tres funciones de enlace diferentes. El enlace logit tiene el valor más grande, seguido del enlace probit. Los intervalos de confianza muestran una gran superposición entre los dos métodos.">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-resampled-roc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-resampled-roc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-resampled-roc-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Medias e intervalos de confianza aproximados del 90% para el área remuestreada bajo la curva ROC con tres funciones de enlace diferentes. El enlace logit tiene el valor más grande, seguido del enlace probit. Los intervalos de confianza muestran una gran superposición entre los dos métodos." width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-resampled-roc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;12.3: Medias e intervalos de confianza aproximados del 90% para el área remuestreada bajo la curva ROC con tres funciones de enlace diferentes
-</figcaption>
-</figure>
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -629,14 +593,12 @@ Figura&nbsp;12.3: Medias e intervalos de confianza aproximados del 90% para el �
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-three-link-fits" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="El límite de clase lineal se ajusta a tres funciones de enlace. Las líneas tienen pendientes muy similares y el registro complementario tiene una intersección ligeramente diferente a la de los otros dos enlaces.">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-three-link-fits-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-three-link-fits-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-three-link-fits-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="El límite de clase lineal se ajusta a tres funciones de enlace. Las líneas tienen pendientes muy similares y el registro complementario tiene una intersección ligeramente diferente a la de los otros dos enlaces." width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-three-link-fits-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;12.4: El límite de clase lineal se ajusta a tres funciones de enlace.
-</figcaption>
-</figure>
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -647,9 +609,8 @@ Figura&nbsp;12.4: El límite de clase lineal se ajusta a tres funciones de enlac
 <blockquote class="blockquote">
 <p>La eficacia irrazonable de la optimización de métricas en los enfoques actuales de IA es un desafío fundamental para el campo y genera una contradicción inherente: la optimización exclusiva de las métricas conduce a resultados que distan mucho de ser óptimos.</p>
 </blockquote>
-</section>
-<section id="sec-overfitting-bad" class="level2" data-number="12.4">
-<h2 data-number="12.4" class="anchored" data-anchor-id="sec-overfitting-bad"><span class="header-section-number">12.4</span> Las Consecuencias De Las Malas Estimaciones De Parámetros</h2>
+</section><section id="sec-overfitting-bad" class="level2" data-number="12.4"><h2 data-number="12.4" class="anchored" data-anchor-id="sec-overfitting-bad">
+<span class="header-section-number">12.4</span> Las Consecuencias De Las Malas Estimaciones De Parámetros</h2>
 <p>Muchos parámetros de ajuste modulan la cantidad de complejidad del modelo. Una mayor complejidad a menudo implica una mayor maleabilidad en los patrones que un modelo puede emular. Por ejemplo, como se muestra en <a href="08-feature-engineering.html#sec-spline-functions" class="quarto-xref"><span>Sección 8.4.3</span></a>, agregar grados de libertad en una función spline aumenta la complejidad de la ecuación de predicción. Si bien esto es una ventaja cuando los motivos subyacentes de los datos son complejos, también puede conducir a una sobreinterpretación de patrones aleatorios que no se reproducirían en datos nuevos. <em>Sobreajuste</em> es la situación en la que un modelo se adapta demasiado a los datos de entrenamiento; funciona bien con los datos utilizados para construir el modelo, pero mal con datos nuevos.</p>
 <div class="rmdwarning">
 <p>Dado que ajustar los parámetros del modelo puede aumentar la complejidad del modelo, las malas elecciones pueden provocar un sobreajuste.</p>
@@ -660,14 +621,12 @@ Figura&nbsp;12.4: El límite de clase lineal se ajusta a tres funciones de enlac
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-two-class-boundaries" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Límites de clase para tres modelos con un número creciente de unidades ocultas. Los límites se ajustan al conjunto de entrenamiento y se muestran para los conjuntos de entrenamiento y prueba. Después de una única unidad oculta, los límites se vuelven tremendamente complejos. Los gráficos del conjunto de pruebas muestran que los modelos más complejos no se ajustan a los datos que no se utilizaron para ajustar el modelo.">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-two-class-boundaries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-two-class-boundaries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-two-class-boundaries-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Límites de clase para tres modelos con un número creciente de unidades ocultas. Los límites se ajustan al conjunto de entrenamiento y se muestran para los conjuntos de entrenamiento y prueba. Después de una única unidad oculta, los límites se vuelven tremendamente complejos. Los gráficos del conjunto de pruebas muestran que los modelos más complejos no se ajustan a los datos que no se utilizaron para ajustar el modelo." width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-class-boundaries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;12.5: Límites de clase para tres modelos con un número creciente de unidades ocultas. Los límites se ajustan al conjunto de entrenamiento y se muestran para los conjuntos de entrenamiento y prueba.
-</figcaption>
-</figure>
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -677,9 +636,8 @@ Figura&nbsp;12.5: Límites de clase para tres modelos con un número creciente d
 <p>La solución para detectar cuándo un modelo está exagerando el conjunto de entrenamiento es utilizar datos fuera de la muestra.</p>
 </div>
 <p>En lugar de utilizar el conjunto de prueba, se requiere algún tipo de remuestreo. Esto podría significar un enfoque iterativo (por ejemplo, una validación cruzada de 10 veces) o una única fuente de datos (por ejemplo, un conjunto de validación).</p>
-</section>
-<section id="dos-estrategias-generales-para-la-optimización." class="level2" data-number="12.5">
-<h2 data-number="12.5" class="anchored" data-anchor-id="dos-estrategias-generales-para-la-optimización."><span class="header-section-number">12.5</span> Dos Estrategias Generales Para La Optimización.</h2>
+</section><section id="dos-estrategias-generales-para-la-optimización." class="level2" data-number="12.5"><h2 data-number="12.5" class="anchored" data-anchor-id="dos-estrategias-generales-para-la-optimización.">
+<span class="header-section-number">12.5</span> Dos Estrategias Generales Para La Optimización.</h2>
 <p>La optimización de los parámetros de ajuste generalmente se divide en una de dos categorías: búsqueda en cuadrícula y búsqueda iterativa.</p>
 <p><em>Búsqueda de cuadrícula</em> es cuando predefinimos un conjunto de valores de parámetros para evaluar. Las principales opciones involucradas en la búsqueda de cuadrículas son cómo hacer la cuadrícula y cuántas combinaciones de parámetros evaluar. La búsqueda de cuadrícula a menudo se considera ineficiente ya que la cantidad de puntos de cuadrícula necesarios para cubrir el espacio de parámetros puede volverse inmanejable debido a la maldición de la dimensionalidad. Hay algo de verdad en esta preocupación, pero es más cierta cuando el proceso no está optimizado. Esto se analiza con más detalle en el <a href="13-grid-search.html" class="quarto-xref">Capítulo&nbsp;<span>13</span></a>.</p>
 <p><em>Búsqueda iterativa</em> o búsqueda secuencial es cuando descubrimos secuencialmente nuevas combinaciones de parámetros en función de resultados anteriores. Casi cualquier método de optimización no lineal es apropiado, aunque algunos son más eficientes que otros. En algunos casos, se requiere un conjunto inicial de resultados para una o más combinaciones de parámetros para iniciar el proceso de optimización. La búsqueda iterativa se analiza con más detalle en el <a href="14-iterative-search.html" class="quarto-xref">Capítulo&nbsp;<span>14</span></a>.</p>
@@ -687,14 +645,12 @@ Figura&nbsp;12.5: Límites de clase para tres modelos con un número creciente d
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-tuning-strategies" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Ejemplos de ajuste de cuadrícula predefinido y método de búsqueda iterativo. Las líneas representan contornos de alguna métrica de desempeño que es mejor en el lado superior derecho del gráfico. La búsqueda de cuadrícula muestra puntos que cubren bien el espacio y tiene un punto cerca del óptimo. El método de búsqueda iterativa tiene muchos más puntos y serpentea hacia el óptimo, donde muchos puntos se concentran en el mejor valor.">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-tuning-strategies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-tuning-strategies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-tuning-strategies-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Ejemplos de ajuste de cuadrícula predefinido y método de búsqueda iterativo. Las líneas representan contornos de alguna métrica de desempeño que es mejor en el lado superior derecho del gráfico. La búsqueda de cuadrícula muestra puntos que cubren bien el espacio y tiene un punto cerca del óptimo. El método de búsqueda iterativa tiene muchos más puntos y serpentea hacia el óptimo, donde muchos puntos se concentran en el mejor valor." width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tuning-strategies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;12.6: Ejemplos de ajuste de cuadrícula predefinido y método de búsqueda iterativo. Las líneas representan contornos de una métrica de desempeño; es mejor en el lado superior derecho de la trama.
-</figcaption>
-</figure>
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -704,9 +660,8 @@ Figura&nbsp;12.6: Ejemplos de ajuste de cuadrícula predefinido y método de bú
 <p>Las estrategias híbridas también son una opción y pueden funcionar bien. Después de una búsqueda inicial de cuadrícula, puede comenzar una optimización secuencial a partir de la mejor combinación de cuadrícula.</p>
 </div>
 <p>En los dos capítulos siguientes se analizan en detalle ejemplos de estas estrategias. Antes de continuar, aprendamos cómo trabajar con objetos de parámetros de ajuste en tidymodels, usando el paquete <span class="pkg">dials</span>.</p>
-</section>
-<section id="sec-tuning-params-tidymodels" class="level2" data-number="12.6">
-<h2 data-number="12.6" class="anchored" data-anchor-id="sec-tuning-params-tidymodels"><span class="header-section-number">12.6</span> Ajuste De Parámetros En tidymodels</h2>
+</section><section id="sec-tuning-params-tidymodels" class="level2" data-number="12.6"><h2 data-number="12.6" class="anchored" data-anchor-id="sec-tuning-params-tidymodels">
+<span class="header-section-number">12.6</span> Ajuste De Parámetros En tidymodels</h2>
 <p>Ya hemos tratado un buen número de argumentos que corresponden a parámetros de ajuste para especificaciones de recetas y modelos en capítulos anteriores. Es posible sintonizar:</p>
 <ul>
 <li><p>el umbral para combinar vecindarios en una categoría “otra” (con el nombre de argumento <code>threshold</code>) discutido en <a href="08-feature-engineering.html#sec-dummies" class="quarto-xref"><span>Sección 8.4.1</span></a></p></li>
@@ -717,107 +672,107 @@ Figura&nbsp;12.6: Ejemplos de ajuste de cuadrícula predefinido y método de bú
 <p>Para las especificaciones del modelo <span class="pkg">parsnip</span>, hay dos tipos de argumentos de parámetros. <em>Los argumentos principales</em> son aquellos que con mayor frecuencia están optimizados para el rendimiento y están disponibles en múltiples motores. Los principales parámetros de ajuste son argumentos de nivel superior para la función de especificación del modelo. Por ejemplo, la función <code>rand_forest()</code> tiene argumentos principales <code>trees</code>, <code>min_n</code> y <code>mtry</code>, ya que estos se especifican u optimizan con mayor frecuencia.</p>
 <p>Un conjunto secundario de parámetros de ajuste son <em>específicos del motor</em>. Estos se optimizan con poca frecuencia o son específicos solo para ciertos motores. Nuevamente usando random forest como ejemplo, el paquete <span class="pkg">ranger</span> contiene algunos argumentos que no son utilizados por otros paquetes. Un ejemplo es la penalización de ganancia, que regulariza la selección de predictores en el proceso de inducción del árbol. Este parámetro puede ayudar a modular el equilibrio entre la cantidad de predictores utilizados en el conjunto y el rendimiento <span class="citation" data-cites="wundervald2020generalizing">(<a href="references.html#ref-wundervald2020generalizing" role="doc-biblioref">Wundervald, Parnell, y Domijan 2020</a>)</span>. El nombre de este argumento en <code>ranger()</code> es <code>regularization.factor</code>. Para especificar un valor mediante una especificación de modelo <span class="pkg">parsnip</span>, se agrega como argumento complementario a <code>set_engine()</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">2000</span>, <span class="at">min_n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span>                   <span class="co"># &lt;- argumentos principales</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"ranger"</span>, <span class="at">regularization.factor =</span> <span class="fl">0.5</span>)         <span class="co"># &lt;- específico del motor</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rand_forest</span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">2000</span>, min_n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">%&gt;%</span>                   <span class="co"># &lt;- argumentos principales</span></span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span>, regularization.factor <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>         <span class="co"># &lt;- específico del motor</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdwarning">
 <p>Los argumentos principales utilizan un sistema de nombres armonizado para eliminar inconsistencias entre motores, mientras que los argumentos específicos del motor no lo hacen.</p>
 </div>
 <p>¿Cómo podemos indicar a las funciones de tidymodels qué argumentos deben optimizarse? Los parámetros se marcan para su ajuste asignándoles un valor de <code>tune()</code>. Para la red neuronal de una sola capa utilizada en <a href="#sec-overfitting-bad" class="quarto-xref"><span>Sección 12.4</span></a>, la cantidad de unidades ocultas se designa para ajustar usando:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>neural_net_spec <span class="ot">&lt;-</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mlp</span>(<span class="at">hidden_units =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"keras"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">neural_net_spec</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">mlp</span><span class="op">(</span>hidden_units <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"keras"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>La función <code>tune()</code> no ejecuta ningún valor de parámetro en particular; solo devuelve una expresión:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tune</span>()</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## tune()</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">tune</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## tune()</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Incrustar este valor <code>tune()</code> en un argumento etiquetará el parámetro para su optimización. Las funciones de ajuste del modelo que se muestran en los dos capítulos siguientes analizan la especificación y/o receta del modelo para descubrir los parámetros etiquetados. Estas funciones pueden configurar y procesar automáticamente estos parámetros ya que comprenden sus características (por ejemplo, el rango de valores posibles, etc.).</p>
 <p>Para enumerar los parámetros de ajuste de un objeto, utilice la función <code>extract_parameter_set_dials()</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_parameter_set_dials</span>(neural_net_spec)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Collection of 1 parameters for tuning</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">##    identifier         type    object</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="do">##  hidden_units hidden_units nparam[+]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">extract_parameter_set_dials</span><span class="op">(</span><span class="va">neural_net_spec</span><span class="op">)</span></span>
+<span><span class="co">## Collection of 1 parameters for tuning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##    identifier         type    object</span></span>
+<span><span class="co">##  hidden_units hidden_units nparam[+]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Los resultados muestran un valor de <code>nparam[+]</code>, lo que indica que el número de unidades ocultas es un parámetro numérico.</p>
 <p>Hay un argumento de identificación opcional que asocia un nombre con los parámetros. Esto puede resultar útil cuando se ajusta el mismo tipo de parámetro en diferentes lugares. Por ejemplo, con los datos de vivienda de Ames de <a href="10-resampling.html#sec-resampling-summary" class="quarto-xref"><span>Sección 10.6</span></a>, la receta codificó tanto la longitud como la latitud con funciones spline. Si queremos ajustar las dos funciones spline para que potencialmente tengan diferentes niveles de suavidad, llamamos a <code>step_ns()</code> dos veces, una para cada predictor. Para que los parámetros sean identificables, el argumento de identificación puede tomar cualquier cadena de caracteres:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ames_rec <span class="ot">&lt;-</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>           Latitude <span class="sc">+</span> Longitude, <span class="at">data =</span> ames_train)  <span class="sc">%&gt;%</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(Gr_Liv_Area, <span class="at">base =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(Neighborhood, <span class="at">threshold =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>( <span class="sc">~</span> Gr_Liv_Area<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">"Bldg_Type_"</span>) ) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ns</span>(Longitude, <span class="at">deg_free =</span> <span class="fu">tune</span>(<span class="st">"longitude df"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ns</span>(Latitude,  <span class="at">deg_free =</span> <span class="fu">tune</span>(<span class="st">"latitude df"</span>))</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>recipes_param <span class="ot">&lt;-</span> <span class="fu">extract_parameter_set_dials</span>(ames_rec)</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>recipes_param</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Collection of 3 parameters for tuning</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="do">##    identifier      type    object</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="do">##     threshold threshold nparam[+]</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  longitude df  deg_free nparam[+]</span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="do">##   latitude df  deg_free nparam[+]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_rec</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Neighborhood</span> <span class="op">+</span> <span class="va">Gr_Liv_Area</span> <span class="op">+</span> <span class="va">Year_Built</span> <span class="op">+</span> <span class="va">Bldg_Type</span> <span class="op">+</span> </span>
+<span>           <span class="va">Latitude</span> <span class="op">+</span> <span class="va">Longitude</span>, data <span class="op">=</span> <span class="va">ames_train</span><span class="op">)</span>  <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">step_log</span><span class="op">(</span><span class="va">Gr_Liv_Area</span>, base <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">step_other</span><span class="op">(</span><span class="va">Neighborhood</span>, threshold <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">step_dummy</span><span class="op">(</span><span class="fu">all_nominal_predictors</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">step_interact</span><span class="op">(</span> <span class="op">~</span> <span class="va">Gr_Liv_Area</span><span class="op">:</span><span class="fu">starts_with</span><span class="op">(</span><span class="st">"Bldg_Type_"</span><span class="op">)</span> <span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">step_ns</span><span class="op">(</span><span class="va">Longitude</span>, deg_free <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="st">"longitude df"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">step_ns</span><span class="op">(</span><span class="va">Latitude</span>,  deg_free <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="st">"latitude df"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">recipes_param</span> <span class="op">&lt;-</span> <span class="fu">extract_parameter_set_dials</span><span class="op">(</span><span class="va">ames_rec</span><span class="op">)</span></span>
+<span><span class="va">recipes_param</span></span>
+<span><span class="co">## Collection of 3 parameters for tuning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##    identifier      type    object</span></span>
+<span><span class="co">##     threshold threshold nparam[+]</span></span>
+<span><span class="co">##  longitude df  deg_free nparam[+]</span></span>
+<span><span class="co">##   latitude df  deg_free nparam[+]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Tenga en cuenta que las columnas <code>identifier</code> y <code>type</code> no son las mismas para ambos parámetros de spline.</p>
 <p>Cuando se combinan una receta y una especificación de modelo mediante un flujo de trabajo, se muestran ambos conjuntos de parámetros:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>wflow_param <span class="ot">&lt;-</span> </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(ames_rec) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(neural_net_spec) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_parameter_set_dials</span>()</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>wflow_param</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Collection of 4 parameters for tuning</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="do">##    identifier         type    object</span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  hidden_units hidden_units nparam[+]</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="do">##     threshold    threshold nparam[+]</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  longitude df     deg_free nparam[+]</span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   latitude df     deg_free nparam[+]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">wflow_param</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">add_recipe</span><span class="op">(</span><span class="va">ames_rec</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">neural_net_spec</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">extract_parameter_set_dials</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">wflow_param</span></span>
+<span><span class="co">## Collection of 4 parameters for tuning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##    identifier         type    object</span></span>
+<span><span class="co">##  hidden_units hidden_units nparam[+]</span></span>
+<span><span class="co">##     threshold    threshold nparam[+]</span></span>
+<span><span class="co">##  longitude df     deg_free nparam[+]</span></span>
+<span><span class="co">##   latitude df     deg_free nparam[+]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdwarning">
 <p>Las redes neuronales son exquisitamente capaces de emular patrones no lineales. No es necesario agregar términos splines a este tipo de modelo; combinamos este modelo y receta solo con fines ilustrativos.</p>
 </div>
 <p>Cada argumento de parámetro de ajuste tiene una función correspondiente en el paquete <span class="pkg">dials</span>. En la gran mayoría de los casos, la función tiene el mismo nombre que el argumento del parámetro:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hidden_units</span>()</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # Hidden Units (quantitative)</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Range: [1, 10]</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">threshold</span>()</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Threshold (quantitative)</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Range: [0, 1]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">hidden_units</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## # Hidden Units (quantitative)</span></span>
+<span><span class="co">## Range: [1, 10]</span></span>
+<span><span class="fu">threshold</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Threshold (quantitative)</span></span>
+<span><span class="co">## Range: [0, 1]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>El parámetro <code>deg_free</code> es un contraejemplo; la noción de grados de libertad surge en una variedad de contextos diferentes. Cuando se usa con splines, hay una función especializada <span class="pkg">dials</span> llamada <code>spline_title()</code> que, de forma predeterminada, se invoca para splines:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">spline_degree</span>()</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Spline Degrees of Freedom (quantitative)</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Range: [1, 10]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">spline_degree</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Spline Degrees of Freedom (quantitative)</span></span>
+<span><span class="co">## Range: [1, 10]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>El paquete <span class="pkg">dials</span> también tiene una función conveniente para extraer un objeto de parámetro particular:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># identifique el parámetro usando el valor de id:</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>wflow_param <span class="sc">%&gt;%</span> <span class="fu">extract_parameter_dials</span>(<span class="st">"threshold"</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Threshold (quantitative)</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Range: [0, 0.1]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># identifique el parámetro usando el valor de id:</span></span>
+<span><span class="va">wflow_param</span> <span class="op">%&gt;%</span> <span class="fu">extract_parameter_dials</span><span class="op">(</span><span class="st">"threshold"</span><span class="op">)</span></span>
+<span><span class="co">## Threshold (quantitative)</span></span>
+<span><span class="co">## Range: [0, 0.1]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Dentro del conjunto de parámetros, el rango de parámetros también se puede actualizar en el lugar:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_parameter_set_dials</span>(ames_rec) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update</span>(<span class="at">threshold =</span> <span class="fu">threshold</span>(<span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">1.0</span>)))</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Collection of 3 parameters for tuning</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    identifier      type    object</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="do">##     threshold threshold nparam[+]</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  longitude df  deg_free nparam[+]</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   latitude df  deg_free nparam[+]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">extract_parameter_set_dials</span><span class="op">(</span><span class="va">ames_rec</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/update.html">update</a></span><span class="op">(</span>threshold <span class="op">=</span> <span class="fu">threshold</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">1.0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Collection of 3 parameters for tuning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##    identifier      type    object</span></span>
+<span><span class="co">##     threshold threshold nparam[+]</span></span>
+<span><span class="co">##  longitude df  deg_free nparam[+]</span></span>
+<span><span class="co">##   latitude df  deg_free nparam[+]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Los <em>conjuntos de parámetros</em> creados por <code>extract_parameter_set_dials()</code> son consumidos por las funciones de ajuste de tidymodels (cuando sea necesario). Si los valores predeterminados de los objetos de parámetros de ajuste requieren modificación, se pasa un conjunto de parámetros modificado a la función de ajuste adecuada.</p>
 <div class="rmdnote">
@@ -825,106 +780,105 @@ Figura&nbsp;12.6: Ejemplos de ajuste de cuadrícula predefinido y método de bú
 </div>
 <p>En algunos casos, es fácil tener valores predeterminados razonables para el rango de valores posibles. En otros casos, el rango de parámetros es crítico y no se puede asumir. El principal parámetro de ajuste para los modelos de random forest es el número de columnas predictoras que se muestrean aleatoriamente para cada división del árbol, normalmente denominada “mtry()”. Sin conocer la cantidad de predictores, este rango de parámetros no se puede preconfigurar y requiere finalización.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>rf_spec <span class="ot">&lt;-</span> </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rand_forest</span>(<span class="at">mtry =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"ranger"</span>, <span class="at">regularization.factor =</span> <span class="fu">tune</span>(<span class="st">"regularization"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>rf_param <span class="ot">&lt;-</span> <span class="fu">extract_parameter_set_dials</span>(rf_spec)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>rf_param</span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Collection of 2 parameters for tuning</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="do">##      identifier                  type    object</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="do">##            mtry                  mtry nparam[?]</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  regularization regularization.factor nparam[+]</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Model parameters needing finalization:</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="do">##    # Randomly Selected Predictors ('mtry')</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="do">## See `?dials::finalize` or `?dials::update.parameters` for more information.</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rf_spec</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">rand_forest</span><span class="op">(</span>mtry <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span>, regularization.factor <span class="op">=</span> <span class="fu">tune</span><span class="op">(</span><span class="st">"regularization"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span></span>
+<span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">rf_param</span> <span class="op">&lt;-</span> <span class="fu">extract_parameter_set_dials</span><span class="op">(</span><span class="va">rf_spec</span><span class="op">)</span></span>
+<span><span class="va">rf_param</span></span>
+<span><span class="co">## Collection of 2 parameters for tuning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      identifier                  type    object</span></span>
+<span><span class="co">##            mtry                  mtry nparam[?]</span></span>
+<span><span class="co">##  regularization regularization.factor nparam[+]</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model parameters needing finalization:</span></span>
+<span><span class="co">##    # Randomly Selected Predictors ('mtry')</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## See `?dials::finalize` or `?dials::update.parameters` for more information.</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Los objetos de parámetros completos tienen <code>[+]</code> en su resumen; un valor de <code>[?]</code> indica que falta al menos un extremo del rango posible. Hay dos métodos para manejar esto. La primera es usar <code>update()</code>, para agregar un rango basado en lo que sabes sobre las dimensiones de datos:</p>
+<p>Los objetos de parámetros completos tienen <code>[+]</code> en su resumen; un valor de <code>[?]</code> indica que falta al menos un extremo del rango posible. Hay dos métodos para manejar esto. La primera es usar <code><a href="https://rdrr.io/r/stats/update.html">update()</a></code>, para agregar un rango basado en lo que sabes sobre las dimensiones de datos:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>rf_param <span class="sc">%&gt;%</span> </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">update</span>(<span class="at">mtry =</span> <span class="fu">mtry</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">70</span>)))</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Collection of 2 parameters for tuning</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="do">##      identifier                  type    object</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="do">##            mtry                  mtry nparam[+]</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  regularization regularization.factor nparam[+]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rf_param</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/update.html">update</a></span><span class="op">(</span>mtry <span class="op">=</span> <span class="fu">mtry</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">70</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Collection of 2 parameters for tuning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      identifier                  type    object</span></span>
+<span><span class="co">##            mtry                  mtry nparam[+]</span></span>
+<span><span class="co">##  regularization regularization.factor nparam[+]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Sin embargo, es posible que este enfoque no funcione si se adjunta una receta a un flujo de trabajo que utiliza pasos que suman o restan columnas. Si esos pasos no están programados para ajustarse, la función <code>finalize()</code> puede ejecutar la receta una vez para obtener las dimensiones:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pca_rec <span class="ot">&lt;-</span> </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Sale_Price <span class="sc">~</span> ., <span class="at">data =</span> ames_train) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Seleccione los predictores de pies cuadrados y extraiga sus componentes PCA:</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">contains</span>(<span class="st">"SF"</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Seleccione el número de componentes necesarios para capturar el 95% de</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># la varianza en los predictores. </span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_pca</span>(<span class="fu">contains</span>(<span class="st">"SF"</span>), <span class="at">threshold =</span> .<span class="dv">95</span>)</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>updated_param <span class="ot">&lt;-</span> </span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(rf_spec) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(pca_rec) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_parameter_set_dials</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">finalize</span>(ames_train)</span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>updated_param</span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Collection of 2 parameters for tuning</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="do">##      identifier                  type    object</span></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="do">##            mtry                  mtry nparam[+]</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  regularization regularization.factor nparam[+]</span></span>
-<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>updated_param <span class="sc">%&gt;%</span> <span class="fu">extract_parameter_dials</span>(<span class="st">"mtry"</span>)</span>
-<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a><span class="do">## # Randomly Selected Predictors (quantitative)</span></span>
-<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a><span class="do">## Range: [1, 74]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">pca_rec</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">recipe</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">.</span>, data <span class="op">=</span> <span class="va">ames_train</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="co"># Seleccione los predictores de pies cuadrados y extraiga sus componentes PCA:</span></span>
+<span>  <span class="fu">step_normalize</span><span class="op">(</span><span class="fu">contains</span><span class="op">(</span><span class="st">"SF"</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="co"># Seleccione el número de componentes necesarios para capturar el 95% de</span></span>
+<span>  <span class="co"># la varianza en los predictores. </span></span>
+<span>  <span class="fu">step_pca</span><span class="op">(</span><span class="fu">contains</span><span class="op">(</span><span class="st">"SF"</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">.95</span><span class="op">)</span></span>
+<span>  </span>
+<span><span class="va">updated_param</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">rf_spec</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">add_recipe</span><span class="op">(</span><span class="va">pca_rec</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">extract_parameter_set_dials</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">finalize</span><span class="op">(</span><span class="va">ames_train</span><span class="op">)</span></span>
+<span><span class="va">updated_param</span></span>
+<span><span class="co">## Collection of 2 parameters for tuning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      identifier                  type    object</span></span>
+<span><span class="co">##            mtry                  mtry nparam[+]</span></span>
+<span><span class="co">##  regularization regularization.factor nparam[+]</span></span>
+<span><span class="va">updated_param</span> <span class="op">%&gt;%</span> <span class="fu">extract_parameter_dials</span><span class="op">(</span><span class="st">"mtry"</span><span class="op">)</span></span>
+<span><span class="co">## # Randomly Selected Predictors (quantitative)</span></span>
+<span><span class="co">## Range: [1, 74]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Cuando se prepara la receta, la función <code>finalize()</code> aprende a establecer el rango superior de <code>mtry</code> en 74 predictores.</p>
 <p>Además, los resultados de <code>extract_parameter_set_dials()</code> incluirán parámetros específicos del motor (si los hay). Se descubren de la misma manera que los argumentos principales y se incluyen en el conjunto de parámetros. El paquete <span class="pkg">dials</span> contiene funciones de parámetros para todos los parámetros específicos del motor potencialmente ajustables:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>rf_param</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Collection of 2 parameters for tuning</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="do">##      identifier                  type    object</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">##            mtry                  mtry nparam[?]</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  regularization regularization.factor nparam[+]</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Model parameters needing finalization:</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">##    # Randomly Selected Predictors ('mtry')</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="do">## See `?dials::finalize` or `?dials::update.parameters` for more information.</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="fu">regularization_factor</span>()</span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Gain Penalization (quantitative)</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Range: [0, 1]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">rf_param</span></span>
+<span><span class="co">## Collection of 2 parameters for tuning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##      identifier                  type    object</span></span>
+<span><span class="co">##            mtry                  mtry nparam[?]</span></span>
+<span><span class="co">##  regularization regularization.factor nparam[+]</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model parameters needing finalization:</span></span>
+<span><span class="co">##    # Randomly Selected Predictors ('mtry')</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## See `?dials::finalize` or `?dials::update.parameters` for more information.</span></span>
+<span><span class="fu">regularization_factor</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Gain Penalization (quantitative)</span></span>
+<span><span class="co">## Range: [0, 1]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Finalmente, algunos parámetros de ajuste se asocian mejor con las transformaciones. Un buen ejemplo de esto es el parámetro de penalización asociado con muchos modelos de regresión regularizados. Este parámetro no es negativo y es común variar sus valores en unidades logarítmicas. El objeto de parámetro principal <span class="pkg">dials</span> indica que se utiliza una transformación de forma predeterminada:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">penalty</span>()</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Amount of Regularization (quantitative)</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Transformer: log-10 [1e-100, Inf]</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Range (transformed scale): [-10, 0]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">penalty</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Amount of Regularization (quantitative)</span></span>
+<span><span class="co">## Transformer: log-10 [1e-100, Inf]</span></span>
+<span><span class="co">## Range (transformed scale): [-10, 0]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Es importante saber esto, especialmente al modificar el rango. Los valores del nuevo rango deben estar en las unidades transformadas:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># método correcto para tener valores de penalización entre 0,1 y 1,0</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">penalty</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">%&gt;%</span> <span class="fu">value_sample</span>(<span class="dv">1000</span>) <span class="sc">%&gt;%</span> <span class="fu">summary</span>()</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="do">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   0.101   0.181   0.327   0.400   0.589   0.999</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># incorrecto:</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">penalty</span>(<span class="fu">c</span>(<span class="fl">0.1</span>, <span class="fl">1.0</span>)) <span class="sc">%&gt;%</span> <span class="fu">value_sample</span>(<span class="dv">1000</span>) <span class="sc">%&gt;%</span> <span class="fu">summary</span>()</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="do">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="do">##    1.26    2.21    3.68    4.26    5.89   10.00</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># método correcto para tener valores de penalización entre 0,1 y 1,0</span></span>
+<span><span class="fu">penalty</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">value_sample</span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">##   0.101   0.181   0.327   0.400   0.589   0.999</span></span>
+<span></span>
+<span><span class="co"># incorrecto:</span></span>
+<span><span class="fu">penalty</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">1.0</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">value_sample</span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span></span>
+<span><span class="co">##    1.26    2.21    3.68    4.26    5.89   10.00</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>La escala se puede cambiar si se desea con el argumento <code>trans</code>. Puedes usar unidades naturales pero del mismo rango:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">penalty</span>(<span class="at">trans =</span> <span class="cn">NULL</span>, <span class="at">range =</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>, <span class="dv">0</span>))</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Amount of Regularization (quantitative)</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Range: [1e-10, 1]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">penalty</span><span class="op">(</span>trans <span class="op">=</span> <span class="cn">NULL</span>, range <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## Amount of Regularization (quantitative)</span></span>
+<span><span class="co">## Range: [1e-10, 1]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="resumen-del-capítulo" class="level2" data-number="12.7">
-<h2 data-number="12.7" class="anchored" data-anchor-id="resumen-del-capítulo"><span class="header-section-number">12.7</span> Resumen Del Capítulo</h2>
+</section><section id="resumen-del-capítulo" class="level2" data-number="12.7"><h2 data-number="12.7" class="anchored" data-anchor-id="resumen-del-capítulo">
+<span class="header-section-number">12.7</span> Resumen Del Capítulo</h2>
 <p>Este capítulo presentó el proceso de ajuste de los hiperparámetros del modelo que no se pueden estimar directamente a partir de los datos. Ajustar dichos parámetros puede conducir a un sobreajuste, a menudo al permitir que un modelo se vuelva demasiado complejo, por lo que es importante utilizar conjuntos de datos remuestreados junto con métricas apropiadas para la evaluación. Hay dos estrategias generales para determinar los valores correctos, la búsqueda en cuadrícula y la búsqueda iterativa, que exploraremos en profundidad en los dos capítulos siguientes. En tidymodels, la función <code>tune()</code> se usa para identificar parámetros para optimización, y las funciones del paquete <span class="pkg">dials</span> pueden extraer e interactuar con objetos de parámetros de ajuste.</p>
 
 
@@ -954,11 +908,7 @@ Thomas, R, y D Uminsky. 2020. <span>«The Problem with Metrics is a Fundamental 
 Wundervald, B, A Parnell, y K Domijan. 2020. <span>«Generalizing Gain Penalization for Feature Selection in Tree-based Models»</span>. <a href="https://arxiv.org/abs/2006.07515">https://arxiv.org/abs/2006.07515</a>.
 </div>
 </div>
-</section>
-
-</main> <!-- /main -->
-
-<script>
+</section></main><!-- /main --><script>
 
   // Chapter name
   const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
@@ -1025,9 +975,7 @@ Wundervald, B, A Parnell, y K Domijan. 2020. <span>«Generalizing Gain Penalizat
   act_link_T.innerHTML += edit_issue_T;
 
 
-</script>
-
-<script id="quarto-html-after-body" type="application/javascript">
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1435,9 +1383,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./11-comparing-models.html" class="pagination-link" aria-label="Comparación De Modelos Con Remuestreo">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span>
       </a>          
@@ -1449,8 +1395,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
 </div>   
@@ -1462,8 +1407,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>

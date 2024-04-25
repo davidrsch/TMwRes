@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.553">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Max Kuhn, y Julia Silge">
-
 <title>Modelado Ordenado con R</title>
 <style>
 code{white-space: pre-wrap;}
@@ -43,7 +40,6 @@ div.csl-indent {
   margin-left: 2em;
 }</style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -60,8 +56,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -87,19 +82,13 @@ div.csl-indent {
     "search-submit-button-title": "Enviar",
     "search-label": "Buscar"
   }
-}</script>
-
-
-<link rel="stylesheet" href="style.css">
+}</script><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -110,20 +99,16 @@ div.csl-indent {
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
     <div class="dropdown">
       <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-          <li>
+<li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
             Original
             </a>
@@ -134,7 +119,7 @@ div.csl-indent {
             </a>
           </li>
       </ul>
-    </div>
+</div>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -150,7 +135,7 @@ div.csl-indent {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Hola Mundo</span></a>
@@ -164,8 +149,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
@@ -184,7 +169,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
@@ -193,8 +178,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
@@ -231,7 +216,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
@@ -240,8 +225,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
@@ -278,7 +263,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
@@ -287,8 +272,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
@@ -325,7 +310,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
@@ -334,8 +319,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
@@ -348,31 +333,27 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Tabla de contenidos</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-  <li><a href="#hola-mundo" id="toc-hola-mundo" class="nav-link active" data-scroll-target="#hola-mundo">Hola Mundo</a>
+<li>
+<a href="#hola-mundo" id="toc-hola-mundo" class="nav-link active" data-scroll-target="#hola-mundo">Hola Mundo</a>
   <ul class="collapse">
-  <li><a href="#reconocimientos" id="toc-reconocimientos" class="nav-link" data-scroll-target="#reconocimientos">Reconocimientos</a></li>
-  <li><a href="#usando-ejemplos-de-código" id="toc-usando-ejemplos-de-código" class="nav-link" data-scroll-target="#usando-ejemplos-de-código">Usando Ejemplos De Código</a></li>
-  <li><a href="#sobre-la-traducción" id="toc-sobre-la-traducción" class="nav-link" data-scroll-target="#sobre-la-traducción">Sobre La Traducción</a></li>
-  </ul></li>
+<li><a href="#reconocimientos" id="toc-reconocimientos" class="nav-link" data-scroll-target="#reconocimientos">Reconocimientos</a></li>
+  <li><a href="#usando-ejemplos-de-c%C3%B3digo" id="toc-usando-ejemplos-de-código" class="nav-link" data-scroll-target="#usando-ejemplos-de-c%C3%B3digo">Usando Ejemplos De Código</a></li>
+  <li><a href="#sobre-la-traducci%C3%B3n" id="toc-sobre-la-traducción" class="nav-link" data-scroll-target="#sobre-la-traducci%C3%B3n">Sobre La Traducción</a></li>
   </ul>
-</nav>
+</li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
 <h1 class="title">Modelado Ordenado con R</h1>
 </div>
 
@@ -396,11 +377,7 @@ div.csl-indent {
 
 
 </header>
-
-
-
-<section id="hola-mundo" class="level1 unnumbered">
-<h1 class="unnumbered">Hola Mundo</h1><p><img src="images/cover.png" title="Modelado Ordenado con R" class="quarto-cover-image img-fluid"></p>
+<section id="hola-mundo" class="level1 unnumbered"><h1 class="unnumbered">Hola Mundo</h1><p><img src="images/cover.png" title="Modelado Ordenado con R" class="quarto-cover-image img-fluid"></p>
 <p>¡Bienvenido a <a href="https://amzn.to/35Hn96s"><em>Tidy Modeling con R</em></a>! Este libro es una guía para utilizar una colección de software en el lenguaje de programación R para la construcción de modelos llamada <span class="pkg">tidymodels</span> y tiene dos objetivos principales:</p>
 <ul>
 <li><p>En primer lugar, este libro proporciona una introducción práctica a <strong>cómo usar</strong> estos paquetes de R específicos para crear modelos. Nos centramos en un dialecto de R llamado <a href="https://www.tidyverse.org/">tidyverse</a> que son un conjunto de paquetes diseñados con una filosofía consistente y centrada en el ser humano, y demostramos los paquetes que forman parte de tidyverse y <span class="pkg">tidymodels</span> se pueden utilizar para producir modelos estadísticos y de aprendizaje automático de alta calidad.</p></li>
@@ -412,21 +389,16 @@ div.csl-indent {
 <p>Finalmente, la última sección de este libro, Capítulos <a href="16-dimensionality-reduction.html" class="quarto-xref"><span>16&nbsp; Reducción De Dimensionalidad</span></a> a <a href="21-inferential-analysis.html" class="quarto-xref"><span>21&nbsp; Análisis Inferencial</span></a>, cubre otros temas importantes para la construcción de modelos. Analizamos enfoques de ingeniería de características más avanzados, como la reducción de dimensionalidad y la codificación de predictores de alta cardinalidad, así como también cómo responder preguntas sobre por qué un modelo hace ciertas predicciones y cuándo confiar en las predicciones de su modelo.</p>
 <p>No asumimos que los lectores tengan una amplia experiencia en la construcción de modelos y estadísticas. Se requieren algunos conocimientos estadísticos, como muestreo aleatorio, varianza, correlación, regresión lineal básica y otros temas que generalmente se encuentran en un curso básico de estadística o análisis de datos de pregrado. Suponemos que el lector está al menos ligeramente familiarizado con dplyr, ggplot2 y el operador “pipe” <code>%&gt;%</code> en R, y que está interesado en aplicar estas herramientas al modelado. Para los usuarios que aún no tienen estos conocimientos básicos de R, recomendamos libros como <a href="https://r4ds.had.co.nz/"><em>R for Data Science</em></a> de Wickham y Grolemund (2016). La investigación y el análisis de datos son una parte importante de cualquier proceso de modelo.</p>
 <p>Este libro no pretende ser una referencia exhaustiva sobre técnicas de modelado; sugerimos otros recursos para aprender más sobre los propios métodos estadísticos. Para obtener información general sobre el tipo de modelo más común, el modelo lineal, sugerimos <span class="citation" data-cites="fox08">Fox (<a href="references.html#ref-fox08" role="doc-biblioref">2008</a>)</span>. Para modelos predictivos, <span class="citation" data-cites="apm">Kuhn y Johnson (<a href="references.html#ref-apm" role="doc-biblioref">2013</a>)</span> y <span class="citation" data-cites="fes">Kuhn y Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> son buenos recursos. Para los métodos de aprendizaje automático, <span class="citation" data-cites="Goodfellow">Goodfellow, Bengio, y Courville (<a href="references.html#ref-Goodfellow" role="doc-biblioref">2016</a>)</span> es una fuente de información excelente (pero formal). En algunos casos, describimos los modelos que utilizamos con cierto detalle, pero de una manera menos matemática y, con suerte, más intuitiva.</p>
-<section id="reconocimientos" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="reconocimientos">Reconocimientos</h2>
+<section id="reconocimientos" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="reconocimientos">Reconocimientos</h2>
 <p>Estamos muy agradecidos por las contribuciones, la ayuda y las perspectivas de las personas que nos han apoyado en este proyecto. Hay varios a los que nos gustaría agradecer en particular.</p>
 <p>Nos gustaría agradecer a nuestros colegas de RStudio en el equipo <span class="pkg">tidymodels</span> (Davis Vaughan, Hannah Frick, Emil Hvitfeldt y Simon Couch), así como al resto de nuestros compañeros de trabajo en el equipo de código abierto de RStudio. Gracias a Desirée De Leon por el diseño del sitio del trabajo en línea. También nos gustaría agradecer a nuestros revisores técnicos, Chelsea Parlett-Pelleriti y Dan Simpson, por sus comentarios detallados y perspicaces que mejoraron sustancialmente este libro, así como a nuestros editores, Nicole Tache y Rita Fernando, por su perspectiva y orientación durante el proceso. de escritura y publicación.</p>
 <div class="cell" data-layout-align="center">
 <p>Este libro se escribió abiertamente y varias personas contribuyeron a través de solicitudes de extracción o problemas. Un agradecimiento especial para las thirty-eight personas que contribuyeron a través de pull requests de GitHub (en orden alfabético por nombre de usuario): @arisp99, Brad Hill (@bradisbrad), Bryce Roney (@bryceroney), Cedric Batailler (@cedricbatailler), Ildikó Czeller (@czeildi), David Kane (@davidkane9), @DavZim, @DCharIAA, Emil Hvitfeldt (@EmilHvitfeldt), Emilio (@emilopezcano), Fgazzelloni (@Fgazzelloni), Hannah Frick (@hfrick), Hlynur (@hlynurhallgrims), Howard Baek (@howardbaek), Jae Yeon Kim (@jaeyk), Jonathan D. Trattner (@jdtrat), Jeffrey Girard (@jmgirard), John W Pickering (@JohnPickering), Jon Harmon (@jonthegeek), Joseph B. Rickert (@joseph-rickert), Maximilian Rohde (@maxdrohde), Michael Grund (@michaelgrund), @MikeJohnPage, Mine Cetinkaya-Rundel (@mine-cetinkaya-rundel), Mohammed Hamdy (@mmhamdy), @nattalides, Y. Yu (@PursuitOfDataScience), Riaz Hedayati (@riazhedayati), Rob Wiederstein (@RobWiederstein), Scott (@scottyd22), Simon Schölzel (@simonschoe), Simon Sayz (@tagasimon), @thrkng, Tanner Stauss (@tmstauss), Tony ElHabr (@tonyelhabr), Dmitry Zotikov (@x1o), Xiaochi (@xiaochi-liu), Zach Bogart (@zachbogart).</p>
 </div>
-</section>
-<section id="usando-ejemplos-de-código" class="level2 unnumbered">
-<h2 class="unnumbered anchored" data-anchor-id="usando-ejemplos-de-código">Usando Ejemplos De Código</h2>
+</section><section id="usando-ejemplos-de-código" class="level2 unnumbered"><h2 class="unnumbered anchored" data-anchor-id="usando-ejemplos-de-código">Usando Ejemplos De Código</h2>
 <p>Este libro fue escrito con <a href="http://www.rstudio.com/ide/">RStudio</a> usando <a href="http://bookdown.org/">bookdown</a>. El <a href="https://tmwr.org">sito web</a> está alojado a través de <a href="http://netlify.com/">Netlify</a>, y construido automáticamente después de cada push por <a href="https://help.github.com/actions">GitHub Actions</a>. La fuente completa está disponible en <a href="https://github.com/tidymodels/TMwR">GitHub</a>. Generamos todos los gráficos de este libro usando <a href="https://ggplot2.tidyverse.org/">ggplot2</a> y su tema blanco y negro (<code>theme_bw()</code>).</p>
 <p>Esta versión del libro fue construida con R version 4.3.3 (2024-02-29), <a href="https://pandoc.org/">pandoc</a> versión 3.1.11, y los siguientes paquetes: applicable (0.1.0, RSPM), av (0.9.0, RSPM), baguette (1.0.2, RSPM), beans (0.1.0, RSPM), bestNormalize (1.9.1, RSPM), bookdown (0.39, RSPM), broom (1.0.5, RSPM), censored (0.3.1, RSPM), corrplot (0.92, RSPM), corrr (0.4.4, RSPM), Cubist (0.4.2.1, RSPM), DALEXtra (2.3.0, RSPM), dials (1.2.1, RSPM), dimRed (0.2.6, RSPM), discrim (1.0.1, RSPM), doMC (1.3.5, RSPM), dplyr (1.1.4, RSPM), earth (5.3.3, RSPM), embed (1.1.4, RSPM), fastICA (1.2-4, RSPM), finetune (1.2.0, RSPM), forcats (1.0.0, RSPM), ggforce (0.4.2, RSPM), ggplot2 (3.5.0, RSPM), glmnet (4.1-8, RSPM), gridExtra (2.3, RSPM), infer (1.0.7, RSPM), kableExtra (1.4.0, RSPM), kernlab (0.9-32, RSPM), kknn (1.3.1, RSPM), klaR (1.7-3, RSPM), knitr (1.46, RSPM), learntidymodels (0.0.0.9001, Github), lime (0.5.3, RSPM), lme4 (1.1-35.3, RSPM), lubridate (1.9.3, RSPM), mda (0.5-4, RSPM), mixOmics (6.26.0, Bioconductor), modeldata (1.3.0, RSPM), multilevelmod (1.0.0, RSPM), nlme (3.1-164, CRAN), nnet (7.3-19, CRAN), parsnip (1.2.1, RSPM), patchwork (1.2.0, RSPM), pillar (1.9.0, RSPM), poissonreg (1.0.1, RSPM), prettyunits (1.2.0, RSPM), probably (1.0.3, RSPM), pscl (1.5.9, RSPM), purrr (1.0.2, RSPM), ranger (0.16.0, RSPM), recipes (1.0.10, RSPM), rlang (1.1.3, RSPM), rmarkdown (2.26, RSPM), rpart (4.1.23, CRAN), rsample (1.2.1, RSPM), rstanarm (2.32.1, RSPM), rules (1.0.2, RSPM), sessioninfo (1.2.2, RSPM), stacks (1.0.4, RSPM), stringr (1.5.1, RSPM), svglite (2.1.3, RSPM), text2vec (0.6.4, RSPM), textrecipes (1.0.6, RSPM), themis (1.0.2, RSPM), tibble (3.2.1, RSPM), tidymodels (1.2.0, RSPM), tidyposterior (1.0.1, RSPM), tidyverse (2.0.0, RSPM), tune (1.2.1, RSPM), uwot (0.2.2, RSPM), workflows (1.1.4, RSPM), workflowsets (1.1.0, RSPM), xgboost (1.7.7.1, RSPM), and yardstick (1.3.1, RSPM).</p>
-</section>
-<section id="sobre-la-traducción" class="level2">
-<h2 class="anchored" data-anchor-id="sobre-la-traducción">Sobre La Traducción</h2>
+</section><section id="sobre-la-traducción" class="level2"><h2 class="anchored" data-anchor-id="sobre-la-traducción">Sobre La Traducción</h2>
 <p><a href="https://amzn.to/35Hn96s"><img src="logo.png" alt="Cover image" width="285" align="right" style="margin: 0 1em 0 1em"></a> Esta traducción de “Modelado Ordenado con R” es un proyecto personal de <a href="https://github.com/davidrsch">David Díaz Rodríguez</a> con el objetivo de facilitar el estudio de construcción de modelos mediante el uso de R, tanto al propio traductor como a todas aquellas personas de habla hispana que deseen aprender sobre este tema.</p>
 <p>Señalar que esta es una traducción textual del libro por lo que cuando los autores se refieren así mismo en primera persona, serán Max Kuhn &amp; Julia Slige no el traductor.</p>
 <p>La traducción fue realizada usando Google Translate y fueron corregidos algunos errores gramaticales y de coherencia. Si detecta algún error relacionado con el contenido de la traducción, siéntase libre de abrir un issue o un pull request en este <a href="https://github.com/davidrsch/TMwRes">repositorio</a>.</p>
@@ -446,12 +418,7 @@ Kuhn, M, y K Johnson. 2013. <em>Applied Predictive Modeling</em>. Springer.
 ———. 2020. <em>Feature engineering and selection: A practical approach for predictive models</em>. CRC Press.
 </div>
 </div>
-</section>
-</section>
-
-</main> <!-- /main -->
-
-<script>
+</section></section></main><!-- /main --><script>
 
   // Chapter name
   const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
@@ -518,9 +485,7 @@ Kuhn, M, y K Johnson. 2013. <em>Applied Predictive Modeling</em>. Springer.
   act_link_T.innerHTML += edit_issue_T;
 
 
-</script>
-
-<script id="quarto-html-after-body" type="application/javascript">
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -928,9 +893,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
   </div>
   <div class="nav-page nav-page-next">
       <a href="./01-software-modeling.html" class="pagination-link" aria-label="Software Para Modelar">
@@ -939,8 +902,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
 </div>   
@@ -952,8 +914,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>

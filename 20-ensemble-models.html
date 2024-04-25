@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.553">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Max Kuhn, y Julia Silge">
-
 <title>Modelado Ordenado con R - 20&nbsp; Conjuntos De Modelos</title>
 <style>
 code{white-space: pre-wrap;}
@@ -77,7 +74,6 @@ div.csl-indent {
   margin-left: 2em;
 }</style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -95,8 +91,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -122,14 +117,8 @@ div.csl-indent {
     "search-submit-button-title": "Enviar",
     "search-label": "Buscar"
   }
-}</script>
-<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
+}</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -154,18 +143,13 @@ const typesetMath = (el) => {
 window.Quarto = {
   typesetMath
 };
-</script>
-
-<link rel="stylesheet" href="style.css">
+</script><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -176,20 +160,16 @@ window.Quarto = {
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
     <div class="dropdown">
       <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-          <li>
+<li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
             Original
             </a>
@@ -200,7 +180,7 @@ window.Quarto = {
             </a>
           </li>
       </ul>
-    </div>
+</div>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -216,7 +196,7 @@ window.Quarto = {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Hola Mundo</span></a>
@@ -230,8 +210,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
@@ -250,7 +230,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
@@ -259,8 +239,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
@@ -297,7 +277,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
@@ -306,8 +286,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
@@ -344,7 +324,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
@@ -353,8 +333,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
@@ -391,7 +371,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
@@ -400,8 +380,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
@@ -414,30 +394,24 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Tabla de contenidos</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-  <li><a href="#sec-data-stack" id="toc-sec-data-stack" class="nav-link active" data-scroll-target="#sec-data-stack"><span class="header-section-number">20.1</span> Crear El Conjunto De Entrenamiento Para Apilar</a></li>
+<li><a href="#sec-data-stack" id="toc-sec-data-stack" class="nav-link active" data-scroll-target="#sec-data-stack"><span class="header-section-number">20.1</span> Crear El Conjunto De Entrenamiento Para Apilar</a></li>
   <li><a href="#sec-blend-predictions" id="toc-sec-blend-predictions" class="nav-link" data-scroll-target="#sec-blend-predictions"><span class="header-section-number">20.2</span> Combina Las Predicciones</a></li>
   <li><a href="#sec-fit-members" id="toc-sec-fit-members" class="nav-link" data-scroll-target="#sec-fit-members"><span class="header-section-number">20.3</span> Ajustar Los Modelos Miembros</a></li>
   <li><a href="#resultados-del-conjunto-de-pruebas" id="toc-resultados-del-conjunto-de-pruebas" class="nav-link" data-scroll-target="#resultados-del-conjunto-de-pruebas"><span class="header-section-number">20.4</span> Resultados Del Conjunto De Pruebas</a></li>
   <li><a href="#sec-ensembles-summary" id="toc-sec-ensembles-summary" class="nav-link" data-scroll-target="#sec-ensembles-summary"><span class="header-section-number">20.5</span> Resumen Del Capítulo</a></li>
-  </ul>
-</nav>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">MAS ALLÁ DE LO BÁSICO</a></li><li class="breadcrumb-item"><a href="./20-ensemble-models.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></a></li></ol></nav>
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">MAS ALLÁ DE LO BÁSICO</a></li><li class="breadcrumb-item"><a href="./20-ensemble-models.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-ensembles" class="quarto-section-identifier"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></h1>
 </div>
 
@@ -452,10 +426,7 @@ window.Quarto = {
   
 
 
-</header>
-
-
-<p>Un conjunto de modelos, donde las predicciones de varios alumnos individuales se agregan para hacer una predicción, puede producir un modelo final de alto rendimiento. Los métodos más populares para crear modelos de conjunto son el embolsado <span class="citation" data-cites="breiman1996bagging">(<a href="references.html#ref-breiman1996bagging" role="doc-biblioref">Breiman 1996a</a>)</span>, el bosque aleatorio <span class="citation" data-cites="ho1995random breiman2001random">(<a href="references.html#ref-ho1995random" role="doc-biblioref">Ho 1995</a>; <a href="references.html#ref-breiman2001random" role="doc-biblioref">Breiman 2001</a>)</span> e impulsando <span class="citation" data-cites="freund1997decision">(<a href="references.html#ref-freund1997decision" role="doc-biblioref">Freund y Schapire 1997</a>)</span>. Cada uno de estos métodos combina las predicciones de múltiples versiones del mismo tipo de modelo (por ejemplo, árboles de clasificación). Sin embargo, uno de los primeros métodos para crear conjuntos es <em>apilamiento de modelos</em> <span class="citation" data-cites="wolpert1992stacked breiman1996stacked">(<a href="references.html#ref-wolpert1992stacked" role="doc-biblioref">Wolpert 1992</a>; <a href="references.html#ref-breiman1996stacked" role="doc-biblioref">Breiman 1996b</a>)</span>.</p>
+</header><p>Un conjunto de modelos, donde las predicciones de varios alumnos individuales se agregan para hacer una predicción, puede producir un modelo final de alto rendimiento. Los métodos más populares para crear modelos de conjunto son el embolsado <span class="citation" data-cites="breiman1996bagging">(<a href="references.html#ref-breiman1996bagging" role="doc-biblioref">Breiman 1996a</a>)</span>, el bosque aleatorio <span class="citation" data-cites="ho1995random breiman2001random">(<a href="references.html#ref-ho1995random" role="doc-biblioref">Ho 1995</a>; <a href="references.html#ref-breiman2001random" role="doc-biblioref">Breiman 2001</a>)</span> e impulsando <span class="citation" data-cites="freund1997decision">(<a href="references.html#ref-freund1997decision" role="doc-biblioref">Freund y Schapire 1997</a>)</span>. Cada uno de estos métodos combina las predicciones de múltiples versiones del mismo tipo de modelo (por ejemplo, árboles de clasificación). Sin embargo, uno de los primeros métodos para crear conjuntos es <em>apilamiento de modelos</em> <span class="citation" data-cites="wolpert1992stacked breiman1996stacked">(<a href="references.html#ref-wolpert1992stacked" role="doc-biblioref">Wolpert 1992</a>; <a href="references.html#ref-breiman1996stacked" role="doc-biblioref">Breiman 1996b</a>)</span>.</p>
 <div class="rmdnote">
 <p>El apilamiento de modelos combina las predicciones de múltiples modelos de cualquier tipo. Por ejemplo, en un conjunto de apilamiento se pueden incluir una regresión logística, un árbol de clasificación y una máquina de vectores de soporte.</p>
 </div>
@@ -473,8 +444,8 @@ window.Quarto = {
 <p>Usaremos el término <em>miembros candidatos</em> para describir las posibles configuraciones del modelo (de todos los tipos de modelos) que podrían incluirse en el conjunto de apilamiento.</p>
 </div>
 <p>Esto significa que un modelo de apilamiento puede incluir diferentes tipos de modelos (por ejemplo, árboles y redes neuronales), así como diferentes configuraciones del mismo modelo (por ejemplo, árboles con diferentes profundidades).</p>
-<section id="sec-data-stack" class="level2" data-number="20.1">
-<h2 data-number="20.1" class="anchored" data-anchor-id="sec-data-stack"><span class="header-section-number">20.1</span> Crear El Conjunto De Entrenamiento Para Apilar</h2>
+<section id="sec-data-stack" class="level2" data-number="20.1"><h2 data-number="20.1" class="anchored" data-anchor-id="sec-data-stack">
+<span class="header-section-number">20.1</span> Crear El Conjunto De Entrenamiento Para Apilar</h2>
 <p>El primer paso para construir un conjunto apilado se basa en las predicciones del conjunto de evaluación a partir de un esquema de remuestreo con múltiples divisiones. Para cada punto de datos en el conjunto de entrenamiento, el apilamiento requiere algún tipo de predicción fuera de la muestra. Para los modelos de regresión, este es el resultado previsto. Para los modelos de clasificación, las clases o probabilidades predichas están disponibles para su uso, aunque estas últimas contienen más información que las predicciones de clases estrictas. Para un conjunto de modelos, se ensambla un conjunto de datos donde las filas son las muestras del conjunto de entrenamiento y las columnas son las predicciones fuera de la muestra del conjunto de múltiples modelos.</p>
 <p>En el <a href="15-workflow-sets.html" class="quarto-xref">Capítulo&nbsp;<span>15</span></a>, utilizamos cinco repeticiones de validación cruzada 10 veces para volver a muestrear los datos. Este esquema de remuestreo genera cinco predicciones de conjuntos de evaluación para cada muestra de conjunto de entrenamiento. Pueden ocurrir múltiples predicciones fuera de la muestra en varias otras técnicas de remuestreo (por ejemplo, arranque). A los efectos del apilamiento, cualquier predicción replicada para un punto de datos en el conjunto de entrenamiento se promedia de modo que haya una única predicción por muestra del conjunto de entrenamiento por miembro candidato.</p>
 <div class="rmdnote">
@@ -482,11 +453,9 @@ window.Quarto = {
 </div>
 <p>Para el ejemplo concreto, el conjunto de entrenamiento utilizado para el apilamiento de modelos tiene columnas para todos los resultados de los parámetros de ajuste candidatos. <a href="#tbl-ensemble-candidate-preds" class="quarto-xref">Tabla&nbsp;<span>20.1</span></a> presenta las primeras seis filas y columnas seleccionadas.</p>
 <div id="tbl-ensemble-candidate-preds" class="cell quarto-float anchored" data-layout-align="center">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ensemble-candidate-preds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ensemble-candidate-preds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;20.1: Predicciones a partir de configuraciones de parámetros de ajuste candidatos.
-</figcaption>
-<div aria-describedby="tbl-ensemble-candidate-preds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+</figcaption><div aria-describedby="tbl-ensemble-candidate-preds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <table class="table table-striped cell table-sm small" data-quarto-postprocess="true">
 <colgroup>
@@ -580,8 +549,6 @@ Predicciones Candidatas Apiladas
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </figure>
@@ -591,54 +558,53 @@ Predicciones Candidatas Apiladas
 <p>Para los modelos de clasificación, las columnas de predicción candidatas serían probabilidades de clase predichas. Dado que estas columnas suman una para cada modelo, las probabilidades de una de las clases pueden omitirse.</p>
 </div>
 <p>Para resumir dónde nos encontramos hasta ahora, el primer paso para el apilamiento es ensamblar las predicciones del conjunto de evaluación para el conjunto de entrenamiento de cada modelo candidato. Podemos utilizar estas predicciones de conjuntos de evaluación para avanzar y construir un conjunto apilado.</p>
-<p>Para comenzar a ensamblar con el paquete <span class="pkg">stacks</span>, cree una pila de datos vacía usando la función <code>stacks()</code> y luego agregue modelos candidatos. Recuerde que utilizamos conjuntos de flujos de trabajo para ajustar una amplia variedad de modelos a estos datos. Usaremos los resultados de las carreras:</p>
+<p>Para comenzar a ensamblar con el paquete <span class="pkg">stacks</span>, cree una pila de datos vacía usando la función <code><a href="https://stacks.tidymodels.org/reference/stacks.html">stacks()</a></code> y luego agregue modelos candidatos. Recuerde que utilizamos conjuntos de flujos de trabajo para ajustar una amplia variedad de modelos a estos datos. Usaremos los resultados de las carreras:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>race_results</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A workflow set/tibble: 12 × 4</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   wflow_id    info             option    result   </span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;       &lt;list&gt;           &lt;list&gt;    &lt;list&gt;   </span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 MARS        &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;race[+]&gt;</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 CART        &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;race[+]&gt;</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 CART_bagged &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;rsmp[+]&gt;</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 RF          &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;race[+]&gt;</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 boosting    &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;race[+]&gt;</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 Cubist      &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;race[+]&gt;</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 6 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">race_results</span></span>
+<span><span class="co">## # A workflow set/tibble: 12 × 4</span></span>
+<span><span class="co">##   wflow_id    info             option    result   </span></span>
+<span><span class="co">##   &lt;chr&gt;       &lt;list&gt;           &lt;list&gt;    &lt;list&gt;   </span></span>
+<span><span class="co">## 1 MARS        &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;race[+]&gt;</span></span>
+<span><span class="co">## 2 CART        &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;race[+]&gt;</span></span>
+<span><span class="co">## 3 CART_bagged &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;rsmp[+]&gt;</span></span>
+<span><span class="co">## 4 RF          &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;race[+]&gt;</span></span>
+<span><span class="co">## 5 boosting    &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;race[+]&gt;</span></span>
+<span><span class="co">## 6 Cubist      &lt;tibble [1 × 4]&gt; &lt;opts[3]&gt; &lt;race[+]&gt;</span></span>
+<span><span class="co">## # ℹ 6 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>En este caso, nuestra sintaxis es:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stacks)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>concrete_stack <span class="ot">&lt;-</span> </span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stacks</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_candidates</span>(race_results)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>concrete_stack</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">## # A data stack with 12 model definitions and 22 candidate members:</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## #   MARS: 1 model configuration</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## #   CART: 1 model configuration</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="do">## #   CART_bagged: 1 model configuration</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="do">## #   RF: 1 model configuration</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">## #   boosting: 1 model configuration</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="do">## #   Cubist: 1 model configuration</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="do">## #   SVM_radial: 1 model configuration</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="do">## #   SVM_poly: 1 model configuration</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="do">## #   KNN: 3 model configurations</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="do">## #   neural_network: 5 model configurations</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="do">## #   full_quad_linear_reg: 5 model configurations</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="do">## #   full_quad_KNN: 1 model configuration</span></span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="do">## # Outcome: compressive_strength (numeric)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stacks.tidymodels.org/">stacks</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">concrete_stack</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="https://stacks.tidymodels.org/reference/stacks.html">stacks</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu"><a href="https://stacks.tidymodels.org/reference/add_candidates.html">add_candidates</a></span><span class="op">(</span><span class="va">race_results</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">concrete_stack</span></span>
+<span><span class="co">## # A data stack with 12 model definitions and 22 candidate members:</span></span>
+<span><span class="co">## #   MARS: 1 model configuration</span></span>
+<span><span class="co">## #   CART: 1 model configuration</span></span>
+<span><span class="co">## #   CART_bagged: 1 model configuration</span></span>
+<span><span class="co">## #   RF: 1 model configuration</span></span>
+<span><span class="co">## #   boosting: 1 model configuration</span></span>
+<span><span class="co">## #   Cubist: 1 model configuration</span></span>
+<span><span class="co">## #   SVM_radial: 1 model configuration</span></span>
+<span><span class="co">## #   SVM_poly: 1 model configuration</span></span>
+<span><span class="co">## #   KNN: 3 model configurations</span></span>
+<span><span class="co">## #   neural_network: 5 model configurations</span></span>
+<span><span class="co">## #   full_quad_linear_reg: 5 model configurations</span></span>
+<span><span class="co">## #   full_quad_KNN: 1 model configuration</span></span>
+<span><span class="co">## # Outcome: compressive_strength (numeric)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Recuerde que los métodos de carrera (<a href="13-grid-search.html#sec-racing" class="quarto-xref"><span>Sección 13.5.5</span></a>) son más eficientes ya que es posible que no evalúen todas las configuraciones en todos los remuestreos. El apilamiento requiere que todos los miembros candidatos tengan el conjunto completo de remuestras. <code>add_candidates()</code> incluye solo las configuraciones del modelo que tienen resultados completos.</p>
+<p>Recuerde que los métodos de carrera (<a href="13-grid-search.html#sec-racing" class="quarto-xref"><span>Sección 13.5.5</span></a>) son más eficientes ya que es posible que no evalúen todas las configuraciones en todos los remuestreos. El apilamiento requiere que todos los miembros candidatos tengan el conjunto completo de remuestras. <code><a href="https://stacks.tidymodels.org/reference/add_candidates.html">add_candidates()</a></code> incluye solo las configuraciones del modelo que tienen resultados completos.</p>
 <div class="rmdnote">
 <p>¿Por qué utilizar los resultados de las carreras en lugar del conjunto completo de modelos candidatos contenidos en <code>grid_results</code>? Se puede utilizar cualquiera de los dos. Encontramos un mejor rendimiento para estos datos utilizando los resultados de las carreras. Esto podría deberse a que el método de carrera preselecciona los mejores modelos de la parrilla más grande.</p>
 </div>
-<p>Si no hubiéramos usado el paquete <span class="pkg">workflowsets</span>, los objetos de <span class="pkg">tune</span> y <span class="pkg">finetune</span> también podrían pasarse a <code>add_candidates()</code>. Esto puede incluir objetos de búsqueda iterativos y de cuadrícula.</p>
-</section>
-<section id="sec-blend-predictions" class="level2" data-number="20.2">
-<h2 data-number="20.2" class="anchored" data-anchor-id="sec-blend-predictions"><span class="header-section-number">20.2</span> Combina Las Predicciones</h2>
+<p>Si no hubiéramos usado el paquete <span class="pkg">workflowsets</span>, los objetos de <span class="pkg">tune</span> y <span class="pkg">finetune</span> también podrían pasarse a <code><a href="https://stacks.tidymodels.org/reference/add_candidates.html">add_candidates()</a></code>. Esto puede incluir objetos de búsqueda iterativos y de cuadrícula.</p>
+</section><section id="sec-blend-predictions" class="level2" data-number="20.2"><h2 data-number="20.2" class="anchored" data-anchor-id="sec-blend-predictions">
+<span class="header-section-number">20.2</span> Combina Las Predicciones</h2>
 <p>Las predicciones del conjunto de entrenamiento y los datos de resultados observados correspondientes se utilizan para crear un <em>modelo de metaaprendizaje</em> donde las predicciones del conjunto de evaluación son los predictores de los datos de resultados observados. El metaaprendizaje se puede lograr utilizando cualquier modelo. El modelo más utilizado es un modelo lineal generalizado regularizado, que abarca modelos lineales, logísticos y multinomiales. Específicamente, la regularización mediante la penalización de lazo <span class="citation" data-cites="lasso">(<a href="references.html#ref-lasso" role="doc-biblioref">Tibshirani 1996</a>)</span>, que utiliza la contracción para atraer puntos hacia un valor central, tiene varias ventajas:</p>
 <ul>
 <li>El uso de la penalización de lazo puede eliminar candidatos (y, a veces, tipos de modelos completos) del conjunto.</li>
@@ -647,97 +613,91 @@ Predicciones Candidatas Apiladas
 <p><span class="citation" data-cites="breiman1996stacked">Breiman (<a href="references.html#ref-breiman1996stacked" role="doc-biblioref">1996b</a>)</span> también sugirió que, cuando se utiliza un modelo lineal para combinar las predicciones, podría ser útil restringir los coeficientes de combinación para que no sean negativos. En general, hemos encontrado que este es un buen consejo y es el valor predeterminado para el paquete <span class="pkg">stacks</span> (pero se puede cambiar mediante un argumento opcional).</p>
 <p>Dado que nuestro resultado es numérico, se utiliza la regresión lineal para el metamodelo. Ajustar el metamodelo es tan sencillo como usar:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2001</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ens <span class="ot">&lt;-</span> <span class="fu">blend_predictions</span>(concrete_stack)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2001</span><span class="op">)</span></span>
+<span><span class="va">ens</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stacks.tidymodels.org/reference/blend_predictions.html">blend_predictions</a></span><span class="op">(</span><span class="va">concrete_stack</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Esto evalúa el modelo de metaaprendizaje sobre una cuadrícula predefinida de valores de penalización de lazo y utiliza un método de remuestreo interno para determinar el mejor valor. El método <code>autoplot()</code>, que se muestra en <a href="#fig-stacking-autoplot" class="quarto-xref">Figura&nbsp;<span>20.1</span></a>, nos ayuda a comprender si el método de penalización predeterminado fue suficiente:</p>
+<p>Esto evalúa el modelo de metaaprendizaje sobre una cuadrícula predefinida de valores de penalización de lazo y utiliza un método de remuestreo interno para determinar el mejor valor. El método <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code>, que se muestra en <a href="#fig-stacking-autoplot" class="quarto-xref">Figura&nbsp;<span>20.1</span></a>, nos ayuda a comprender si el método de penalización predeterminado fue suficiente:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(ens)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">ens</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-stacking-autoplot" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Resultados del uso del método `autoplot()` en el objeto de pilas combinadas." data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-stacking-autoplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-stacking-autoplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-stacking-autoplot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Resultados del uso del método `autoplot()` en el objeto de pilas combinadas." width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stacking-autoplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;20.1: Resultados del uso del método <code>autoplot()</code> en el objeto de pilas combinadas
-</figcaption>
-</figure>
+Figura&nbsp;20.1: Resultados del uso del método <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> en el objeto de pilas combinadas
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p>El panel superior de <a href="#fig-stacking-autoplot" class="quarto-xref">Figura&nbsp;<span>20.1</span></a> muestra el número promedio de miembros candidatos del conjunto retenidos por el modelo de metaaprendizaje. Podemos ver que el número de miembros es bastante constante y, a medida que aumenta, el RMSE también aumenta.</p>
 <p>Es posible que el rango predeterminado no nos haya servido bien aquí. Para evaluar el modelo de metaaprendizaje con penalizaciones mayores, pasemos una opción adicional:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2002</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ens <span class="ot">&lt;-</span> <span class="fu">blend_predictions</span>(concrete_stack, <span class="at">penalty =</span> <span class="dv">10</span><span class="sc">^</span><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">length =</span> <span class="dv">20</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">2002</span><span class="op">)</span></span>
+<span><span class="va">ens</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stacks.tidymodels.org/reference/blend_predictions.html">blend_predictions</a></span><span class="op">(</span><span class="va">concrete_stack</span>, penalty <span class="op">=</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">0.5</span>, length <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Ahora, en <a href="#fig-stacking-autoplot-redo" class="quarto-xref">Figura&nbsp;<span>20.2</span></a>, vemos un rango en el que el modelo de conjunto se vuelve peor que con nuestra primera combinación (pero no mucho). Los valores de <span class="math inline">\(R^2\)</span> aumentan con más miembros y sanciones mayores.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(ens)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">ens</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-stacking-autoplot-redo" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Los resultados del uso del método `autoplot()` en el objeto de pilas combinadas actualizado." data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-stacking-autoplot-redo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-stacking-autoplot-redo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-stacking-autoplot-redo-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Los resultados del uso del método `autoplot()` en el objeto de pilas combinadas actualizado." width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stacking-autoplot-redo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;20.2: Los resultados del uso del método <code>autoplot()</code> en el objeto de pilas combinadas actualizado
-</figcaption>
-</figure>
+Figura&nbsp;20.2: Los resultados del uso del método <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> en el objeto de pilas combinadas actualizado
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p>Al combinar predicciones utilizando un modelo de regresión, es común restringir los parámetros de combinación para que no sean negativos. Para estos datos, esta restricción tiene el efecto de eliminar muchos de los miembros potenciales del conjunto; Incluso con sanciones bastante bajas, el conjunto se limita a una fracción de los dieciocho originales.</p>
 <p>El valor de penalización asociado con el RMSE más pequeño fue 0.074. Imprimir el objeto muestra los detalles del modelo de metaaprendizaje:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ens</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="do">## ── A stacked ensemble model ─────────────────────────────────────</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Out of 22 possible candidate members, the ensemble retained 7.</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Penalty: 0.0738619982207936.</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Mixture: 1.</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="do">## The 7 highest weighted members are:</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 7 × 3</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="do">##   member                    type          weight</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                     &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 boosting_1_04             boost_tree   0.760  </span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 neural_network_1_12       mlp          0.119  </span></span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Cubist_1_25               cubist_rules 0.0693 </span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 neural_network_1_04       mlp          0.0471 </span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 full_quad_linear_reg_1_16 linear_reg   0.0149 </span></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 neural_network_1_17       mlp          0.00708</span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 1 more row</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Members have not yet been fitted with `fit_members()`.</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ens</span></span>
+<span><span class="co">## ── A stacked ensemble model ─────────────────────────────────────</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Out of 22 possible candidate members, the ensemble retained 7.</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Penalty: 0.0738619982207936.</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Mixture: 1.</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## The 7 highest weighted members are:</span></span>
+<span><span class="co">## # A tibble: 7 × 3</span></span>
+<span><span class="co">##   member                    type          weight</span></span>
+<span><span class="co">##   &lt;chr&gt;                     &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">## 1 boosting_1_04             boost_tree   0.760  </span></span>
+<span><span class="co">## 2 neural_network_1_12       mlp          0.119  </span></span>
+<span><span class="co">## 3 Cubist_1_25               cubist_rules 0.0693 </span></span>
+<span><span class="co">## 4 neural_network_1_04       mlp          0.0471 </span></span>
+<span><span class="co">## 5 full_quad_linear_reg_1_16 linear_reg   0.0149 </span></span>
+<span><span class="co">## 6 neural_network_1_17       mlp          0.00708</span></span>
+<span><span class="co">## # ℹ 1 more row</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Members have not yet been fitted with `fit_members()`.</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>El modelo de metaaprendizaje de regresión lineal regularizado contenía coeficientes de combinación seven entre tipos de modelos four. El método <code>autoplot()</code> se puede utilizar nuevamente para mostrar las contribuciones de cada tipo de modelo, para producir <a href="#fig-blending-weights" class="quarto-xref">Figura&nbsp;<span>20.3</span></a>.</p>
+<p>El modelo de metaaprendizaje de regresión lineal regularizado contenía coeficientes de combinación seven entre tipos de modelos four. El método <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot()</a></code> se puede utilizar nuevamente para mostrar las contribuciones de cada tipo de modelo, para producir <a href="#fig-blending-weights" class="quarto-xref">Figura&nbsp;<span>20.3</span></a>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(ens, <span class="st">"weights"</span>) <span class="sc">+</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">x =</span> weight <span class="sc">+</span> <span class="fl">0.01</span>, <span class="at">label =</span> model), <span class="at">hjust =</span> <span class="dv">0</span>) <span class="sc">+</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lims</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.01</span>, <span class="fl">0.8</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html">autoplot</a></span><span class="op">(</span><span class="va">ens</span>, <span class="st">"weights"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_text</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">weight</span> <span class="op">+</span> <span class="fl">0.01</span>, label <span class="op">=</span> <span class="va">model</span><span class="op">)</span>, hjust <span class="op">=</span> <span class="fl">0</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">lims</span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.01</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-blending-weights" class="quarto-figure quarto-figure-center quarto-float anchored" alt="blending_alt" data-fig-align="center">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-blending-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-blending-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-blending-weights-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="blending_alt" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-blending-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;20.3: Coeficientes de mezcla para el conjunto de apilamiento.
-</figcaption>
-</figure>
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -755,9 +715,8 @@ Figura&nbsp;20.3: Coeficientes de mezcla para el conjunto de apilamiento.
 \end{align}\]</span></p>
 </div>
 <p>donde los predictores en la ecuación son los valores de resistencia a la compresión pronosticados a partir de esos modelos.</p>
-</section>
-<section id="sec-fit-members" class="level2" data-number="20.3">
-<h2 data-number="20.3" class="anchored" data-anchor-id="sec-fit-members"><span class="header-section-number">20.3</span> Ajustar Los Modelos Miembros</h2>
+</section><section id="sec-fit-members" class="level2" data-number="20.3"><h2 data-number="20.3" class="anchored" data-anchor-id="sec-fit-members">
+<span class="header-section-number">20.3</span> Ajustar Los Modelos Miembros</h2>
 <p>El conjunto contiene miembros candidatos seven y ahora sabemos cómo se pueden combinar sus predicciones en una predicción final para el conjunto. Sin embargo, estos ajustes de modelos individuales aún no se han creado. Para poder utilizar el modelo de apilamiento, se requieren ajustes de modelo adicionales seven. Estos utilizan todo el conjunto de entrenamiento con los predictores originales.</p>
 <p>Los modelos seven a ajustar son:</p>
 <div class="cell" data-layout-align="center">
@@ -771,33 +730,31 @@ Figura&nbsp;20.3: Coeficientes de mezcla para el conjunto de apilamiento.
 <li><p>neural network: number of hidden units = 26, amount of regularization = 0.0149, and number of epochs = 203 (config 3)</p></li>
 </ul>
 </div>
-<p>El paquete <span class="pkg">stacks</span> tiene una función, <code>fit_members()</code>, que entrena y devuelve estos modelos:</p>
+<p>El paquete <span class="pkg">stacks</span> tiene una función, <code><a href="https://stacks.tidymodels.org/reference/fit_members.html">fit_members()</a></code>, que entrena y devuelve estos modelos:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>ens <span class="ot">&lt;-</span> <span class="fu">fit_members</span>(ens)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ens</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stacks.tidymodels.org/reference/fit_members.html">fit_members</a></span><span class="op">(</span><span class="va">ens</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Esto actualiza el objeto de apilamiento con los objetos de flujo de trabajo ajustados para cada miembro. En este punto, el modelo de apilamiento se puede utilizar para la predicción.</p>
-</section>
-<section id="resultados-del-conjunto-de-pruebas" class="level2" data-number="20.4">
-<h2 data-number="20.4" class="anchored" data-anchor-id="resultados-del-conjunto-de-pruebas"><span class="header-section-number">20.4</span> Resultados Del Conjunto De Pruebas</h2>
+</section><section id="resultados-del-conjunto-de-pruebas" class="level2" data-number="20.4"><h2 data-number="20.4" class="anchored" data-anchor-id="resultados-del-conjunto-de-pruebas">
+<span class="header-section-number">20.4</span> Resultados Del Conjunto De Pruebas</h2>
 <p>Dado que el proceso de combinación utilizó remuestreo, podemos estimar que el conjunto con miembros seven tenía un RMSE estimado de 4.11. Recuerde del <a href="15-workflow-sets.html" class="quarto-xref">Capítulo&nbsp;<span>15</span></a> que el árbol mejor impulsado tenía un conjunto de prueba RMSE de 3.41. ¿Cómo se comparará el modelo de conjunto en el conjunto de prueba? Podemos usar <code>predecit()</code> para averiguarlo:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>reg_metrics <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(rmse, rsq)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ens_test_pred <span class="ot">&lt;-</span> </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(ens, concrete_test) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(concrete_test)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>ens_test_pred <span class="sc">%&gt;%</span> </span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">reg_metrics</span>(compressive_strength, .pred)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 3</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator .estimate</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 rmse    standard       3.40 </span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 rsq     standard       0.955</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">reg_metrics</span> <span class="op">&lt;-</span> <span class="fu">metric_set</span><span class="op">(</span><span class="va">rmse</span>, <span class="va">rsq</span><span class="op">)</span></span>
+<span><span class="va">ens_test_pred</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">ens</span>, <span class="va">concrete_test</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="va">concrete_test</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ens_test_pred</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">reg_metrics</span><span class="op">(</span><span class="va">compressive_strength</span>, <span class="va">.pred</span><span class="op">)</span></span>
+<span><span class="co">## # A tibble: 2 × 3</span></span>
+<span><span class="co">##   .metric .estimator .estimate</span></span>
+<span><span class="co">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span><span class="co">## 1 rmse    standard       3.40 </span></span>
+<span><span class="co">## 2 rsq     standard       0.955</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Esto es moderadamente mejor que nuestro mejor modelo individual. Es bastante común que el apilamiento produzca beneficios incrementales en comparación con el mejor modelo individual.</p>
-</section>
-<section id="sec-ensembles-summary" class="level2" data-number="20.5">
-<h2 data-number="20.5" class="anchored" data-anchor-id="sec-ensembles-summary"><span class="header-section-number">20.5</span> Resumen Del Capítulo</h2>
+</section><section id="sec-ensembles-summary" class="level2" data-number="20.5"><h2 data-number="20.5" class="anchored" data-anchor-id="sec-ensembles-summary">
+<span class="header-section-number">20.5</span> Resumen Del Capítulo</h2>
 <p>Este capítulo demostró cómo combinar diferentes modelos en un conjunto para obtener un mejor rendimiento predictivo. El proceso de creación del conjunto puede eliminar automáticamente los modelos candidatos para encontrar un pequeño subconjunto que mejore el rendimiento. El paquete <span class="pkg">stacks</span> tiene una interfaz fluida para combinar resultados de remuestreo y ajuste en un metamodelo.</p>
 
 
@@ -824,11 +781,7 @@ Tibshirani, Robert. 1996. <span>«Regression Shrinkage and Selection via the Las
 Wolpert, D. 1992. <span>«Stacked generalization»</span>. <em>Neural Networks</em> 5 (2): 241-59.
 </div>
 </div>
-</section>
-
-</main> <!-- /main -->
-
-<script>
+</section></main><!-- /main --><script>
 
   // Chapter name
   const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
@@ -895,9 +848,7 @@ Wolpert, D. 1992. <span>«Stacked generalization»</span>. <em>Neural Networks</
   act_link_T.innerHTML += edit_issue_T;
 
 
-</script>
-
-<script id="quarto-html-after-body" type="application/javascript">
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1305,9 +1256,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./19-when-should-you-trust-predictions.html" class="pagination-link" aria-label="¿Cuándo Debería Confiar En Sus Predicciones?">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span>
       </a>          
@@ -1319,8 +1268,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
 </div>   
@@ -1332,8 +1280,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>

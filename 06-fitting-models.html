@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.553">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Max Kuhn, y Julia Silge">
-
 <title>Modelado Ordenado con R - 6&nbsp; Creando Modelos Con parsnip</title>
 <style>
 code{white-space: pre-wrap;}
@@ -77,7 +74,6 @@ div.csl-indent {
   margin-left: 2em;
 }</style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -95,8 +91,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -122,14 +117,8 @@ div.csl-indent {
     "search-submit-button-title": "Enviar",
     "search-label": "Buscar"
   }
-}</script>
-<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
+}</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -154,18 +143,13 @@ const typesetMath = (el) => {
 window.Quarto = {
   typesetMath
 };
-</script>
-
-<link rel="stylesheet" href="style.css">
+</script><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -176,20 +160,16 @@ window.Quarto = {
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
     <div class="dropdown">
       <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-          <li>
+<li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
             Original
             </a>
@@ -200,7 +180,7 @@ window.Quarto = {
             </a>
           </li>
       </ul>
-    </div>
+</div>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -216,7 +196,7 @@ window.Quarto = {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Hola Mundo</span></a>
@@ -230,8 +210,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
@@ -250,7 +230,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
@@ -259,8 +239,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
@@ -297,7 +277,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
@@ -306,8 +286,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
@@ -344,7 +324,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
@@ -353,8 +333,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
@@ -391,7 +371,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
@@ -400,8 +380,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
@@ -414,31 +394,25 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Tabla de contenidos</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-  <li><a href="#sec-create-a-model" id="toc-sec-create-a-model" class="nav-link active" data-scroll-target="#sec-create-a-model"><span class="header-section-number">6.1</span> Crear Un Modelo</a></li>
+<li><a href="#sec-create-a-model" id="toc-sec-create-a-model" class="nav-link active" data-scroll-target="#sec-create-a-model"><span class="header-section-number">6.1</span> Crear Un Modelo</a></li>
   <li><a href="#utilizar-los-resultados-del-modelo" id="toc-utilizar-los-resultados-del-modelo" class="nav-link" data-scroll-target="#utilizar-los-resultados-del-modelo"><span class="header-section-number">6.2</span> Utilizar Los Resultados Del Modelo</a></li>
   <li><a href="#sec-parsnip-predictions" id="toc-sec-parsnip-predictions" class="nav-link" data-scroll-target="#sec-parsnip-predictions"><span class="header-section-number">6.3</span> Hacer Predicciones</a></li>
-  <li><a href="#paquetes-de-extensión-de-parsnip" id="toc-paquetes-de-extensión-de-parsnip" class="nav-link" data-scroll-target="#paquetes-de-extensión-de-parsnip"><span class="header-section-number">6.4</span> Paquetes De Extensión De parsnip</a></li>
+  <li><a href="#paquetes-de-extensi%C3%B3n-de-parsnip" id="toc-paquetes-de-extensión-de-parsnip" class="nav-link" data-scroll-target="#paquetes-de-extensi%C3%B3n-de-parsnip"><span class="header-section-number">6.4</span> Paquetes De Extensión De parsnip</a></li>
   <li><a href="#sec-parsnip-addin" id="toc-sec-parsnip-addin" class="nav-link" data-scroll-target="#sec-parsnip-addin"><span class="header-section-number">6.5</span> Crear Especificaciones De Modelo</a></li>
   <li><a href="#sec-models-summary" id="toc-sec-models-summary" class="nav-link" data-scroll-target="#sec-models-summary"><span class="header-section-number">6.6</span> Resumen Del Capítulo</a></li>
-  </ul>
-</nav>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./06-fitting-models.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></a></li></ol></nav>
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./06-fitting-models.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-models" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></h1>
 </div>
 
@@ -453,13 +427,10 @@ window.Quarto = {
   
 
 
-</header>
-
-
-<p>El paquete <span class="pkg">parsnip</span>, un de los paquetes de R que es parte del metaapaquete <span class="pkg">tidymodels</span>, proporciona una interfaz fluida y estandarizada para una variedad de modelos diferentes. En este capítulo, damos algunas motivaciones sobre por qué una interfaz común es beneficiosa para comprender y construir modelos en la práctica y mostramos cómo usar el paquete <span class="pkg">parsnip</span>.</p>
-<p>Específicamente, nos centraremos en cómo <code>fit()</code> y <code>predict()</code> directamente con un objeto <span class="pkg">parsnip</span>, que puede ser una buena opción para algunos problemas de modelado sencillos. El próximo capítulo ilustra un mejor enfoque para muchas tareas de modelado al combinar modelos y preprocesadores en algo llamado un objeto de “flujo de trabajo”.</p>
-<section id="sec-create-a-model" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="sec-create-a-model"><span class="header-section-number">6.1</span> Crear Un Modelo</h2>
+</header><p>El paquete <span class="pkg">parsnip</span>, un de los paquetes de R que es parte del metaapaquete <span class="pkg">tidymodels</span>, proporciona una interfaz fluida y estandarizada para una variedad de modelos diferentes. En este capítulo, damos algunas motivaciones sobre por qué una interfaz común es beneficiosa para comprender y construir modelos en la práctica y mostramos cómo usar el paquete <span class="pkg">parsnip</span>.</p>
+<p>Específicamente, nos centraremos en cómo <code>fit()</code> y <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> directamente con un objeto <span class="pkg">parsnip</span>, que puede ser una buena opción para algunos problemas de modelado sencillos. El próximo capítulo ilustra un mejor enfoque para muchas tareas de modelado al combinar modelos y preprocesadores en algo llamado un objeto de “flujo de trabajo”.</p>
+<section id="sec-create-a-model" class="level2" data-number="6.1"><h2 data-number="6.1" class="anchored" data-anchor-id="sec-create-a-model">
+<span class="header-section-number">6.1</span> Crear Un Modelo</h2>
 <p>Una vez que los datos se han codificado en un formato listo para un algoritmo de modelado, como una matriz numérica, se pueden utilizar en el proceso de construcción del modelo.</p>
 <p>Supongamos que nuestra elección inicial fue un modelo de regresión lineal. Esto equivale a especificar que los datos del resultado son numéricos y que los predictores están relacionados con el resultado en términos de pendientes e intersecciones simples:</p>
 <p><span class="math display">\[y_i = \beta_0 + \beta_1 x_{1i} + \ldots + \beta_p x_{pi}\]</span></p>
@@ -468,16 +439,16 @@ window.Quarto = {
 <li><p>La <em>regresión lineal ordinaria</em> utiliza el método tradicional de mínimos cuadrados para resolver los parámetros del modelo.</p></li>
 <li><p><em>Regresión lineal regularizada</em> añade una penalización al método de mínimos cuadrados para fomentar la simplicidad eliminando predictores y/o reduciendo sus coeficientes hacia cero. Esto se puede ejecutar utilizando técnicas bayesianas o no bayesianas.</p></li>
 </ul>
-<p>En R, el paquete <span class="pkg">stats</span> se puede utilizar para el primer caso. La sintaxis para la regresión lineal usando la función <code>lm()</code> es:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(formula, data, ...)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>donde <code>...</code> simboliza otras opciones para pasar a <code>lm()</code>. La función <em>not</em> tiene una interfaz <code>x</code>/<code>y</code>, donde podríamos pasar nuestro resultado como <code>y</code> y nuestros predictores como <code>x</code>.</p>
+<p>En R, el paquete <span class="pkg">stats</span> se puede utilizar para el primer caso. La sintaxis para la regresión lineal usando la función <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> es:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, <span class="va">...</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>donde <code>...</code> simboliza otras opciones para pasar a <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>. La función <em>not</em> tiene una interfaz <code>x</code>/<code>y</code>, donde podríamos pasar nuestro resultado como <code>y</code> y nuestros predictores como <code>x</code>.</p>
 <p>Para estimar con regularización, el segundo caso, se puede ajustar un modelo bayesiano usando el paquete <span class="pkg">rstanarm</span>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">stan_glm</span>(formula, data, <span class="at">family =</span> <span class="st">"gaussian"</span>, ...)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>En este caso, las otras opciones pasadas a través de <code>...</code> incluirían argumentos para las distribuciones anteriores de los parámetros, así como detalles sobre los aspectos numéricos del modelo. Al igual que con <code>lm()</code>, solo está disponible la interfaz de fórmula.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">stan_glm</span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span>, family <span class="op">=</span> <span class="st">"gaussian"</span>, <span class="va">...</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>En este caso, las otras opciones pasadas a través de <code>...</code> incluirían argumentos para las distribuciones anteriores de los parámetros, así como detalles sobre los aspectos numéricos del modelo. Al igual que con <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code>, solo está disponible la interfaz de fórmula.</p>
 <p>Un enfoque popular no bayesiano para la regresión regularizada es el modelo <span class="pkg">glmnet</span> <span class="citation" data-cites="glmnet">(<a href="references.html#ref-glmnet" role="doc-biblioref">Friedman, Hastie, y Tibshirani 2010</a>)</span>. Su sintaxis es:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">glmnet</span>(<span class="at">x =</span> matrix, <span class="at">y =</span> vector, <span class="at">family =</span> <span class="st">"gaussian"</span>, ...)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">glmnet</span><span class="op">(</span>x <span class="op">=</span> <span class="va">matrix</span>, y <span class="op">=</span> <span class="va">vector</span>, family <span class="op">=</span> <span class="st">"gaussian"</span>, <span class="va">...</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>En este caso, los datos del predictor ya deben estar formateados en una matriz numérica; solo hay un método <code>x</code>/<code>y</code> y ningún método de fórmula.</p>
-<p>Tenga en cuenta que estas interfaces son heterogéneas en la forma en que se pasan los datos a la función del modelo o en términos de sus argumentos. El primer problema es que, para ajustar los modelos a diferentes paquetes, los datos deben formatearse de diferentes maneras. <code>lm()</code> y <code>stan_glm()</code> solo tienen interfaces de fórmula mientras que <code>glmnet()</code> no. Para otro tipo de modelos, las interfaces pueden ser aún más dispares. Para una persona que intenta realizar un análisis de datos, estas diferencias requieren la memorización de la sintaxis de cada paquete y pueden resultar muy frustrantes.</p>
+<p>Tenga en cuenta que estas interfaces son heterogéneas en la forma en que se pasan los datos a la función del modelo o en términos de sus argumentos. El primer problema es que, para ajustar los modelos a diferentes paquetes, los datos deben formatearse de diferentes maneras. <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> y <code>stan_glm()</code> solo tienen interfaces de fórmula mientras que <code>glmnet()</code> no. Para otro tipo de modelos, las interfaces pueden ser aún más dispares. Para una persona que intenta realizar un análisis de datos, estas diferencias requieren la memorización de la sintaxis de cada paquete y pueden resultar muy frustrantes.</p>
 <p>Para tidymodels, el enfoque para especificar un modelo pretende ser más unificado:</p>
 <ol type="1">
 <li><p><em>Especifique el tipo</em> de modelo según su estructura matemática (por ejemplo, regresión lineal, random forest, KNN, etc.).</p></li>
@@ -486,55 +457,55 @@ window.Quarto = {
 </ol>
 <p>Estas especificaciones se construyen sin hacer referencia a los datos. Por ejemplo, para los tres casos que describimos:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: lm</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"glmnet"</span>) </span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: glmnet</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"stan"</span>)</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: stan</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span></span>
+<span><span class="co">## Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: lm</span></span>
+<span></span>
+<span><span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"glmnet"</span><span class="op">)</span> </span>
+<span><span class="co">## Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: glmnet</span></span>
+<span></span>
+<span><span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"stan"</span><span class="op">)</span></span>
+<span><span class="co">## Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: stan</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Una vez que se han especificado los detalles del modelo, la estimación del modelo se puede realizar con la función <code>fit()</code> (para usar una fórmula) o con la función <code>fit_xy()</code> (cuando sus datos ya están preprocesados). El paquete <span class="pkg">parsnip</span> permite al usuario ser indiferente a la interfaz del modelo subyacente; siempre puedes usar una fórmula incluso si la función del paquete de modelado solo tiene la interfaz <code>x</code>/<code>y</code>.</p>
 <p>La función <code>translate()</code> puede proporcionar detalles sobre cómo <span class="pkg">parsnip</span> convierte el código del usuario a la sintaxis del paquete:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">%&gt;%</span> <span class="fu">translate</span>()</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: lm </span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Model fit template:</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="do">## stats::lm(formula = missing_arg(), data = missing_arg(), weights = missing_arg())</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">linear_reg</span>(<span class="at">penalty =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"glmnet"</span>) <span class="sc">%&gt;%</span> <span class="fu">translate</span>()</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Main Arguments:</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   penalty = 1</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: glmnet </span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Model fit template:</span></span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="do">## glmnet::glmnet(x = missing_arg(), y = missing_arg(), weights = missing_arg(), </span></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="do">##     family = "gaussian")</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"stan"</span>) <span class="sc">%&gt;%</span> <span class="fu">translate</span>()</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: stan </span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Model fit template:</span></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="do">## rstanarm::stan_glm(formula = missing_arg(), data = missing_arg(), </span></span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="do">##     weights = missing_arg(), family = stats::gaussian, refresh = 0)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">translate</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: lm </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model fit template:</span></span>
+<span><span class="co">## stats::lm(formula = missing_arg(), data = missing_arg(), weights = missing_arg())</span></span>
+<span></span>
+<span><span class="fu">linear_reg</span><span class="op">(</span>penalty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"glmnet"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">translate</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Main Arguments:</span></span>
+<span><span class="co">##   penalty = 1</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: glmnet </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model fit template:</span></span>
+<span><span class="co">## glmnet::glmnet(x = missing_arg(), y = missing_arg(), weights = missing_arg(), </span></span>
+<span><span class="co">##     family = "gaussian")</span></span>
+<span></span>
+<span><span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"stan"</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">translate</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: stan </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model fit template:</span></span>
+<span><span class="co">## rstanarm::stan_glm(formula = missing_arg(), data = missing_arg(), </span></span>
+<span><span class="co">##     weights = missing_arg(), family = stats::gaussian, refresh = 0)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Tenga en cuenta que <code>missing_arg()</code> es solo un marcador de posición para los datos que aún no se han proporcionado.</p>
 <div class="rmdnote">
@@ -542,60 +513,56 @@ window.Quarto = {
 </div>
 <p>Veamos cómo predecir el precio de venta de las casas en los datos de Ames en función únicamente de la longitud y la latitud:<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>lm_model <span class="ot">&lt;-</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>lm_form_fit <span class="ot">&lt;-</span> </span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  lm_model <span class="sc">%&gt;%</span> </span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Recuerde que a Sale_Price se le ha aplicado una transformación logarítmica previamente</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(Sale_Price <span class="sc">~</span> Longitude <span class="sc">+</span> Latitude, <span class="at">data =</span> ames_train)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>lm_xy_fit <span class="ot">&lt;-</span> </span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  lm_model <span class="sc">%&gt;%</span> </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_xy</span>(</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> ames_train <span class="sc">%&gt;%</span> <span class="fu">select</span>(Longitude, Latitude),</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> ames_train <span class="sc">%&gt;%</span> <span class="fu">pull</span>(Sale_Price)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>lm_form_fit</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="do">## parsnip model object</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="do">## stats::lm(formula = Sale_Price ~ Longitude + Latitude, data = data)</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)    Longitude     Latitude  </span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="do">##     -302.97        -2.07         2.71</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>lm_xy_fit</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="do">## parsnip model object</span></span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a><span class="do">## stats::lm(formula = ..y ~ ., data = data)</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)    Longitude     Latitude  </span></span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="do">##     -302.97        -2.07         2.71</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_model</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_form_fit</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">lm_model</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="co"># Recuerde que a Sale_Price se le ha aplicado una transformación logarítmica previamente</span></span>
+<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span>, data <span class="op">=</span> <span class="va">ames_train</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_xy_fit</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">lm_model</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">fit_xy</span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="va">ames_train</span> <span class="op">%&gt;%</span> <span class="fu">select</span><span class="op">(</span><span class="va">Longitude</span>, <span class="va">Latitude</span><span class="op">)</span>,</span>
+<span>    y <span class="op">=</span> <span class="va">ames_train</span> <span class="op">%&gt;%</span> <span class="fu">pull</span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_form_fit</span></span>
+<span><span class="co">## parsnip model object</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## stats::lm(formula = Sale_Price ~ Longitude + Latitude, data = data)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">## (Intercept)    Longitude     Latitude  </span></span>
+<span><span class="co">##     -302.97        -2.07         2.71</span></span>
+<span><span class="va">lm_xy_fit</span></span>
+<span><span class="co">## parsnip model object</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## stats::lm(formula = ..y ~ ., data = data)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">## (Intercept)    Longitude     Latitude  </span></span>
+<span><span class="co">##     -302.97        -2.07         2.71</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><span class="pkg">parsnip</span> no solo permite una interfaz de modelo coherente para diferentes paquetes, sino que también proporciona coherencia en los argumentos del modelo. Es común que diferentes funciones que se ajustan al mismo modelo tengan diferentes nombres de argumentos. Las funciones del modelo de random forest son un buen ejemplo. Tres argumentos comúnmente utilizados son la cantidad de árboles en el conjunto, la cantidad de predictores para muestrear aleatoriamente con cada división dentro de un árbol y la cantidad de puntos de datos necesarios para realizar una división. Para tres paquetes R diferentes que implementan este algoritmo, esos argumentos se muestran en <a href="#tbl-rand-forest-args" class="quarto-xref">Tabla&nbsp;<span>6.1</span></a>.</p>
 <div id="tbl-rand-forest-args" class="cell quarto-float anchored" data-layout-align="center">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-rand-forest-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-rand-forest-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;6.1: Ejemplos de nombres de argumentos para diferentes funciones de random forest.
-</figcaption>
-<div aria-describedby="tbl-rand-forest-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+</figcaption><div aria-describedby="tbl-rand-forest-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Tipo de argumento</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">ranger</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">randomForest</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">sparklyr</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"># predictores muestreo</td>
@@ -617,27 +584,21 @@ Tabla&nbsp;6.1: Ejemplos de nombres de argumentos para diferentes funciones de r
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </figure>
 </div>
 <p>En un esfuerzo por hacer que la especificación de argumentos sea menos complicada, <span class="pkg">parsnip</span> utiliza nombres de argumentos comunes dentro y entre paquetes. <a href="#tbl-parsnip-args" class="quarto-xref">Tabla&nbsp;<span>6.2</span></a> muestra, para radom forest, qué utilizan los modelos <span class="pkg">parsnip</span>.</p>
 <div id="tbl-parsnip-args" class="cell quarto-float anchored" data-layout-align="center">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-parsnip-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-parsnip-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;6.2: Nombres de argumentos de random forest utilizados por parsnip.
-</figcaption>
-<div aria-describedby="tbl-parsnip-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+</figcaption><div aria-describedby="tbl-parsnip-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Tipo de argumento</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">parsnip</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"># predictores muestreo</td>
@@ -653,8 +614,6 @@ Tabla&nbsp;6.2: Nombres de argumentos de random forest utilizados por parsnip.
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </figure>
@@ -666,104 +625,102 @@ Tabla&nbsp;6.2: Nombres de argumentos de random forest utilizados por parsnip.
 </blockquote>
 <p>Para comprender cómo los nombres de los argumentos <span class="pkg">parsnip</span> se asignan a los nombres originales, use el archivo de ayuda para el modelo (disponible a través de <code>?rand_forest</code>), así como la función <code>translate()</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">1000</span>, <span class="at">min_n =</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"ranger"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">translate</span>()</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Random Forest Model Specification (regression)</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Main Arguments:</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   trees = 1000</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   min_n = 5</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: ranger </span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Model fit template:</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="do">## ranger::ranger(x = missing_arg(), y = missing_arg(), weights = missing_arg(), </span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="do">##     num.trees = 1000, min.node.size = min_rows(~5, x), num.threads = 1, </span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="do">##     verbose = FALSE, seed = sample.int(10^5, 1))</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rand_forest</span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">1000</span>, min_n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">translate</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## Random Forest Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Main Arguments:</span></span>
+<span><span class="co">##   trees = 1000</span></span>
+<span><span class="co">##   min_n = 5</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: ranger </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model fit template:</span></span>
+<span><span class="co">## ranger::ranger(x = missing_arg(), y = missing_arg(), weights = missing_arg(), </span></span>
+<span><span class="co">##     num.trees = 1000, min.node.size = min_rows(~5, x), num.threads = 1, </span></span>
+<span><span class="co">##     verbose = FALSE, seed = sample.int(10^5, 1))</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Las funciones de modelado en <span class="pkg">parsnip</span> separan los argumentos del modelo en dos categorías:</p>
 <ul>
 <li><p>Los <em>argumentos principales</em> se utilizan con más frecuencia y tienden a estar disponibles en todos los motores.</p></li>
 <li><p>Los <em>argumentos del motor</em> son específicos de un motor en particular o se usan con menos frecuencia.</p></li>
 </ul>
-<p>Por ejemplo, en la traducción del código de random forest anterior, los argumentos <code>num.threads</code>, <code>verbose</code> y <code>seed</code> se agregaron de forma predeterminada. Estos argumentos son específicos de la implementación <span class="pkg">ranger</span> de modelos random forest y no tendrían sentido como argumentos principales. Los argumentos específicos del motor se pueden especificar en <code>set_engine()</code>. Por ejemplo, para que la función <code>ranger::ranger()</code> imprima más información sobre el ajuste:</p>
+<p>Por ejemplo, en la traducción del código de random forest anterior, los argumentos <code>num.threads</code>, <code>verbose</code> y <code>seed</code> se agregaron de forma predeterminada. Estos argumentos son específicos de la implementación <span class="pkg">ranger</span> de modelos random forest y no tendrían sentido como argumentos principales. Los argumentos específicos del motor se pueden especificar en <code>set_engine()</code>. Por ejemplo, para que la función <code><a href="http://imbs-hl.github.io/ranger/reference/ranger.html">ranger::ranger()</a></code> imprima más información sobre el ajuste:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">1000</span>, <span class="at">min_n =</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"ranger"</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>) </span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Random Forest Model Specification (regression)</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Main Arguments:</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   trees = 1000</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   min_n = 5</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Engine-Specific Arguments:</span></span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   verbose = TRUE</span></span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: ranger</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">rand_forest</span><span class="op">(</span>trees <span class="op">=</span> <span class="fl">1000</span>, min_n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"ranger"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span> </span>
+<span><span class="co">## Random Forest Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Main Arguments:</span></span>
+<span><span class="co">##   trees = 1000</span></span>
+<span><span class="co">##   min_n = 5</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Engine-Specific Arguments:</span></span>
+<span><span class="co">##   verbose = TRUE</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: ranger</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="utilizar-los-resultados-del-modelo" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="utilizar-los-resultados-del-modelo"><span class="header-section-number">6.2</span> Utilizar Los Resultados Del Modelo</h2>
+</section><section id="utilizar-los-resultados-del-modelo" class="level2" data-number="6.2"><h2 data-number="6.2" class="anchored" data-anchor-id="utilizar-los-resultados-del-modelo">
+<span class="header-section-number">6.2</span> Utilizar Los Resultados Del Modelo</h2>
 <p>Una vez creado y ajustado el modelo, podemos utilizar los resultados de diversas formas; es posible que queramos trazar, imprimir o examinar de otro modo el resultado del modelo. Varias cantidades se almacenan en un objeto modelo <span class="pkg">parsnip</span>, incluido el modelo ajustado. Esto se puede encontrar en un elemento llamado <code>fit</code>, que se puede devolver usando la función <code>extract_fit_engine()</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>lm_form_fit <span class="sc">%&gt;%</span> <span class="fu">extract_fit_engine</span>()</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="do">## stats::lm(formula = Sale_Price ~ Longitude + Latitude, data = data)</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)    Longitude     Latitude  </span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">##     -302.97        -2.07         2.71</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_form_fit</span> <span class="op">%&gt;%</span> <span class="fu">extract_fit_engine</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## stats::lm(formula = Sale_Price ~ Longitude + Latitude, data = data)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">## (Intercept)    Longitude     Latitude  </span></span>
+<span><span class="co">##     -302.97        -2.07         2.71</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Se pueden aplicar métodos normales a este objeto, como imprimir y trazar:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>lm_form_fit <span class="sc">%&gt;%</span> <span class="fu">extract_fit_engine</span>() <span class="sc">%&gt;%</span> <span class="fu">vcov</span>()</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="do">##             (Intercept) Longitude Latitude</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)     207.311   1.57466 -1.42397</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Longitude         1.575   0.01655 -0.00060</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Latitude         -1.424  -0.00060  0.03254</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_form_fit</span> <span class="op">%&gt;%</span> <span class="fu">extract_fit_engine</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://rdrr.io/r/stats/vcov.html">vcov</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">##             (Intercept) Longitude Latitude</span></span>
+<span><span class="co">## (Intercept)     207.311   1.57466 -1.42397</span></span>
+<span><span class="co">## Longitude         1.575   0.01655 -0.00060</span></span>
+<span><span class="co">## Latitude         -1.424  -0.00060  0.03254</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdwarning">
 <p>Nunca pase el elemento <code>fit</code> de un modelo <span class="pkg">parsnip</span> a una función de predicción del modelo, es decir, use <code>predict(lm_form_fit)</code> pero <em>no</em> use <code>predict(lm_form_fit$fit)</code>. Si los datos fueron preprocesados ​​de alguna manera, se generarán predicciones incorrectas (a veces, sin errores). La función de predicción del modelo subyacente no tiene idea de si se ha realizado alguna transformación en los datos antes de ejecutar el modelo. Consulte <a href="#sec-parsnip-predictions" class="quarto-xref"><span>Sección 6.3</span></a> para obtener más información sobre cómo hacer predicciones.</p>
 </div>
-<p>Un problema con algunos métodos existentes en base R es que los resultados se almacenan de una manera que puede no ser la más útil. Por ejemplo, el método <code>summary()</code> para objetos <code>lm</code> se puede utilizar para imprimir los resultados del ajuste del modelo, incluida una tabla con los valores de los parámetros, sus estimaciones de incertidumbre y los valores p.&nbsp;Estos resultados particulares también se pueden guardar:</p>
+<p>Un problema con algunos métodos existentes en base R es que los resultados se almacenan de una manera que puede no ser la más útil. Por ejemplo, el método <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> para objetos <code>lm</code> se puede utilizar para imprimir los resultados del ajuste del modelo, incluida una tabla con los valores de los parámetros, sus estimaciones de incertidumbre y los valores p.&nbsp;Estos resultados particulares también se pueden guardar:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model_res <span class="ot">&lt;-</span> </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  lm_form_fit <span class="sc">%&gt;%</span> </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_fit_engine</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Se puede acceder a la tabla de coeficientes del modelo mediante el método "coef".</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>param_est <span class="ot">&lt;-</span> <span class="fu">coef</span>(model_res)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(param_est)</span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "matrix" "array"</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>param_est</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="do">##             Estimate Std. Error t value  Pr(&gt;|t|)</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept) -302.974    14.3983  -21.04 3.640e-90</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Longitude     -2.075     0.1286  -16.13 1.395e-55</span></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Latitude       2.710     0.1804   15.02 9.289e-49</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model_res</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">lm_form_fit</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">extract_fit_engine</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Se puede acceder a la tabla de coeficientes del modelo mediante el método "coef".</span></span>
+<span><span class="va">param_est</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">model_res</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span><span class="op">(</span><span class="va">param_est</span><span class="op">)</span></span>
+<span><span class="co">## [1] "matrix" "array"</span></span>
+<span><span class="va">param_est</span></span>
+<span><span class="co">##             Estimate Std. Error t value  Pr(&gt;|t|)</span></span>
+<span><span class="co">## (Intercept) -302.974    14.3983  -21.04 3.640e-90</span></span>
+<span><span class="co">## Longitude     -2.075     0.1286  -16.13 1.395e-55</span></span>
+<span><span class="co">## Latitude       2.710     0.1804   15.02 9.289e-49</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Hay algunas cosas a tener en cuenta sobre este resultado. Primero, el objeto es una matriz numérica. Lo más probable es que se haya elegido esta estructura de datos, ya que todos los resultados calculados son numéricos y un objeto de matriz se almacena de manera más eficiente que un marco de datos. Esta elección probablemente se hizo a finales de la década de 1970, cuando la eficiencia computacional era extremadamente crítica. En segundo lugar, los datos no numéricos (las etiquetas de los coeficientes) están contenidos en los nombres de las filas. Mantener las etiquetas de los parámetros como nombres de filas es muy coherente con las convenciones del lenguaje S original.</p>
 <p>Un siguiente paso razonable podría ser crear una visualización de los valores de los parámetros. Para ello, sería sensato convertir la matriz de parámetros en un marco de datos. Podríamos agregar los nombres de las filas como una columna para que puedan usarse en un gráfico. Sin embargo, observe que varios de los nombres de columnas de matriz existentes no serían nombres de columnas R válidos para marcos de datos ordinarios (por ejemplo, <code>"Pr(&gt;|t|)"</code>). Otra complicación es la coherencia de los nombres de las columnas. Para objetos <code>lm</code>, la columna para el valor p es <code>"Pr(&gt;|t|)"</code>, pero para otros modelos, se podría usar una prueba diferente y, como resultado, el nombre de la columna sería diferente ( por ejemplo, <code>"Pr(&gt;|z|)"</code>) y el tipo de prueba se codificaría en el nombre de la columna.</p>
 <p>Si bien estos pasos adicionales de formato de datos no son imposibles de superar, son un obstáculo, especialmente porque pueden ser diferentes para distintos tipos de modelos. La matriz no es una estructura de datos altamente reutilizable, principalmente porque limita los datos a ser de un solo tipo (por ejemplo, numéricos). Además, mantener algunos datos en los nombres de las dimensiones también es problemático, ya que esos datos deben extraerse para que sean de uso general.</p>
 <p>Como solución, el paquete <span class="pkg">broom</span> puede convertir muchos tipos de objetos modelo en una estructura ordenada. Por ejemplo, usar el método <code>tidy()</code> en el modelo lineal produce:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(lm_form_fit)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 5</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   term        estimate std.error statistic  p.value</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)  -303.      14.4       -21.0 3.64e-90</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 Longitude      -2.07     0.129     -16.1 1.40e-55</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Latitude        2.71     0.180      15.0 9.29e-49</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">tidy</span><span class="op">(</span><span class="va">lm_form_fit</span><span class="op">)</span></span>
+<span><span class="co">## # A tibble: 3 × 5</span></span>
+<span><span class="co">##   term        estimate std.error statistic  p.value</span></span>
+<span><span class="co">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span><span class="co">## 1 (Intercept)  -303.      14.4       -21.0 3.64e-90</span></span>
+<span><span class="co">## 2 Longitude      -2.07     0.129     -16.1 1.40e-55</span></span>
+<span><span class="co">## 3 Latitude        2.71     0.180      15.0 9.29e-49</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Los nombres de las columnas están estandarizados en todos los modelos y no contienen ningún dato adicional (como el tipo de prueba estadística). Los datos que antes estaban contenidos en los nombres de las filas ahora están en una columna llamada <code>term</code> (término). Un principio importante en el ecosistema de tidymodels es que una función debe devolver valores que sean <em>predecibles, consistentes</em> y <em>no sorprendentes</em>.</p>
-</section>
-<section id="sec-parsnip-predictions" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="sec-parsnip-predictions"><span class="header-section-number">6.3</span> Hacer Predicciones</h2>
-<p>Otra área donde <span class="pkg">parsnip</span> difiere de las funciones de modelado R convencionales es el formato de los valores devueltos por <code>predict()</code>. Para las predicciones, <span class="pkg">parsnip</span> siempre se ajusta a las siguientes reglas:</p>
+</section><section id="sec-parsnip-predictions" class="level2" data-number="6.3"><h2 data-number="6.3" class="anchored" data-anchor-id="sec-parsnip-predictions">
+<span class="header-section-number">6.3</span> Hacer Predicciones</h2>
+<p>Otra área donde <span class="pkg">parsnip</span> difiere de las funciones de modelado R convencionales es el formato de los valores devueltos por <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code>. Para las predicciones, <span class="pkg">parsnip</span> siempre se ajusta a las siguientes reglas:</p>
 <ol type="1">
 <li>Los resultados son siempre un tibble.</li>
 <li>Los nombres de las columnas del tibble siempre son predecibles.</li>
@@ -771,16 +728,16 @@ Tabla&nbsp;6.2: Nombres de argumentos de random forest utilizados por parsnip.
 </ol>
 <p>Por ejemplo, cuando se predicen datos numéricos:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>ames_test_small <span class="ot">&lt;-</span> ames_test <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(lm_form_fit, <span class="at">new_data =</span> ames_test_small)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 5 × 1</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   .pred</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;dbl&gt;</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  5.22</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  5.21</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  5.28</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4  5.27</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 5  5.28</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_test_small</span> <span class="op">&lt;-</span> <span class="va">ames_test</span> <span class="op">%&gt;%</span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_form_fit</span>, new_data <span class="op">=</span> <span class="va">ames_test_small</span><span class="op">)</span></span>
+<span><span class="co">## # A tibble: 5 × 1</span></span>
+<span><span class="co">##   .pred</span></span>
+<span><span class="co">##   &lt;dbl&gt;</span></span>
+<span><span class="co">## 1  5.22</span></span>
+<span><span class="co">## 2  5.21</span></span>
+<span><span class="co">## 3  5.28</span></span>
+<span><span class="co">## 4  5.27</span></span>
+<span><span class="co">## 5  5.28</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>El orden de las filas de las predicciones es siempre el mismo que el de los datos originales.</p>
 <div class="rmdnote">
@@ -788,35 +745,31 @@ Tabla&nbsp;6.2: Nombres de argumentos de random forest utilizados por parsnip.
 </div>
 <p>Estas tres reglas facilitan la combinación de predicciones con los datos originales:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ames_test_small <span class="sc">%&gt;%</span> </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Sale_Price) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">predict</span>(lm_form_fit, ames_test_small)) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Agregue intervalos de predicción del 95% a los resultados:</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">predict</span>(lm_form_fit, ames_test_small, <span class="at">type =</span> <span class="st">"pred_int"</span>)) </span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 5 × 4</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   Sale_Price .pred .pred_lower .pred_upper</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="do">##        &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 1       5.02  5.22        4.91        5.54</span></span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 2       5.39  5.21        4.90        5.53</span></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 3       5.28  5.28        4.97        5.60</span></span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 4       5.28  5.27        4.96        5.59</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 5       5.28  5.28        4.97        5.60</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">ames_test_small</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_form_fit</span>, <span class="va">ames_test_small</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="co"># Agregue intervalos de predicción del 95% a los resultados:</span></span>
+<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_form_fit</span>, <span class="va">ames_test_small</span>, type <span class="op">=</span> <span class="st">"pred_int"</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="co">## # A tibble: 5 × 4</span></span>
+<span><span class="co">##   Sale_Price .pred .pred_lower .pred_upper</span></span>
+<span><span class="co">##        &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span><span class="co">## 1       5.02  5.22        4.91        5.54</span></span>
+<span><span class="co">## 2       5.39  5.21        4.90        5.53</span></span>
+<span><span class="co">## 3       5.28  5.28        4.97        5.60</span></span>
+<span><span class="co">## 4       5.28  5.27        4.96        5.59</span></span>
+<span><span class="co">## 5       5.28  5.28        4.97        5.60</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>La motivación para la primera regla proviene de algunos paquetes de R que producen tipos de datos diferentes a partir de funciones de predicción. Por ejemplo, el paquete <span class="pkg">ranger</span> es una excelente herramienta para calcular modelos forestales aleatorios. Sin embargo, en lugar de devolver un marco de datos o un vector como salida, devuelve un objeto especializado que tiene múltiples valores incrustados (incluidos los valores predichos). Este es solo un paso más que el analista de datos debe solucionar en sus scripts. Como otro ejemplo, el modelo nativo <span class="pkg">glmnet</span> puede devolver al menos cuatro tipos de salida diferentes para predicciones, dependiendo de los detalles del modelo y las características de los datos. Estos se muestran en <a href="#tbl-predict-types" class="quarto-xref">Tabla&nbsp;<span>6.3</span></a>.</p>
 <div id="tbl-predict-types" class="cell quarto-float anchored" data-layout-align="center">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-predict-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-predict-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;6.3: Diferentes valores de retorno para tipos de predicción glmnet.
-</figcaption>
-<div aria-describedby="tbl-predict-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+</figcaption><div aria-describedby="tbl-predict-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Tipo de Predicción</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Devuelve:</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">numérica</td>
@@ -836,8 +789,6 @@ Tabla&nbsp;6.3: Diferentes valores de retorno para tipos de predicción glmnet.
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </figure>
@@ -845,19 +796,15 @@ Tabla&nbsp;6.3: Diferentes valores de retorno para tipos de predicción glmnet.
 <p>Además, los nombres de las columnas de los resultados contienen valores codificados que se asignan a un vector llamado <code>lambda</code> dentro del objeto del modelo glmnet. Este excelente método estadístico puede resultar desalentador en la práctica debido a todos los casos especiales que un analista puede encontrar y que requieren código adicional para ser útil.</p>
 <p>Para la segunda regla de predicción de tidymodels, los nombres de columnas predecibles para diferentes tipos de predicciones se muestran en <a href="#tbl-predictable-column-names" class="quarto-xref">Tabla&nbsp;<span>6.4</span></a>.</p>
 <div id="tbl-predictable-column-names" class="cell quarto-float anchored" data-layout-align="center">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-predictable-column-names-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-predictable-column-names-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;6.4: El mapeo de tidymodels de tipos de predicción y nombres de columnas.
-</figcaption>
-<div aria-describedby="tbl-predictable-column-names-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+</figcaption><div aria-describedby="tbl-predictable-column-names-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">tipo de valor</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">nombre(s) de columna(s)</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left; font-family: monospace;">numeric</td>
@@ -881,65 +828,60 @@ Tabla&nbsp;6.4: El mapeo de tidymodels de tipos de predicción y nombres de colu
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </figure>
 </div>
 <p>La tercera regla con respecto al número de filas en la salida es crítica. Por ejemplo, si alguna fila de los datos nuevos contiene valores faltantes, la salida se completará con los resultados faltantes para esas filas. Una ventaja principal de estandarizar la interfaz del modelo y los tipos de predicción en <span class="pkg">parsnip</span> es que, cuando se utilizan diferentes modelos, la sintaxis es idéntica. Supongamos que utilizamos un árbol de decisión para modelar los datos de Ames. Fuera de la especificación del modelo, no hay diferencias significativas en la canalización del código:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>tree_model <span class="ot">&lt;-</span> </span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">decision_tree</span>(<span class="at">min_n =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>tree_fit <span class="ot">&lt;-</span> </span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  tree_model <span class="sc">%&gt;%</span> </span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(Sale_Price <span class="sc">~</span> Longitude <span class="sc">+</span> Latitude, <span class="at">data =</span> ames_train)</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>ames_test_small <span class="sc">%&gt;%</span> </span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Sale_Price) <span class="sc">%&gt;%</span> </span>
-<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(<span class="fu">predict</span>(tree_fit, ames_test_small))</span>
-<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 5 × 2</span></span>
-<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="do">##   Sale_Price .pred</span></span>
-<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="do">##        &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 1       5.02  5.15</span></span>
-<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 2       5.39  5.15</span></span>
-<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 3       5.28  5.32</span></span>
-<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 4       5.28  5.32</span></span>
-<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 5       5.28  5.32</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tree_model</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">decision_tree</span><span class="op">(</span>min_n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"rpart"</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_mode</span><span class="op">(</span><span class="st">"regression"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tree_fit</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">tree_model</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">fit</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span>, data <span class="op">=</span> <span class="va">ames_train</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ames_test_small</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">select</span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">bind_cols</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">tree_fit</span>, <span class="va">ames_test_small</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## # A tibble: 5 × 2</span></span>
+<span><span class="co">##   Sale_Price .pred</span></span>
+<span><span class="co">##        &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">## 1       5.02  5.15</span></span>
+<span><span class="co">## 2       5.39  5.15</span></span>
+<span><span class="co">## 3       5.28  5.32</span></span>
+<span><span class="co">## 4       5.28  5.32</span></span>
+<span><span class="co">## 5       5.28  5.32</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Esto demuestra el beneficio de homogeneizar el proceso de análisis de datos y la sintaxis en diferentes modelos. Permite a los usuarios dedicar su tiempo a los resultados y la interpretación en lugar de tener que centrarse en las diferencias sintácticas entre los paquetes de R.</p>
-</section>
-<section id="paquetes-de-extensión-de-parsnip" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="paquetes-de-extensión-de-parsnip"><span class="header-section-number">6.4</span> Paquetes De Extensión De parsnip</h2>
+</section><section id="paquetes-de-extensión-de-parsnip" class="level2" data-number="6.4"><h2 data-number="6.4" class="anchored" data-anchor-id="paquetes-de-extensión-de-parsnip">
+<span class="header-section-number">6.4</span> Paquetes De Extensión De parsnip</h2>
 <p>El paquete <span class="pkg">parsnip</span> en sí contiene interfaces para varios modelos. Sin embargo, para facilitar la instalación y el mantenimiento del paquete, existen otros paquetes tidymodels que tienen definiciones de modelo <span class="pkg">parsnip</span> para otros conjuntos de modelos. El paquete <span class="pkg">discrim</span> tiene definiciones de modelos para el conjunto de técnicas de clasificación llamadas métodos de análisis discriminante (como análisis discriminante lineal o cuadrático). De esta manera, se reducen las dependencias de paquetes necesarias para instalar <span class="pkg">parsnip</span>. Puede encontrar una lista de todos los modelos que se pueden usar con <span class="pkg">parsnip</span> (en diferentes paquetes que están en CRAN) en <a href="https://www.tidymodels.org/find/" class="uri">https://www.tidymodels.org/find/</a>.</p>
-</section>
-<section id="sec-parsnip-addin" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="sec-parsnip-addin"><span class="header-section-number">6.5</span> Crear Especificaciones De Modelo</h2>
+</section><section id="sec-parsnip-addin" class="level2" data-number="6.5"><h2 data-number="6.5" class="anchored" data-anchor-id="sec-parsnip-addin">
+<span class="header-section-number">6.5</span> Crear Especificaciones De Modelo</h2>
 <p>Puede resultar tedioso escribir muchas especificaciones de modelos o recordar cómo escribir el código para generarlas. El paquete <span class="pkg">parsnip</span> incluye un complemento RStudio<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> que puede ayudar. Ya sea eligiendo este complemento en el menú de la barra de herramientas <em>Addins</em> o ejecutando el código:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">parsnip_addin</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">parsnip_addin</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>abrirá una ventana en el panel Viewer de RStudio IDE con una lista de posibles modelos para cada modo de modelo. Estos se pueden escribir en el panel de código fuente.</p>
 <p>La lista de modelos incluye modelos de los paquetes de extensión <span class="pkg">parsnip</span> y <span class="pkg">parsnip</span> que están en CRAN.</p>
-</section>
-<section id="sec-models-summary" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="sec-models-summary"><span class="header-section-number">6.6</span> Resumen Del Capítulo</h2>
+</section><section id="sec-models-summary" class="level2" data-number="6.6"><h2 data-number="6.6" class="anchored" data-anchor-id="sec-models-summary">
+<span class="header-section-number">6.6</span> Resumen Del Capítulo</h2>
 <p>Este capítulo presentó el paquete <span class="pkg">parsnip</span>, que proporciona una interfaz común para modelos en todos los paquetes R utilizando una sintaxis estándar. La interfaz y los objetos resultantes tienen una estructura predecible.</p>
 <p>El código para modelar los datos de Ames que usaremos en el futuro es:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(ames)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">mutate</span>(ames, <span class="at">Sale_Price =</span> <span class="fu">log10</span>(Sale_Price))</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">502</span>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>ames_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(ames, <span class="at">prop =</span> <span class="fl">0.80</span>, <span class="at">strata =</span> Sale_Price)</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>ames_train <span class="ot">&lt;-</span> <span class="fu">training</span>(ames_split)</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>ames_test  <span class="ot">&lt;-</span>  <span class="fu">testing</span>(ames_split)</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>lm_model <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
+<span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="fu">mutate</span><span class="op">(</span><span class="va">ames</span>, Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">502</span><span class="op">)</span></span>
+<span><span class="va">ames_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">ames</span>, prop <span class="op">=</span> <span class="fl">0.80</span>, strata <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span></span>
+<span><span class="va">ames_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
+<span><span class="va">ames_test</span>  <span class="op">&lt;-</span>  <span class="fu">testing</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_model</span> <span class="op">&lt;-</span> <span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
@@ -948,19 +890,12 @@ Tabla&nbsp;6.4: El mapeo de tidymodels de tipos de predicción y nombres de colu
 Friedman, J, T Hastie, y R Tibshirani. 2010. <span>«Regularization paths for generalized linear models via coordinate descent»</span>. <em>Journal of statistical Software</em> 33 (1): 1.
 </div>
 </div>
-</section>
-<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
-<hr>
+</section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><hr>
 <ol>
 <li id="fn1"><p>Tenga en cuenta que <span class="pkg">parsnip</span> restringe la columna de resultados de un modelo de clasificación para que se codifique como un <em>factor</em>; el uso de valores numéricos binarios generará un error.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>¿Cuáles son las diferencias entre <code>fit()</code> y <code>fit_xy()</code>? La función <code>fit_xy()</code> siempre pasa los datos tal cual a la función del modelo subyacente. No creará variables ficticias/indicadoras antes de hacerlo. Cuando se usa <code>fit()</code> con una especificación de modelo, esto casi siempre significa que se crearán variables ficticias a partir de predictores cualitativos. Si la función subyacente requiere una matriz (como glmnet), creará la matriz. Sin embargo, si la función subyacente usa una fórmula, <code>fit()</code> simplemente pasa la fórmula a esa función. Estimamos que el 99% de las funciones de modelado que utilizan fórmulas generan variables ficticias. El otro 1% incluye métodos basados ​​en árboles que no requieren predictores puramente numéricos. Consulte <a href="07-the-model-workflow.html#sec-workflow-encoding" class="quarto-xref"><span>Sección 7.4</span></a> para obtener más información sobre el uso de fórmulas en tidymodels.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p><a href="https://rstudio.github.io/rstudioaddins/" class="uri">https://rstudio.github.io/rstudioaddins/</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
-
-</main> <!-- /main -->
-
-<script>
+</ol></section></main><!-- /main --><script>
 
   // Chapter name
   const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
@@ -1027,9 +962,7 @@ Friedman, J, T Hastie, y R Tibshirani. 2010. <span>«Regularization paths for ge
   act_link_T.innerHTML += edit_issue_T;
 
 
-</script>
-
-<script id="quarto-html-after-body" type="application/javascript">
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1437,9 +1370,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./05-data-spending.html" class="pagination-link" aria-label="Gastar Nuestros Datos">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span>
       </a>          
@@ -1451,8 +1382,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
 </div>   
@@ -1464,8 +1394,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>

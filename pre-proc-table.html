@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.553">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Max Kuhn, y Julia Silge">
-
 <title>Modelado Ordenado con R - Apéndice A — Preprocesamiento Recomendado</title>
 <style>
 code{white-space: pre-wrap;}
@@ -43,7 +40,6 @@ div.csl-indent {
   margin-left: 2em;
 }</style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -61,8 +57,7 @@ div.csl-indent {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -88,21 +83,14 @@ div.csl-indent {
     "search-submit-button-title": "Enviar",
     "search-label": "Buscar"
   }
-}</script>
-<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
-<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-
-
+}</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -113,20 +101,16 @@ div.csl-indent {
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
     <div class="dropdown">
       <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-          <li>
+<li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
             Original
             </a>
@@ -137,7 +121,7 @@ div.csl-indent {
             </a>
           </li>
       </ul>
-    </div>
+</div>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -153,7 +137,7 @@ div.csl-indent {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Hola Mundo</span></a>
@@ -167,8 +151,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
@@ -187,7 +171,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
@@ -196,8 +180,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
@@ -234,7 +218,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
@@ -243,8 +227,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
@@ -281,7 +265,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
@@ -290,8 +274,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
@@ -328,7 +312,7 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
@@ -337,8 +321,8 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
@@ -351,20 +335,16 @@ div.csl-indent {
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./pre-proc-table.html">Apéndices</a></li><li class="breadcrumb-item"><a href="./pre-proc-table.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></a></li></ol></nav>
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./pre-proc-table.html">Apéndices</a></li><li class="breadcrumb-item"><a href="./pre-proc-table.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-pre-proc-table" class="quarto-section-identifier">Apéndice A — Preprocesamiento Recomendado</span></h1>
 </div>
 
@@ -379,10 +359,7 @@ div.csl-indent {
   
 
 
-</header>
-
-
-<p>El tipo de preprocesamiento necesario depende del tipo de modelo que se ajuste. Por ejemplo, los modelos que utilizan funciones de distancia o productos escalares deben tener todos sus predictores en la misma escala para que la distancia se mida adecuadamente.</p>
+</header><p>El tipo de preprocesamiento necesario depende del tipo de modelo que se ajuste. Por ejemplo, los modelos que utilizan funciones de distancia o productos escalares deben tener todos sus predictores en la misma escala para que la distancia se mida adecuadamente.</p>
 <p>Para obtener más información sobre cada uno de estos modelos y otros que podrían estar disponibles, consulte <a href="https://www.tidymodels.org/find/parsnip/" class="uri">https://www.tidymodels.org/find/parsnip/</a>.</p>
 <p>Este Apéndice proporciona recomendaciones para los niveles básicos de preprocesamiento que se necesitan para diversas funciones del modelo. En <a href="#tbl-preprocessing" class="quarto-xref">Tabla&nbsp;<span>A.1</span></a>, los métodos de preprocesamiento se clasifican como:</p>
 <ul>
@@ -395,15 +372,12 @@ div.csl-indent {
 </ul>
 <p>La información en <a href="#tbl-preprocessing" class="quarto-xref">Tabla&nbsp;<span>A.1</span></a> no es exhaustiva y depende en cierta medida de la implementación. Por ejemplo, como se indica debajo de la tabla, es posible que algunos modelos no requieran una operación de preprocesamiento particular, pero la implementación puede requerirla. En la tabla, ✔ indica que el método es necesario para el modelo y × indica que no. El símbolo ◌ significa que la técnica <em>puede</em> ayudar al modelo, pero no es necesario.</p>
 <div id="tbl-preprocessing" class="cell quarto-float anchored" data-layout-align="center">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-preprocessing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-preprocessing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
-</figcaption>
-<div aria-describedby="tbl-preprocessing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+</figcaption><div aria-describedby="tbl-preprocessing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">dummy</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">zv</th>
@@ -411,11 +385,10 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <th style="text-align: center;" data-quarto-table-cell-role="th">decorrelate</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">normalize</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">transform</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">&lt;tt&gt;C5_rules()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>C5_rules()</code></td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">×</td>
@@ -424,7 +397,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">×</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">&lt;tt&gt;bag_mars()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>bag_mars()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">✔</td>
@@ -433,7 +406,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">◌</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">&lt;tt&gt;bag_tree()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>bag_tree()</code></td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">×</td>
@@ -442,7 +415,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">×</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">&lt;tt&gt;bart()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>bart()</code></td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">×</td>
@@ -451,7 +424,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">×</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">&lt;tt&gt;boost_tree()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>boost_tree()</code></td>
 <td style="text-align: center;">×²</td>
 <td style="text-align: center;">◌</td>
 <td style="text-align: center;">✔²</td>
@@ -460,7 +433,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">×</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">&lt;tt&gt;cubist_rules()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>cubist_rules()</code></td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">×</td>
@@ -469,7 +442,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">×</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">&lt;tt&gt;decision_tree()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>decision_tree()</code></td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">×</td>
@@ -478,7 +451,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">×</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">&lt;tt&gt;discrim_flexible()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>discrim_flexible()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">✔</td>
@@ -487,7 +460,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">◌</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">&lt;tt&gt;discrim_linear()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>discrim_linear()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
@@ -496,7 +469,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">◌</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">&lt;tt&gt;discrim_regularized()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>discrim_regularized()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
@@ -505,7 +478,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">◌</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">&lt;tt&gt;gen_additive_mod()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>gen_additive_mod()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
@@ -514,7 +487,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">◌</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">&lt;tt&gt;linear_reg()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>linear_reg()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
@@ -523,7 +496,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">◌</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">&lt;tt&gt;logistic_reg()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>logistic_reg()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
@@ -532,7 +505,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">◌</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">&lt;tt&gt;mars()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>mars()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">✔</td>
@@ -541,7 +514,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">◌</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">&lt;tt&gt;mlp()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>mlp()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
@@ -550,7 +523,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">✔</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">&lt;tt&gt;multinom_reg()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>multinom_reg()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
@@ -559,7 +532,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">◌</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">&lt;tt&gt;naive_Bayes()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>naive_Bayes()</code></td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
@@ -568,7 +541,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">×</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">&lt;tt&gt;nearest_neighbor()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>nearest_neighbor()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
@@ -577,7 +550,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">✔</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">&lt;tt&gt;pls()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>pls()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
@@ -586,7 +559,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">✔</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">&lt;tt&gt;poisson_reg()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>poisson_reg()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
@@ -595,7 +568,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">◌</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">&lt;tt&gt;rand_forest()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>rand_forest()</code></td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">◌</td>
 <td style="text-align: center;">✔²</td>
@@ -604,7 +577,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">×</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">&lt;tt&gt;rule_fit()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>rule_fit()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">×</td>
 <td style="text-align: center;">✔</td>
@@ -613,7 +586,7 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <td style="text-align: center;">×</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">&lt;tt&gt;svm_*()&lt;/tt&gt;</td>
+<td style="text-align: left;"><code>svm_*()</code></td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
 <td style="text-align: center;">✔</td>
@@ -623,8 +596,6 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 </tr>
 </tbody>
 </table>
-
-
 </div>
 </div>
 </figure>
@@ -635,7 +606,8 @@ Tabla&nbsp;A.1: Métodos de preprocesamiento para diferentes modelos.
 <li>El preprocesamiento necesario para estos modelos depende de la implementación. Específicamente:</li>
 </ol>
 <ul>
-<li><em>Teóricamente</em>, cualquier modelo basado en árboles no requiere imputación. Sin embargo, muchas implementaciones de conjuntos de árboles requieren imputación.</li>
+<li>
+<em>Teóricamente</em>, cualquier modelo basado en árboles no requiere imputación. Sin embargo, muchas implementaciones de conjuntos de árboles requieren imputación.</li>
 <li>Si bien los métodos de impulso basados en árboles generalmente no requieren la creación de variables ficticias, los modelos que utilizan el motor “xgboost” sí la requieren.</li>
 </ul>
 
@@ -646,9 +618,7 @@ Kuhn, M, y K Johnson. 2020. <em>Feature engineering and selection: A practical a
 </div>
 </div>
 
-</main> <!-- /main -->
-
-<script>
+</main><!-- /main --><script>
 
   // Chapter name
   const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
@@ -715,9 +685,7 @@ Kuhn, M, y K Johnson. 2020. <em>Feature engineering and selection: A practical a
   act_link_T.innerHTML += edit_issue_T;
 
 
-</script>
-
-<script id="quarto-html-after-body" type="application/javascript">
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1125,9 +1093,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./21-inferential-analysis.html" class="pagination-link" aria-label="Análisis Inferencial">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span>
       </a>          
@@ -1139,8 +1105,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
 </div>   
@@ -1152,8 +1117,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>

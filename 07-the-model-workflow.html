@@ -1,13 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.4.553">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Max Kuhn, y Julia Silge">
-
 <title>Modelado Ordenado con R - 7&nbsp; Un Flujo De Modelado</title>
 <style>
 code{white-space: pre-wrap;}
@@ -57,7 +54,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -75,8 +71,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
   "collapse-after": 3,
@@ -102,12 +97,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Enviar",
     "search-label": "Buscar"
   }
-}</script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
+}</script><script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -132,18 +122,13 @@ const typesetMath = (el) => {
 window.Quarto = {
   typesetMath
 };
-</script>
-
-<link rel="stylesheet" href="style.css">
+</script><link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="TMwR.css">
 </head>
-
 <body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav">
-    <div class="container-fluid d-flex">
+  <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
@@ -154,20 +139,16 @@ window.Quarto = {
         <i class="bi bi-search"></i>
       </button>
     </div>
-  </nav>
-</header>
-<!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto"><div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
     <div class="dropdown">
       <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-          <li>
+<li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
             Original
             </a>
@@ -178,7 +159,7 @@ window.Quarto = {
             </a>
           </li>
       </ul>
-    </div>
+</div>
   <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
   <div class="quarto-reader-toggle-btn">
   <i class="bi"></i>
@@ -194,7 +175,7 @@ window.Quarto = {
         </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
-        <li class="sidebar-item">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Hola Mundo</span></a>
@@ -208,8 +189,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
@@ -228,7 +209,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
@@ -237,8 +218,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
@@ -275,7 +256,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
@@ -284,8 +265,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
@@ -322,7 +303,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
@@ -331,8 +312,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
@@ -369,7 +350,7 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
@@ -378,8 +359,8 @@ window.Quarto = {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
@@ -392,36 +373,32 @@ window.Quarto = {
   </div>
 </li>
       </ul>
-  </li>
+</li>
     </ul>
-    </div>
-</nav>
-<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Tabla de contenidos</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Tabla de contenidos</h2>
    
   <ul>
-  <li><a href="#sec-begin-model-end" id="toc-sec-begin-model-end" class="nav-link active" data-scroll-target="#sec-begin-model-end"><span class="header-section-number">7.1</span> ¿Dónde Comienza Y Termina El Modelo?</a></li>
-  <li><a href="#conceptos-básicos-del-flujo-de-trabajo" id="toc-conceptos-básicos-del-flujo-de-trabajo" class="nav-link" data-scroll-target="#conceptos-básicos-del-flujo-de-trabajo"><span class="header-section-number">7.2</span> Conceptos Básicos Del Flujo De Trabajo</a></li>
+<li><a href="#sec-begin-model-end" id="toc-sec-begin-model-end" class="nav-link active" data-scroll-target="#sec-begin-model-end"><span class="header-section-number">7.1</span> ¿Dónde Comienza Y Termina El Modelo?</a></li>
+  <li><a href="#conceptos-b%C3%A1sicos-del-flujo-de-trabajo" id="toc-conceptos-básicos-del-flujo-de-trabajo" class="nav-link" data-scroll-target="#conceptos-b%C3%A1sicos-del-flujo-de-trabajo"><span class="header-section-number">7.2</span> Conceptos Básicos Del Flujo De Trabajo</a></li>
   <li><a href="#agregar-variables-sin-procesar-al-workflow" id="toc-agregar-variables-sin-procesar-al-workflow" class="nav-link" data-scroll-target="#agregar-variables-sin-procesar-al-workflow"><span class="header-section-number">7.3</span> Agregar Variables Sin Procesar Al <code>workflow()</code></a></li>
-  <li><a href="#sec-workflow-encoding" id="toc-sec-workflow-encoding" class="nav-link" data-scroll-target="#sec-workflow-encoding"><span class="header-section-number">7.4</span> ¿Cómo Utiliza Un <code>workflow()</code> La Fórmula?</a>
+  <li>
+<a href="#sec-workflow-encoding" id="toc-sec-workflow-encoding" class="nav-link" data-scroll-target="#sec-workflow-encoding"><span class="header-section-number">7.4</span> ¿Cómo Utiliza Un <code>workflow()</code> La Fórmula?</a>
   <ul class="collapse">
-  <li><a href="#modelos-basados-en-árboles" id="toc-modelos-basados-en-árboles" class="nav-link" data-scroll-target="#modelos-basados-en-árboles">Modelos basados en árboles</a></li>
+<li><a href="#modelos-basados-en-%C3%A1rboles" id="toc-modelos-basados-en-árboles" class="nav-link" data-scroll-target="#modelos-basados-en-%C3%A1rboles">Modelos basados en árboles</a></li>
   <li><a href="#sec-special-model-formulas" id="toc-sec-special-model-formulas" class="nav-link" data-scroll-target="#sec-special-model-formulas"><span class="header-section-number">7.4.1</span> Fórmulas especiales y funciones en línea.</a></li>
-  </ul></li>
-  <li><a href="#sec-workflow-sets-intro" id="toc-sec-workflow-sets-intro" class="nav-link" data-scroll-target="#sec-workflow-sets-intro"><span class="header-section-number">7.5</span> Crear Múltiples Flujos De Trabajo A La Vez</a></li>
-  <li><a href="#evaluación-del-conjunto-de-prueba" id="toc-evaluación-del-conjunto-de-prueba" class="nav-link" data-scroll-target="#evaluación-del-conjunto-de-prueba"><span class="header-section-number">7.6</span> Evaluación Del Conjunto De Prueba</a></li>
-  <li><a href="#sec-workflows-summary" id="toc-sec-workflows-summary" class="nav-link" data-scroll-target="#sec-workflows-summary"><span class="header-section-number">7.7</span> Resumen Del capítulo</a></li>
   </ul>
-</nav>
+</li>
+  <li><a href="#sec-workflow-sets-intro" id="toc-sec-workflow-sets-intro" class="nav-link" data-scroll-target="#sec-workflow-sets-intro"><span class="header-section-number">7.5</span> Crear Múltiples Flujos De Trabajo A La Vez</a></li>
+  <li><a href="#evaluaci%C3%B3n-del-conjunto-de-prueba" id="toc-evaluación-del-conjunto-de-prueba" class="nav-link" data-scroll-target="#evaluaci%C3%B3n-del-conjunto-de-prueba"><span class="header-section-number">7.6</span> Evaluación Del Conjunto De Prueba</a></li>
+  <li><a href="#sec-workflows-summary" id="toc-sec-workflows-summary" class="nav-link" data-scroll-target="#sec-workflows-summary"><span class="header-section-number">7.7</span> Resumen Del capítulo</a></li>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./07-the-model-workflow.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></a></li></ol></nav>
-<div class="quarto-title">
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./07-the-model-workflow.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></a></li></ol></nav><div class="quarto-title">
 <h1 class="title"><span id="sec-workflows" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></h1>
 </div>
 
@@ -436,12 +413,9 @@ window.Quarto = {
   
 
 
-</header>
-
-
-<p>En el capítulo anterior, analizamos el paquete <span class="pkg">parsnip</span>, que se puede utilizar para definir y ajustar el modelo. Este capítulo presenta un nuevo concepto llamado <em>flujo de modelado</em>. El propósito de este concepto (y el objeto tidymodels <code>workflow()</code> correspondiente) es encapsular las partes principales del proceso de modelado (discutido en <a href="01-software-modeling.html#sec-model-phases" class="quarto-xref"><span>Sección 1.5</span></a>). El flujo de trabajo es importante en dos sentidos. En primer lugar, utilizar un concepto de flujo de trabajo fomenta una buena metodología, ya que es un punto de entrada único a los componentes de estimación de un análisis de datos. En segundo lugar, permite al usuario organizar mejor los proyectos. Estos dos puntos se analizan en las siguientes secciones.</p>
-<section id="sec-begin-model-end" class="level2" data-number="7.1">
-<h2 data-number="7.1" class="anchored" data-anchor-id="sec-begin-model-end"><span class="header-section-number">7.1</span> ¿Dónde Comienza Y Termina El Modelo?</h2>
+</header><p>En el capítulo anterior, analizamos el paquete <span class="pkg">parsnip</span>, que se puede utilizar para definir y ajustar el modelo. Este capítulo presenta un nuevo concepto llamado <em>flujo de modelado</em>. El propósito de este concepto (y el objeto tidymodels <code>workflow()</code> correspondiente) es encapsular las partes principales del proceso de modelado (discutido en <a href="01-software-modeling.html#sec-model-phases" class="quarto-xref"><span>Sección 1.5</span></a>). El flujo de trabajo es importante en dos sentidos. En primer lugar, utilizar un concepto de flujo de trabajo fomenta una buena metodología, ya que es un punto de entrada único a los componentes de estimación de un análisis de datos. En segundo lugar, permite al usuario organizar mejor los proyectos. Estos dos puntos se analizan en las siguientes secciones.</p>
+<section id="sec-begin-model-end" class="level2" data-number="7.1"><h2 data-number="7.1" class="anchored" data-anchor-id="sec-begin-model-end">
+<span class="header-section-number">7.1</span> ¿Dónde Comienza Y Termina El Modelo?</h2>
 <p>Hasta ahora, cuando hemos utilizado el término “el modelo”, nos referimos a una ecuación estructural que relaciona algunos predictores con uno o más resultados. Consideremos nuevamente la regresión lineal como ejemplo. Los datos de resultado se indican como <span class="math inline">\(y_i\)</span>, donde hay <span class="math inline">\(i = 1 \ldots n\)</span> muestras en el conjunto de entrenamiento. Supongamos que hay <span class="math inline">\(p\)</span> predictores <span class="math inline">\(x_{i1}, \ldots, x_{ip}\)</span> que se utilizan en el modelo. La regresión lineal produce una ecuación modelo de</p>
 <p><span class="math display">\[ \hat{y}_i = \hat{\beta}_0 + \hat{\beta}_1x_{i1} + \ldots + \hat{\beta}_px_{ip} \]</span></p>
 <p>Si bien este es un modelo lineal, es lineal sólo en los parámetros. Los predictores podrían ser términos no lineales (como el <span class="math inline">\(\log(x_i)\)</span>).</p>
@@ -465,14 +439,12 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-bad-workflow" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un modelo mental incorrecto de dónde ocurre la estimación del modelo en el proceso de análisis de datos. Los datos y el conjunto de predictores son sustratos para un paso de preprocesamiento inicial utilizando PCA. Estos datos se pasan al algoritmo de ajuste del modelo para producir un modelo ajustado. La figura indica que el flujo de trabajo del modelo solo incluye el proceso de ajuste del modelo. Esto implica que el ajuste del modelo es el único lugar donde se produce la estimación.">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-bad-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bad-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/bad-workflow.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Un modelo mental incorrecto de dónde ocurre la estimación del modelo en el proceso de análisis de datos. Los datos y el conjunto de predictores son sustratos para un paso de preprocesamiento inicial utilizando PCA. Estos datos se pasan al algoritmo de ajuste del modelo para producir un modelo ajustado. La figura indica que el flujo de trabajo del modelo solo incluye el proceso de ajuste del modelo. Esto implica que el ajuste del modelo es el único lugar donde se produce la estimación.">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bad-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;7.1: Modelo mental incorrecto de dónde ocurre la estimación del modelo en el proceso de análisis de datos
-</figcaption>
-</figure>
+</figcaption></figure>
 </div>
 </div>
 </div>
@@ -481,169 +453,165 @@ Figura&nbsp;7.1: Modelo mental incorrecto de dónde ocurre la estimación del mo
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-good-workflow" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un modelo mental correcto de dónde ocurre la estimación del modelo en el proceso de análisis de datos. Los datos y el conjunto de predictores son sustratos para un paso de preprocesamiento inicial utilizando PCA. Estos datos se pasan al algoritmo de ajuste del modelo para producir un modelo ajustado. La figura indica que el flujo de trabajo del modelo incluye el proceso de ajuste del modelo y el paso PCA. Esto implica que ambas operaciones deben considerarse pasos de estimación.">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-good-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-good-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/proper-workflow.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Un modelo mental correcto de dónde ocurre la estimación del modelo en el proceso de análisis de datos. Los datos y el conjunto de predictores son sustratos para un paso de preprocesamiento inicial utilizando PCA. Estos datos se pasan al algoritmo de ajuste del modelo para producir un modelo ajustado. La figura indica que el flujo de trabajo del modelo incluye el proceso de ajuste del modelo y el paso PCA. Esto implica que ambas operaciones deben considerarse pasos de estimación.">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-good-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;7.2: Modelo mental correcto de dónde ocurre la estimación del modelo en el proceso de análisis de datos.
-</figcaption>
-</figure>
+</figcaption></figure>
 </div>
 </div>
 </div>
 <p>De esta forma, el preprocesamiento PCA se considera parte del proceso de modelado.</p>
-</section>
-<section id="conceptos-básicos-del-flujo-de-trabajo" class="level2" data-number="7.2">
-<h2 data-number="7.2" class="anchored" data-anchor-id="conceptos-básicos-del-flujo-de-trabajo"><span class="header-section-number">7.2</span> Conceptos Básicos Del Flujo De Trabajo</h2>
+</section><section id="conceptos-básicos-del-flujo-de-trabajo" class="level2" data-number="7.2"><h2 data-number="7.2" class="anchored" data-anchor-id="conceptos-básicos-del-flujo-de-trabajo">
+<span class="header-section-number">7.2</span> Conceptos Básicos Del Flujo De Trabajo</h2>
 <p>El paquete <span class="pkg">workflows</span> permite al usuario vincular objetos de modelado y preprocesamiento. Empecemos de nuevo con los datos de Ames y un modelo lineal simple:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)  <span class="co"># Incluye el paquete de flujos de trabajo.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>lm_model <span class="ot">&lt;-</span> </span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span>  <span class="co"># Incluye el paquete de flujos de trabajo.</span></span>
+<span><span class="fu"><a href="https://tidymodels.tidymodels.org/reference/tidymodels_prefer.html">tidymodels_prefer</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_model</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">linear_reg</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">set_engine</span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Un flujo de trabajo siempre requiere un objeto modelo <span class="pkg">parsnip</span>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>lm_wflow <span class="ot">&lt;-</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(lm_model)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>lm_wflow</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">## ══ Workflow ═════════════════════════════════════════════════════════════════════════</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Preprocessor: None</span></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Model: linear_reg()</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_wflow</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">lm_model</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_wflow</span></span>
+<span><span class="co">## ══ Workflow ═════════════════════════════════════════════════════════════════════════</span></span>
+<span><span class="co">## Preprocessor: None</span></span>
+<span><span class="co">## Model: linear_reg()</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Tenga en cuenta que aún no hemos especificado cómo este flujo de trabajo debe preprocesar los datos: <code>Preprocessor: None</code>.</p>
 <p>Si nuestro modelo es muy simple, se puede utilizar una fórmula R estándar como preprocesador:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>lm_wflow <span class="ot">&lt;-</span> </span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  lm_wflow <span class="sc">%&gt;%</span> </span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_formula</span>(Sale_Price <span class="sc">~</span> Longitude <span class="sc">+</span> Latitude)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>lm_wflow</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## ══ Workflow ═════════════════════════════════════════════════════════════════════════</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Preprocessor: Formula</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Model: linear_reg()</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Sale_Price ~ Longitude + Latitude</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_wflow</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">lm_wflow</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">add_formula</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_wflow</span></span>
+<span><span class="co">## ══ Workflow ═════════════════════════════════════════════════════════════════════════</span></span>
+<span><span class="co">## Preprocessor: Formula</span></span>
+<span><span class="co">## Model: linear_reg()</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Sale_Price ~ Longitude + Latitude</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Los flujos de trabajo tienen un método <code>fit()</code> que se puede utilizar para crear el modelo. Usando los objetos creados en <a href="06-fitting-models.html#sec-models-summary" class="quarto-xref"><span>Sección 6.6</span></a>:</p>
+<p>Los flujos de trabajo tienen un método <code><a href="https://generics.r-lib.org/reference/fit.html">fit()</a></code> que se puede utilizar para crear el modelo. Usando los objetos creados en <a href="06-fitting-models.html#sec-models-summary" class="quarto-xref"><span>Sección 6.6</span></a>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>lm_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(lm_wflow, ames_train)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>lm_fit</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Preprocessor: Formula</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Model: linear_reg()</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Sale_Price ~ Longitude + Latitude</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="do">## stats::lm(formula = ..y ~ ., data = data)</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)    Longitude     Latitude  </span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="do">##     -302.97        -2.07         2.71</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_fit</span> <span class="op">&lt;-</span> <span class="fu">fit</span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_train</span><span class="op">)</span></span>
+<span><span class="va">lm_fit</span></span>
+<span><span class="co">## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════</span></span>
+<span><span class="co">## Preprocessor: Formula</span></span>
+<span><span class="co">## Model: linear_reg()</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Sale_Price ~ Longitude + Latitude</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## stats::lm(formula = ..y ~ ., data = data)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">## (Intercept)    Longitude     Latitude  </span></span>
+<span><span class="co">##     -302.97        -2.07         2.71</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>También podemos <code>predict()</code> en el flujo de trabajo ajustado:</p>
+<p>También podemos <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> en el flujo de trabajo ajustado:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(lm_fit, ames_test <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>))</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 1</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   .pred</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;dbl&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  5.22</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  5.21</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  5.28</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">lm_fit</span>, <span class="va">ames_test</span> <span class="op">%&gt;%</span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">## # A tibble: 3 × 1</span></span>
+<span><span class="co">##   .pred</span></span>
+<span><span class="co">##   &lt;dbl&gt;</span></span>
+<span><span class="co">## 1  5.22</span></span>
+<span><span class="co">## 2  5.21</span></span>
+<span><span class="co">## 3  5.28</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>El método <code>predict()</code> sigue las mismas reglas y convenciones de nomenclatura que describimos para el paquete <span class="pkg">parsnip</span> en <a href="06-fitting-models.html#sec-parsnip-predictions" class="quarto-xref"><span>Sección 6.3</span></a>.</p>
+<p>El método <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> sigue las mismas reglas y convenciones de nomenclatura que describimos para el paquete <span class="pkg">parsnip</span> en <a href="06-fitting-models.html#sec-parsnip-predictions" class="quarto-xref"><span>Sección 6.3</span></a>.</p>
 <p>Tanto el modelo como el preprocesador se pueden eliminar o actualizar:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>lm_fit <span class="sc">%&gt;%</span> <span class="fu">update_formula</span>(Sale_Price <span class="sc">~</span> Longitude)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="do">## ══ Workflow ═════════════════════════════════════════════════════════════════════════</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Preprocessor: Formula</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Model: linear_reg()</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Sale_Price ~ Longitude</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_fit</span> <span class="op">%&gt;%</span> <span class="fu">update_formula</span><span class="op">(</span><span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span><span class="op">)</span></span>
+<span><span class="co">## ══ Workflow ═════════════════════════════════════════════════════════════════════════</span></span>
+<span><span class="co">## Preprocessor: Formula</span></span>
+<span><span class="co">## Model: linear_reg()</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Sale_Price ~ Longitude</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Tenga en cuenta que, en este nuevo objeto, el resultado muestra que el modelo ajustado anterior se eliminó ya que la nueva fórmula es inconsistente con el ajuste del modelo anterior.</p>
-</section>
-<section id="agregar-variables-sin-procesar-al-workflow" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="agregar-variables-sin-procesar-al-workflow"><span class="header-section-number">7.3</span> Agregar Variables Sin Procesar Al <code>workflow()</code></h2>
-<p>Hay otra interfaz para pasar datos al modelo, la función <code>add_variables()</code>, que usa una sintaxis similar a <span class="pkg">dplyr</span> para elegir variables. La función tiene dos argumentos principales: <code>outcomes</code> y <code>predictors</code>. Estos utilizan un enfoque de selección similar al backend <span class="pkg">tidyselect</span> de los paquetes <span class="pkg">tidyverse</span> para capturar múltiples selectores usando <code>c()</code>.</p>
+</section><section id="agregar-variables-sin-procesar-al-workflow" class="level2" data-number="7.3"><h2 data-number="7.3" class="anchored" data-anchor-id="agregar-variables-sin-procesar-al-workflow">
+<span class="header-section-number">7.3</span> Agregar Variables Sin Procesar Al <code>workflow()</code>
+</h2>
+<p>Hay otra interfaz para pasar datos al modelo, la función <code>add_variables()</code>, que usa una sintaxis similar a <span class="pkg">dplyr</span> para elegir variables. La función tiene dos argumentos principales: <code>outcomes</code> y <code>predictors</code>. Estos utilizan un enfoque de selección similar al backend <span class="pkg">tidyselect</span> de los paquetes <span class="pkg">tidyverse</span> para capturar múltiples selectores usando <code><a href="https://rdrr.io/r/base/c.html">c()</a></code>.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>lm_wflow <span class="ot">&lt;-</span> </span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  lm_wflow <span class="sc">%&gt;%</span> </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_formula</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_variables</span>(<span class="at">outcome =</span> Sale_Price, <span class="at">predictors =</span> <span class="fu">c</span>(Longitude, Latitude))</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>lm_wflow</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">## ══ Workflow ═════════════════════════════════════════════════════════════════════════</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Preprocessor: Variables</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Model: linear_reg()</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Outcomes: Sale_Price</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Predictors: c(Longitude, Latitude)</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">lm_wflow</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="va">lm_wflow</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">remove_formula</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> </span>
+<span>  <span class="fu">add_variables</span><span class="op">(</span>outcome <span class="op">=</span> <span class="va">Sale_Price</span>, predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Longitude</span>, <span class="va">Latitude</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">lm_wflow</span></span>
+<span><span class="co">## ══ Workflow ═════════════════════════════════════════════════════════════════════════</span></span>
+<span><span class="co">## Preprocessor: Variables</span></span>
+<span><span class="co">## Model: linear_reg()</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Outcomes: Sale_Price</span></span>
+<span><span class="co">## Predictors: c(Longitude, Latitude)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Los predictores también podrían haberse especificado utilizando un selector más general, como</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>predictors <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">ends_with</span>(<span class="st">"tude"</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">predictors</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fu">ends_with</span><span class="op">(</span><span class="st">"tude"</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Una ventaja es que cualquier columna de resultados especificada accidentalmente en el argumento de los predictores se eliminará silenciosamente. Esto facilita el uso de:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>predictors <span class="ot">=</span> <span class="fu">everything</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">predictors</span> <span class="op">=</span> <span class="fu">everything</span><span class="op">(</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Cuando el modelo se ajusta, la especificación reúne estos datos, sin modificar, en un marco de datos y los pasa a la función subyacente:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fit</span>(lm_wflow, ames_train)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="do">## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Preprocessor: Variables</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Model: linear_reg()</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Outcomes: Sale_Price</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Predictors: c(Longitude, Latitude)</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="do">## stats::lm(formula = ..y ~ ., data = data)</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)    Longitude     Latitude  </span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="do">##     -302.97        -2.07         2.71</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">fit</span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_train</span><span class="op">)</span></span>
+<span><span class="co">## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════</span></span>
+<span><span class="co">## Preprocessor: Variables</span></span>
+<span><span class="co">## Model: linear_reg()</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Outcomes: Sale_Price</span></span>
+<span><span class="co">## Predictors: c(Longitude, Latitude)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## stats::lm(formula = ..y ~ ., data = data)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">## (Intercept)    Longitude     Latitude  </span></span>
+<span><span class="co">##     -302.97        -2.07         2.71</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Si desea que el método de modelado subyacente haga lo que normalmente haría con los datos, <code>add_variables()</code> puede ser una interfaz útil. Como veremos en <a href="#sec-special-model-formulas" class="quarto-xref"><span>Sección 7.4.1</span></a>, también facilita especificaciones de modelado más complejas. Sin embargo, como mencionamos en la siguiente sección, modelos como <code>glmnet</code> y <code>xgboost</code> esperan que el usuario cree variables indicadoras a partir de predictores de factores. En estos casos, una interfaz de receta o fórmula suele ser una mejor opción.</p>
 <p>En el próximo capítulo, veremos un preprocesador más potente (llamado <em>recipe</em>) que también se puede agregar a un flujo de trabajo.</p>
-</section>
-<section id="sec-workflow-encoding" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="sec-workflow-encoding"><span class="header-section-number">7.4</span> ¿Cómo Utiliza Un <code>workflow()</code> La Fórmula?</h2>
+</section><section id="sec-workflow-encoding" class="level2" data-number="7.4"><h2 data-number="7.4" class="anchored" data-anchor-id="sec-workflow-encoding">
+<span class="header-section-number">7.4</span> ¿Cómo Utiliza Un <code>workflow()</code> La Fórmula?</h2>
 <p>Recuerde de <a href="03-base-r.html#sec-formula" class="quarto-xref"><span>Sección 3.2</span></a> que el método de fórmula en R tiene múltiples propósitos (lo discutiremos más a fondo en el <a href="08-feature-engineering.html" class="quarto-xref">Capítulo&nbsp;<span>8</span></a>). Uno de ellos es codificar correctamente los datos originales en un formato listo para el análisis. Esto puede implicar la ejecución de transformaciones en línea (por ejemplo, <code>log(x)</code>), la creación de columnas de variables ficticias, la creación de interacciones u otras expansiones de columnas, etc. Sin embargo, muchos métodos estadísticos requieren diferentes tipos de codificaciones:</p>
 <ul>
 <li><p>La mayoría de los paquetes para modelos basados en árboles utilizan la interfaz de fórmulas pero <em>no</em> codifican los predictores categóricos como variables ficticias.</p></li>
@@ -651,120 +619,116 @@ Figura&nbsp;7.2: Modelo mental correcto de dónde ocurre la estimación del mode
 <li><p>Algunos paquetes de R han ampliado la fórmula de manera que las funciones básicas de R no pueden analizar ni ejecutar. En modelos multinivel (por ejemplo, modelos mixtos o modelos bayesianos jerárquicos), un término de modelo como <code>(semana | sujeto)</code> indica que la columna <code>semana</code> es un efecto aleatorio que tiene diferentes estimaciones de parámetros de pendiente para cada valor de la columna <code>sujeto</code>.</p></li>
 </ul>
 <p>Un flujo de trabajo es una interfaz de propósito general. Cuando se utiliza <code>add_formula()</code>, ¿cómo debería el flujo de trabajo preprocesar los datos? Dado que el preprocesamiento depende del modelo, <span class="pkg">workflows</span> intenta emular lo que haría el modelo subyacente siempre que sea posible. Si no es posible, el procesamiento de la fórmula no debe afectar las columnas utilizadas en la fórmula. Veamos esto con más detalle.</p>
-<section id="modelos-basados-en-árboles" class="level3 unnumbered">
-<h3 class="unnumbered anchored" data-anchor-id="modelos-basados-en-árboles">Modelos basados en árboles</h3>
+<section id="modelos-basados-en-árboles" class="level3 unnumbered"><h3 class="unnumbered anchored" data-anchor-id="modelos-basados-en-árboles">Modelos basados en árboles</h3>
 <p>Cuando ajustamos un árbol a los datos, el paquete <span class="pkg">parsnip</span> comprende lo que haría la función de modelado. Por ejemplo, si un modelo de bosque aleatorio se ajusta usando los paquetes <span class="pkg">ranger</span> o <span class="pkg">randomForest</span>, el flujo de trabajo sabe que las columnas de predictores que son factores deben dejarse como están.</p>
-<p>Como contraejemplo, un árbol potenciado creado con el paquete <span class="pkg">xgboost</span> requiere que el usuario cree variables ficticias a partir de predictores de factores (ya que <code>xgboost::xgb.train()</code> no lo hará). Este requisito está integrado en el objeto de especificación del modelo y un flujo de trabajo que utiliza <span class="pkg">xgboost</span> creará las columnas indicadoras para este motor. También tenga en cuenta que un motor diferente para árboles potenciados, C5.0, no requiere variables ficticias, por lo que el flujo de trabajo no crea ninguna.</p>
+<p>Como contraejemplo, un árbol potenciado creado con el paquete <span class="pkg">xgboost</span> requiere que el usuario cree variables ficticias a partir de predictores de factores (ya que <code><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html">xgboost::xgb.train()</a></code> no lo hará). Este requisito está integrado en el objeto de especificación del modelo y un flujo de trabajo que utiliza <span class="pkg">xgboost</span> creará las columnas indicadoras para este motor. También tenga en cuenta que un motor diferente para árboles potenciados, C5.0, no requiere variables ficticias, por lo que el flujo de trabajo no crea ninguna.</p>
 <p>Esta determinación se realiza para cada combinación de modelo y motor.</p>
-</section>
-<section id="sec-special-model-formulas" class="level3" data-number="7.4.1">
-<h3 data-number="7.4.1" class="anchored" data-anchor-id="sec-special-model-formulas"><span class="header-section-number">7.4.1</span> Fórmulas especiales y funciones en línea.</h3>
+</section><section id="sec-special-model-formulas" class="level3" data-number="7.4.1"><h3 data-number="7.4.1" class="anchored" data-anchor-id="sec-special-model-formulas">
+<span class="header-section-number">7.4.1</span> Fórmulas especiales y funciones en línea.</h3>
 <p>Varios modelos multinivel se han estandarizado según una especificación de fórmula diseñada en el paquete <span class="pkg">lme4</span>. Por ejemplo, para ajustar un modelo de regresión que tenga efectos aleatorios para los sujetos, usaríamos la siguiente fórmula:</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lme4)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">lmer</span>(distance <span class="sc">~</span> Sex <span class="sc">+</span> (age <span class="sc">|</span> Subject), <span class="at">data =</span> Orthodont)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/">lme4</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span><span class="op">(</span><span class="va">distance</span> <span class="op">~</span> <span class="va">Sex</span> <span class="op">+</span> <span class="op">(</span><span class="va">age</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">Orthodont</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>El efecto de esto es que cada sujeto tendrá un parámetro estimado de intersección y pendiente para la “edad”.</p>
 <p>El problema es que los métodos estándar de R no pueden procesar adecuadamente esta fórmula:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(distance <span class="sc">~</span> Sex <span class="sc">+</span> (age <span class="sc">|</span> Subject), <span class="at">data =</span> Orthodont)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning in Ops.ordered(age, Subject): '|' is not meaningful for ordered factors</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="do">##      (Intercept) SexFemale age | SubjectTRUE</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="do">## attr(,"assign")</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0 1 2</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="do">## attr(,"contrasts")</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="do">## attr(,"contrasts")$Sex</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "contr.treatment"</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="do">## attr(,"contrasts")$`age | Subject`</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "contr.treatment"</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span><span class="op">(</span><span class="va">distance</span> <span class="op">~</span> <span class="va">Sex</span> <span class="op">+</span> <span class="op">(</span><span class="va">age</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">Orthodont</span><span class="op">)</span></span>
+<span><span class="co">## Warning in Ops.ordered(age, Subject): '|' is not meaningful for ordered factors</span></span>
+<span><span class="co">##      (Intercept) SexFemale age | SubjectTRUE</span></span>
+<span><span class="co">## attr(,"assign")</span></span>
+<span><span class="co">## [1] 0 1 2</span></span>
+<span><span class="co">## attr(,"contrasts")</span></span>
+<span><span class="co">## attr(,"contrasts")$Sex</span></span>
+<span><span class="co">## [1] "contr.treatment"</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## attr(,"contrasts")$`age | Subject`</span></span>
+<span><span class="co">## [1] "contr.treatment"</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>El resultado es un marco de datos de cero filas.</p>
 <div class="rmdwarning">
-<p>El problema es que la fórmula especial debe ser procesada por el código del paquete subyacente, no por el enfoque estándar <code>model.matrix()</code>.</p>
+<p>El problema es que la fórmula especial debe ser procesada por el código del paquete subyacente, no por el enfoque estándar <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code>.</p>
 </div>
-<p>Incluso si esta fórmula pudiera usarse con <code>model.matrix()</code>, esto aún presentaría un problema ya que la fórmula también especifica los atributos estadísticos del modelo.</p>
+<p>Incluso si esta fórmula pudiera usarse con <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code>, esto aún presentaría un problema ya que la fórmula también especifica los atributos estadísticos del modelo.</p>
 <p>La solución en <span class="pkg">workflows</span> es una fórmula de modelo suplementaria opcional que se puede pasar a <code>add_model()</code>. La especificación <code>add_variables()</code> proporciona los nombres de las columnas básicas, y luego la fórmula real dada al modelo se establece dentro de <code>add_model()</code>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(multilevelmod)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>multilevel_spec <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"lmer"</span>)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>multilevel_workflow <span class="ot">&lt;-</span> </span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Pase los datos tal cual:</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_variables</span>(<span class="at">outcome =</span> distance, <span class="at">predictors =</span> <span class="fu">c</span>(Sex, age, Subject)) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(multilevel_spec, </span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Esta fórmula se le da al modelo.</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">formula =</span> distance <span class="sc">~</span> Sex <span class="sc">+</span> (age <span class="sc">|</span> Subject))</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>multilevel_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(multilevel_workflow, <span class="at">data =</span> Orthodont)</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>multilevel_fit</span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="do">## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Preprocessor: Variables</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Model: linear_reg()</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="do">## Outcomes: distance</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Predictors: c(Sex, age, Subject)</span></span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear mixed model fit by REML ['lmerMod']</span></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="do">## Formula: distance ~ Sex + (age | Subject)</span></span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="do">##    Data: data</span></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="do">## REML criterion at convergence: 471.2</span></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a><span class="do">## Random effects:</span></span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="do">##  Groups   Name        Std.Dev. Corr </span></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="do">##  Subject  (Intercept) 7.391         </span></span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="do">##           age         0.694    -0.97</span></span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="do">##  Residual             1.310         </span></span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of obs: 108, groups:  Subject, 27</span></span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a><span class="do">## Fixed Effects:</span></span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)    SexFemale  </span></span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a><span class="do">##       24.52        -2.15</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/multilevelmod">multilevelmod</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">multilevel_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"lmer"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">multilevel_workflow</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="co"># Pase los datos tal cual:</span></span>
+<span>  <span class="fu">add_variables</span><span class="op">(</span>outcome <span class="op">=</span> <span class="va">distance</span>, predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Sex</span>, <span class="va">age</span>, <span class="va">Subject</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">multilevel_spec</span>, </span>
+<span>            <span class="co"># Esta fórmula se le da al modelo.</span></span>
+<span>            formula <span class="op">=</span> <span class="va">distance</span> <span class="op">~</span> <span class="va">Sex</span> <span class="op">+</span> <span class="op">(</span><span class="va">age</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">multilevel_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">multilevel_workflow</span>, data <span class="op">=</span> <span class="va">Orthodont</span><span class="op">)</span></span>
+<span><span class="va">multilevel_fit</span></span>
+<span><span class="co">## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════</span></span>
+<span><span class="co">## Preprocessor: Variables</span></span>
+<span><span class="co">## Model: linear_reg()</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Outcomes: distance</span></span>
+<span><span class="co">## Predictors: c(Sex, age, Subject)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Linear mixed model fit by REML ['lmerMod']</span></span>
+<span><span class="co">## Formula: distance ~ Sex + (age | Subject)</span></span>
+<span><span class="co">##    Data: data</span></span>
+<span><span class="co">## REML criterion at convergence: 471.2</span></span>
+<span><span class="co">## Random effects:</span></span>
+<span><span class="co">##  Groups   Name        Std.Dev. Corr </span></span>
+<span><span class="co">##  Subject  (Intercept) 7.391         </span></span>
+<span><span class="co">##           age         0.694    -0.97</span></span>
+<span><span class="co">##  Residual             1.310         </span></span>
+<span><span class="co">## Number of obs: 108, groups:  Subject, 27</span></span>
+<span><span class="co">## Fixed Effects:</span></span>
+<span><span class="co">## (Intercept)    SexFemale  </span></span>
+<span><span class="co">##       24.52        -2.15</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Incluso podemos usar la función <code>strata()</code> mencionada anteriormente del paquete <span class="pkg">survival</span> para el análisis de supervivencia:</p>
+<p>Incluso podemos usar la función <code><a href="https://rdrr.io/pkg/survival/man/strata.html">strata()</a></code> mencionada anteriormente del paquete <span class="pkg">survival</span> para el análisis de supervivencia:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(censored)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>parametric_spec <span class="ot">&lt;-</span> <span class="fu">survival_reg</span>()</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>parametric_workflow <span class="ot">&lt;-</span> </span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_variables</span>(<span class="at">outcome =</span> <span class="fu">c</span>(fustat, futime), <span class="at">predictors =</span> <span class="fu">c</span>(age, rx)) <span class="sc">%&gt;%</span> </span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(parametric_spec, </span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">formula =</span> <span class="fu">Surv</span>(futime, fustat) <span class="sc">~</span> age <span class="sc">+</span> <span class="fu">strata</span>(rx))</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>parametric_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(parametric_workflow, <span class="at">data =</span> ovarian)</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>parametric_fit</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="do">## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════</span></span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Preprocessor: Variables</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Model: survival_reg()</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Outcomes: c(fustat, futime)</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="do">## Predictors: c(age, rx)</span></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="do">## survival::survreg(formula = Surv(futime, fustat) ~ age + strata(rx), </span></span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="do">##     data = data, model = TRUE)</span></span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)         age </span></span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="do">##     12.8734     -0.1034 </span></span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="do">## Scale:</span></span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a><span class="do">##   rx=1   rx=2 </span></span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="do">## 0.7696 0.4704 </span></span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="do">## Loglik(model)= -89.4   Loglik(intercept only)= -97.1</span></span>
-<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="do">##  Chisq= 15.36 on 1 degrees of freedom, p= 9e-05 </span></span>
-<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a><span class="do">## n= 26</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/censored">censored</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">parametric_spec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/survival_reg.html">survival_reg</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">parametric_workflow</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">add_variables</span><span class="op">(</span>outcome <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">fustat</span>, <span class="va">futime</span><span class="op">)</span>, predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">rx</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">parametric_spec</span>, </span>
+<span>            formula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/Surv.html">Surv</a></span><span class="op">(</span><span class="va">futime</span>, <span class="va">fustat</span><span class="op">)</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/pkg/survival/man/strata.html">strata</a></span><span class="op">(</span><span class="va">rx</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">parametric_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">parametric_workflow</span>, data <span class="op">=</span> <span class="va">ovarian</span><span class="op">)</span></span>
+<span><span class="va">parametric_fit</span></span>
+<span><span class="co">## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════</span></span>
+<span><span class="co">## Preprocessor: Variables</span></span>
+<span><span class="co">## Model: survival_reg()</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Outcomes: c(fustat, futime)</span></span>
+<span><span class="co">## Predictors: c(age, rx)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## survival::survreg(formula = Surv(futime, fustat) ~ age + strata(rx), </span></span>
+<span><span class="co">##     data = data, model = TRUE)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">## (Intercept)         age </span></span>
+<span><span class="co">##     12.8734     -0.1034 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Scale:</span></span>
+<span><span class="co">##   rx=1   rx=2 </span></span>
+<span><span class="co">## 0.7696 0.4704 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Loglik(model)= -89.4   Loglik(intercept only)= -97.1</span></span>
+<span><span class="co">##  Chisq= 15.36 on 1 degrees of freedom, p= 9e-05 </span></span>
+<span><span class="co">## n= 26</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Observe cómo en ambas convocatorias se utilizó la fórmula específica del modelo.</p>
-</section>
-</section>
-<section id="sec-workflow-sets-intro" class="level2" data-number="7.5">
-<h2 data-number="7.5" class="anchored" data-anchor-id="sec-workflow-sets-intro"><span class="header-section-number">7.5</span> Crear Múltiples Flujos De Trabajo A La Vez</h2>
+</section></section><section id="sec-workflow-sets-intro" class="level2" data-number="7.5"><h2 data-number="7.5" class="anchored" data-anchor-id="sec-workflow-sets-intro">
+<span class="header-section-number">7.5</span> Crear Múltiples Flujos De Trabajo A La Vez</h2>
 <p>En algunas situaciones, los datos requieren numerosos intentos para encontrar un modelo apropiado. Por ejemplo:</p>
 <ul>
 <li><p>Para los modelos predictivos, es aconsejable evaluar una variedad de tipos de modelos diferentes. Esto requiere que el usuario cree múltiples especificaciones de modelo.</p></li>
@@ -773,141 +737,135 @@ Figura&nbsp;7.2: Modelo mental correcto de dónde ocurre la estimación del mode
 <p>En estas situaciones, así como en otras, puede resultar tedioso u oneroso crear muchos flujos de trabajo a partir de diferentes conjuntos de preprocesadores y/o especificaciones de modelo. Para solucionar este problema, el paquete <span class="pkg">workflowset</span> crea combinaciones de componentes de flujo de trabajo. Una lista de preprocesadores (por ejemplo, fórmulas, selectores <span class="pkg">dplyr</span> u objetos de recetas de ingeniería de características que se analizan en el siguiente capítulo) se puede combinar con una lista de especificaciones de modelo, lo que da como resultado un conjunto de flujos de trabajo.</p>
 <p>Como ejemplo, digamos que queremos centrarnos en las diferentes formas en que se representa la ubicación de la casa en los datos de Ames. Podemos crear un conjunto de fórmulas que capturen estos predictores:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>location <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">longitude =</span> Sale_Price <span class="sc">~</span> Longitude,</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">latitude =</span> Sale_Price <span class="sc">~</span> Latitude,</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">coords =</span> Sale_Price <span class="sc">~</span> Longitude <span class="sc">+</span> Latitude,</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">neighborhood =</span> Sale_Price <span class="sc">~</span> Neighborhood</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">location</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>  longitude <span class="op">=</span> <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span>,</span>
+<span>  latitude <span class="op">=</span> <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Latitude</span>,</span>
+<span>  coords <span class="op">=</span> <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Longitude</span> <span class="op">+</span> <span class="va">Latitude</span>,</span>
+<span>  neighborhood <span class="op">=</span> <span class="va">Sale_Price</span> <span class="op">~</span> <span class="va">Neighborhood</span></span>
+<span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Estas representaciones se pueden cruzar con uno o más modelos usando la función <code>workflow_set()</code>. Simplemente usaremos la especificación del modelo lineal anterior para demostrar:</p>
+<p>Estas representaciones se pueden cruzar con uno o más modelos usando la función <code><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set()</a></code>. Simplemente usaremos la especificación del modelo lineal anterior para demostrar:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(workflowsets)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>location_models <span class="ot">&lt;-</span> <span class="fu">workflow_set</span>(<span class="at">preproc =</span> location, <span class="at">models =</span> <span class="fu">list</span>(<span class="at">lm =</span> lm_model))</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>location_models</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A workflow set/tibble: 4 × 4</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   wflow_id        info             option    result    </span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;           &lt;list&gt;           &lt;list&gt;    &lt;list&gt;    </span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 longitude_lm    &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 latitude_lm     &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 coords_lm       &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 neighborhood_lm &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>location_models<span class="sc">$</span>info[[<span class="dv">1</span>]]</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 4</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   workflow   preproc model      comment</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;     &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;  </span></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;workflow&gt; formula linear_reg ""</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_workflow</span>(location_models, <span class="at">id =</span> <span class="st">"coords_lm"</span>)</span>
-<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="do">## ══ Workflow ═════════════════════════════════════════════════════════════════════════</span></span>
-<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Preprocessor: Formula</span></span>
-<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="do">## Model: linear_reg()</span></span>
-<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Sale_Price ~ Longitude + Latitude</span></span>
-<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
-<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidymodels/workflowsets">workflowsets</a></span><span class="op">)</span></span>
+<span><span class="va">location_models</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://workflowsets.tidymodels.org/reference/workflow_set.html">workflow_set</a></span><span class="op">(</span>preproc <span class="op">=</span> <span class="va">location</span>, models <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>lm <span class="op">=</span> <span class="va">lm_model</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">location_models</span></span>
+<span><span class="co">## # A workflow set/tibble: 4 × 4</span></span>
+<span><span class="co">##   wflow_id        info             option    result    </span></span>
+<span><span class="co">##   &lt;chr&gt;           &lt;list&gt;           &lt;list&gt;    &lt;list&gt;    </span></span>
+<span><span class="co">## 1 longitude_lm    &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
+<span><span class="co">## 2 latitude_lm     &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
+<span><span class="co">## 3 coords_lm       &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
+<span><span class="co">## 4 neighborhood_lm &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
+<span><span class="va">location_models</span><span class="op">$</span><span class="va">info</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">## # A tibble: 1 × 4</span></span>
+<span><span class="co">##   workflow   preproc model      comment</span></span>
+<span><span class="co">##   &lt;list&gt;     &lt;chr&gt;   &lt;chr&gt;      &lt;chr&gt;  </span></span>
+<span><span class="co">## 1 &lt;workflow&gt; formula linear_reg ""</span></span>
+<span><span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_workflow</a></span><span class="op">(</span><span class="va">location_models</span>, id <span class="op">=</span> <span class="st">"coords_lm"</span><span class="op">)</span></span>
+<span><span class="co">## ══ Workflow ═════════════════════════════════════════════════════════════════════════</span></span>
+<span><span class="co">## Preprocessor: Formula</span></span>
+<span><span class="co">## Model: linear_reg()</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Sale_Price ~ Longitude + Latitude</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Linear Regression Model Specification (regression)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Computational engine: lm</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Los conjuntos de flujos de trabajo están diseñados principalmente para funcionar con remuestreo, lo cual se analiza en el <a href="10-resampling.html" class="quarto-xref">Capítulo&nbsp;<span>10</span></a>. Las columnas “opción” y “resultado” deben completarse con tipos específicos de objetos que resultan del remuestreo. Demostraremos esto con más detalle en los Capítulos <a href="11-comparing-models.html" class="quarto-xref"><span>11</span></a> y <a href="15-workflow-sets.html" class="quarto-xref"><span>15</span></a>.</p>
 <p>Mientras tanto, creemos ajustes de modelo para cada fórmula y guárdelos en una nueva columna llamada <code>fit</code>. Usaremos las operaciones básicas <span class="pkg">dplyr</span> y <span class="pkg">purrr</span>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>location_models <span class="ot">&lt;-</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>   location_models <span class="sc">%&gt;%</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">mutate</span>(<span class="at">fit =</span> <span class="fu">map</span>(info, <span class="sc">~</span> <span class="fu">fit</span>(.x<span class="sc">$</span>workflow[[<span class="dv">1</span>]], ames_train)))</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>location_models</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # A workflow set/tibble: 4 × 5</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   wflow_id        info             option    result     fit       </span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;           &lt;list&gt;           &lt;list&gt;    &lt;list&gt;     &lt;list&gt;    </span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 longitude_lm    &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt; &lt;workflow&gt;</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 latitude_lm     &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt; &lt;workflow&gt;</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 coords_lm       &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt; &lt;workflow&gt;</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 neighborhood_lm &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt; &lt;workflow&gt;</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>location_models<span class="sc">$</span>fit[[<span class="dv">1</span>]]</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="do">## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════</span></span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Preprocessor: Formula</span></span>
-<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Model: linear_reg()</span></span>
-<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="do">## Sale_Price ~ Longitude</span></span>
-<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
-<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Call:</span></span>
-<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a><span class="do">## stats::lm(formula = ..y ~ ., data = data)</span></span>
-<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a><span class="do">## Coefficients:</span></span>
-<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)    Longitude  </span></span>
-<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="do">##     -184.40        -2.02</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">location_models</span> <span class="op">&lt;-</span></span>
+<span>   <span class="va">location_models</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>   <span class="fu">mutate</span><span class="op">(</span>fit <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">info</span>, <span class="op">~</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">.x</span><span class="op">$</span><span class="va">workflow</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">ames_train</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">location_models</span></span>
+<span><span class="co">## # A workflow set/tibble: 4 × 5</span></span>
+<span><span class="co">##   wflow_id        info             option    result     fit       </span></span>
+<span><span class="co">##   &lt;chr&gt;           &lt;list&gt;           &lt;list&gt;    &lt;list&gt;     &lt;list&gt;    </span></span>
+<span><span class="co">## 1 longitude_lm    &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt; &lt;workflow&gt;</span></span>
+<span><span class="co">## 2 latitude_lm     &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt; &lt;workflow&gt;</span></span>
+<span><span class="co">## 3 coords_lm       &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt; &lt;workflow&gt;</span></span>
+<span><span class="co">## 4 neighborhood_lm &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt; &lt;workflow&gt;</span></span>
+<span><span class="va">location_models</span><span class="op">$</span><span class="va">fit</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="co">## ══ Workflow [trained] ═══════════════════════════════════════════════════════════════</span></span>
+<span><span class="co">## Preprocessor: Formula</span></span>
+<span><span class="co">## Model: linear_reg()</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## Sale_Price ~ Longitude</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Call:</span></span>
+<span><span class="co">## stats::lm(formula = ..y ~ ., data = data)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Coefficients:</span></span>
+<span><span class="co">## (Intercept)    Longitude  </span></span>
+<span><span class="co">##     -184.40        -2.02</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Usamos una función <span class="pkg">purrr</span> aquí para mapear nuestros modelos, pero existe un enfoque mejor y más fácil para ajustar conjuntos de flujo de trabajo que se presentará en <a href="11-comparing-models.html#sec-workflow-set" class="quarto-xref"><span>Sección 11.1</span></a>.</p>
 <div class="rmdnote">
 <p>En general, ¡hay mucho más en los conjuntos de flujos de trabajo! Si bien hemos cubierto los conceptos básicos aquí, los matices y ventajas de los conjuntos de flujo de trabajo no se ilustrarán hasta el <a href="15-workflow-sets.html" class="quarto-xref">Capítulo&nbsp;<span>15</span></a>.</p>
 </div>
-</section>
-<section id="evaluación-del-conjunto-de-prueba" class="level2" data-number="7.6">
-<h2 data-number="7.6" class="anchored" data-anchor-id="evaluación-del-conjunto-de-prueba"><span class="header-section-number">7.6</span> Evaluación Del Conjunto De Prueba</h2>
+</section><section id="evaluación-del-conjunto-de-prueba" class="level2" data-number="7.6"><h2 data-number="7.6" class="anchored" data-anchor-id="evaluación-del-conjunto-de-prueba">
+<span class="header-section-number">7.6</span> Evaluación Del Conjunto De Prueba</h2>
 <p>Digamos que hemos concluido el desarrollo de nuestro modelo y nos hemos decidido por un modelo final. Hay una función de conveniencia llamada <code>last_fit()</code> que <em>ajustará</em> el modelo a todo el conjunto de entrenamiento y lo <em>evaluará</em> con el conjunto de prueba.</p>
 <p>Usando <code>lm_wflow</code> como ejemplo, podemos pasar el modelo y la división inicial de entrenamiento/prueba a la función:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>final_lm_res <span class="ot">&lt;-</span> <span class="fu">last_fit</span>(lm_wflow, ames_split)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>final_lm_res</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # Resampling results</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # Manual resampling </span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 6</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   splits             id               .metrics .notes   .predictions .workflow </span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;             &lt;chr&gt;            &lt;list&gt;   &lt;list&gt;   &lt;list&gt;       &lt;list&gt;    </span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;split [2342/588]&gt; train/test split &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;     &lt;workflow&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">final_lm_res</span> <span class="op">&lt;-</span> <span class="fu">last_fit</span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_split</span><span class="op">)</span></span>
+<span><span class="va">final_lm_res</span></span>
+<span><span class="co">## # Resampling results</span></span>
+<span><span class="co">## # Manual resampling </span></span>
+<span><span class="co">## # A tibble: 1 × 6</span></span>
+<span><span class="co">##   splits             id               .metrics .notes   .predictions .workflow </span></span>
+<span><span class="co">##   &lt;list&gt;             &lt;chr&gt;            &lt;list&gt;   &lt;list&gt;   &lt;list&gt;       &lt;list&gt;    </span></span>
+<span><span class="co">## 1 &lt;split [2342/588]&gt; train/test split &lt;tibble&gt; &lt;tibble&gt; &lt;tibble&gt;     &lt;workflow&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="rmdnote">
 <p>Observe que <code>last_fit()</code> toma una división de datos como entrada, no un marco de datos. Esta función utiliza la división para generar los conjuntos de entrenamiento y prueba para el ajuste y la evaluación finales.</p>
 </div>
 <p>La columna <code>.workflow</code> contiene el flujo de trabajo ajustado y se puede extraer de los resultados usando:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>fitted_lm_wflow <span class="ot">&lt;-</span> <span class="fu">extract_workflow</span>(final_lm_res)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">fitted_lm_wflow</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://hardhat.tidymodels.org/reference/hardhat-extract.html">extract_workflow</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>De manera similar, <code>collect_metrics()</code> y <code>collect_predictions()</code> proporcionan acceso a las métricas de rendimiento y predicciones, respectivamente.</p>
+<p>De manera similar, <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics()</a></code> y <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions()</a></code> proporcionan acceso a las métricas de rendimiento y predicciones, respectivamente.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(final_lm_res)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_predictions</span>(final_lm_res) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions</a></span><span class="op">(</span><span class="va">final_lm_res</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu">slice</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Veremos más sobre <code>last_fit()</code> en acción y cómo usarlo nuevamente en <a href="16-dimensionality-reduction.html#sec-bean-models" class="quarto-xref"><span>Sección 16.6</span></a>.</p>
 <div class="rmdnote">
 <p>Cuando se usan conjuntos de validación, <code>last_fit()</code> tiene un argumento llamado <code>add_validation_set</code> para especificar si debemos entrenar el modelo final únicamente en el conjunto de entrenamiento (el predeterminado) o la combinación de los conjuntos de entrenamiento y validación.</p>
 </div>
-</section>
-<section id="sec-workflows-summary" class="level2" data-number="7.7">
-<h2 data-number="7.7" class="anchored" data-anchor-id="sec-workflows-summary"><span class="header-section-number">7.7</span> Resumen Del capítulo</h2>
+</section><section id="sec-workflows-summary" class="level2" data-number="7.7"><h2 data-number="7.7" class="anchored" data-anchor-id="sec-workflows-summary">
+<span class="header-section-number">7.7</span> Resumen Del capítulo</h2>
 <p>En este capítulo, aprendió que el proceso de modelado abarca más que simplemente estimar los parámetros de un algoritmo que conecta los predictores con un resultado. Este proceso también incluye pasos de preprocesamiento y operaciones realizadas después de que se ajusta un modelo. Introdujimos un concepto llamado <em>flujo de trabajo modelo</em> que puede capturar los componentes importantes del proceso de modelado. También se pueden crear múltiples flujos de trabajo dentro de un <em>conjunto de flujos de trabajo</em>. La función <code>last_fit()</code> es conveniente para ajustar un modelo final al conjunto de entrenamiento y evaluar con el conjunto de prueba.</p>
 <p>Para los datos de Ames, el código relacionado que veremos usado nuevamente es:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(ames)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">mutate</span>(ames, <span class="at">Sale_Price =</span> <span class="fu">log10</span>(Sale_Price))</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">502</span>)</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>ames_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(ames, <span class="at">prop =</span> <span class="fl">0.80</span>, <span class="at">strata =</span> Sale_Price)</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>ames_train <span class="ot">&lt;-</span> <span class="fu">training</span>(ames_split)</span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>ames_test  <span class="ot">&lt;-</span>  <span class="fu">testing</span>(ames_split)</span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>lm_model <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>lm_wflow <span class="ot">&lt;-</span> </span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(lm_model) <span class="sc">%&gt;%</span> </span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_variables</span>(<span class="at">outcome =</span> Sale_Price, <span class="at">predictors =</span> <span class="fu">c</span>(Longitude, Latitude))</span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>lm_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(lm_wflow, ames_train)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ames</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">ames</span> <span class="op">&lt;-</span> <span class="fu">mutate</span><span class="op">(</span><span class="va">ames</span>, Sale_Price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log10</a></span><span class="op">(</span><span class="va">Sale_Price</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">502</span><span class="op">)</span></span>
+<span><span class="va">ames_split</span> <span class="op">&lt;-</span> <span class="fu">initial_split</span><span class="op">(</span><span class="va">ames</span>, prop <span class="op">=</span> <span class="fl">0.80</span>, strata <span class="op">=</span> <span class="va">Sale_Price</span><span class="op">)</span></span>
+<span><span class="va">ames_train</span> <span class="op">&lt;-</span> <span class="fu">training</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
+<span><span class="va">ames_test</span>  <span class="op">&lt;-</span>  <span class="fu">testing</span><span class="op">(</span><span class="va">ames_split</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/linear_reg.html">linear_reg</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://parsnip.tidymodels.org/reference/set_engine.html">set_engine</a></span><span class="op">(</span><span class="st">"lm"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_wflow</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">workflow</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">add_model</span><span class="op">(</span><span class="va">lm_model</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span> </span>
+<span>  <span class="fu">add_variables</span><span class="op">(</span>outcome <span class="op">=</span> <span class="va">Sale_Price</span>, predictors <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">Longitude</span>, <span class="va">Latitude</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lm_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/fit.html">fit</a></span><span class="op">(</span><span class="va">lm_wflow</span>, <span class="va">ames_train</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
-</section>
-
-</main> <!-- /main -->
-
-<script>
+</section></main><!-- /main --><script>
 
   // Chapter name
   const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
@@ -974,9 +932,7 @@ Figura&nbsp;7.2: Modelo mental correcto de dónde ocurre la estimación del mode
   act_link_T.innerHTML += edit_issue_T;
 
 
-</script>
-
-<script id="quarto-html-after-body" type="application/javascript">
+</script><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
@@ -1384,9 +1340,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
-</script>
-<nav class="page-navigation">
-  <div class="nav-page nav-page-previous">
+</script><nav class="page-navigation"><div class="nav-page nav-page-previous">
       <a href="./06-fitting-models.html" class="pagination-link" aria-label="Creando Modelos Con parsnip">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span>
       </a>          
@@ -1398,8 +1352,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
 </div>   
@@ -1411,8 +1364,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>
   </div>
 </footer>
-
-
 
 
 </body></html>
