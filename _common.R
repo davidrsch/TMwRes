@@ -3,6 +3,14 @@ options(dplyr.print_min = 6, dplyr.print_max = 6)
 options(cli.width = 85)
 options(crayon.enabled = FALSE)
 
+
+if (!require("knitr")) {
+  install.packages("knitr")
+}
+if (!require("ggplot2")) {
+  install.packages("ggplot2")
+}
+
 knitr::opts_chunk$set(
   comment = "#>",
   collapse = TRUE,
@@ -10,7 +18,7 @@ knitr::opts_chunk$set(
   tidy = FALSE
 )
 
-
+library(ggplot2)
 
 theme_transparent <- function(...) {
   
@@ -27,7 +35,7 @@ theme_transparent <- function(...) {
   ret
 }
 
-library(ggplot2)
+
 theme_set(theme_transparent())
 
 tmwr_version <- function() {
