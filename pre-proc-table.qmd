@@ -69,13 +69,14 @@ tab <-
     "bart()",                 x,      x,        x,           cl1,           x,           x
   ) 
 
-tab %>% 
-  arrange(model) %>% 
-  mutate(model = paste0("<tt>", model, "</tt>")) %>% 
+tab |> 
+  arrange(model) |> 
+  mutate(model = paste0("<tt>", model, "</tt>")) |> 
   kable(
+    'html',
     escape = FALSE,
     align = c("l", rep("c", ncol(tab) - 1))
-  ) %>% 
+  ) |> 
   kable_styling(full_width = FALSE)
 ```
 
