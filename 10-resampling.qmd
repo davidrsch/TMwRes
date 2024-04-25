@@ -340,7 +340,7 @@ val_set <- validation_set(ames_val_split)
 val_set
 ```
 
-Como verá en @sec-resampling-rendimiento, la función `fit_resamples()` se utilizará para calcular estimaciones correctas de rendimiento mediante el remuestreo. El objeto `val_set` se puede utilizar en esta y otras funciones aunque sea una única "muestra" de los datos.
+Como verá en @sec-resampling-performance, la función `fit_resamples()` se utilizará para calcular estimaciones correctas de rendimiento mediante el remuestreo. El objeto `val_set` se puede utilizar en esta y otras funciones aunque sea una única "muestra" de los datos.
 
 ### Bootstrapping {#sec-bootstrap}
 
@@ -501,7 +501,7 @@ Los nombres de las columnas de predicción siguen las convenciones analizadas pa
 Para algunos métodos de remuestreo, como el bootstrap o la validación cruzada repetida, habrá múltiples predicciones por fila del conjunto de entrenamiento original. Para obtener valores resumidos (promedios de las predicciones replicadas), utilice `collect_predictions(object, summarize = TRUE)`.
 :::
 
-Dado que este análisis utilizó una validación cruzada de 10 veces, existe una predicción única para cada muestra del conjunto de entrenamiento. Estos datos pueden generar gráficos útiles del modelo para comprender dónde potencialmente falló. Por ejemplo, @fig-ames-resampled-dance compara los valores observados y predichos retenidos (análogo a @fig-ames-rendimiento-plot):
+Dado que este análisis utilizó una validación cruzada de 10 veces, existe una predicción única para cada muestra del conjunto de entrenamiento. Estos datos pueden generar gráficos útiles del modelo para comprender dónde potencialmente falló. Por ejemplo, @fig-ames-resampled-performance compara los valores observados y predichos retenidos (análogo a @fig-ames-performance-plot):
 
 ```{r resampling-cv-pred-plot, eval=FALSE}
 assess_res %>% 
@@ -515,12 +515,12 @@ assess_res %>%
 
 ```{r}
 #| label: fig-ames-resampled-performance
-#| ref.label: "resampling-cv-pred-plot"
-#| fig.height: 5 
-#| fig.width: 5
+#| ref_label: "resampling-cv-pred-plot"
+#| fig_height: 5 
+#| fig_width: 5
 #| echo: FALSE
-#| fig.cap: "Valores observados versus predichos fuera de la muestra para un modelo de regresión de Ames, utilizando unidades log-10 en ambos ejes"
-#| fig.alt: "Gráficos de dispersión de valores observados versus valores predichos fuera de la muestra para un modelo de regresión de Ames. Ambos ejes utilizan unidades log-10. El modelo muestra una buena concordancia con dos puntos de datos periféricos que están significativamente sobreestimados."
+#| fig_cap: "Valores observados versus predichos fuera de la muestra para un modelo de regresión de Ames, utilizando unidades log-10 en ambos ejes"
+#| fig_alt: "Gráficos de dispersión de valores observados versus valores predichos fuera de la muestra para un modelo de regresión de Ames. Ambos ejes utilizan unidades log-10. El modelo muestra una buena concordancia con dos puntos de datos periféricos que están significativamente sobreestimados."
 ```
 
 Hay dos casas en el conjunto de entrenamiento con un precio de venta bajo observado que el modelo sobreestima significativamente. ¿Qué casas son estas? Averigüemos por el resultado de `assess_res`:

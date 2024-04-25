@@ -465,7 +465,7 @@ Al momento de escribir este artículo, las funciones de paso en los paquetes `r 
 
 ## Ordenar `recipe()`
 
-En @sec-tidines-modeling, introdujimos el verbo `tidy()` para objetos estadísticos. También hay un método `tidy()` para recetas, así como pasos de recetas individuales. Antes de continuar, creemos una receta extendida para los datos de Ames usando algunos de los nuevos pasos que hemos discutido en este capítulo:
+En @sec-tidiness-modeling, introdujimos el verbo `tidy()` para objetos estadísticos. También hay un método `tidy()` para recetas, así como pasos de recetas individuales. Antes de continuar, creemos una receta extendida para los datos de Ames usando algunos de los nuevos pasos que hemos discutido en este capítulo:
 
 ```{r engineering-lm-extended-recipe}
 ames_rec <- 

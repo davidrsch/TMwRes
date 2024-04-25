@@ -94,7 +94,7 @@ Existen técnicas para crear cuadrículas regulares que no utilizan todos los va
 [^13-grid-search-1]: <https://CRAN.R-project.org/view=ExperimentalDesign>
 
 ::: rmdwarning
-El uso de cuadrículas regulares puede ser costoso desde el punto de vista computacional, especialmente cuando hay una cantidad media a grande de parámetros de ajuste. Esto es cierto para muchos modelos pero no para todos. Como se analiza en @sec-ficient-grids a continuación, ¡hay muchos modelos cuyo tiempo de ajuste *disminuye* con una cuadrícula normal!
+El uso de cuadrículas regulares puede ser costoso desde el punto de vista computacional, especialmente cuando hay una cantidad media a grande de parámetros de ajuste. Esto es cierto para muchos modelos pero no para todos. Como se analiza en @sec-efficient-grids a continuación, ¡hay muchos modelos cuyo tiempo de ajuste *disminuye* con una cuadrícula normal!
 :::
 
 Una ventaja de utilizar una cuadrícula regular es que las relaciones y patrones entre los parámetros de ajuste y las métricas del modelo se entienden fácilmente. La naturaleza factorial de estos diseños permite examinar cada parámetro por separado con poca confusión entre los parámetros.
