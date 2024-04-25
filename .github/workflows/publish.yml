@@ -39,8 +39,15 @@ jobs:
       - name: Install R Dependencies
         run: |
           R -e 'install.packages("renv")'
+          R -e 'codeinproflie <- readLines(".Rprofile")'
+          R -e 'linetocoment <- which(grepl("_common.R", codeinproflie))'
+          R -e 'codeinproflie[linetocoment] <- paste0("#",codeinproflie[linetocoment])'
+          R -e 'writeLines(codeinproflie, ".Rprofile")'
           R -e 'renv::restore()'
-          R -e 'source("_common.R")'
+          R -e 'codeinproflie <- readLines(".Rprofile")'
+          R -e 'linetocoment <- which(grepl("_common.R", codeinproflie))'
+          R -e 'codeinproflie[linetocoment] <- gsub("#","",codeinproflie[linetocoment])'
+          R -e 'writeLines(codeinproflie, ".Rprofile"")'
         
 
       - name: Render and Publish
