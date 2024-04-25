@@ -1,0 +1,1818 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Max Kuhn, y Julia Silge">
+
+<title>Modelado Ordenado con R - 13&nbsp; Búsqueda De Cuadrícula</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./14-iterative-search.html" rel="next">
+<link href="./12-tuning-parameters.html" rel="prev">
+<link href="./images/cover.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="TMwR.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./13-grid-search.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Modelado Ordenado con R</a> 
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hola Mundo</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#sec-grids" id="toc-sec-grids" class="nav-link active" data-scroll-target="#sec-grids"><span class="header-section-number">13.1</span> Cuadrículas Regulares Y No Regulares</a>
+  <ul class="collapse">
+  <li><a href="#cuadrículas-regulares" id="toc-cuadrículas-regulares" class="nav-link" data-scroll-target="#cuadrículas-regulares">Cuadrículas regulares</a></li>
+  <li><a href="#rejillas-irregulares" id="toc-rejillas-irregulares" class="nav-link" data-scroll-target="#rejillas-irregulares">Rejillas irregulares</a></li>
+  </ul></li>
+  <li><a href="#sec-evaluating-grid" id="toc-sec-evaluating-grid" class="nav-link" data-scroll-target="#sec-evaluating-grid"><span class="header-section-number">13.2</span> Evaluación De La Cuadrícula</a></li>
+  <li><a href="#finalizando-el-modelo" id="toc-finalizando-el-modelo" class="nav-link" data-scroll-target="#finalizando-el-modelo"><span class="header-section-number">13.3</span> Finalizando El Modelo</a></li>
+  <li><a href="#sec-tuning-usemodels" id="toc-sec-tuning-usemodels" class="nav-link" data-scroll-target="#sec-tuning-usemodels"><span class="header-section-number">13.4</span> Herramientas Para Crear Especificaciones De Ajuste</a></li>
+  <li><a href="#sec-efficient-grids" id="toc-sec-efficient-grids" class="nav-link" data-scroll-target="#sec-efficient-grids"><span class="header-section-number">13.5</span> Herramientas Para Una Búsqueda Eficiente En La Cuadrícula</a>
+  <ul class="collapse">
+  <li><a href="#sec-submodel-trick" id="toc-sec-submodel-trick" class="nav-link" data-scroll-target="#sec-submodel-trick"><span class="header-section-number">13.5.1</span> Optimización del submodelo</a></li>
+  <li><a href="#procesamiento-en-paralelo" id="toc-procesamiento-en-paralelo" class="nav-link" data-scroll-target="#procesamiento-en-paralelo"><span class="header-section-number">13.5.2</span> Procesamiento en paralelo</a></li>
+  <li><a href="#evaluación-comparativa-de-árboles-potenciados" id="toc-evaluación-comparativa-de-árboles-potenciados" class="nav-link" data-scroll-target="#evaluación-comparativa-de-árboles-potenciados"><span class="header-section-number">13.5.3</span> Evaluación comparativa de árboles potenciados</a></li>
+  <li><a href="#acceso-a-variables-globales" id="toc-acceso-a-variables-globales" class="nav-link" data-scroll-target="#acceso-a-variables-globales"><span class="header-section-number">13.5.4</span> Acceso a variables globales</a></li>
+  <li><a href="#sec-racing" id="toc-sec-racing" class="nav-link" data-scroll-target="#sec-racing"><span class="header-section-number">13.5.5</span> Métodos de carrera</a></li>
+  </ul></li>
+  <li><a href="#sec-grid-summary" id="toc-sec-grid-summary" class="nav-link" data-scroll-target="#sec-grid-summary"><span class="header-section-number">13.6</span> Resumen Del Capítulo</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./13-grid-search.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-grid-search" class="quarto-section-identifier"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>En el <a href="12-tuning-parameters.html" class="quarto-xref">Capítulo&nbsp;<span>12</span></a> demostramos cómo los usuarios pueden marcar o etiquetar argumentos en recetas de preprocesamiento y/o especificaciones de modelo para optimización usando la función <code>tune()</code>. Una vez que sabemos qué optimizar, es hora de abordar la cuestión de cómo optimizar los parámetros. Este capítulo describe los métodos de <em>búsqueda en cuadrícula</em> que especifican los posibles valores de los parámetros <em>a priori</em>. <a href="14-iterative-search.html" class="quarto-xref">Capítulo&nbsp;<span>14</span></a> continuará la discusión describiendo los métodos de búsqueda iterativa).</p>
+<p>Comencemos viendo dos enfoques principales para ensamblar una cuadrícula.</p>
+<section id="sec-grids" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="sec-grids"><span class="header-section-number">13.1</span> Cuadrículas Regulares Y No Regulares</h2>
+<p>Hay dos tipos principales de cuadrículas. Una cuadrícula regular combina cada parámetro (con su correspondiente conjunto de valores posibles) factorialmente, es decir, utilizando todas las combinaciones de los conjuntos. Alternativamente, una cuadrícula no regular es aquella en la que las combinaciones de parámetros no se forman a partir de un pequeño conjunto de puntos.</p>
+<p>Antes de analizar cada tipo con más detalle, consideremos un modelo de ejemplo: el modelo de perceptrón multicapa (también conocido como red neuronal artificial de una sola capa). Los parámetros marcados para tuning son:</p>
+<ul>
+<li><p>el número de unidades ocultas</p></li>
+<li><p>el número de épocas/iteraciones de ajuste en el entrenamiento del modelo</p></li>
+<li><p>la cantidad de penalización por pérdida de peso</p></li>
+</ul>
+<div class="rmdnote">
+<p>Históricamente, el número de épocas estuvo determinado por la detención temprana; un conjunto de validación separado determinó la duración del entrenamiento en función de la tasa de error, ya que volver a predecir el conjunto de entrenamiento conducía a un sobreajuste. En nuestro caso, el uso de una penalización por disminución de peso debería prohibir el sobreajuste, y hay poco daño en ajustar la penalización y el número de épocas.</p>
+</div>
+<p>Usando <span class="pkg">parsnip</span>, la especificación para un modelo de clasificación que se ajusta usando el paquete <span class="pkg">nnet</span> es:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>mlp_spec <span class="ot">&lt;-</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mlp</span>(<span class="at">hidden_units =</span> <span class="fu">tune</span>(), <span class="at">penalty =</span> <span class="fu">tune</span>(), <span class="at">epochs =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"nnet"</span>, <span class="at">trace =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El argumento <code>trace = 0</code> evita el registro adicional del proceso de entrenamiento. Como se muestra en <a href="12-tuning-parameters.html#sec-tuning-params-tidymodels" class="quarto-xref"><span>Sección 12.6</span></a>, la función <code>extract_parameter_set_dials()</code> puede extraer el conjunto de argumentos con valores desconocidos y establece sus objetos <span class="pkg">dials</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mlp_param <span class="ot">&lt;-</span> <span class="fu">extract_parameter_set_dials</span>(mlp_spec)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>mlp_param <span class="sc">%&gt;%</span> <span class="fu">extract_parameter_dials</span>(<span class="st">"hidden_units"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # Hidden Units (quantitative)</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Range: [1, 10]</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>mlp_param <span class="sc">%&gt;%</span> <span class="fu">extract_parameter_dials</span>(<span class="st">"penalty"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Amount of Regularization (quantitative)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Transformer: log-10 [1e-100, Inf]</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Range (transformed scale): [-10, 0]</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>mlp_param <span class="sc">%&gt;%</span> <span class="fu">extract_parameter_dials</span>(<span class="st">"epochs"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">## # Epochs (quantitative)</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Range: [10, 1000]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esta salida indica que los objetos de parámetros están completos e imprime sus rangos predeterminados. Estos valores se utilizarán para demostrar cómo crear diferentes tipos de cuadrículas de parámetros.</p>
+<section id="cuadrículas-regulares" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="cuadrículas-regulares">Cuadrículas regulares</h3>
+<p>Las cuadrículas regulares son combinaciones de conjuntos separados de valores de parámetros. Primero, el usuario crea un conjunto distinto de valores para cada parámetro. El número de valores posibles no tiene por qué ser el mismo para cada parámetro. La función <span class="pkg">tidyr</span> <code>crossing()</code> es una forma de crear una cuadrícula regular:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">crossing</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">hidden_units =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">penalty =</span> <span class="fu">c</span>(<span class="fl">0.0</span>, <span class="fl">0.1</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">epochs =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">200</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 12 × 3</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   hidden_units penalty epochs</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">##          &lt;int&gt;   &lt;dbl&gt;  &lt;dbl&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 1            1     0      100</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 2            1     0      200</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 3            1     0.1    100</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 4            1     0.1    200</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 5            2     0      100</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 6            2     0      200</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 6 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El objeto de parámetro conoce los rangos de los parámetros. El paquete <span class="pkg">dials</span> contiene un conjunto de funciones <code>grid_*()</code> que toman el objeto parámetro como entrada para producir diferentes tipos de cuadrículas. Por ejemplo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grid_regular</span>(mlp_param, <span class="at">levels =</span> <span class="dv">2</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 8 × 3</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   hidden_units      penalty epochs</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">##          &lt;int&gt;        &lt;dbl&gt;  &lt;int&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1            1 0.0000000001     10</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2           10 0.0000000001     10</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 3            1 1                10</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 4           10 1                10</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 5            1 0.0000000001   1000</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 6           10 0.0000000001   1000</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 2 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El argumento <code>levels</code> es el número de niveles por parámetro a crear. También puede tomar un vector de valores con nombre:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mlp_param <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid_regular</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="at">hidden_units =</span> <span class="dv">3</span>, <span class="at">penalty =</span> <span class="dv">2</span>, <span class="at">epochs =</span> <span class="dv">2</span>))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 12 × 3</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   hidden_units      penalty epochs</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">##          &lt;int&gt;        &lt;dbl&gt;  &lt;int&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1            1 0.0000000001     10</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2            5 0.0000000001     10</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3           10 0.0000000001     10</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4            1 1                10</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 5            5 1                10</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 6           10 1                10</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 6 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Existen técnicas para crear cuadrículas regulares que no utilizan todos los valores posibles de cada conjunto de parámetros. Estos <em>diseños factoriales fraccionales</em> <span class="citation" data-cites="BHH">(<a href="references.html#ref-BHH" role="doc-biblioref">Box, Hunter, y Hunter 2005</a>)</span> también podrían usarse. Para obtener más información, consulte la Vista de tareas de CRAN para el diseño experimental.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="rmdwarning">
+<p>El uso de cuadrículas regulares puede ser costoso desde el punto de vista computacional, especialmente cuando hay una cantidad media a grande de parámetros de ajuste. Esto es cierto para muchos modelos pero no para todos. Como se analiza en <span class="quarto-unresolved-ref">?sec-ficient-grids</span> a continuación, ¡hay muchos modelos cuyo tiempo de ajuste <em>disminuye</em> con una cuadrícula normal!</p>
+</div>
+<p>Una ventaja de utilizar una cuadrícula regular es que las relaciones y patrones entre los parámetros de ajuste y las métricas del modelo se entienden fácilmente. La naturaleza factorial de estos diseños permite examinar cada parámetro por separado con poca confusión entre los parámetros.</p>
+</section>
+<section id="rejillas-irregulares" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="rejillas-irregulares">Rejillas irregulares</h3>
+<p>Hay varias opciones para crear cuadrículas no regulares. La primera es utilizar un muestreo aleatorio en toda la gama de parámetros. La función <code>grid_random()</code> genera números aleatorios uniformes independientes en todos los rangos de parámetros. Si el objeto parámetro tiene una transformación asociada (como la que tenemos para “penalización”, <code>penalty</code>), los números aleatorios se generan en la escala transformada. Creemos una cuadrícula aleatoria para los parámetros de nuestra red neuronal de ejemplo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1301</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>mlp_param <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid_random</span>(<span class="at">size =</span> <span class="dv">1000</span>) <span class="sc">%&gt;%</span> <span class="co"># 'size' es el número de combinaciones</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   hidden_units      penalty           epochs   </span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="do">##  Min.   : 1.00   Min.   :0.0000   Min.   : 10  </span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="do">##  1st Qu.: 3.00   1st Qu.:0.0000   1st Qu.:266  </span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  Median : 5.00   Median :0.0000   Median :497  </span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  Mean   : 5.38   Mean   :0.0437   Mean   :510  </span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  3rd Qu.: 8.00   3rd Qu.:0.0027   3rd Qu.:761  </span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  Max.   :10.00   Max.   :0.9814   Max.   :999</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Para la “penalización”, <code>penalty</code>, los números aleatorios son uniformes en la escala logarítmica (base-10), pero los valores en la cuadrícula están en unidades naturales.</p>
+<p>El problema con las cuadrículas aleatorias es que, en las cuadrículas pequeñas y medianas, los valores aleatorios pueden dar como resultado combinaciones de parámetros superpuestos. Además, la cuadrícula aleatoria debe cubrir todo el espacio de parámetros, pero la probabilidad de una buena cobertura aumenta con el número de valores de la cuadrícula. Incluso para una muestra de 15 puntos candidatos, <a href="#fig-random-grid" class="quarto-xref">Figura&nbsp;<span>13.1</span></a> muestra cierta superposición entre puntos para nuestro perceptrón multicapa de ejemplo.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggforce)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1302</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>mlp_param <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># La opción 'original = FALSE' mantiene la penalización en log10 unidades</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid_random</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">original =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .panel_x, <span class="at">y =</span> .panel_y)) <span class="sc">+</span> </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_blank</span>() <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_matrix</span>(<span class="fu">vars</span>(hidden_units, penalty, epochs), <span class="at">layer.diag =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Diseño aleatorio con 20 candidatos"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-random-grid" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Una matriz de diagrama de dispersión para tres parámetros de ajuste con 20 puntos generados al azar. Existen lagunas importantes en el espacio de parámetros.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-random-grid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-random-grid-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Una matriz de diagrama de dispersión para tres parámetros de ajuste con 20 puntos generados al azar. Existen lagunas importantes en el espacio de parámetros." width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-random-grid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;13.1: Tres parámetros de ajuste con 15 puntos generados al azar
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Un enfoque mucho mejor es utilizar un conjunto de diseños experimentales llamados <em>diseños de relleno de espacio</em>. Si bien los diferentes métodos de diseño tienen objetivos ligeramente diferentes, generalmente encuentran una configuración de puntos que cubre el espacio de parámetros con la menor posibilidad de superposición o valores redundantes. Ejemplos de tales diseños son los hipercubos latinos <span class="citation" data-cites="lhd">(<a href="references.html#ref-lhd" role="doc-biblioref">McKay, Beckman, y Conover 1979</a>)</span>, los diseños de máxima entropía <span class="citation" data-cites="maxent">(<a href="references.html#ref-maxent" role="doc-biblioref">Shewry y Wynn 1987</a>)</span>, los diseños de máxima proyección <span class="citation" data-cites="maxproj">(<a href="references.html#ref-maxproj" role="doc-biblioref">Joseph, Gul, y Ba 2015</a>)</span> y otros. Consulte <span class="citation" data-cites="santner2003design">Santner et&nbsp;al. (<a href="references.html#ref-santner2003design" role="doc-biblioref">2003</a>)</span> para obtener una descripción general.</p>
+<p>El paquete <span class="pkg">dials</span> contiene funciones para diseños de hipercubo latino y de máxima entropía. Al igual que con <code>grid_random()</code>, las entradas principales son el número de combinaciones de parámetros y un objeto de parámetro. Comparemos un diseño aleatorio con un diseño de hipercubo latino para 20 valores de parámetros candidatos en <a href="#fig-space-filling-design" class="quarto-xref">Figura&nbsp;<span>13.2</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1303</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>mlp_param <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid_latin_hypercube</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">original =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .panel_x, <span class="at">y =</span> .panel_y)) <span class="sc">+</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_blank</span>() <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_matrix</span>(<span class="fu">vars</span>(hidden_units, penalty, epochs), <span class="at">layer.diag =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Diseño de Hipercubo Latino con 20 candidatos"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-space-filling-design" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Una matriz de diagrama de dispersión para tres parámetros de ajuste con 15 puntos generados mediante un diseño de relleno de espacio. Hay menos espacios en el espacio de parámetros en comparación con la cuadrícula aleatoria.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-space-filling-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-space-filling-design-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Una matriz de diagrama de dispersión para tres parámetros de ajuste con 15 puntos generados mediante un diseño de relleno de espacio. Hay menos espacios en el espacio de parámetros en comparación con la cuadrícula aleatoria." width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-space-filling-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;13.2: Tres parámetros de ajuste con 20 puntos generados mediante un diseño que llena el espacio
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Si bien no es perfecto, este diseño de hipercubo latino aleja los puntos entre sí y permite una mejor exploración del espacio de hiperparámetros.</p>
+<p>Los diseños que llenan el espacio pueden ser muy eficaces para representar el espacio de parámetros. El diseño predeterminado utilizado por el paquete <span class="pkg">tune</span> es el diseño de máxima entropía. Estos tienden a producir cuadrículas que cubren bien el espacio candidato y aumentan drásticamente las posibilidades de encontrar buenos resultados.</p>
+</section>
+</section>
+<section id="sec-evaluating-grid" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="sec-evaluating-grid"><span class="header-section-number">13.2</span> Evaluación De La Cuadrícula</h2>
+<p>Para elegir la mejor combinación de parámetros de ajuste, cada conjunto candidato se evalúa utilizando datos que no se utilizaron para entrenar ese modelo. Los métodos de remuestreo o un único conjunto de validación funcionan bien para este propósito. El proceso (y la sintaxis) se parece mucho al enfoque en <a href="10-resampling.html#sec-resampling-performance" class="quarto-xref"><span>Sección 10.3</span></a> que utilizó la función <code>fit_resamples()</code> del paquete <span class="pkg">tune</span>.</p>
+<p>Después del remuestreo, el usuario selecciona el conjunto de parámetros candidatos más apropiado. Podría tener sentido elegir la mejor combinación de parámetros empíricamente o sesgar la elección hacia otros aspectos del ajuste del modelo, como la simplicidad.</p>
+<p>Usamos un conjunto de datos de clasificación para demostrar el ajuste del modelo en este y el próximo capítulo. Los datos provienen de <span class="citation" data-cites="Hill">Hill et&nbsp;al. (<a href="references.html#ref-Hill" role="doc-biblioref">2007</a>)</span>, quien desarrolló una herramienta de laboratorio de microscopía automatizada para la investigación del cáncer. Los datos consisten en 56 mediciones de imágenes de 2019 células de cáncer de mama humano. Estos predictores representan características de forma e intensidad de diferentes partes de las células (por ejemplo, el núcleo, el límite celular, etc.). Existe un alto grado de correlación entre los predictores. Por ejemplo, existen varios predictores diferentes que miden el tamaño y la forma del núcleo y el límite celular. Además, individualmente, muchos predictores tienen distribuciones sesgadas.</p>
+<p>Cada celda pertenece a una de dos clases. Dado que esto es parte de una prueba de laboratorio automatizada, la atención se centró en la capacidad de predicción en lugar de la inferencia.</p>
+<p>Los datos están incluidos en el paquete <span class="pkg">modeldata</span>. Eliminemos una columna que no es necesaria para el análisis (<code>caso</code>):</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(cells)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>cells <span class="ot">&lt;-</span> cells <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>case)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Dadas las dimensiones de los datos, podemos calcular métricas de rendimiento utilizando una validación cruzada de 10 veces:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1304</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cell_folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(cells)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Debido al alto grado de correlación entre los predictores, tiene sentido utilizar la extracción de características PCA para descorrelacionar los predictores. La siguiente receta contiene pasos para transformar los predictores para aumentar la simetría, normalizarlos para que estén en la misma escala y luego realizar la extracción de características. También se ajusta la cantidad de componentes PCA que se conservarán, junto con los parámetros del modelo.</p>
+<div class="rmdwarning">
+<p>Si bien los componentes PCA resultantes están técnicamente en la misma escala, los componentes de rango inferior tienden a tener un rango más amplio que los componentes de rango superior. Por esta razón, volvemos a normalizar para obligar a los predictores a tener la misma media y varianza.</p>
+</div>
+<p>Muchos de los predictores tienen distribuciones sesgadas. Dado que el PCA se basa en la varianza, los valores extremos pueden tener un efecto perjudicial en estos cálculos. Para contrarrestar esto, agreguemos un paso de receta que estime una transformación de Yeo-Johnson para cada predictor <span class="citation" data-cites="yeo2000new">(<a href="references.html#ref-yeo2000new" role="doc-biblioref">Yeo y Johnson 2000</a>)</span>. Si bien originalmente se pensó como una transformación del resultado, también se puede utilizar para estimar transformaciones que fomentan distribuciones más simétricas. Este paso <code>step_YeoJohnson()</code> ocurre en la receta justo antes de la normalización inicial mediante <code>step_normalize()</code>. Luego, combinemos esta receta de ingeniería de características con nuestra especificación de modelo de red neuronal <code>mlp_spec</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mlp_rec <span class="ot">&lt;-</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> cells) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_numeric_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_pca</span>(<span class="fu">all_numeric_predictors</span>(), <span class="at">num_comp =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric_predictors</span>())</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>mlp_wflow <span class="ot">&lt;-</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(mlp_spec) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(mlp_rec)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Creemos un objeto de parámetro <code>mlp_param</code> para ajustar algunos de los rangos predeterminados. Podemos cambiar el número de épocas para tener un rango más pequeño (50 a 200 épocas). Además, el rango predeterminado para <code>num_comp()</code> es un rango muy estrecho (de uno a cuatro componentes); podemos aumentar el rango a 40 componentes y establecer el valor mínimo en cero:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mlp_param <span class="ot">&lt;-</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  mlp_wflow <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_parameter_set_dials</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  Matrix<span class="sc">::</span><span class="fu">update</span>(</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">epochs =</span> <span class="fu">epochs</span>(<span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">200</span>)),</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_comp =</span> <span class="fu">num_comp</span>(<span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">40</span>))</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="rmdnote">
+<p>En <code>step_pca()</code>, usar cero componentes PCA es un atajo para omitir la extracción de funciones. De esta manera, los predictores originales se pueden comparar directamente con los resultados que incluyen componentes PCA.</p>
+</div>
+<p>La función <code>tune_grid()</code> es la función principal para realizar búsquedas en la cuadrícula. Su funcionalidad es muy similar a <code>fit_resamples()</code> de <a href="10-resampling.html#sec-resampling-performance" class="quarto-xref"><span>Sección 10.3</span></a>, aunque tiene argumentos adicionales relacionados con la cuadrícula:</p>
+<ul>
+<li><p><code>grid</code>: Un número entero o marco de datos. Cuando se utiliza un número entero, la función crea un diseño que llena el espacio con un número de <code>grid</code> de combinaciones de parámetros candidatos. Si existen combinaciones de parámetros específicas, el parámetro <code>grid</code> se utiliza para pasarlas a la función.</p></li>
+<li><p><code>param_info</code>: Un argumento opcional para definir los rangos de parámetros. El argumento es más útil cuando <code>grid</code> es un número entero.</p></li>
+</ul>
+<p>De lo contrario, la interfaz para <code>tune_grid()</code> es la misma que <code>fit_resamples()</code>. El primer argumento es una especificación del modelo o un flujo de trabajo. Cuando se da un modelo, el segundo argumento puede ser una receta o una fórmula. El otro argumento requerido es un objeto de remuestreo <span class="pkg">rsample</span> (como <code>cell_folds</code>). La siguiente llamada también pasa un conjunto de métricas para que el área bajo la curva ROC se mida durante el remuestreo.</p>
+<p>Para comenzar, evaluemos una cuadrícula regular con tres niveles en los remuestreos:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>roc_res <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(roc_auc)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1305</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>mlp_reg_tune <span class="ot">&lt;-</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  mlp_wflow <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_grid</span>(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    cell_folds,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">grid =</span> mlp_param <span class="sc">%&gt;%</span> <span class="fu">grid_regular</span>(<span class="at">levels =</span> <span class="dv">3</span>),</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> roc_res</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>mlp_reg_tune</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="do">## # Tuning results</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # 10-fold cross-validation </span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 10 × 4</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="do">##   splits             id     .metrics          .notes          </span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;            &lt;list&gt;          </span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;split [1817/202]&gt; Fold01 &lt;tibble [81 × 8]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 &lt;split [1817/202]&gt; Fold02 &lt;tibble [81 × 8]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 &lt;split [1817/202]&gt; Fold03 &lt;tibble [81 × 8]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 &lt;split [1817/202]&gt; Fold04 &lt;tibble [81 × 8]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 &lt;split [1817/202]&gt; Fold05 &lt;tibble [81 × 8]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 &lt;split [1817/202]&gt; Fold06 &lt;tibble [81 × 8]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 4 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Existen funciones de conveniencia de alto nivel que podemos utilizar para comprender los resultados. Primero, el método <code>autoplot()</code> para cuadrículas regulares muestra los perfiles de rendimiento en todos los parámetros de ajuste en <a href="#fig-regular-grid-plot" class="quarto-xref">Figura&nbsp;<span>13.3</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(mlp_reg_tune) <span class="sc">+</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_viridis_d</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-regular-grid-plot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un gráfico de líneas de los resultados de la cuadrícula regular. El eje x muestra el número de unidades ocultas y el eje y es el AUC ROC remuestreado. Hay líneas separadas para el monto de la regularización. Hay nueve paneles para tres valores para la cantidad de componentes PCA y la cantidad de épocas. En promedio, la cantidad de regularización es importante cuando más es mejor. Además, en promedio, el aumento del número de unidades ocultas disminuye la eficacia del modelo.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-regular-grid-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-regular-grid-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Un gráfico de líneas de los resultados de la cuadrícula regular. El eje x muestra el número de unidades ocultas y el eje y es el AUC ROC remuestreado. Hay líneas separadas para el monto de la regularización. Hay nueve paneles para tres valores para la cantidad de componentes PCA y la cantidad de épocas. En promedio, la cantidad de regularización es importante cuando más es mejor. Además, en promedio, el aumento del número de unidades ocultas disminuye la eficacia del modelo." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-regular-grid-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;13.3: Los resultados regulares de la cuadrícula.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Según estos datos, el monto de la penalización tiene el mayor impacto en el área bajo la curva ROC. El número de épocas no parece tener un efecto pronunciado en el rendimiento. El cambio en el número de unidades ocultas parece ser más importante cuando la cantidad de regularización es baja (y perjudica el rendimiento). Hay varias configuraciones de parámetros que tienen un rendimiento aproximadamente equivalente, como se ve usando la función <code>show_best()</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(mlp_reg_tune) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>.estimator)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning in show_best(mlp_reg_tune): No value of `metric` was given; "roc_auc" will</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="do">## be used.</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 5 × 9</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   hidden_units penalty epochs num_comp .metric  mean     n std_err .config          </span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">##          &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;    &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;            </span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1            5       1     50        0 roc_auc 0.897    10 0.00857 Preprocessor1_Mo…</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2           10       1    125        0 roc_auc 0.895    10 0.00898 Preprocessor1_Mo…</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3           10       1     50        0 roc_auc 0.894    10 0.00960 Preprocessor1_Mo…</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 4            5       1    200        0 roc_auc 0.894    10 0.00784 Preprocessor1_Mo…</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 5            5       1    125        0 roc_auc 0.892    10 0.00822 Preprocessor1_Mo…</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Con base en estos resultados, tendría sentido realizar otra ejecución de búsqueda de cuadrícula con valores mayores de penalización por disminución de peso.</p>
+<p>Para utilizar un diseño que llene el espacio, al argumento <code>grid</code> se le puede dar un número entero o una de las funciones <code>grid_*()</code> puede producir un marco de datos. Para evaluar el mismo rango utilizando un diseño de máxima entropía con 20 valores candidatos:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1306</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>mlp_sfd_tune <span class="ot">&lt;-</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  mlp_wflow <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_grid</span>(</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    cell_folds,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">grid =</span> <span class="dv">20</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Pase el objeto de parámetro para usar el rango apropiado: </span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">param_info =</span> mlp_param,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> roc_res</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>mlp_sfd_tune</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # Tuning results</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="do">## # 10-fold cross-validation </span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 10 × 4</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="do">##   splits             id     .metrics          .notes          </span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;            &lt;list&gt;          </span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;split [1817/202]&gt; Fold01 &lt;tibble [20 × 8]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 &lt;split [1817/202]&gt; Fold02 &lt;tibble [20 × 8]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 &lt;split [1817/202]&gt; Fold03 &lt;tibble [20 × 8]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 &lt;split [1817/202]&gt; Fold04 &lt;tibble [20 × 8]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 &lt;split [1817/202]&gt; Fold05 &lt;tibble [20 × 8]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 &lt;split [1817/202]&gt; Fold06 &lt;tibble [20 × 8]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 4 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El método <code>autoplot()</code> también funcionará con estos diseños, aunque el formato de los resultados será diferente. <a href="#fig-sfd-plot" class="quarto-xref">Figura&nbsp;<span>13.4</span></a> se produjo usando <code>autoplot(mlp_sfd_tune)</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-sfd-plot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="El método `autoplot()` resulta cuando se usa con un diseño que llena el espacio. Las tendencias muestran un rendimiento decreciente con la cantidad de componentes PCA, así como con la cantidad de unidades ocultas.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sfd-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-sfd-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="El método `autoplot()` resulta cuando se usa con un diseño que llena el espacio. Las tendencias muestran un rendimiento decreciente con la cantidad de componentes PCA, así como con la cantidad de unidades ocultas." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sfd-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;13.4: El método <code>autoplot()</code> resulta cuando se usa con un diseño que llena el espacio
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Este gráfico de efectos marginales (<a href="#fig-sfd-plot" class="quarto-xref">Figura&nbsp;<span>13.4</span></a>) muestra la relación de cada parámetro con la métrica de rendimiento.</p>
+<div class="rmdwarning">
+<p>Tenga cuidado al examinar esta trama; dado que no se utiliza una cuadrícula normal, los valores de los demás parámetros de ajuste pueden afectar a cada panel.</p>
+</div>
+<p>El parámetro de penalización parece dar como resultado un mejor rendimiento con menores cantidades de pérdida de peso. Esto es lo opuesto a los resultados de la cuadrícula normal. Dado que cada punto de cada panel se comparte con los otros tres parámetros de ajuste, las tendencias de un panel pueden verse afectadas por los demás. Utilizando una cuadrícula regular, cada punto de cada panel se promedia por igual con respecto a los demás parámetros. Por esta razón, el efecto de cada parámetro se aísla mejor con cuadrículas regulares.</p>
+<p>Al igual que con la cuadrícula normal, <code>show_best()</code> puede informar sobre los mejores resultados numéricamente:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(mlp_sfd_tune) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>.estimator)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning in show_best(mlp_sfd_tune): No value of `metric` was given; "roc_auc" will</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="do">## be used.</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 5 × 9</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   hidden_units       penalty epochs num_comp .metric  mean     n std_err .config    </span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="do">##          &lt;int&gt;         &lt;dbl&gt;  &lt;int&gt;    &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;      </span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1            8 0.594             97       22 roc_auc 0.880    10 0.00998 Preprocess…</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2            3 0.00000000649    135        8 roc_auc 0.878    10 0.00952 Preprocess…</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3            9 0.141            177       11 roc_auc 0.873    10 0.0104  Preprocess…</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 4            8 0.0000000103      74        9 roc_auc 0.869    10 0.00761 Preprocess…</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 5            6 0.00581          129       15 roc_auc 0.865    10 0.00658 Preprocess…</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Generalmente, es una buena idea evaluar los modelos según múltiples métricas para tener en cuenta diferentes aspectos del ajuste del modelo. Además, a menudo tiene sentido elegir una combinación de parámetros ligeramente subóptima asociada con un modelo más simple. Para este modelo, la simplicidad corresponde a valores de penalización mayores y/o menos unidades ocultas.</p>
+<p>Al igual que con los resultados de <code>fit_resamples()</code>, normalmente no tiene ningún valor conservar los ajustes del modelo intermediario entre los remuestreos y los parámetros de ajuste. Sin embargo, como antes, la opción <code>extraer</code> de <code>control_grid()</code> permite conservar los modelos y/o recetas ajustados. Además, configurar la opción <code>save_pred</code> en <code>TRUE</code> conserva las predicciones del conjunto de evaluación y se puede acceder a ellas usando <code>collect_predictions()</code>.</p>
+</section>
+<section id="finalizando-el-modelo" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="finalizando-el-modelo"><span class="header-section-number">13.3</span> Finalizando El Modelo</h2>
+<p>Si uno de los conjuntos de posibles parámetros del modelo encontrados mediante <code>show_best()</code> fuera una opción final atractiva para estos datos, es posible que deseemos evaluar qué tan bien funciona en el conjunto de prueba. Sin embargo, los resultados de <code>tune_grid()</code> solo proporcionan el sustrato para elegir los parámetros de ajuste apropiados. La función <em>no se ajusta</em> a un modelo final.</p>
+<p>Para ajustar un modelo final, se debe determinar un conjunto final de valores de parámetros. Hay dos métodos para hacerlo:</p>
+<ul>
+<li>seleccionar manualmente los valores que parezcan apropiados o</li>
+<li>utilice una función <code>select_*()</code>.</li>
+</ul>
+<p>Por ejemplo, <code>select_best()</code> elegirá los parámetros con los mejores resultados numéricamente. Volvamos a nuestros resultados habituales de la cuadrícula y veamos cuál es mejor:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select_best</span>(mlp_reg_tune, <span class="at">metric =</span> <span class="st">"roc_auc"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 5</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   hidden_units penalty epochs num_comp .config              </span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="do">##          &lt;int&gt;   &lt;dbl&gt;  &lt;int&gt;    &lt;int&gt; &lt;chr&gt;                </span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1            5       1     50        0 Preprocessor1_Model08</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Mirando hacia atrás en <a href="#fig-regular-grid-plot" class="quarto-xref">Figura&nbsp;<span>13.3</span></a>, podemos ver que un modelo con una sola unidad oculta entrenada durante 125 épocas en los predictores originales con una gran cantidad de penalización tiene un rendimiento competitivo con esta opción y es más simple. ¡Esto es básicamente una regresión logística penalizada! Para especificar manualmente estos parámetros, podemos crear un tibble con estos valores y luego usar una función de <em>finalización</em> para unir los valores nuevamente en el flujo de trabajo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>logistic_param <span class="ot">&lt;-</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">num_comp =</span> <span class="dv">0</span>,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">epochs =</span> <span class="dv">125</span>,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">hidden_units =</span> <span class="dv">1</span>,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">penalty =</span> <span class="dv">1</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>final_mlp_wflow <span class="ot">&lt;-</span> </span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  mlp_wflow <span class="sc">%&gt;%</span> </span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">finalize_workflow</span>(logistic_param)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>final_mlp_wflow</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="do">## ══ Workflow ═════════════════════════════════════════════════════════════════════════</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Preprocessor: Recipe</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Model: mlp()</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Preprocessor ─────────────────────────────────────────────────────────────────────</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 Recipe Steps</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="do">## • step_YeoJohnson()</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="do">## • step_normalize()</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="do">## • step_pca()</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="do">## • step_normalize()</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Model ────────────────────────────────────────────────────────────────────────────</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="do">## Single Layer Neural Network Model Specification (classification)</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a><span class="do">## Main Arguments:</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a><span class="do">##   hidden_units = 1</span></span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a><span class="do">##   penalty = 1</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a><span class="do">##   epochs = 125</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a><span class="do">## Engine-Specific Arguments:</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a><span class="do">##   trace = 0</span></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: nnet</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>No se incluyen más valores de <code>tune()</code> en este flujo de trabajo finalizado. Ahora el modelo se puede ajustar a todo el conjunto de entrenamiento:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>final_mlp_fit <span class="ot">&lt;-</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  final_mlp_wflow <span class="sc">%&gt;%</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(cells)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Este objeto ahora se puede utilizar para hacer predicciones futuras sobre nuevos datos.</p>
+<p>Si no usó un flujo de trabajo, la finalización de un modelo y/o receta se realiza usando <code>finalize_model()</code> y <code>finalize_recipe()</code>.</p>
+</section>
+<section id="sec-tuning-usemodels" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="sec-tuning-usemodels"><span class="header-section-number">13.4</span> Herramientas Para Crear Especificaciones De Ajuste</h2>
+<p>El paquete <span class="pkg">usemodels</span> puede tomar un marco de datos y una fórmula de modelo, luego escribir código R para ajustar el modelo. El código también crea una receta adecuada cuyos pasos dependen del modelo solicitado, así como de los datos del predictor.</p>
+<p>Por ejemplo, para los datos de vivienda de Ames, el código de modelado <code>xgboost</code> podría crearse con:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(usemodels)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">use_xgboost</span>(Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>              Latitude <span class="sc">+</span> Longitude, </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">data =</span> ames_train,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>            <span class="co"># Agregue comentarios que expliquen parte del código:</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El código resultante es el siguiente:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>xgboost_recipe <span class="ot">&lt;-</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(<span class="at">formula =</span> Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    Latitude <span class="sc">+</span> Longitude, <span class="at">data =</span> ames_train) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_novel</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Este modelo requiere que los predictores sean numéricos. </span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="do">## El método más común para convertir predictores cualitativos </span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="do">## en numéricos es crear variables indicadoras binarias </span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="do">## (también conocidas como variables ficticias) a partir de estos </span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="do">## predictores. Sin embargo, para este modelo, se pueden crear </span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="do">## variables indicadoras binarias para cada uno de los niveles de </span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  <span class="do">## los factores (lo que se conoce como "codificación one-hot").</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>(), <span class="at">one_hot =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>()) </span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>xgboost_spec <span class="ot">&lt;-</span> </span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">boost_tree</span>(<span class="at">trees =</span> <span class="fu">tune</span>(), <span class="at">min_n =</span> <span class="fu">tune</span>(), <span class="at">tree_depth =</span> <span class="fu">tune</span>(), <span class="at">learn_rate =</span> <span class="fu">tune</span>(), </span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">loss_reduction =</span> <span class="fu">tune</span>(), <span class="at">sample_size =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"xgboost"</span>) </span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>xgboost_workflow <span class="ot">&lt;-</span> </span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(xgboost_recipe) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(xgboost_spec) </span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">69305</span>)</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>xgboost_tune <span class="ot">&lt;-</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_grid</span>(xgboost_workflow, </span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>            <span class="at">resamples =</span> <span class="fu">stop</span>(<span class="st">"agregue su objeto rsample"</span>), </span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>            <span class="at">grid =</span> <span class="fu">stop</span>(<span class="st">"agregar número de puntos candidatos"</span>))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Según lo que entiende <span class="pkg">usemodels</span> sobre los datos, este código es el preprocesamiento mínimo requerido. Para otros modelos, se agregan operaciones como <code>step_normalize()</code> para satisfacer las necesidades básicas del modelo. Tenga en cuenta que es nuestra responsabilidad, como practicante del modelado, elegir qué remuestras, <code>resamples</code>, usar para la afinación, así como qué tipo de cuadrícula, <code>grid</code>.</p>
+<div class="rmdnote">
+<p>El paquete <span class="pkg">usemodels</span> también se puede utilizar para crear código de ajuste de modelo sin ajuste estableciendo el argumento <code>tune = FALSE</code>.</p>
+</div>
+</section>
+<section id="sec-efficient-grids" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="sec-efficient-grids"><span class="header-section-number">13.5</span> Herramientas Para Una Búsqueda Eficiente En La Cuadrícula</h2>
+<p>Es posible hacer que la búsqueda en cuadrícula sea más eficiente desde el punto de vista computacional aplicando algunos trucos y optimizaciones diferentes. Esta sección describe varias técnicas.</p>
+<section id="sec-submodel-trick" class="level3" data-number="13.5.1">
+<h3 data-number="13.5.1" class="anchored" data-anchor-id="sec-submodel-trick"><span class="header-section-number">13.5.1</span> Optimización del submodelo</h3>
+<p>Hay tipos de modelos en los que, a partir de un único ajuste de modelo, se pueden evaluar múltiples parámetros de ajuste sin necesidad de reajustarlos.</p>
+<p>Por ejemplo, los mínimos cuadrados parciales (PLS) son una versión supervisada del análisis de componentes principales <span class="citation" data-cites="Geladi:1986">(<a href="references.html#ref-Geladi:1986" role="doc-biblioref">Geladi y Kowalski 1986</a>)</span>. Crea componentes que maximizan la variación en los predictores (como PCA) pero simultáneamente intenta maximizar la correlación entre estos predictores y el resultado. Exploraremos más PLS en el <a href="16-dimensionality-reduction.html" class="quarto-xref">Capítulo&nbsp;<span>16</span></a>. Un parámetro de ajuste es el número de componentes PLS que se conservarán. Supongamos que un conjunto de datos con 100 predictores se ajusta mediante PLS. El número de posibles componentes a conservar puede oscilar entre uno y cincuenta. Sin embargo, en muchas implementaciones, un único ajuste de modelo puede calcular valores predichos en muchos valores de <code>num_comp</code>. Como resultado, un modelo PLS creado con 100 componentes también puede hacer predicciones para cualquier <code>num_comp &lt;= 100</code>. Esto ahorra tiempo ya que, en lugar de crear ajustes de modelo redundantes, se puede utilizar un ajuste único para evaluar muchos submodelos.</p>
+<p>Si bien no todos los modelos pueden aprovechar esta característica, muchos de los más utilizados sí lo hacen.</p>
+<ul>
+<li><p>Los modelos de impulso normalmente pueden hacer predicciones en múltiples valores para el número de iteraciones de impulso.</p></li>
+<li><p>Los métodos de regularización, como el modelo <span class="pkg">glmnet</span>, pueden realizar predicciones simultáneas sobre la cantidad de regularización utilizada para ajustar el modelo.</p></li>
+<li><p>Los splines de regresión adaptativa multivariada (MARS) añaden un conjunto de características no lineales a los modelos de regresión lineal <span class="citation" data-cites="Friedman:1991p109">(<a href="references.html#ref-Friedman:1991p109" role="doc-biblioref">Friedman 1991</a>)</span>. El número de términos a retener es un parámetro de ajuste y es computacionalmente rápido hacer predicciones sobre muchos valores de este parámetro a partir de un único ajuste de modelo.</p></li>
+</ul>
+<p>El paquete <span class="pkg">tune</span> aplica automáticamente este tipo de optimización cada vez que se ajusta un modelo aplicable.</p>
+<p>Por ejemplo, si se ajustó un modelo de clasificación C5.0 mejorado <span class="citation" data-cites="apm">(<a href="references.html#ref-apm" role="doc-biblioref">M. Kuhn y Johnson 2013</a>)</span> a los datos de la celda, podemos ajustar el número de iteraciones de refuerzo (“árboles”). Con todos los demás parámetros establecidos en sus valores predeterminados, podemos evaluar iteraciones de 1 a 100 en las mismas muestras utilizadas anteriormente:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>c5_spec <span class="ot">&lt;-</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">boost_tree</span>(<span class="at">trees =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"C5.0"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1307</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>c5_spec <span class="sc">%&gt;%</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_grid</span>(</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    class <span class="sc">~</span> .,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">resamples =</span> cell_folds,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">grid =</span> <span class="fu">data.frame</span>(<span class="at">trees =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>),</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> roc_res</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Sin la optimización del submodelo, la llamada a <code>tune_grid()</code> usó 62.2 minutos para volver a muestrear 100 submodelos. Con la optimización, la misma llamada tomó 100 <em>segundos</em> (una aceleración de 37). El tiempo reducido es la diferencia entre <code>tune_grid()</code> que ajusta 1000 modelos frente a 10 modelos.</p>
+<div class="rmdnote">
+<p>Aunque ajustamos el modelo con y sin el truco de predicción del submodelo, esta optimización se aplica automáticamente mediante <span class="pkg">parsnip</span>.</p>
+</div>
+</section>
+<section id="procesamiento-en-paralelo" class="level3" data-number="13.5.2">
+<h3 data-number="13.5.2" class="anchored" data-anchor-id="procesamiento-en-paralelo"><span class="header-section-number">13.5.2</span> Procesamiento en paralelo</h3>
+<p>Como se mencionó anteriormente en <a href="10-resampling.html#sec-parallel" class="quarto-xref"><span>Sección 10.4</span></a>, el procesamiento paralelo es un método eficaz para disminuir el tiempo de ejecución al volver a muestrear modelos. Esta ventaja se transmite al ajuste del modelo mediante búsqueda en cuadrícula, aunque existen consideraciones adicionales.</p>
+<p>Consideremos dos esquemas de procesamiento paralelo diferentes.</p>
+<p>Al ajustar modelos mediante búsqueda de cuadrícula, hay dos bucles distintos: uno sobre remuestreos y otro sobre combinaciones únicas de parámetros de ajuste. En pseudocódigo, este proceso se vería así:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (rs <span class="cf">in</span> resamples) {</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Crear conjuntos de análisis y evaluación.</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Preprocesar datos (por ejemplo, fórmula o receta)</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (mod <span class="cf">in</span> configurations) {</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ajustar el modelo {mod} al conjunto de análisis {rs}</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predecir el conjunto de evaluación {rs}</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>De forma predeterminada, el paquete <span class="pkg">tune</span> paraleliza solo sobre remuestreos (el bucle externo), a diferencia de los bucles externo e interno.</p>
+<p>Este es el escenario óptimo cuando el método de preprocesamiento es costoso. Sin embargo, este enfoque tiene dos posibles desventajas:</p>
+<ul>
+<li><p>Limita las aceleraciones alcanzables cuando el preprocesamiento no es caro.</p></li>
+<li><p>El número de trabajadores paralelos está limitado por el número de remuestras. Por ejemplo, con una validación cruzada de 10 veces, puede utilizar solo 10 trabajadores paralelos incluso cuando la computadora tiene más de 10 núcleos.</p></li>
+</ul>
+<p>Para ilustrar cómo funciona el procesamiento paralelo, usaremos un caso en el que hay 7 valores de parámetros de ajuste del modelo, con validación cruzada quíntuple. <a href="#fig-one-resample-per-worker" class="quarto-xref">Figura&nbsp;<span>13.5</span></a> muestra cómo se asignan las tareas a los procesos de trabajo.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-one-resample-per-worker" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un diagrama de los procesos de trabajo cuando el procesamiento paralelo coincide con los remuestreos de un proceso de trabajo específico. Una vez finalizadas las operaciones de preproceso, cada ajuste de modelo se ejecuta en el mismo proceso de trabajo.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-one-resample-per-worker-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-one-resample-per-worker-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%" alt="Un diagrama de los procesos de trabajo cuando el procesamiento paralelo coincide con los remuestreos de un proceso de trabajo específico. Una vez finalizadas las operaciones de preproceso, cada ajuste de modelo se ejecuta en el mismo proceso de trabajo.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-one-resample-per-worker-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;13.5: Procesos de trabajo cuando el procesamiento paralelo hace coincidir los remuestreos con un proceso de trabajo específico
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Tenga en cuenta que cada pliegue se asigna a su propio proceso de trabajo y, dado que solo se están ajustando los parámetros del modelo, el preprocesamiento se realiza una vez por pliegue/trabajador. Si se utilizaran menos de cinco procesos de trabajo, algunos trabajadores recibirían múltiples pliegues.</p>
+<p>En las funciones de control para las funciones <code>tune_*()</code>, el argumento <code>parallel_over</code> controla cómo se ejecuta el proceso. Para utilizar la estrategia de paralelización anterior, el argumento es <code>parallel_over = "resamples"</code>.</p>
+<p>En lugar de procesar los remuestreos en paralelo, un esquema alternativo combina los bucles sobre los remuestreos y los modelos en un solo bucle. En pseudocódigo, este proceso se vería así:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>all_tasks <span class="ot">&lt;-</span> <span class="fu">crossing</span>(resamples, configurations)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (iter <span class="cf">in</span> all_tasks) {                           </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Crear conjuntos de análisis y evaluación para {iter}</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Preprocesar datos (e.j. formula or recipe)</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Ajustar el modelo {iter} al conjunto de análisis {iter}</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Predecir el conjunto de evaluación {iter}</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>En este caso, la paralelización se produce ahora en un bucle único. Por ejemplo, si utilizamos validación cruzada quíntuple con valores de parámetros de ajuste <span class="math inline">\(M\)</span>, el bucle se ejecuta en <span class="math inline">\(5\times M\)</span> iteraciones. Esto aumenta el número de trabajadores potenciales que se pueden utilizar. Sin embargo, el trabajo relacionado con el preprocesamiento de datos se repite varias veces. Si esas medidas son costosas, este enfoque será ineficiente.</p>
+<p>En tidymodels, los conjuntos de validación se tratan como un único remuestreo. En estos casos, este esquema de paralelización sería el mejor.</p>
+<p><a href="#fig-distributed-tasks" class="quarto-xref">Figura&nbsp;<span>13.6</span></a> ilustra la delegación de tareas a los trabajadores en este plan; se utiliza el mismo ejemplo pero con 10 trabajadores.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-distributed-tasks" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un diagrama de los procesos de los trabajadores cuando las tareas de preprocesamiento y modelado se distribuyen a muchos trabajadores. En este caso, se utiliza una paralelización más completa, pero algunas tareas de preprocesamiento se repiten en todos los procesos de trabajo.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-distributed-tasks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-distributed-tasks-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Un diagrama de los procesos de los trabajadores cuando las tareas de preprocesamiento y modelado se distribuyen a muchos trabajadores. En este caso, se utiliza una paralelización más completa, pero algunas tareas de preprocesamiento se repiten en todos los procesos de trabajo.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-distributed-tasks-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;13.6: Procesos de trabajo cuando las tareas de preprocesamiento y modelado se distribuyen a muchos trabajadores
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Aquí, cada proceso de trabajo maneja múltiples pliegues y el preprocesamiento se repite innecesariamente. Por ejemplo, para el primer pliegue, el preprocesamiento se calculó seven veces en lugar de una vez.</p>
+<p>Para este esquema, el argumento de la función de control es <code>parallel_over = "everything"</code>.</p>
+</section>
+<section id="evaluación-comparativa-de-árboles-potenciados" class="level3" data-number="13.5.3">
+<h3 data-number="13.5.3" class="anchored" data-anchor-id="evaluación-comparativa-de-árboles-potenciados"><span class="header-section-number">13.5.3</span> Evaluación comparativa de árboles potenciados</h3>
+<p>Para comparar diferentes esquemas de paralelización posibles, ajustamos un árbol potenciado con el motor <span class="pkg">xgboost</span> utilizando un conjunto de datos de 4000 muestras, con validación cruzada quíntuple y 10 modelos candidatos. Estos datos requirieron algún procesamiento previo de referencia que no requirió ninguna estimación. El preprocesamiento se manejó de tres maneras diferentes:</p>
+<ol type="1">
+<li>Preprocese los datos antes de modelar utilizando una canalización <span class="pkg">dplyr</span> (etiquetada como “ninguna” en los gráficos posteriores).</li>
+<li>Realice el mismo preprocesamiento mediante una receta (que se muestra como preprocesamiento “ligero”).</li>
+<li>Con una receta, agregar un paso adicional que tenga un alto costo computacional (etiquetado como “caro”).</li>
+</ol>
+<p>La primera y segunda opciones de preprocesamiento están diseñadas para comparar, para medir el costo computacional de la receta en la segunda opción. La tercera opción mide el costo de realizar cálculos redundantes con <code>parallel_over = "everything"</code>.</p>
+<p>Evaluamos este proceso usando números variables de procesos de trabajo y usando las dos opciones <code>parallel_over</code>, en una computadora con 10 núcleos físicos y 20 núcleos virtuales (mediante hyper-threading).</p>
+<p>Primero, consideremos los tiempos de ejecución sin procesar en <a href="#fig-parallel-times" class="quarto-xref">Figura&nbsp;<span>13.7</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-parallel-times" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Tiempos de ejecución para el ajuste del modelo versus la cantidad de trabajadores que utilizan diferentes esquemas de delegación.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-parallel-times-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-parallel-times-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Tiempos de ejecución para el ajuste del modelo versus la cantidad de trabajadores que utilizan diferentes esquemas de delegación.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-parallel-times-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;13.7: Tiempos de ejecución para el ajuste del modelo versus la cantidad de trabajadores que utilizan diferentes esquemas de delegación
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Dado que solo hubo cinco remuestreos, el número de núcleos utilizados cuando <code>parallel_over = "resamples"</code> está limitado a cinco.</p>
+<p>Comparando las curvas en los dos primeros paneles para “none” y “light”:</p>
+<ul>
+<li><p>Hay poca diferencia en los tiempos de ejecución entre los paneles. Esto indica que, para estos datos, no existe una penalización computacional real por realizar los pasos de preprocesamiento en una receta.</p></li>
+<li><p>Hay algunos beneficios al usar <code>parallel_over = "everything"</code> con muchos núcleos. Sin embargo, como se muestra en la figura, la mayor parte del beneficio del procesamiento paralelo ocurre en los primeros cinco trabajadores.</p></li>
+</ul>
+<p>Con el costoso paso de preprocesamiento, existe una diferencia considerable en los tiempos de ejecución. Usar <code>parallel_over = "everything"</code> es problemático ya que, incluso usando todos los núcleos, nunca alcanza el tiempo de ejecución que <code>parallel_over = "resamples"</code> logra con solo cinco núcleos. Esto se debe a que el costoso paso de preprocesamiento se repite innecesariamente en el esquema computacional.</p>
+<p>También podemos ver estos datos en términos de aceleraciones en <a href="#fig-parallel-speedups" class="quarto-xref">Figura&nbsp;<span>13.8</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-parallel-speedups" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Aceleraciones en el ajuste del modelo frente al número de trabajadores que utilizan diferentes esquemas de delegación. La línea negra diagonal indica una aceleración lineal donde la adición de un nuevo proceso de trabajo tiene el máximo efecto. El esquema 'todo' muestra que los beneficios disminuyen después de tres o cuatro trabajadores, especialmente cuando hay un procesamiento previo costoso. El esquema de 'nuevas muestras' tiene aceleraciones casi lineales en todas las tareas.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-parallel-speedups-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-parallel-speedups-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Aceleraciones en el ajuste del modelo frente al número de trabajadores que utilizan diferentes esquemas de delegación. La línea negra diagonal indica una aceleración lineal donde la adición de un nuevo proceso de trabajo tiene el máximo efecto. El esquema 'todo' muestra que los beneficios disminuyen después de tres o cuatro trabajadores, especialmente cuando hay un procesamiento previo costoso. El esquema de 'nuevas muestras' tiene aceleraciones casi lineales en todas las tareas.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-parallel-speedups-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;13.8: Aceleraciones en el ajuste del modelo frente al número de trabajadores que utilizan diferentes esquemas de delegación. La línea negra diagonal indica una aceleración lineal donde la adición de un nuevo proceso de trabajo tiene el máximo efecto.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Las mejores aceleraciones, para estos datos, ocurren cuando <code>parallel_over = "resamples"</code> y cuando los cálculos son costosos. Sin embargo, en este último caso, recuerde que el análisis anterior indica que los ajustes generales del modelo son más lentos.</p>
+<p>¿Cuál es el beneficio de utilizar el método de optimización de submodelos junto con el procesamiento paralelo? El modelo de clasificación C5.0 que se muestra en <a href="#sec-submodel-trick" class="quarto-xref"><span>Sección 13.5.1</span></a> también se ejecutó en paralelo con diez trabajadores. Los cálculos paralelos tomaron 13,3 segundos para acelerar 7.5 (ambas ejecuciones utilizaron el truco de optimización del submodelo). Entre el truco de optimización del submodelo y el procesamiento paralelo, hubo una aceleración total de 282 sobre el código de búsqueda de cuadrícula más básico.</p>
+<div class="rmdwarning">
+<p>En general, tenga en cuenta que el aumento de los ahorros computacionales variará de un modelo a otro y también se verá afectado por el tamaño de la cuadrícula, la cantidad de remuestreos, etc. Es posible que un modelo muy eficiente desde el punto de vista computacional no se beneficie tanto del procesamiento paralelo.</p>
+</div>
+</section>
+<section id="acceso-a-variables-globales" class="level3" data-number="13.5.4">
+<h3 data-number="13.5.4" class="anchored" data-anchor-id="acceso-a-variables-globales"><span class="header-section-number">13.5.4</span> Acceso a variables globales</h3>
+<p>Cuando se utilizan tidymodels, es posible utilizar valores en su entorno local (normalmente el entorno global) en los objetos del modelo.</p>
+<div class="rmdnote">
+<p>¿Qué entendemos aquí por “medio ambiente”? Piense en un entorno en R como un lugar para almacenar variables con las que puede trabajar. Consulte el capítulo “Entornos” de <span class="citation" data-cites="wickham2019advanced">Wickham (<a href="references.html#ref-wickham2019advanced" role="doc-biblioref">2019</a>)</span> para obtener más información.</p>
+</div>
+<p>Si definimos una variable para usar como parámetro del modelo y luego la pasamos a una función como <code>linear_reg()</code>, la variable normalmente se define en el entorno global.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>coef_penalty <span class="ot">&lt;-</span> <span class="fl">0.1</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>(<span class="at">penalty =</span> coef_penalty) <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"glmnet"</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>spec</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Main Arguments:</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   penalty = coef_penalty</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: glmnet</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los modelos creados con el paquete parsnip guardan argumentos como estos como <em>quosures</em>; se trata de objetos que rastrean tanto el nombre del objeto como el entorno donde vive:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>spec<span class="sc">$</span>args<span class="sc">$</span>penalty</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="do">## &lt;quosure&gt;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="do">## expr: ^coef_penalty</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="do">## env:  global</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Observe que tenemos <code>env: global</code> porque esta variable se creó en el entorno global. La especificación del modelo definida por <code>spec</code> funciona correctamente cuando se ejecuta en la sesión normal de un usuario porque esa sesión también utiliza el entorno global; R puede encontrar fácilmente el objeto <code>coef_penalty</code>.</p>
+<div class="rmdwarning">
+<p>Cuando un modelo de este tipo se evalúa con trabajadores paralelos, puede fallar. Dependiendo de la tecnología particular que se utilice para el procesamiento paralelo, es posible que los trabajadores no tengan acceso al entorno global.</p>
+</div>
+<p>Al escribir código que se ejecutará en paralelo, es una buena idea insertar los datos reales en los objetos en lugar de la referencia al objeto. Los paquetes <span class="pkg">rlang</span> y <span class="pkg">dplyr</span> pueden resultar muy útiles para esto. Por ejemplo, el operador <code>!!</code> puede unir un único valor en un objeto:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>(<span class="at">penalty =</span> <span class="sc">!!</span>coef_penalty) <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"glmnet"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>spec<span class="sc">$</span>args<span class="sc">$</span>penalty</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="do">## &lt;quosure&gt;</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="do">## expr: ^0.1</span></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="do">## env:  empty</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ahora la salida es <code>^0.1</code>, lo que indica que el valor está ahí en lugar de la referencia al objeto. Cuando tiene varios valores externos para insertar en un objeto, el operador <code>!!!</code> puede ayudar:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>mcmc_args <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">chains =</span> <span class="dv">3</span>, <span class="at">iter =</span> <span class="dv">1000</span>, <span class="at">cores =</span> <span class="dv">3</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"stan"</span>, <span class="sc">!!!</span>mcmc_args)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Linear Regression Model Specification (regression)</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Engine-Specific Arguments:</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   chains = 3</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   iter = 1000</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   cores = 3</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Computational engine: stan</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los selectores de recetas son otro lugar donde es posible que desees acceder a variables globales. Suponga que tiene un paso de receta que debería utilizar todos los predictores en los datos de la celda que se midieron utilizando el segundo canal óptico. Podemos crear un vector de estos nombres de columnas:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>ch_2_vars <span class="ot">&lt;-</span> <span class="fu">str_subset</span>(<span class="fu">names</span>(cells), <span class="st">"ch_2"</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>ch_2_vars</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "avg_inten_ch_2"   "total_inten_ch_2"</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Podríamos codificarlos en un paso de receta, pero sería mejor hacer referencia a ellos mediante programación en caso de que los datos cambien. Dos formas de hacer esto son:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Todavía utiliza una referencia a datos globales. (~_~;)</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> cells) <span class="sc">%&gt;%</span> </span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_spatialsign</span>(<span class="fu">all_of</span>(ch_2_vars))</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Recipe ───────────────────────────────────────────────────────────────────────────</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Inputs</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of variables by role</span></span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="do">## outcome:    1</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="do">## predictor: 56</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Operations</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a><span class="do">## • Spatial sign on: all_of(ch_2_vars)</span></span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Inserta los valores en el paso. ヽ(•‿•)ノ</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a><span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> cells) <span class="sc">%&gt;%</span> </span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_spatialsign</span>(<span class="sc">!!!</span>ch_2_vars)</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Recipe ───────────────────────────────────────────────────────────────────────────</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Inputs</span></span>
+<span id="cb31-22"><a href="#cb31-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of variables by role</span></span>
+<span id="cb31-23"><a href="#cb31-23" aria-hidden="true" tabindex="-1"></a><span class="do">## outcome:    1</span></span>
+<span id="cb31-24"><a href="#cb31-24" aria-hidden="true" tabindex="-1"></a><span class="do">## predictor: 56</span></span>
+<span id="cb31-25"><a href="#cb31-25" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb31-26"><a href="#cb31-26" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Operations</span></span>
+<span id="cb31-27"><a href="#cb31-27" aria-hidden="true" tabindex="-1"></a><span class="do">## • Spatial sign on: "avg_inten_ch_2" and "total_inten_ch_2"</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Este último es mejor para el procesamiento paralelo porque toda la información necesaria está integrada en el objeto de receta.</p>
+</section>
+<section id="sec-racing" class="level3" data-number="13.5.5">
+<h3 data-number="13.5.5" class="anchored" data-anchor-id="sec-racing"><span class="header-section-number">13.5.5</span> Métodos de carrera</h3>
+<p>Un problema con la búsqueda de cuadrícula es que todos los modelos deben ajustarse en todas las muestras antes de poder evaluar cualquier parámetro de ajuste. Sería útil si, en cambio, en algún momento durante el ajuste, se pudiera realizar un análisis intermedio para eliminar cualquier parámetro candidato realmente terrible. Esto sería similar al <em>análisis de inutilidad</em> en ensayos clínicos. Si un nuevo fármaco tiene un rendimiento excesivamente malo (o bueno), es potencialmente poco ético esperar hasta que finalice el ensayo para tomar una decisión.</p>
+<p>En el aprendizaje automático, el conjunto de técnicas llamadas <em>métodos de carrera</em> proporcionan una función similar <span class="citation" data-cites="maron1994hoeffding">(<a href="references.html#ref-maron1994hoeffding" role="doc-biblioref">Maron y Moore 1994</a>)</span>. Aquí, el proceso de ajuste evalúa todos los modelos en un subconjunto inicial de remuestreos. Según sus métricas de rendimiento actuales, algunos conjuntos de parámetros no se consideran en remuestreos posteriores.</p>
+<p>Como ejemplo, en el proceso de ajuste del perceptrón multicapa con una cuadrícula regular explorado en este capítulo, ¿cómo se verían los resultados después de solo los primeros tres pliegues? Usando técnicas similares a las que se muestran en el <a href="11-comparing-models.html" class="quarto-xref">Capítulo&nbsp;<span>11</span></a>, podemos ajustar un modelo donde el resultado es el área remuestreada bajo la curva ROC y el predictor es un indicador para la combinación de parámetros. El modelo tiene en cuenta el efecto de remuestreo a remuestreo y produce estimaciones puntuales y de intervalo para cada configuración de parámetro. Los resultados del modelo son intervalos de confianza unilaterales del 95% que miden la pérdida del valor ROC en relación con los parámetros de mejor rendimiento actualmente, como se muestra en <a href="#fig-racing-process" class="quarto-xref">Figura&nbsp;<span>13.9</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-racing-process" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Una ilustración del proceso de carrera para 20 parámetros de ajuste y 10 remuestreos. El análisis se realiza en la primera, tercera y última muestra. A medida que aumenta el número de remuestras, los intervalos de confianza muestran algunas configuraciones del modelo que no tienen intervalos de confianza que se superpongan con cero. Estos quedan excluidos de remuestreos posteriores.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-racing-process-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-racing-process-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Una ilustración del proceso de carrera para 20 parámetros de ajuste y 10 remuestreos. El análisis se realiza en la primera, tercera y última muestra. A medida que aumenta el número de remuestras, los intervalos de confianza muestran algunas configuraciones del modelo que no tienen intervalos de confianza que se superpongan con cero. Estos quedan excluidos de remuestreos posteriores.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-racing-process-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;13.9: El proceso de carrera para 20 parámetros de afinación y 10 resampleos.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Cualquier conjunto de parámetros cuyo intervalo de confianza incluya cero carecería de evidencia de que su desempeño sea estadísticamente diferente de los mejores resultados. Mantenemos la configuración de 9; estos se vuelven a muestrear más. Los submodelos restantes 11 ya no se consideran.</p>
+<video width="720" height="720" controls="">
+<source src="race_results.mp4" type="video/mp4">
+</video>
+<p>El proceso continúa para cada nueva muestra; después del siguiente conjunto de métricas de rendimiento, se ajusta un nuevo modelo a estas estadísticas y potencialmente se descartan más submodelos.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="rmdwarning">
+<p>Los métodos de carrera pueden ser más eficientes que la búsqueda básica en la cuadrícula siempre que el análisis intermedio sea rápido y algunas configuraciones de parámetros tengan un rendimiento deficiente. También es más útil cuando el modelo <em>no</em> tiene la capacidad de explotar las predicciones del submodelo.</p>
+</div>
+<p>El paquete <span class="pkg">finetune</span> contiene funciones para carreras. La función <code>tune_race_anova()</code> realiza un modelo ANOVA para probar la significancia estadística de las diferentes configuraciones del modelo. La sintaxis para reproducir el filtrado mostrado anteriormente es:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(finetune)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1308</span>)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>mlp_sfd_race <span class="ot">&lt;-</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  mlp_wflow <span class="sc">%&gt;%</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_race_anova</span>(</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>    cell_folds,</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">grid =</span> <span class="dv">20</span>,</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">param_info =</span> mlp_param,</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> roc_res,</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> <span class="fu">control_race</span>(<span class="at">verbose_elim =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los argumentos reflejan los de <code>tune_grid()</code>. La función <code>control_race()</code> tiene opciones para el procedimiento de eliminación.</p>
+<p>Como se muestra en la animación anterior, se estaban considerando combinaciones de parámetros de ajuste four una vez que se evaluó el conjunto completo de remuestreos. <code>show_best()</code> devuelve los mejores modelos (clasificados por rendimiento) pero solo devuelve las configuraciones que nunca fueron eliminadas:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(mlp_sfd_race, <span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning in show_best(mlp_sfd_race, n = 10): No value of `metric` was given;</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="do">## "roc_auc" will be used.</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 4 × 10</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   hidden_units  penalty epochs num_comp .metric .estimator  mean     n std_err</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="do">##          &lt;int&gt;    &lt;dbl&gt;  &lt;int&gt;    &lt;int&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1            8 8.14e- 1    177       15 roc_auc binary     0.885    10 0.00988</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2            3 4.02e- 2    151       10 roc_auc binary     0.881    10 0.00995</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3            2 7.91e- 4    164        7 roc_auc binary     0.880    10 0.00813</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 4            5 1.30e-10     89        5 roc_auc binary     0.879    10 0.00967</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 1 more variable: .config &lt;chr&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Existen otras técnicas de análisis intermedio para descartar configuraciones. Por ejemplo, <span class="citation" data-cites="krueger15a">Krueger, Panknin, y Braun (<a href="references.html#ref-krueger15a" role="doc-biblioref">2015</a>)</span> usa métodos de análisis secuencial tradicionales, mientras que <span class="citation" data-cites="kuhn2014futility">Max Kuhn (<a href="references.html#ref-kuhn2014futility" role="doc-biblioref">2014</a>)</span> trata los datos como una competencia deportiva y usa el modelo Bradley-Terry <span class="citation" data-cites="bradley1952rank">(<a href="references.html#ref-bradley1952rank" role="doc-biblioref">Bradley y Terry 1952</a>)</span> para medir la capacidad ganadora de la configuración de parámetros.</p>
+</section>
+</section>
+<section id="sec-grid-summary" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="sec-grid-summary"><span class="header-section-number">13.6</span> Resumen Del Capítulo</h2>
+<p>Este capítulo analizó las dos clases principales de búsqueda de cuadrículas (regular y no regular) que se pueden usar para ajustar el modelo y demostró cómo construir estas cuadrículas, ya sea manualmente o usando la familia de funciones <code>grid_*()</code>. La función <code>tune_grid()</code> puede evaluar estos conjuntos candidatos de parámetros del modelo mediante remuestreo. El capítulo también mostró cómo finalizar un modelo, receta o flujo de trabajo para actualizar los valores de los parámetros para el ajuste final. La búsqueda en cuadrícula puede ser costosa desde el punto de vista computacional, pero las decisiones bien pensadas en el diseño experimental de dichas búsquedas pueden hacerlas manejables.</p>
+<p>El código de análisis de datos que se reutilizará en el próximo capítulo es:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(cells)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>cells <span class="ot">&lt;-</span> cells <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>case)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1304</span>)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>cell_folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(cells)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>roc_res <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(roc_auc)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-BHH" class="csl-entry" role="listitem">
+Box, GEP, W Hunter, y J Hunter. 2005. <em>Statistics for Experimenters: An Introduction to Design, Data Analysis, and Model Building</em>. Wiley.
+</div>
+<div id="ref-bradley1952rank" class="csl-entry" role="listitem">
+Bradley, R, y M Terry. 1952. <span>«Rank analysis of incomplete block designs: <span>I.</span> The method of paired comparisons»</span>. <em>Biometrika</em> 39 (3/4): 324-45.
+</div>
+<div id="ref-Friedman:1991p109" class="csl-entry" role="listitem">
+Friedman, J. 1991. <span>«Multivariate Adaptive Regression Splines»</span>. <em>The Annals of Statistics</em> 19 (1): 1-141.
+</div>
+<div id="ref-Geladi:1986" class="csl-entry" role="listitem">
+Geladi, P., y B Kowalski. 1986. <span>«Partial Least-Squares Regression: A Tutorial»</span>. <em>Analytica Chimica Acta</em> 185: 1-17.
+</div>
+<div id="ref-Hill" class="csl-entry" role="listitem">
+Hill, A, P LaPan, Y Li, y S Haney. 2007. <span>«Impact of Image Segmentation on High-Content Screening Data Quality for <span>SK</span>-<span>BR</span>-3 Cells»</span>. <em>BMC Bioinformatics</em> 8 (1): 340.
+</div>
+<div id="ref-maxproj" class="csl-entry" role="listitem">
+Joseph, V, E Gul, y S Ba. 2015. <span>«Maximum projection designs for computer experiments»</span>. <em>Biometrika</em> 102 (2): 371-80.
+</div>
+<div id="ref-krueger15a" class="csl-entry" role="listitem">
+Krueger, T, D Panknin, y M Braun. 2015. <span>«Fast Cross-Validation via Sequential Testing»</span>. <em>Journal of Machine Learning Research</em> 16 (33): 1103-55.
+</div>
+<div id="ref-kuhn2014futility" class="csl-entry" role="listitem">
+Kuhn, Max. 2014. <span>«Futility Analysis in the Cross-Validation of Machine Learning Models»</span>. <a href="https://arxiv.org/abs/1405.6974">https://arxiv.org/abs/1405.6974</a>.
+</div>
+<div id="ref-apm" class="csl-entry" role="listitem">
+Kuhn, M, y K Johnson. 2013. <em>Applied Predictive Modeling</em>. Springer.
+</div>
+<div id="ref-maron1994hoeffding" class="csl-entry" role="listitem">
+Maron, O, y A Moore. 1994. <span>«Hoeffding races: Accelerating model selection search for classification and function approximation»</span>. En <em>Advances in neural information processing systems</em>, 59-66.
+</div>
+<div id="ref-lhd" class="csl-entry" role="listitem">
+McKay, M, R Beckman, y W Conover. 1979. <span>«A Comparison of Three Methods for Selecting Values of Input Variables in the Analysis of Output from a Computer Code»</span>. <em>Technometrics</em> 21 (2): 239-45.
+</div>
+<div id="ref-santner2003design" class="csl-entry" role="listitem">
+Santner, T, B Williams, W Notz, y B Williams. 2003. <em>The design and analysis of computer experiments</em>. Springer.
+</div>
+<div id="ref-maxent" class="csl-entry" role="listitem">
+Shewry, M, y H Wynn. 1987. <span>«Maximum entropy sampling»</span>. <em>Journal of Applied Statistics</em> 14 (2): 165-70.
+</div>
+<div id="ref-wickham2019advanced" class="csl-entry" role="listitem">
+Wickham, H. 2019. <em>Advanced R</em>. 2nd ed. Chapman &amp; Hall/CRC The R Series. Taylor &amp; Francis. <a href="https://doi.org/10.1201/9781351201315">https://doi.org/10.1201/9781351201315</a>.
+</div>
+<div id="ref-yeo2000new" class="csl-entry" role="listitem">
+Yeo, I-K, y R Johnson. 2000. <span>«A new family of power transformations to improve normality or symmetry»</span>. <em>Biometrika</em> 87 (4): 954-59.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p><a href="https://CRAN.R-project.org/view=ExperimentalDesign" class="uri">https://CRAN.R-project.org/view=ExperimentalDesign</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Consulte <span class="citation" data-cites="kuhn2014futility">Max Kuhn (<a href="references.html#ref-kuhn2014futility" role="doc-biblioref">2014</a>)</span> para obtener más detalles sobre los aspectos computacionales de este enfoque.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+
+<script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./12-tuning-parameters.html" class="pagination-link" aria-label="Ajuste De Modelos Y Los Peligros Del Sobreajuste">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./14-iterative-search.html" class="pagination-link" aria-label="Búsqueda Iterativa">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Este libro fue creado usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

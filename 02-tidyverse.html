@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Max Kuhn, y Julia Silge">
+
+<title>Modelado Ordenado con R - 2&nbsp; Una Introducción Tidyverse</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./03-base-r.html" rel="next">
+<link href="./01-software-modeling.html" rel="prev">
+<link href="./images/cover.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="TMwR.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-software-modeling.html">INTRODUCCIÓN</a></li><li class="breadcrumb-item"><a href="./02-tidyverse.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Modelado Ordenado con R</a> 
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hola Mundo</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#principios-de-tidyverse" id="toc-principios-de-tidyverse" class="nav-link active" data-scroll-target="#principios-de-tidyverse"><span class="header-section-number">2.1</span> Principios De Tidyverse</a>
+  <ul class="collapse">
+  <li><a href="#diseño-para-humanos" id="toc-diseño-para-humanos" class="nav-link" data-scroll-target="#diseño-para-humanos"><span class="header-section-number">2.1.1</span> Diseño para humanos</a></li>
+  <li><a href="#reutilizar-estructuras-de-datos-existentes" id="toc-reutilizar-estructuras-de-datos-existentes" class="nav-link" data-scroll-target="#reutilizar-estructuras-de-datos-existentes"><span class="header-section-number">2.1.2</span> Reutilizar estructuras de datos existentes</a></li>
+  <li><a href="#diseño-para-la-tubería-y-programación-funcional." id="toc-diseño-para-la-tubería-y-programación-funcional." class="nav-link" data-scroll-target="#diseño-para-la-tubería-y-programación-funcional."><span class="header-section-number">2.1.3</span> Diseño para la tubería y programación funcional.</a></li>
+  </ul></li>
+  <li><a href="#sec-examples-of-tidyverse-syntax" id="toc-sec-examples-of-tidyverse-syntax" class="nav-link" data-scroll-target="#sec-examples-of-tidyverse-syntax"><span class="header-section-number">2.2</span> Ejemplos De Sintaxis De Tidyverse</a></li>
+  <li><a href="#resumen-del-capítulo" id="toc-resumen-del-capítulo" class="nav-link" data-scroll-target="#resumen-del-capítulo"><span class="header-section-number">2.3</span> Resumen Del Capítulo</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-software-modeling.html">INTRODUCCIÓN</a></li><li class="breadcrumb-item"><a href="./02-tidyverse.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-tidyverse" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>¿Qué es tidyverse y dónde encaja el marco de tidymodels? tidyverse es una colección de paquetes R para análisis de datos que se desarrollan con ideas y normas comunes. De <span class="citation" data-cites="tidyverse">Wickham et&nbsp;al. (<a href="references.html#ref-tidyverse" role="doc-biblioref">2019</a>)</span>:</p>
+<blockquote class="blockquote">
+<p>“En un nivel alto, tidyverse es un lenguaje para resolver desafíos de ciencia de datos con código R. Su objetivo principal es facilitar una conversación entre un humano y una computadora sobre datos. De manera menos abstracta, tidyverse es una colección de paquetes de R que comparten una filosofía de diseño de alto nivel y estructuras de datos y gramática de bajo nivel, de modo que aprender un paquete hace que sea más fácil aprender el siguiente.”</p>
+</blockquote>
+<p>En este capítulo, analizamos brevemente principios importantes de la filosofía de diseño de tidyverse y cómo se aplican en el contexto del software de modelado para que sea fácil de usar correctamente y respalde las buenas prácticas estadísticas, como lo describimos en el <a href="01-software-modeling.html" class="quarto-xref">Capítulo&nbsp;<span>1</span></a>. El siguiente capítulo cubre las convenciones de modelado del lenguaje principal R. Juntos, pueden utilizar estas discusiones para comprender las relaciones entre tidyverse, tidymodels y el lenguaje principal o básico, R. Tanto tidymodels como tidyverse se basan en el lenguaje R, y tidymodels aplica los principios de tidyverse para construir modelos.</p>
+<section id="principios-de-tidyverse" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="principios-de-tidyverse"><span class="header-section-number">2.1</span> Principios De Tidyverse</h2>
+<p>El conjunto completo de estrategias y tácticas para escribir código R en el estilo tidyverse se puede encontrar en el sitio web <a href="https://design.tidyverse.org" class="uri">https://design.tidyverse.org</a>. Aquí podemos describir brevemente varios de los principios generales de diseño de tidyverse, su motivación y cómo pensamos sobre el modelado como una aplicación de estos principios.</p>
+<section id="diseño-para-humanos" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="diseño-para-humanos"><span class="header-section-number">2.1.1</span> Diseño para humanos</h3>
+<p>Tidyverse se centra en diseñar paquetes y funciones de R que puedan ser fácilmente comprendidos y utilizados por una amplia gama de personas. Tanto históricamente como hoy, un porcentaje sustancial de usuarios de R no son personas que crean software o herramientas, sino personas que crean análisis o modelos. Como tal, los usuarios de R normalmente no tienen (ni necesitan) experiencia en informática, y muchos no están interesados ​​en escribir sus propios paquetes R.</p>
+<p>Por esta razón, es fundamental que sea fácil trabajar con el código R para lograr sus objetivos. La documentación, la formación, la accesibilidad y otros factores juegan un papel importante para lograrlo. Sin embargo, si la sintaxis en sí es difícil de comprender para las personas, la documentación es una mala solución. El software en sí debe ser intuitivo.</p>
+<p>Para contrastar el enfoque tidyverse con la semántica R más tradicional, considere ordenar un marco de datos. Los marcos de datos pueden representar diferentes tipos de datos en cada columna y varios valores en cada fila. Usando solo el lenguaje central, podemos ordenar un marco de datos usando una o más columnas reordenando las filas mediante las reglas de subíndice de R junto con <code>order()</code>; no puedes utilizar con éxito una función que podrías sentirte tentado a probar en tal situación debido a su nombre, <code>sort()</code>. Para ordenar los datos de <code>mtcars</code> por dos de sus columnas, la llamada podría verse así:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>mtcars[<span class="fu">order</span>(mtcars<span class="sc">$</span>gear, mtcars<span class="sc">$</span>mpg), ]</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Si bien es muy eficiente desde el punto de vista computacional, sería difícil argumentar que se trata de una interfaz de usuario intuitiva. En <span class="pkg">dplyr</span>, por el contrario, la función tidyverse <code>arrange()</code> toma un conjunto de nombres de variables como argumentos de entrada directamente:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(<span class="at">.data =</span> mtcars, gear, mpg)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="rmdnote">
+<p>Los nombres de variables utilizados aquí están “sin comillas”; muchas funciones tradicionales de R requieren una cadena de caracteres para especificar variables, pero las funciones tidyverse toman nombres sin comillas o <em>funciones de selección</em>. Los selectores permiten una o más reglas legibles que se aplican a los nombres de las columnas. Por ejemplo, <code>ends_with("t")</code> seleccionaría las columnas <code>drat</code> y <code>wt</code> del marco de datos <code>mtcars</code>.</p>
+</div>
+<p>Además, el nombramiento es crucial. Si era nuevo en R y estaba escribiendo análisis de datos o código de modelado que involucra álgebra lineal, es posible que se sienta bloqueado al buscar una función que calcule la matriz inversa. El uso de <code>apropos("inv")</code> no produce candidatos. Resulta que la función R base para esta tarea es <code>solve()</code>, para resolver sistemas de ecuaciones lineales. Para una matriz <code>X</code>, usarías <code>solve(X)</code> para invertir <code>X</code> (sin vector para el lado derecho de la ecuación). Esto sólo está documentado en la descripción de uno de los <em>argumentos</em> en el archivo de ayuda. En esencia, necesita saber el nombre de la solución para poder encontrarla.</p>
+<p>El enfoque de tidyverse consiste en utilizar nombres de funciones que sean descriptivos y explícitos en lugar de aquellos que sean breves e implícitos. Hay un enfoque en los verbos (por ejemplo, “adaptar”, “arreglar”, etc.) para los métodos generales. Los pares verbo-sustantivo son particularmente eficaces; considere <code>invert_matrix()</code> como un nombre de función hipotético. En el contexto del modelado, también es importante evitar jergas muy técnicas, como letras griegas o términos oscuros. Los nombres deben ser lo más autodocumentados posible.</p>
+<p>Cuando hay funciones similares en un paquete, los nombres de las funciones están diseñados para optimizarse para completarse con tabulaciones. Por ejemplo, el paquete <span class="pkg">glue</span> tiene una colección de funciones que comienzan con un prefijo común (<code>glue_</code>) que permite a los usuarios encontrar rápidamente la función que buscan.</p>
+</section>
+<section id="reutilizar-estructuras-de-datos-existentes" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="reutilizar-estructuras-de-datos-existentes"><span class="header-section-number">2.1.2</span> Reutilizar estructuras de datos existentes</h3>
+<p>Siempre que sea posible, las funciones deben evitar devolver una estructura de datos novedosa. Si los resultados son propicios para una estructura de datos existente, se debe utilizar. Esto reduce la carga cognitiva al utilizar software; no se requieren sintaxis ni métodos adicionales.</p>
+<p>El marco de datos es la estructura de datos preferida en los paquetes tidyverse y tidymodels, porque su estructura se adapta bien a una gama tan amplia de tareas de ciencia de datos. Específicamente, los modelos tidyverse y tidy favorecen el tibble, una reinvención moderna del marco de datos de R que describimos en la siguiente sección sobre el ejemplo de sintaxis de tidyverse.</p>
+<p>Como ejemplo, el paquete <span class="pkg">rsample</span> se puede utilizar para crear <em>resamples</em> de un conjunto de datos, como la validación cruzada o el bootstrap (descrito en el <a href="10-resampling.html" class="quarto-xref">Capítulo&nbsp;<span>10</span></a>). Las funciones de remuestreo devuelven un tibble con una columna llamada “divisiones” de objetos que definen los conjuntos de datos remuestreados. Tres muestras de arranque de un conjunto de datos podrían verse así:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>boot_samp <span class="ot">&lt;-</span> rsample<span class="sc">::</span><span class="fu">bootstraps</span>(mtcars, <span class="at">times =</span> <span class="dv">3</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>boot_samp</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # Bootstrap sampling </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 2</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   splits          id        </span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;          &lt;chr&gt;     </span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;split [32/10]&gt; Bootstrap1</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 &lt;split [32/10]&gt; Bootstrap2</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 &lt;split [32/9]&gt;  Bootstrap3</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(boot_samp)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] "bootstraps" "rset"       "tbl_df"     "tbl"        "data.frame"</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Con este enfoque, se pueden usar funciones basadas en vectores con estas columnas, como <code>vapply()</code> o <code>purrr::map()</code>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Este objeto <code>boot_samp</code> tiene múltiples clases pero hereda métodos para marcos de datos (<code>"data.frame"</code>) y tibbles (<code>"tbl_df"</code>). Además, se pueden agregar nuevas columnas a los resultados sin afectar la clase de los datos. Es mucho más fácil y versátil para los usuarios trabajar con esto que un tipo de objeto completamente nuevo que no hace que su estructura de datos sea obvia.</p>
+<p>Una desventaja de depender de estructuras de datos comunes es la posible pérdida de rendimiento computacional. En algunas situaciones, los datos se pueden codificar en formatos especializados que son representaciones más eficientes de los datos. Por ejemplo:</p>
+<ul>
+<li><p>En química computacional, el formato de archivo de datos estructurales (SDF) es una herramienta para tomar estructuras químicas y codificarlas en un formato con el que sea computacionalmente eficiente trabajar.</p></li>
+<li><p>Los datos que tienen una gran cantidad de valores iguales (como ceros para datos binarios) se pueden almacenar en un formato de matriz dispersa. Este formato puede reducir el tamaño de los datos y permitir técnicas computacionales más eficientes.</p></li>
+</ul>
+<p>Estos formatos son ventajosos cuando el problema tiene un alcance adecuado y los posibles métodos de procesamiento de datos están bien definidos y son adecuados para dicho formato.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Sin embargo, una vez que se violan dichas restricciones, los formatos de datos especializados son menos útiles. Por ejemplo, si realizamos una transformación de los datos que los convierte en números fraccionarios, la salida ya no es escasa; La representación matricial dispersa es útil para un paso algorítmico específico en el modelado, pero a menudo esto no es cierto antes o después de ese paso específico.</p>
+<div class="rmdwarning">
+<p>Una estructura de datos especializada no es lo suficientemente flexible para un flujo de trabajo de modelado completo como lo es una estructura de datos común.</p>
+</div>
+<p>Una característica importante del tibble producido por <span class="pkg">rsample</span> es que la columna <code>splits</code> es una lista. En este caso, cada elemento de la lista tiene el mismo tipo de objeto: un objeto <code>rsplit</code> que contiene información sobre qué filas de <code>mtcars</code> pertenecen a la muestra de arranque. Las <em>columnas de lista</em> pueden ser muy útiles en el análisis de datos y, como se verá a lo largo de este libro, son importantes para los modelos ordenados.</p>
+</section>
+<section id="diseño-para-la-tubería-y-programación-funcional." class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="diseño-para-la-tubería-y-programación-funcional."><span class="header-section-number">2.1.3</span> Diseño para la tubería y programación funcional.</h3>
+<p>El operador de canalización <span class="pkg">magrittr</span> (<code>%&gt;%</code>) es una herramienta para encadenar una secuencia de funciones R.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Para demostrarlo, considere los siguientes comandos que ordenan un marco de datos y luego conserve las primeras 10 filas:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>small_mtcars <span class="ot">&lt;-</span> <span class="fu">arrange</span>(mtcars, gear)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>small_mtcars <span class="ot">&lt;-</span> <span class="fu">slice</span>(small_mtcars, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># or more compactly: </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>small_mtcars <span class="ot">&lt;-</span> <span class="fu">slice</span>(<span class="fu">arrange</span>(mtcars, gear), <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El operador de tubería sustituye el valor del lado izquierdo del operador como primer argumento del lado derecho, por lo que podemos implementar el mismo resultado que antes con:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>small_mtcars <span class="ot">&lt;-</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  mtcars <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(gear) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>La versión canalizada de esta secuencia es más legible; esta legibilidad aumenta a medida que se agregan más operaciones a una secuencia. Este enfoque de programación funciona en este ejemplo porque todas las funciones que utilizamos devuelven la misma estructura de datos (un marco de datos) que luego es el primer argumento de la siguiente función. Esto es por diseño. Cuando sea posible, cree funciones que puedan incorporarse a un conjunto de operaciones.</p>
+<p>Si ha utilizado <span class="pkg">ggplot2</span>, esto no es diferente a la superposición de componentes de la trama en un objeto <code>ggplot</code> con el operador <code>+</code>. Para hacer un diagrama de dispersión con una línea de regresión, la llamada inicial a <code>ggplot()</code> se aumenta con dos operaciones adicionales:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> wt, <span class="at">y =</span> mpg)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Si bien es similar a la canalización <span class="pkg">dplyr</span>, tenga en cuenta que el primer argumento de esta canalización es un conjunto de datos (<code>mtcars</code>) y que cada llamada de función devuelve un objeto <code>ggplot</code>. No todas las canalizaciones necesitan mantener los valores devueltos (objetos de trazado) iguales que el valor inicial (un marco de datos). El uso del operador de canalización con operaciones <span class="pkg">dplyr</span> ha hecho que muchos usuarios de R esperen devolver un marco de datos cuando se utilizan canalizaciones; como se muestra con <span class="pkg">ggplot2</span>, no tiene por qué ser así. Las canalizaciones son increíblemente útiles para modelar flujos de trabajo, pero el modelado de canalizaciones puede devolver, en lugar de un marco de datos, objetos como componentes del modelo.</p>
+<p>R tiene excelentes herramientas para crear, cambiar y operar funciones, lo que lo convierte en un excelente lenguaje para la programación funcional. Este enfoque puede reemplazar los bucles iterativos en muchas situaciones, como cuando una función devuelve un valor sin otros efectos secundarios.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>Veamos un ejemplo. Suponga que está interesado en el logaritmo de la relación entre la eficiencia del combustible y el peso del automóvil. Para aquellos nuevos en R y/o que vienen de otros lenguajes de programación, un bucle puede parecer una buena opción:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(mtcars)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ratios <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="cn">NA_real_</span>, n)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (car <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  ratios[car] <span class="ot">&lt;-</span> <span class="fu">log</span>(mtcars<span class="sc">$</span>mpg[car]<span class="sc">/</span>mtcars<span class="sc">$</span>wt[car])</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ratios)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2.081 1.988 2.285 1.896 1.693 1.655</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Aquellos con más experiencia en R sabrán que existe una versión vectorizada mucho más simple y rápida que se puede calcular mediante:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ratios <span class="ot">&lt;-</span> <span class="fu">log</span>(mtcars<span class="sc">$</span>mpg<span class="sc">/</span>mtcars<span class="sc">$</span>wt)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Sin embargo, en muchos casos del mundo real, la operación de interés por elementos es demasiado compleja para una solución vectorizada. En tal caso, un buen enfoque es escribir una función para realizar los cálculos. Cuando diseñamos para programación funcional, es importante que la salida dependa sólo de las entradas y que la función no tenga efectos secundarios. Las violaciones de estas ideas en la siguiente función se muestran con comentarios:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>compute_log_ratio <span class="ot">&lt;-</span> <span class="cf">function</span>(mpg, wt) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  log_base <span class="ot">&lt;-</span> <span class="fu">getOption</span>(<span class="st">"log_base"</span>, <span class="at">default =</span> <span class="fu">exp</span>(<span class="dv">1</span>)) <span class="co"># obtiene datos externos</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  results <span class="ot">&lt;-</span> <span class="fu">log</span>(mpg<span class="sc">/</span>wt, <span class="at">base =</span> log_base)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(<span class="fu">mean</span>(results))                                <span class="co"># imprime en la consola</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  done <span class="ot">&lt;&lt;-</span> <span class="cn">TRUE</span>                                       <span class="co"># establece datos externos</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  results</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Una mejor versión sería:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>compute_log_ratio <span class="ot">&lt;-</span> <span class="cf">function</span>(mpg, wt, <span class="at">log_base =</span> <span class="fu">exp</span>(<span class="dv">1</span>)) {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log</span>(mpg<span class="sc">/</span>wt, <span class="at">base =</span> log_base)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <span class="pkg">purrr</span> package contains tools for functional programming. Let’s focus on the <code>map()</code> family of functions, which operates on vectors and always returns the same type of output. The most basic function, <code>map()</code>, always returns a list and uses the basic syntax of <code>map(vector, function)</code>. For example, to take the square root of our data, we could:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="fu">head</span>(mtcars<span class="sc">$</span>mpg, <span class="dv">3</span>), sqrt)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [[1]]</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4.583</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [[2]]</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4.583</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [[3]]</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4.775</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Existen variantes especializadas de <code>map()</code> que devuelven valores cuando sabemos o esperamos que la función genere uno de los tipos de vectores básicos. Por ejemplo, dado que la raíz cuadrada devuelve un número de doble precisión:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dbl</span>(<span class="fu">head</span>(mtcars<span class="sc">$</span>mpg, <span class="dv">3</span>), sqrt)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4.583 4.583 4.775</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>También hay funciones de mapeo que operan en múltiples vectores:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>log_ratios <span class="ot">&lt;-</span> <span class="fu">map2_dbl</span>(mtcars<span class="sc">$</span>mpg, mtcars<span class="sc">$</span>wt, compute_log_ratio)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(log_ratios)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2.081 1.988 2.285 1.896 1.693 1.655</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Las funciones <code>map()</code> también permiten funciones temporales y anónimas definidas usando el carácter de tilde. Los valores de los argumentos son <code>.x</code> y <code>.y</code> para <code>map2()</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map2_dbl</span>(mtcars<span class="sc">$</span>mpg, mtcars<span class="sc">$</span>wt, <span class="sc">~</span> <span class="fu">log</span>(.x<span class="sc">/</span>.y)) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2.081 1.988 2.285 1.896 1.693 1.655</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Estos ejemplos han sido triviales pero, en secciones posteriores, se aplicarán a problemas más complejos.</p>
+<div class="rmdnote">
+<p>Para la programación funcional en el modelado ordenado, las funciones deben definirse de modo que funciones como <code>map()</code> puedan usarse para cálculos iterativos.</p>
+</div>
+</section>
+</section>
+<section id="sec-examples-of-tidyverse-syntax" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-examples-of-tidyverse-syntax"><span class="header-section-number">2.2</span> Ejemplos De Sintaxis De Tidyverse</h2>
+<p>Comencemos nuestra discusión sobre la sintaxis de tidyverse explorando más profundamente qué es un tibble y cómo funcionan. Los tibbles tienen reglas ligeramente diferentes a los marcos de datos básicos en R. Por ejemplo, los tibbles funcionan naturalmente con nombres de columnas que no son nombres de variables sintácticamente válidos:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Quiere nombres válidos:</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="st">`</span><span class="at">variable 1</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">two =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   variable.1 two</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 1          1   3</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 2          2   4</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Pero se puede obligar a utilizarlos con una opción adicional:</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">`</span><span class="at">variable 1</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">two =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">check.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>df</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   variable 1 two</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 1          1   3</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 2          2   4</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Pero los tibbles simplemente funcionan:</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>tbbl <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="st">`</span><span class="at">variable 1</span><span class="st">`</span> <span class="ot">=</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">two =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>tbbl</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 2</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="do">##   `variable 1`   two</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a><span class="do">##          &lt;int&gt; &lt;int&gt;</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 1            1     3</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 2            2     4</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los marcos de datos estándar permiten <em>coincidencia parcial</em> de argumentos para que el código que utiliza solo una parte de los nombres de las columnas siga funcionando. Tibbles evita que esto suceda, ya que puede provocar errores accidentales.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>tw</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 3 4</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>tbbl<span class="sc">$</span>tw</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: Unknown or uninitialised column: `tw`.</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">## NULL</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Tibbles también previene uno de los errores de R más comunes: eliminar dimensiones. Si un marco de datos estándar subconjunto de columnas en una sola columna, el objeto se convierte en un vector. Tibbles nunca hace esto:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df[, <span class="st">"two"</span>]</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 3 4</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>tbbl[, <span class="st">"two"</span>]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 1</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="do">##     two</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;int&gt;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1     3</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 2     4</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Hay otras ventajas al usar tibbles en lugar de marcos de datos, como una mejor impresión y más.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>Para demostrar algo de sintaxis, usemos funciones tidyverse para leer datos que podrían usarse en el modelado. El conjunto de datos proviene del portal de datos de la ciudad de Chicago y contiene datos diarios sobre el número de pasajeros de las estaciones de trenes elevados de la ciudad. El conjunto de datos tiene columnas para:</p>
+<ul>
+<li>el identificador de la estación (númerico)</li>
+<li>el nombre de la estación (texto)</li>
+<li>la fecha (texto en formato <code>mm/dd/yyyy</code>)</li>
+<li>el día de la semana (texto)</li>
+<li>el número de pasajeros (númerico)</li>
+</ul>
+<p>Nuestro canalización tidyverse llevará a cabo las siguientes tareas, en orden:</p>
+<ol type="1">
+<li><p>Utilice el paquete tidyverse <span class="pkg">readr</span> para leer los datos del sitio web de origen y convertirlos en un tibble. Para hacer esto, la función <code>read_csv()</code> puede determinar el tipo de datos leyendo un número inicial de filas. Alternativamente, si los nombres y tipos de las columnas ya se conocen, se puede crear una especificación de columna en R y pasarla a <code>read_csv()</code>.</p></li>
+<li><p>Filtre los datos para eliminar algunas columnas que no son necesarias (como el ID de la estación) y cambie la columna “nombre de la estación” a “estación”. Para esto se utiliza la función <code>select()</code>. Al filtrar, utilice los nombres de las columnas o una función selectora <span class="pkg">dplyr</span>. Al seleccionar nombres, se puede declarar un nuevo nombre de variable utilizando el formato de argumento <code>nuevo_nombre = antiguo_nombre</code>.</p></li>
+<li><p>Convierta el campo de fecha al formato de fecha R usando la función <code>mdy()</code> del paquete <span class="pkg">lubridate</span>. También convertimos los números de pasajeros a miles. Ambos cálculos se ejecutan utilizando la función <code>dplyr::mutate()</code>.</p></li>
+<li><p>Utilice el número máximo de viajes para cada estación y combinación de días. Esto mitiga el problema de una pequeña cantidad de días que tienen más de un registro de número de pasajeros en determinadas estaciones. Agrupamos los datos de número de pasajeros por estación y día, y luego resumimos dentro de cada una de las combinaciones únicas 1999 con la estadística máxima.</p></li>
+</ol>
+<p>El código tidyverse para estos pasos es:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://data.cityofchicago.org/api/views/5neh-572f/rows.csv?accessType=DOWNLOAD&amp;bom=true&amp;format=true"</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>all_stations <span class="ot">&lt;-</span> </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Paso 1: leer los datos.</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">read_csv</span>(url) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Paso 2: filtrar columnas y cambiar el nombre de la estación</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="at">station =</span> stationname, date, rides) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Paso 3: convierta el campo de fecha de caracteres a una codificación de fecha.</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Además, coloque los datos en unidades de 1K viajes.</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">mdy</span>(date), <span class="at">rides =</span> rides <span class="sc">/</span> <span class="dv">1000</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Paso 4: resuma los múltiples registros utilizando el máximo.</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(date, station) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">rides =</span> <span class="fu">max</span>(rides), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esta canalización de operaciones ilustra por qué tidyverse es popular. Se utiliza una serie de manipulaciones de datos que tienen funciones simples y fáciles de entender para cada transformación; La serie se presenta de forma simplificada y legible. La atención se centra en cómo el usuario interactúa con el software. Este enfoque permite que más personas aprendan R y alcancen sus objetivos de análisis, y adoptar estos mismos principios para modelar en R tiene los mismos beneficios.</p>
+</section>
+<section id="resumen-del-capítulo" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="resumen-del-capítulo"><span class="header-section-number">2.3</span> Resumen Del Capítulo</h2>
+<p>Este capítulo presentó tidyverse, centrándose en las aplicaciones para modelado y cómo los principios de diseño de tidyverse informan el marco de trabajo de tidymodels. Piense en el marco de tidymodels como una aplicación de los principios de tidyverse al dominio de la construcción de modelos. Describimos las diferencias en las convenciones entre tidyverse y base R, e introdujimos dos componentes importantes del sistema tidyverse, tibbles y el operador de canalización <code>%&gt;%</code>. La limpieza y el procesamiento de datos pueden parecer mundanos a veces, pero estas tareas son importantes para el modelado en el mundo real; Ilustramos cómo usar las funciones tibbles, pipe y tidyverse en un ejercicio de ejemplo de importación y procesamiento de datos.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-tidyverse" class="csl-entry" role="listitem">
+Wickham, H, M Averick, J Bryan, W Chang, L McGowan, R François, G Grolemund, et&nbsp;al. 2019. <span>«Welcome to the <span>Tidyverse</span>»</span>. <em>Journal of Open Source Software</em> 4 (43).
+</div>
+<div id="ref-wickham2016" class="csl-entry" role="listitem">
+Wickham, H, y G Grolemund. 2016. <em><span class="sans-serif">R</span> for Data Science: <span>I</span>mport, Tidy, Transform, Visualize, and Model Data</em>. O’Reilly Media, Inc.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Si nunca antes ha visto <code>::</code> en el código R, es un método explícito para llamar a una función. El valor del lado izquierdo es el <em>espacio de nombres</em> donde reside la función (normalmente un nombre de paquete). El lado derecho es el nombre de la función. En los casos en que dos paquetes usan el mismo nombre de función, esta sintaxis garantiza que se llame a la función correcta.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>No todos los algoritmos pueden aprovechar representaciones dispersas de datos. En tales casos, una matriz dispersa se debe convertir a un formato más convencional antes de continuar.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>En R 4.1.0, también se introdujo un operador de canalización nativo <code>|&gt;</code>. En este libro, utilizamos la canalización <span class="pkg">magrittr</span> ya que los usuarios de versiones anteriores de R no tendrán la nueva canalización nativa.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Ejemplos de efectos secundarios de funciones podrían incluir cambiar datos globales o imprimir un valor.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>El capítulo 10 de <span class="citation" data-cites="wickham2016">Wickham y Grolemund (<a href="references.html#ref-wickham2016" role="doc-biblioref">2016</a>)</span> tiene más detalles sobre tibbles.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+
+<script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./01-software-modeling.html" class="pagination-link" aria-label="Software Para Modelar">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./03-base-r.html" class="pagination-link" aria-label="Una Revisión De Los Fundamentos Del Modelado Con R">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Este libro fue creado usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

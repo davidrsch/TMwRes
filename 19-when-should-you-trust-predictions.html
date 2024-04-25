@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Max Kuhn, y Julia Silge">
+
+<title>Modelado Ordenado con R - 19&nbsp; ¿Cuándo Debería Confiar En Sus Predicciones?</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./20-ensemble-models.html" rel="next">
+<link href="./18-explaining-models-and-predictions.html" rel="prev">
+<link href="./images/cover.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="TMwR.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">MAS ALLÁ DE LO BÁSICO</a></li><li class="breadcrumb-item"><a href="./19-when-should-you-trust-predictions.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Modelado Ordenado con R</a> 
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hola Mundo</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#sec-equivocal-zones" id="toc-sec-equivocal-zones" class="nav-link active" data-scroll-target="#sec-equivocal-zones"><span class="header-section-number">19.1</span> Resultados Equívocos</a></li>
+  <li><a href="#sec-applicability-domains" id="toc-sec-applicability-domains" class="nav-link" data-scroll-target="#sec-applicability-domains"><span class="header-section-number">19.2</span> Determinación De La Aplicabilidad Del Modelo</a></li>
+  <li><a href="#sec-trust-summary" id="toc-sec-trust-summary" class="nav-link" data-scroll-target="#sec-trust-summary"><span class="header-section-number">19.3</span> Resumen Del Capítulo</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">MAS ALLÁ DE LO BÁSICO</a></li><li class="breadcrumb-item"><a href="./19-when-should-you-trust-predictions.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-trust" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Un modelo predictivo casi siempre puede producir una predicción, dados los datos de entrada. Sin embargo, en muchas situaciones resulta inapropiado realizar tal predicción. Cuando un nuevo punto de datos está muy fuera del rango de datos utilizados para crear el modelo, hacer una predicción puede ser una <em>extrapolación</em> inapropiada. Un ejemplo más cualitativo de una predicción inapropiada sería cuando el modelo se utiliza en un contexto completamente diferente. Los datos de segmentación celular utilizados en el <a href="14-iterative-search.html" class="quarto-xref">Capítulo&nbsp;<span>14</span></a> indican cuándo las células de cáncer de mama humano pueden o no aislarse con precisión dentro de una imagen. Un modelo construido a partir de estos datos podría aplicarse de manera inapropiada a las células del estómago con el mismo propósito. Podemos producir una predicción, pero es poco probable que sea aplicable a los diferentes tipos de células.</p>
+<p>Este capítulo analiza dos métodos para cuantificar la calidad potencial de una predicción:</p>
+<ul>
+<li>Las <em>zonas equívocas</em> utilizan los valores previstos para alertar al usuario de que los resultados pueden ser sospechosos.</li>
+<li><em>Aplicabilidad</em> utiliza los predictores para medir la cantidad de extrapolación (si la hay) para nuevas muestras.</li>
+</ul>
+<section id="sec-equivocal-zones" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="sec-equivocal-zones"><span class="header-section-number">19.1</span> Resultados Equívocos</h2>
+<div class="rmdwarning">
+<p>En algunos casos, la cantidad de incertidumbre asociada con una predicción es demasiado alta para confiar en ella.</p>
+</div>
+<p>Si el resultado de un modelo indicara que usted tenía un 51% de posibilidades de haber contraído COVID-19, sería natural ver el diagnóstico con cierto escepticismo. De hecho, los organismos reguladores suelen exigir que muchos diagnósticos médicos tengan una <em>zona equívoca</em>. Esta zona es un rango de resultados en los que la predicción no debe informarse a los pacientes, por ejemplo, algún rango de resultados de pruebas de COVID-19 que son demasiado inciertos para informarse a un paciente. Consulte <span class="citation" data-cites="Danowski524">Danowski et&nbsp;al. (<a href="references.html#ref-Danowski524" role="doc-biblioref">1970</a>)</span> y <span class="citation" data-cites="Kerleguer1783">Kerleguer et&nbsp;al. (<a href="references.html#ref-Kerleguer1783" role="doc-biblioref">2003</a>)</span> para ver ejemplos. La misma noción se puede aplicar a modelos creados fuera del diagnóstico médico.</p>
+<p>Usemos una función que pueda simular datos de clasificación con dos clases y dos predictores (<code>x</code> e <code>y</code>). El verdadero modelo es un modelo de regresión logística con la ecuación:</p>
+<p><span class="math display">\[
+\mathrm{logit}(p) = -1 - 2x - \frac{x^2}{5} + 2y^2
+\]</span></p>
+<p>Los dos predictores siguen una distribución normal bivariada con una correlación de 0,70. Crearemos un conjunto de entrenamiento de 200 muestras y un conjunto de prueba de 50:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>simulate_two_classes <span class="ot">&lt;-</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span> (n, <span class="at">error =</span> <span class="fl">0.1</span>, <span class="at">eqn =</span> <span class="fu">quote</span>(<span class="sc">-</span><span class="dv">1</span> <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> x <span class="sc">-</span> <span class="fl">0.2</span> <span class="sc">*</span> x<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> y<span class="sc">^</span><span class="dv">2</span>))  {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predictores ligeramente correlacionados</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    sigma <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.7</span>, <span class="fl">0.7</span>, <span class="dv">1</span>), <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    dat <span class="ot">&lt;-</span> MASS<span class="sc">::</span><span class="fu">mvrnorm</span>(<span class="at">n =</span> n, <span class="at">mu =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>), <span class="at">Sigma =</span> sigma)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">colnames</span>(dat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    cls <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"class_"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    dat <span class="ot">&lt;-</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">as_tibble</span>(dat) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">linear_pred =</span> <span class="sc">!!</span>eqn,</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Agregue algo de ruido de clasificación errónea</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">linear_pred =</span> linear_pred <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">sd =</span> error),</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">prob =</span> <span class="fu">binomial</span>()<span class="sc">$</span><span class="fu">linkinv</span>(linear_pred),</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">class =</span> <span class="fu">ifelse</span>(prob <span class="sc">&gt;</span> <span class="fu">runif</span>(n), cls[<span class="dv">1</span>], cls[<span class="dv">2</span>]),</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">class =</span> <span class="fu">factor</span>(class, <span class="at">levels =</span> cls)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(dat, x, y, class)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1901</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>training_set <span class="ot">&lt;-</span> <span class="fu">simulate_two_classes</span>(<span class="dv">200</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>testing_set  <span class="ot">&lt;-</span> <span class="fu">simulate_two_classes</span>(<span class="dv">50</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Estimamos un modelo de regresión logística utilizando métodos bayesianos (utilizando las distribuciones previas gaussianas predeterminadas para los parámetros):</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>two_class_mod <span class="ot">&lt;-</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">logistic_reg</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"stan"</span>, <span class="at">seed =</span> <span class="dv">1902</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit</span>(class <span class="sc">~</span> . <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>)<span class="sc">+</span> <span class="fu">I</span>(y<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> training_set)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(two_class_mod, <span class="at">digits =</span> <span class="dv">3</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">## parsnip model object</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">## stan_glm</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  family:       binomial [logit]</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  formula:      class ~ . + I(x^2) + I(y^2)</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  observations: 200</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  predictors:   5</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="do">## ------</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="do">##             Median MAD_SD</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)  1.092  0.287</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="do">## x            2.290  0.423</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="do">## y            0.314  0.354</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="do">## I(x^2)       0.077  0.307</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="do">## I(y^2)      -2.465  0.424</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="do">## ------</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="do">## * For help interpreting the printed output see ?print.stanreg</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="do">## * For info on the priors used see ?prior_summary.stanreg</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El límite de clase ajustado se superpone al conjunto de prueba en <a href="#fig-glm-boundaries" class="quarto-xref">Figura&nbsp;<span>19.1</span></a>. Los puntos de datos más cercanos al límite de clase son los más inciertos. Si sus valores cambiaran ligeramente, su clase prevista podría cambiar. Un método simple para descalificar algunos resultados es llamarlos “equívocos” si los valores están dentro de algún rango alrededor del 50% (o el límite de probabilidad apropiado para una situación determinada). Dependiendo del problema al que se aplique el modelo, esto podría indicar que debemos recopilar otra medición o que necesitamos más información antes de que sea posible una predicción confiable.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-glm-boundaries" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Conjunto de datos simulado de dos clases con ajuste de regresión logística y límite de decisión. El diagrama de dispersión de las dos clases muestra datos bastante correlacionados. El límite de decisión es una parábola en el eje x que hace un buen trabajo al separar las clases.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-glm-boundaries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-glm-boundaries-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Conjunto de datos simulado de dos clases con ajuste de regresión logística y límite de decisión. El diagrama de dispersión de las dos clases muestra datos bastante correlacionados. El límite de decisión es una parábola en el eje x que hace un buen trabajo al separar las clases.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-glm-boundaries-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;19.1: Conjunto de datos simulado de dos clases con ajuste de regresión logística y límite de decisión.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Podríamos basar el ancho de la banda alrededor del límite en cómo mejora el rendimiento cuando se eliminan los resultados inciertos. Sin embargo, también debemos estimar la tasa reportable (la proporción esperada de resultados utilizables). Por ejemplo, no sería útil en situaciones del mundo real tener un rendimiento perfecto pero publicar predicciones en solo el 2% de las muestras pasadas al modelo.</p>
+<p>Utilicemos el conjunto de pruebas para determinar el equilibrio entre mejorar el rendimiento y tener suficientes resultados reportables. Las predicciones se crean usando:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>test_pred <span class="ot">&lt;-</span> <span class="fu">augment</span>(two_class_mod, testing_set)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>test_pred <span class="sc">%&gt;%</span> <span class="fu">head</span>()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 6 × 6</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   .pred_class .pred_class_1 .pred_class_2      x      y class  </span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;fct&gt;               &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;fct&gt;  </span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 class_2           0.0256          0.974  1.12  -0.176 class_2</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 class_1           0.555           0.445 -0.126 -0.582 class_2</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 class_2           0.00620         0.994  1.92   0.615 class_2</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 class_2           0.472           0.528 -0.400  0.252 class_2</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 class_2           0.163           0.837  1.30   1.09  class_1</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 class_2           0.0317          0.968  2.59   1.36  class_2</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Con tidymodels, el paquete <span class="pkg">probably</span> contiene funciones para zonas equívocas. Para casos con dos clases, la función <code>make_two_class_pred()</code> crea una columna similar a un factor que tiene las clases predichas con una zona equívoca:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(probably)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>lvls <span class="ot">&lt;-</span> <span class="fu">levels</span>(training_set<span class="sc">$</span>class)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>test_pred <span class="ot">&lt;-</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  test_pred <span class="sc">%&gt;%</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">.pred_with_eqz =</span> <span class="fu">make_two_class_pred</span>(.pred_class_1, lvls, <span class="at">buffer =</span> <span class="fl">0.15</span>))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>test_pred <span class="sc">%&gt;%</span> <span class="fu">count</span>(.pred_with_eqz)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 2</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   .pred_with_eqz     n</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="do">##       &lt;clss_prd&gt; &lt;int&gt;</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 1           [EQ]     9</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 2        class_1    20</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 3        class_2    21</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Rows that are within <span class="math inline">\(0.50\pm0.15\)</span> are given a value of <code>[EQ]</code>.</p>
+<div class="rmdnote">
+<p>La notación <code>[EQ]</code> en este ejemplo no es un nivel de factor sino un atributo de esa columna.</p>
+</div>
+<p>Dado que los niveles de los factores son los mismos que los de los datos originales, las matrices de confusión y otras estadísticas se pueden calcular sin errores. Cuando se utilizan funciones estándar del paquete <span class="pkg">yardstick</span>, los resultados equívocos se convierten a <code>NA</code> y no se utilizan en los cálculos que utilizan predicciones de clases estrictas. Observe las diferencias en estas matrices de confusión:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Toda la información</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>test_pred <span class="sc">%&gt;%</span> <span class="fu">conf_mat</span>(class, .pred_class)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">##           Truth</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Prediction class_1 class_2</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    class_1      20       6</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">##    class_2       5      19</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Sólo resultados reportables:</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>test_pred <span class="sc">%&gt;%</span> <span class="fu">conf_mat</span>(class, .pred_with_eqz)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="do">##           Truth</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Prediction class_1 class_2</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="do">##    class_1      17       3</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="do">##    class_2       5      16</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>También está disponible una función <code>is_equivocal()</code> para filtrar estas filas de los datos.</p>
+<p>¿La zona equívoca ayuda a mejorar la precisión? Veamos diferentes tamaños de búfer, como se muestra en <a href="#fig-equivocal-zone-results" class="quarto-xref">Figura&nbsp;<span>19.2</span></a>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Una función para cambiar el búfer y luego calcular el rendimiento.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>eq_zone_results <span class="ot">&lt;-</span> <span class="cf">function</span>(buffer) {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  test_pred <span class="ot">&lt;-</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    test_pred <span class="sc">%&gt;%</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">.pred_with_eqz =</span> <span class="fu">make_two_class_pred</span>(.pred_class_1, lvls, <span class="at">buffer =</span> buffer))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  acc <span class="ot">&lt;-</span> test_pred <span class="sc">%&gt;%</span> <span class="fu">accuracy</span>(class, .pred_with_eqz)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  rep_rate <span class="ot">&lt;-</span> <span class="fu">reportable_rate</span>(test_pred<span class="sc">$</span>.pred_with_eqz)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">accuracy =</span> acc<span class="sc">$</span>.estimate, <span class="at">reportable =</span> rep_rate, <span class="at">buffer =</span> buffer)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluar una secuencia de buffers y trazar los resultados.</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(<span class="fu">seq</span>(<span class="dv">0</span>, .<span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">40</span>), eq_zone_results) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list_rbind</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">c</span>(<span class="sc">-</span>buffer), <span class="at">names_to =</span> <span class="st">"statistic"</span>, <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> buffer, <span class="at">y =</span> value, <span class="at">lty =</span> statistic)) <span class="sc">+</span> </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_step</span>(<span class="at">linewidth =</span> <span class="fl">1.2</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span> </span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">lty =</span> <span class="cn">NULL</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-equivocal-zone-results" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="El efecto de las zonas equívocas en el rendimiento del modelo. Hay un ligero aumento en la precisión a expensas de una tasa de declaración decreciente.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-equivocal-zone-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-equivocal-zone-results-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="El efecto de las zonas equívocas en el rendimiento del modelo. Hay un ligero aumento en la precisión a expensas de una tasa de declaración decreciente.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-equivocal-zone-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;19.2: El efecto de las zonas equívocas en el rendimiento del modelo.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-equivocal-zone-results" class="quarto-xref">Figura&nbsp;<span>19.2</span></a> nos muestra que la precisión mejora en unos pocos puntos porcentuales, ¡pero a costa de que casi el 10% de las predicciones sean inutilizables! El valor de tal compromiso depende de cómo se utilizarán las predicciones del modelo.</p>
+<p>Este análisis se centró en utilizar la probabilidad de clase prevista para descalificar puntos, ya que esta es una medida fundamental de incertidumbre en los modelos de clasificación. Un enfoque ligeramente mejor sería utilizar el error estándar de la probabilidad de clase. Dado que utilizamos un modelo bayesiano, las estimaciones de probabilidad que encontramos son en realidad la media de la distribución predictiva posterior. En otras palabras, el modelo bayesiano nos da una distribución para la probabilidad de clase. Medir la desviación estándar de esta distribución nos da un <em>error estándar de predicción</em> de la probabilidad. En la mayoría de los casos, este valor está directamente relacionado con la probabilidad de clase media. Quizás recuerdes que, para una variable aleatoria de Bernoulli con probabilidad <span class="math inline">\(p\)</span>, la varianza es <span class="math inline">\(p(1-p)\)</span>. Debido a esta relación, el error estándar es mayor cuando la probabilidad es del 50%. En lugar de asignar un resultado equívoco utilizando la probabilidad de clase, podríamos utilizar un límite en el error estándar de predicción.</p>
+<p>Un aspecto importante del error estándar de predicción es que tiene en cuenta algo más que la probabilidad de clase. En los casos en los que hay una extrapolación significativa o valores predictivos aberrantes, el error estándar podría aumentar. El beneficio de utilizar el error estándar de predicción es que también podría señalar predicciones que son problemáticas (en lugar de simplemente inciertas). Una razón por la que utilizamos el modelo bayesiano es que estima naturalmente el error estándar de predicción; No muchos modelos pueden calcular esto. Para nuestro conjunto de prueba, usar <code>type = "pred_int"</code> producirá límites superior e inferior y <code>std_error</code> agrega una columna para esa cantidad. Para intervalos del 80%:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>test_pred <span class="ot">&lt;-</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  test_pred <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(two_class_mod, testing_set, <span class="at">type =</span> <span class="st">"pred_int"</span>, <span class="at">std_error =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Para nuestro ejemplo donde el modelo y los datos se comportan bien, <a href="#fig-std-errors" class="quarto-xref">Figura&nbsp;<span>19.3</span></a> muestra el error estándar de predicción en todo el espacio:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-std-errors" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="El efecto del error estándar de predicción superpuesto con los datos del conjunto de pruebas. La región de gran variación es muy similar al espacio límite de clases. Además, hay una gran variación hacia el oeste del punto de inflexión de la curva límite.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-std-errors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-std-errors-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="El efecto del error estándar de predicción superpuesto con los datos del conjunto de pruebas. La región de gran variación es muy similar al espacio límite de clases. Además, hay una gran variación hacia el oeste del punto de inflexión de la curva límite.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-std-errors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;19.3: El efecto del error estándar de predicción superpuesto con los datos del conjunto de pruebas
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>El uso del error estándar como medida para evitar que se predigan muestras también se puede aplicar a modelos con resultados numéricos. Sin embargo, como se muestra en la siguiente sección, es posible que esto no siempre funcione.</p>
+</section>
+<section id="sec-applicability-domains" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="sec-applicability-domains"><span class="header-section-number">19.2</span> Determinación De La Aplicabilidad Del Modelo</h2>
+<p>Las zonas equívocas intentan medir la confiabilidad de una predicción basada en los resultados del modelo. Puede ser que las estadísticas del modelo, como el error estándar de predicción, no puedan medir el impacto de la extrapolación, por lo que necesitamos otra forma de evaluar si debemos confiar en una predicción y responder: “¿Es nuestro modelo aplicable para predecir un punto de datos específico?” Tomemos los datos del tren de Chicago utilizados ampliamente en <a href="https://bookdown.org/max/FES/chicago-intro.html">Kuhn y Johnson (2019)</a> y mostrados por primera vez en <a href="02-tidyverse.html#sec-examples-of-tidyverse-syntax" class="quarto-xref"><span>Sección 2.2</span></a> . El objetivo es predecir la cantidad de clientes que ingresan a la estación de tren de Clark y Lake cada día.</p>
+<p>El conjunto de datos en el paquete <span class="pkg">modeldata</span> (un paquete tidymodels con conjuntos de datos de ejemplo) tiene valores diarios entre January 22, 2001 y <code>formato r(max(Chicago$fecha), "%B %d, %Y")</code>. Creemos un pequeño conjunto de pruebas utilizando las últimas dos semanas de datos:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="do">## loads tanto el conjunto de datos de "Chicago" como las "estaciones"</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(Chicago)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>Chicago <span class="ot">&lt;-</span> Chicago <span class="sc">%&gt;%</span> <span class="fu">select</span>(ridership, date, <span class="fu">one_of</span>(stations))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(Chicago)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>Chicago_train <span class="ot">&lt;-</span> Chicago <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span>(n <span class="sc">-</span> <span class="dv">14</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>Chicago_test  <span class="ot">&lt;-</span> Chicago <span class="sc">%&gt;%</span> <span class="fu">slice</span>((n <span class="sc">-</span> <span class="dv">13</span>)<span class="sc">:</span>n)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los principales predictores son los datos retrasados ​​sobre el número de pasajeros en diferentes estaciones de tren, incluidas Clark y Lake, así como la fecha. Los predictores de número de pasajeros están altamente correlacionados entre sí. En la siguiente receta, la columna de fecha se amplía con varias características nuevas y los predictores de número de pasajeros se representan mediante componentes de mínimos cuadrados parciales (PLS). PLS <span class="citation" data-cites="Geladi:1986">(<a href="references.html#ref-Geladi:1986" role="doc-biblioref">Geladi y Kowalski 1986</a>)</span>, como comentamos en <a href="16-dimensionality-reduction.html#sec-partial-least-squares" class="quarto-xref"><span>Sección 16.5.2</span></a>, es una versión supervisada del análisis de componentes principales donde las nuevas características han sido descorrelacionadas pero predicen los datos de resultado.</p>
+<p>Utilizando los datos preprocesados, ajustamos un modelo lineal estándar:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>base_recipe <span class="ot">&lt;-</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(ridership <span class="sc">~</span> ., <span class="at">data =</span> Chicago_train) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Crear funciones de fecha</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_date</span>(date) <span class="sc">%&gt;%</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_holiday</span>(date, <span class="at">keep_original_cols =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Crear variables ficticias a partir de columnas de factores</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Elimine cualquier columna con un único valor único</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_zv</span>(<span class="fu">all_predictors</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="sc">!!!</span>stations)<span class="sc">%&gt;%</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_pls</span>(<span class="sc">!!!</span>stations, <span class="at">num_comp =</span> <span class="dv">10</span>, <span class="at">outcome =</span> <span class="fu">vars</span>(ridership))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>lm_spec <span class="ot">&lt;-</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) </span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>lm_wflow <span class="ot">&lt;-</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(base_recipe) <span class="sc">%&gt;%</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(lm_spec)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1902</span>)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>lm_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(lm_wflow, <span class="at">data =</span> Chicago_train)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>¿Qué tan bien encajan los datos en el conjunto de prueba? Podemos <code>predecit()</code> para que el conjunto de pruebas encuentre tanto predicciones como intervalos de predicción:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>res_test <span class="ot">&lt;-</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(lm_fit, Chicago_test) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(lm_fit, Chicago_test, <span class="at">type =</span> <span class="st">"pred_int"</span>),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    Chicago_test</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>res_test <span class="sc">%&gt;%</span> <span class="fu">select</span>(date, ridership, <span class="fu">starts_with</span>(<span class="st">".pred"</span>))</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 14 × 5</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   date       ridership .pred .pred_lower .pred_upper</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;date&gt;         &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 2016-08-15     20.6  20.3        16.2         24.5</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 2016-08-16     21.0  21.3        17.1         25.4</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 2016-08-17     21.0  21.4        17.3         25.6</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 2016-08-18     21.3  21.4        17.3         25.5</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 2016-08-19     20.4  20.9        16.7         25.0</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 2016-08-20      6.22  7.52        3.34        11.7</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 8 more rows</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>res_test <span class="sc">%&gt;%</span> <span class="fu">rmse</span>(ridership, .pred)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator .estimate</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 rmse    standard       0.865</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Estos son resultados bastante buenos. <a href="#fig-chicago-2016" class="quarto-xref">Figura&nbsp;<span>19.4</span></a> visualiza las predicciones junto con intervalos de predicción del 95%.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-chicago-2016" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Dos semanas de predicciones de 2016 para los datos de Chicago junto con intervalos de predicción del 95%. El modelo se ajusta bastante bien a los datos con estimaciones de error razonables.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-chicago-2016-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-chicago-2016-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Dos semanas de predicciones de 2016 para los datos de Chicago junto con intervalos de predicción del 95%. El modelo se ajusta bastante bien a los datos con estimaciones de error razonables.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chicago-2016-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;19.4: Dos semanas de predicciones de 2016 para los datos de Chicago junto con intervalos de predicción del 95%
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Dada la escala del número de usuarios, estos resultados parecen particularmente buenos para un modelo tan simple. Si se hubiera implementado este modelo, ¿qué tan bien habría funcionado unos años más tarde, en junio de 2020? El modelo realiza con éxito una predicción, como casi siempre lo hace un modelo predictivo cuando se le dan datos de entrada:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>res_2020 <span class="ot">&lt;-</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(lm_fit, Chicago_2020) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_cols</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(lm_fit, Chicago_2020, <span class="at">type =</span> <span class="st">"pred_int"</span>),</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    Chicago_2020</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>res_2020 <span class="sc">%&gt;%</span> <span class="fu">select</span>(date, <span class="fu">contains</span>(<span class="st">".pred"</span>))</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 14 × 4</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   date       .pred .pred_lower .pred_upper</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;date&gt;     &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 2020-06-01 20.1        15.9         24.3</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 2020-06-02 21.4        17.2         25.6</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 2020-06-03 21.5        17.3         25.6</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 2020-06-04 21.3        17.1         25.4</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 2020-06-05 20.7        16.6         24.9</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 2020-06-06  9.04        4.88        13.2</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 8 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los intervalos de predicción tienen aproximadamente el mismo ancho, aunque estos datos están mucho más allá del período de tiempo del conjunto de entrenamiento original. Sin embargo, dada la pandemia mundial en 2020, el desempeño según estos datos es pésimo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>res_2020 <span class="sc">%&gt;%</span> <span class="fu">select</span>(date, ridership, <span class="fu">starts_with</span>(<span class="st">".pred"</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 14 × 5</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   date       ridership .pred .pred_lower .pred_upper</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;date&gt;         &lt;dbl&gt; &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 2020-06-01     0.002 20.1        15.9         24.3</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 2020-06-02     0.005 21.4        17.2         25.6</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 2020-06-03     0.566 21.5        17.3         25.6</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 2020-06-04     1.66  21.3        17.1         25.4</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 2020-06-05     1.95  20.7        16.6         24.9</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 2020-06-06     1.08   9.04        4.88        13.2</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 8 more rows</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>res_2020 <span class="sc">%&gt;%</span> <span class="fu">rmse</span>(ridership, .pred)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator .estimate</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 rmse    standard        17.2</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Puedes ver visualmente el terrible rendimiento de este modelo en <a href="#fig-chicago-2020" class="quarto-xref">Figura&nbsp;<span>19.5</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-chicago-2020" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Dos semanas de predicciones de 2016 para los datos de Chicago junto con intervalos de predicción del 95%. El modelo se ajusta bastante bien a los datos con estimaciones de error razonables.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-chicago-2020-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-chicago-2020-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Dos semanas de predicciones de 2016 para los datos de Chicago junto con intervalos de predicción del 95%. El modelo se ajusta bastante bien a los datos con estimaciones de error razonables.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chicago-2020-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;19.5: Dos semanas de predicciones de 2020 para los datos de Chicago junto con intervalos de predicción del 95%
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Los intervalos de confianza y predicción para la regresión lineal se expanden a medida que los datos se alejan cada vez más del centro del conjunto de entrenamiento. Sin embargo, ese efecto no es lo suficientemente dramático como para señalar que estas predicciones son deficientes.</p>
+<div class="rmdwarning">
+<p>A veces las estadísticas producidas por los modelos no miden muy bien la calidad de las predicciones.</p>
+</div>
+<p>Esta situación se puede evitar teniendo una metodología secundaria que pueda cuantificar qué tan aplicable es el modelo para cualquier nueva predicción (es decir, el <em>dominio de aplicabilidad</em> del modelo). Existe una variedad de métodos para calcular un modelo de dominio de aplicabilidad, como <span class="citation" data-cites="Jaworska">Jaworska, Nikolova-Jeliazkova, y Aldenberg (<a href="references.html#ref-Jaworska" role="doc-biblioref">2005</a>)</span> o <span class="citation" data-cites="Netzeva">Netzeva et&nbsp;al. (<a href="references.html#ref-Netzeva" role="doc-biblioref">2005</a>)</span>. El enfoque utilizado en este capítulo es un método no supervisado bastante simple que intenta medir cuánto (si lo hay) un nuevo punto de datos está más allá de los datos de entrenamiento.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="rmdnote">
+<p>La idea es acompañar una predicción con una puntuación que mida qué tan similar es el nuevo punto al conjunto de entrenamiento.</p>
+</div>
+<p>Un método que funciona bien utiliza el análisis de componentes principales (PCA) en los valores predictivos numéricos. Ilustraremos el proceso utilizando sólo dos de los predictores que corresponden al número de pasajeros en diferentes estaciones (estaciones de California y Austin). El conjunto de entrenamiento se muestra en el panel (a) en <a href="#fig-pca-reference-dist" class="quarto-xref">Figura&nbsp;<span>19.6</span></a>. Los datos sobre el número de pasajeros de estas estaciones están altamente correlacionados y las dos distribuciones que se muestran en el diagrama de dispersión corresponden al número de pasajeros los fines de semana y días laborables.</p>
+<p>El primer paso es realizar PCA con los datos de entrenamiento. Las puntuaciones de PCA para el conjunto de entrenamiento se muestran en el panel (b) en <a href="#fig-pca-reference-dist" class="quarto-xref">Figura&nbsp;<span>19.6</span></a>. A continuación, utilizando estos resultados, medimos la distancia de cada punto de ajuste de entrenamiento al centro de los datos de PCA (panel (c) de <a href="#fig-pca-reference-dist" class="quarto-xref">Figura&nbsp;<span>19.6</span></a>). Luego podemos usar esta <em>distribución de referencia</em> (panel (d) de <a href="#fig-pca-reference-dist" class="quarto-xref">Figura&nbsp;<span>19.6</span></a>) para estimar qué tan lejos está un punto de datos de la corriente principal de los datos de entrenamiento.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-pca-reference-dist" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="La distribución de referencia de PCA basada en el conjunto de entrenamiento. La mayoría de las distancias al centro de la distribución PCA están por debajo de un valor de tres.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pca-reference-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-pca-reference-dist-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%" alt="La distribución de referencia de PCA basada en el conjunto de entrenamiento. La mayoría de las distancias al centro de la distribución PCA están por debajo de un valor de tres.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pca-reference-dist-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;19.6: La distribución de referencia de PCA basada en el conjunto de entrenamiento.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Para una nueva muestra, las puntuaciones de PCA se calculan junto con la distancia al centro del conjunto de entrenamiento.</p>
+<p>Sin embargo, ¿qué significa que una nueva muestra tenga una distancia de <em>X</em>? Dado que los componentes de PCA pueden tener diferentes rangos de un conjunto de datos a otro, no existe un límite obvio para decir que una distancia es demasiado grande.</p>
+<p>Un enfoque es tratar las distancias de los datos del conjunto de entrenamiento como “normales”. Para muestras nuevas, podemos determinar cómo se compara la nueva distancia con el rango en la distribución de referencia (del conjunto de entrenamiento). Se puede calcular un percentil para nuevas muestras que refleje qué parte del conjunto de entrenamiento es menos extremo que las nuevas muestras.</p>
+<div class="rmdnote">
+<p>Un percentil del 90% significa que la mayoría de los datos del conjunto de entrenamiento están más cerca del centro de datos que la nueva muestra.</p>
+</div>
+<p>El gráfico en <a href="#fig-two-new-points" class="quarto-xref">Figura&nbsp;<span>19.7</span></a> superpone una muestra del conjunto de prueba (triángulo y línea discontinua) y una muestra de 2020 (círculo y línea continua) con las distancias PCA del conjunto de entrenamiento.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-two-new-points" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="La distribución de referencia con dos nuevos puntos: uno usando el conjunto de prueba y otro a partir de los datos de 2020. El punto de ajuste de la prueba se encuentra perfectamente dentro de la corriente principal de datos, mientras que el punto de 2020 está fuera de la distribución de referencia.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-new-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-two-new-points-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%" alt="La distribución de referencia con dos nuevos puntos: uno usando el conjunto de prueba y otro a partir de los datos de 2020. El punto de ajuste de la prueba se encuentra perfectamente dentro de la corriente principal de datos, mientras que el punto de 2020 está fuera de la distribución de referencia.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-new-points-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;19.7: La distribución de referencia con dos nuevos puntos: uno usando el conjunto de prueba y otro a partir de los datos de 2020
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>El punto de ajuste de prueba tiene una distancia de 1.28. Está en el percentil 51.8% de la distribución del conjunto de entrenamiento, lo que indica que está cómodamente dentro de la corriente principal del conjunto de entrenamiento.</p>
+<p>La muestra de 2020 está más alejada del centro que cualquiera de las muestras del conjunto de entrenamiento (con un percentil de 100%). Esto indica que la muestra es muy extrema y que su predicción correspondiente sería una extrapolación severa (y probablemente no debería informarse).</p>
+<p>El paquete <span class="pkg">applicable</span> puede desarrollar un modelo de dominio de aplicabilidad utilizando PCA. Usaremos los predictores de número de pasajeros de 20 estaciones retrasadas como datos de entrada para el análisis de PCA. Hay un argumento adicional llamado umbral, <code>threshold</code>, que determina cuántos componentes se utilizan en el cálculo de la distancia. Para nuestro ejemplo, usaremos un valor grande que indica que debemos usar suficientes componentes para representar el 99 % de la variación en los predictores de número de pasajeros:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(applicable)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>pca_stat <span class="ot">&lt;-</span> <span class="fu">apd_pca</span>(<span class="sc">~</span> ., <span class="at">data =</span> Chicago_train <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">one_of</span>(stations)), </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">threshold =</span> <span class="fl">0.99</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>pca_stat</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # Predictors:</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="do">##    20</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="do">## # Principal Components:</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">##    9 components were needed</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="do">##    to capture at least 99% of the</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="do">##    total variation in the predictors.</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El método <code>autoplot()</code> traza la distribución de referencia. Tiene un argumento opcional para qué datos trazar. Agregaremos un valor de distancia, <code>distance</code> para trazar solo la distribución de distancia del conjunto de entrenamiento. Este código genera la trama en <a href="#fig-ap-autoplot" class="quarto-xref">Figura&nbsp;<span>19.8</span></a>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(pca_stat, distance) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"distance"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ap-autoplot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Los resultados de usar el método `autoplot()` en un objeto aplicable">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ap-autoplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-ap-autoplot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Los resultados de usar el método `autoplot()` en un objeto aplicable">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ap-autoplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;19.8: Los resultados de usar el método <code>autoplot()</code> en un objeto aplicable
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>El eje x muestra los valores de la distancia y el eje y muestra los percentiles de la distribución. Por ejemplo, la mitad de las muestras del conjunto de entrenamiento tenían distancias menores que 3.7.</p>
+<p>Para calcular los percentiles de datos nuevos, la función <code>score()</code> funciona de la misma manera que <code>predict()</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">score</span>(pca_stat, Chicago_test) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"distance"</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 14 × 2</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   distance distance_pctl</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="do">##      &lt;dbl&gt;         &lt;dbl&gt;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1     4.88          66.7</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2     5.21          71.4</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 3     5.19          71.1</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 4     5.00          68.5</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 5     4.36          59.3</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 6     4.10          55.2</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 8 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Estos parecen bastante razonables. Para los datos de 2020:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">score</span>(pca_stat, Chicago_2020) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="fu">starts_with</span>(<span class="st">"distance"</span>))</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 14 × 2</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   distance distance_pctl</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="do">##      &lt;dbl&gt;         &lt;dbl&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1     9.39          99.8</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2     9.40          99.8</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 3     9.30          99.7</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 4     9.30          99.7</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 5     9.29          99.7</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 6    10.1            1  </span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 8 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los valores de distancia de 2020 indican que estos valores predictivos están fuera de la gran mayoría de los datos vistos por el modelo en el momento del entrenamiento. Estos deben señalarse para que las predicciones no se informen en absoluto o se vean con escepticismo.</p>
+<div class="rmdnote">
+<p>Un aspecto importante de este análisis se refiere a qué predictores se utilizan para desarrollar el modelo de dominio de aplicabilidad. En nuestro análisis, utilizamos las columnas predictoras sin procesar. Sin embargo, al construir el modelo, se utilizaron en su lugar características de puntuación PLS. ¿Cuál de estos debería usar <code>apd_pca()</code>? La función <code>apd_pca()</code> también puede tomar una receta como entrada (en lugar de una fórmula) para que las distancias reflejen las puntuaciones PLS en lugar de las columnas predictivas individuales. Puede evaluar ambos métodos para comprender cuál ofrece resultados más relevantes.</p>
+</div>
+</section>
+<section id="sec-trust-summary" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="sec-trust-summary"><span class="header-section-number">19.3</span> Resumen Del Capítulo</h2>
+<p>Este capítulo mostró dos métodos para evaluar si las predicciones deben informarse a los consumidores de modelos. Las zonas equívocas se ocupan de resultados/predicciones y pueden resultar útiles cuando la cantidad de incertidumbre en una predicción es demasiado grande.</p>
+<p>Los modelos de dominio de aplicabilidad tratan con características/predictores y cuantifican la cantidad de extrapolación (si la hay) que ocurre al hacer una predicción. Este capítulo mostró un método básico que utiliza el análisis de componentes principales, aunque hay muchas otras formas de medir la aplicabilidad. El paquete <span class="pkg">applicable</span> también contiene métodos especializados para conjuntos de datos donde todos los predictores son binarios. Este método calcula puntuaciones de similitud entre los puntos de datos del conjunto de entrenamiento para definir la distribución de referencia.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-Bartley" class="csl-entry" role="listitem">
+Bartley, E AND Schliep, M . AND Hanks. 2019. <span>«Identifying and characterizing extrapolation in multivariate response data»</span>. <em>PLOS ONE</em> 14 (diciembre): 1-20.
+</div>
+<div id="ref-Danowski524" class="csl-entry" role="listitem">
+Danowski, T, J Aarons, J Hydovitz, y J Wingert. 1970. <span>«Utility of equivocal glucose tolerances»</span>. <em>Diabetes</em> 19 (7): 524-26.
+</div>
+<div id="ref-Geladi:1986" class="csl-entry" role="listitem">
+Geladi, P., y B Kowalski. 1986. <span>«Partial Least-Squares Regression: A Tutorial»</span>. <em>Analytica Chimica Acta</em> 185: 1-17.
+</div>
+<div id="ref-Jaworska" class="csl-entry" role="listitem">
+Jaworska, J, N Nikolova-Jeliazkova, y T Aldenberg. 2005. <span>«QSAR Applicability Domain Estimation by Projection of the Training Set in Descriptor Space: A Review»</span>. <em>Alternatives to Laboratory Animals</em> 33 (5): 445-59.
+</div>
+<div id="ref-Kerleguer1783" class="csl-entry" role="listitem">
+Kerleguer, A., J.-L. Koeck, M. Fabre, P. Gérôme, R. Teyssou, y V. Hervé. 2003. <span>«Use of equivocal zone in interpretation of results of the amplified <span>Mycobacterium Tuberculosis</span> direct test for diagnosis of tuberculosis»</span>. <em>Journal of Clinical Microbiology</em> 41 (4): 1783-84.
+</div>
+<div id="ref-Netzeva" class="csl-entry" role="listitem">
+Netzeva, T, A Worth, T Aldenberg, R Benigni, M Cronin, P Gramatica, J Jaworska, et&nbsp;al. 2005. <span>«Current Status of Methods for Defining the Applicability Domain of (Quantitative) Structure-Activity Relationships: The Report and Recommendations of ECVAM Workshop 52»</span>. <em>Alternatives to Laboratory Animals</em> 33 (2): 155-73.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p><span class="citation" data-cites="Bartley">Bartley (<a href="references.html#ref-Bartley" role="doc-biblioref">2019</a>)</span> muestra otro método más y lo aplica a estudios ecológicos.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+
+<script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./18-explaining-models-and-predictions.html" class="pagination-link" aria-label="Explicando Modelos Y Predicciones">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./20-ensemble-models.html" class="pagination-link" aria-label="Conjuntos De Modelos">
+        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Este libro fue creado usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

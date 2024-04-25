@@ -1,0 +1,1504 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Max Kuhn, y Julia Silge">
+
+<title>Modelado Ordenado con R - 11&nbsp; Comparación De Modelos Con Remuestreo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./12-tuning-parameters.html" rel="next">
+<link href="./10-resampling.html" rel="prev">
+<link href="./images/cover.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="TMwR.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./11-comparing-models.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Modelado Ordenado con R</a> 
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hola Mundo</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#sec-workflow-set" id="toc-sec-workflow-set" class="nav-link active" data-scroll-target="#sec-workflow-set"><span class="header-section-number">11.1</span> Crear Múltiples Modelos Con Conjuntos De Flujo De Trabajo</a></li>
+  <li><a href="#sec-resampled-stats" id="toc-sec-resampled-stats" class="nav-link" data-scroll-target="#sec-resampled-stats"><span class="header-section-number">11.2</span> Comparación De Estadísticas De Rendimiento Remuestreadas</a></li>
+  <li><a href="#métodos-simples-de-prueba-de-hipótesis" id="toc-métodos-simples-de-prueba-de-hipótesis" class="nav-link" data-scroll-target="#métodos-simples-de-prueba-de-hipótesis"><span class="header-section-number">11.3</span> Métodos Simples De Prueba De Hipótesis</a></li>
+  <li><a href="#sec-tidyposterior" id="toc-sec-tidyposterior" class="nav-link" data-scroll-target="#sec-tidyposterior"><span class="header-section-number">11.4</span> Métodos Bayesianos</a>
+  <ul class="collapse">
+  <li><a href="#un-modelo-de-intersección-aleatoria" id="toc-un-modelo-de-intersección-aleatoria" class="nav-link" data-scroll-target="#un-modelo-de-intersección-aleatoria">Un modelo de intersección aleatoria</a></li>
+  <li><a href="#el-efecto-de-la-cantidad-de-remuestreo." id="toc-el-efecto-de-la-cantidad-de-remuestreo." class="nav-link" data-scroll-target="#el-efecto-de-la-cantidad-de-remuestreo.">El efecto de la cantidad de remuestreo.</a></li>
+  </ul></li>
+  <li><a href="#sec-compare-summary" id="toc-sec-compare-summary" class="nav-link" data-scroll-target="#sec-compare-summary"><span class="header-section-number">11.5</span> Resumen Del Capítulo</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./11-comparing-models.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-compare" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Una vez que creamos dos o más modelos, el siguiente paso es compararlos para entender cuál es mejor. En algunos casos, las comparaciones pueden ser <em>dentro del modelo</em>, donde el mismo modelo puede evaluarse con diferentes características o métodos de preprocesamiento. Alternativamente, las comparaciones <em>entre modelos</em>, como cuando comparamos modelos de regresión lineal y de random forest en el <a href="10-resampling.html" class="quarto-xref">Capítulo&nbsp;<span>10</span></a>, son el escenario más común.</p>
+<p>En cualquier caso, el resultado es una colección de estadísticas resumidas remuestreadas (por ejemplo, RMSE, precisión, etc.) para cada modelo. En este capítulo, primero demostraremos cómo se pueden usar conjuntos de flujos de trabajo para ajustarse a múltiples modelos. Luego, discutiremos aspectos importantes de las estadísticas de remuestreo. Finalmente, veremos cómo comparar modelos formalmente (usando pruebas de hipótesis o un enfoque bayesiano).</p>
+<section id="sec-workflow-set" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="sec-workflow-set"><span class="header-section-number">11.1</span> Crear Múltiples Modelos Con Conjuntos De Flujo De Trabajo</h2>
+<p>En <a href="07-the-model-workflow.html#sec-workflow-sets-intro" class="quarto-xref"><span>Sección 7.5</span></a> describimos la idea de un conjunto de flujo de trabajo donde se pueden generar combinatoriamente diferentes preprocesadores y/o modelos. En el <a href="10-resampling.html" class="quarto-xref">Capítulo&nbsp;<span>10</span></a>, utilizamos una receta para los datos de Ames que incluía un término de interacción así como funciones spline para longitud y latitud. Para demostrar más con los conjuntos de flujos de trabajo, creemos tres modelos lineales diferentes que agreguen estos pasos de preprocesamiento de forma incremental; Podemos probar si estos términos adicionales mejoran los resultados del modelo. Crearemos tres recetas y luego las combinaremos en un conjunto de flujo de trabajo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>basic_rec <span class="ot">&lt;-</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>           Latitude <span class="sc">+</span> Longitude, <span class="at">data =</span> ames_train) <span class="sc">%&gt;%</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(Gr_Liv_Area, <span class="at">base =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(Neighborhood, <span class="at">threshold =</span> <span class="fl">0.01</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>())</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>interaction_rec <span class="ot">&lt;-</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  basic_rec <span class="sc">%&gt;%</span> </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>( <span class="sc">~</span> Gr_Liv_Area<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">"Bldg_Type_"</span>) ) </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>spline_rec <span class="ot">&lt;-</span> </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  interaction_rec <span class="sc">%&gt;%</span> </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ns</span>(Latitude, Longitude, <span class="at">deg_free =</span> <span class="dv">50</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>preproc <span class="ot">&lt;-</span> </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(<span class="at">basic =</span> basic_rec, </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">interact =</span> interaction_rec, </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>       <span class="at">splines =</span> spline_rec</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>lm_models <span class="ot">&lt;-</span> <span class="fu">workflow_set</span>(preproc, <span class="fu">list</span>(<span class="at">lm =</span> <span class="fu">linear_reg</span>()), <span class="at">cross =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>lm_models</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="do">## # A workflow set/tibble: 3 × 4</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="do">##   wflow_id    info             option    result    </span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;       &lt;list&gt;           &lt;list&gt;    &lt;list&gt;    </span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 basic_lm    &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 interact_lm &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 splines_lm  &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;list [0]&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Nos gustaría volver a muestrear cada uno de estos modelos por turno. Para hacerlo, usaremos una función similar a <span class="pkg">purrr</span> llamada <code>workflow_map()</code>. Esta función toma un argumento inicial de la función para aplicarlo a los flujos de trabajo, seguido de opciones para esa función. También configuramos un argumento <code>verbose</code> que imprimirá el progreso, así como un argumento <code>seed</code> que garantiza que cada modelo utilice el mismo flujo de números aleatorios que los demás.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>lm_models <span class="ot">&lt;-</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  lm_models <span class="sc">%&gt;%</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow_map</span>(<span class="st">"fit_resamples"</span>, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>               <span class="co"># Options to `workflow_map()`: </span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">seed =</span> <span class="dv">1101</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>               <span class="co"># Options to `fit_resamples()`: </span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">resamples =</span> ames_folds, <span class="at">control =</span> keep_pred)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">## i 1 of 3 resampling: basic_lm</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">## ✔ 1 of 3 resampling: basic_lm (623ms)</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">## i 2 of 3 resampling: interact_lm</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## ✔ 2 of 3 resampling: interact_lm (674ms)</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## i 3 of 3 resampling: splines_lm</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="do">## ✔ 3 of 3 resampling: splines_lm (1.1s)</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>lm_models</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">## # A workflow set/tibble: 3 × 4</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="do">##   wflow_id    info             option    result   </span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;       &lt;list&gt;           &lt;list&gt;    &lt;list&gt;   </span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 basic_lm    &lt;tibble [1 × 4]&gt; &lt;opts[2]&gt; &lt;rsmp[+]&gt;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 interact_lm &lt;tibble [1 × 4]&gt; &lt;opts[2]&gt; &lt;rsmp[+]&gt;</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 splines_lm  &lt;tibble [1 × 4]&gt; &lt;opts[2]&gt; &lt;rsmp[+]&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Observe que las columnas <code>option</code> y <code>result</code> ahora están completas. La primera incluye las opciones para <code>fit_resamples()</code> que se dieron (para reproducibilidad), y la última columna contiene los resultados producidos por <code>fit_resamples()</code>.</p>
+<p>Hay algunas funciones convenientes para conjuntos de flujos de trabajo, incluida <code>collect_metrics()</code> para recopilar las estadísticas de rendimiento. Podemos <code>filtrar()</code> a cualquier métrica específica que nos interese:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(lm_models) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">"rmse"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 9</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   wflow_id    .config          preproc model .metric .estimator   mean     n std_err</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 basic_lm    Preprocessor1_M… recipe  line… rmse    standard   0.0803    10 0.00264</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 interact_lm Preprocessor1_M… recipe  line… rmse    standard   0.0799    10 0.00272</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 splines_lm  Preprocessor1_M… recipe  line… rmse    standard   0.0785    10 0.00282</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>¿Qué pasa con el modelo de bosque aleatorio del capítulo anterior? Podemos agregarlo al conjunto convirtiéndolo primero a su propio conjunto de flujo de trabajo y luego vinculando filas. Esto requiere que, cuando se volvió a muestrear el modelo, se haya configurado la opción <code>save_workflow = TRUE</code> en la función de control.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>four_models <span class="ot">&lt;-</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_workflow_set</span>(<span class="at">random_forest =</span> rf_res) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>(lm_models)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>four_models</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # A workflow set/tibble: 4 × 4</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   wflow_id      info             option    result   </span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;         &lt;list&gt;           &lt;list&gt;    &lt;list&gt;   </span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 random_forest &lt;tibble [1 × 4]&gt; &lt;opts[0]&gt; &lt;rsmp[+]&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 basic_lm      &lt;tibble [1 × 4]&gt; &lt;opts[2]&gt; &lt;rsmp[+]&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 interact_lm   &lt;tibble [1 × 4]&gt; &lt;opts[2]&gt; &lt;rsmp[+]&gt;</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 splines_lm    &lt;tibble [1 × 4]&gt; &lt;opts[2]&gt; &lt;rsmp[+]&gt;</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El método <code>autoplot()</code>, con salida en <a href="#fig-workflow-set-r-squared" class="quarto-xref">Figura&nbsp;<span>11.1</span></a>, muestra intervalos de confianza para cada modelo en orden de mejor a peor. En este capítulo, nos centraremos en el coeficiente de determinación (también conocido como <span class="math inline">\(R^2\)</span>) y usaremos <code>metric = "rsq"</code> en la llamada para configurar nuestro gráfico:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(four_models, <span class="at">metric =</span> <span class="st">"rsq"</span>) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> wflow_id), <span class="at">nudge_x =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="at">nudge_y =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">100</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-workflow-set-r-squared" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Intervalos de confianza para el coeficiente de determinación utilizando cuatro modelos diferentes. El modelo de bosque aleatorio tiene los mejores resultados y sus intervalos no se superponen con los intervalos de los otros modelos.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-workflow-set-r-squared-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-workflow-set-r-squared-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Intervalos de confianza para el coeficiente de determinación utilizando cuatro modelos diferentes. El modelo de bosque aleatorio tiene los mejores resultados y sus intervalos no se superponen con los intervalos de los otros modelos." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-workflow-set-r-squared-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;11.1: Intervalos de confianza para el coeficiente de determinación utilizando cuatro modelos diferentes
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>En este gráfico de intervalos de confianza <span class="math inline">\(R^2\)</span>, podemos ver que el método de random forest está funcionando mejor y hay mejoras menores en los modelos lineales a medida que agregamos más pasos a la receta.</p>
+<p>Ahora que tenemos 10 estimaciones de rendimiento remuestreadas para cada uno de los cuatro modelos, estas estadísticas resumidas se pueden utilizar para realizar comparaciones entre modelos.</p>
+</section>
+<section id="sec-resampled-stats" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="sec-resampled-stats"><span class="header-section-number">11.2</span> Comparación De Estadísticas De Rendimiento Remuestreadas</h2>
+<p>Teniendo en cuenta los resultados anteriores para los tres modelos lineales, parece que los términos adicionales no mejoran profundamente las estadísticas medias de RMSE o <span class="math inline">\(R^2\)</span> para los modelos lineales. La diferencia es pequeña, pero podría ser mayor que el ruido experimental en el sistema, es decir, considerarse estadísticamente significativa. Podemos probar formalmente la hipótesis de que los términos adicionales aumentan <span class="math inline">\(R^2\)</span>.</p>
+<div class="rmdnote">
+<p>Antes de hacer comparaciones entre modelos, es importante para nosotros analizar la correlación dentro de la muestra para las estadísticas de remuestreo. Cada modelo se midió con los mismos pliegues de validación cruzada y los resultados para la misma nueva muestra tienden a ser similares.</p>
+</div>
+<p>En otras palabras, hay algunos remuestreos en los que el rendimiento de todos los modelos tiende a ser bajo y otros en los que tiende a ser alto. En estadística, esto se denomina componente de variación <em>remuestreo a remuestreo</em>.</p>
+<p>Para ilustrar, recopilemos las estadísticas de remuestreo individuales para los modelos lineales y el bosque aleatorio. Nos centraremos en la estadística <span class="math inline">\(R^2\)</span> para cada modelo, que mide la correlación entre los precios de venta observados y previstos para cada casa. Vamos a <code>filtrar()</code> para mantener solo las métricas <span class="math inline">\(R^2\)</span>, remodelar los resultados y calcular cómo se correlacionan las métricas entre sí.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>rsq_indiv_estimates <span class="ot">&lt;-</span> </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>(four_models, <span class="at">summarize =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.metric <span class="sc">==</span> <span class="st">"rsq"</span>) </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>rsq_wider <span class="ot">&lt;-</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  rsq_indiv_estimates <span class="sc">%&gt;%</span> </span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(wflow_id, .estimate, id) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">id_cols =</span> <span class="st">"id"</span>, <span class="at">names_from =</span> <span class="st">"wflow_id"</span>, <span class="at">values_from =</span> <span class="st">".estimate"</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>corrr<span class="sc">::</span><span class="fu">correlate</span>(rsq_wider <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>id), <span class="at">quiet =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 4 × 5</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   term          random_forest basic_lm interact_lm splines_lm</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                 &lt;dbl&gt;    &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 random_forest        NA        0.887       0.888      0.889</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 basic_lm              0.887   NA           0.993      0.997</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 interact_lm           0.888    0.993      NA          0.987</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 splines_lm            0.889    0.997       0.987     NA</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Estas correlaciones son altas e indican que, entre modelos, existen grandes correlaciones dentro de la muestra. Para ver esto visualmente en <a href="#fig-rsquared-resamples" class="quarto-xref">Figura&nbsp;<span>11.2</span></a>, las estadísticas <span class="math inline">\(R^2\)</span> se muestran para cada modelo con líneas que conectan los remuestreos:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rsq_indiv_estimates <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">wflow_id =</span> <span class="fu">reorder</span>(wflow_id, .estimate)) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> wflow_id, <span class="at">y =</span> .estimate, <span class="at">group =</span> id, <span class="at">color =</span> id)) <span class="sc">+</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">alpha =</span> .<span class="dv">5</span>, <span class="at">linewidth =</span> <span class="fl">1.25</span>) <span class="sc">+</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-rsquared-resamples" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un gráfico que conecta las estadísticas de remuestreo entre modelos. La gráfica conecta los resultados de cada modelo con la misma línea. Las métricas de rendimiento tienden a ser relativamente similares en todos los resultados del modelo.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rsquared-resamples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-rsquared-resamples-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Un gráfico que conecta las estadísticas de remuestreo entre modelos. La gráfica conecta los resultados de cada modelo con la misma línea. Las métricas de rendimiento tienden a ser relativamente similares en todos los resultados del modelo." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rsquared-resamples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;11.2: Remuestrear estadísticas entre modelos
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Si el efecto de remuestreo a remuestreo no fuera real, no habría líneas paralelas. Una prueba estadística de las correlaciones evalúa si las magnitudes de estas correlaciones no son simplemente ruido. Para los modelos lineales:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rsq_wider <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>( <span class="fu">cor.test</span>(basic_lm, splines_lm) ) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(estimate, <span class="fu">starts_with</span>(<span class="st">"conf"</span>))</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   estimate conf.low conf.high</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">##      &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1    0.997    0.987     0.999</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los resultados de la prueba de correlación (la “estimación”, <code>estimate</code>, de la correlación y los intervalos de confianza) nos muestran que la correlación dentro de la muestra parece ser real.</p>
+<p>¿Qué efecto tiene la correlación adicional en nuestro análisis? Considere la varianza de una diferencia de dos variables:</p>
+<p><span class="math display">\[\operatorname{Var}[X - Y] = \operatorname{Var}[X] + \operatorname{Var}[Y]  - 2 \operatorname{Cov}[X, Y]\]</span></p>
+<p>El último término es la covarianza entre dos elementos. Si hay una covarianza positiva significativa, entonces cualquier prueba estadística de esta diferencia carecería de potencia crítica al comparar la diferencia en dos modelos. En otras palabras, ignorar el efecto de remuestreo a remuestreo sesgaría nuestras comparaciones de modelos hacia la ausencia de diferencias entre los modelos.</p>
+<div class="rmdwarning">
+<p>Esta característica de las estadísticas de remuestreo entrará en juego en las dos secciones siguientes.</p>
+</div>
+<p>Antes de realizar comparaciones de modelos o observar los resultados del remuestreo, puede resultar útil definir un <em>tamaño del efecto práctico</em> relevante. Dado que estos análisis se centran en las estadísticas de <span class="math inline">\(R^2\)</span>, el tamaño del efecto práctico es el cambio en <span class="math inline">\(R^2\)</span> que consideraríamos una diferencia realista que importa. Por ejemplo, podríamos pensar que dos modelos no son prácticamente diferentes si sus valores de <span class="math inline">\(R^2\)</span> están dentro de <span class="math inline">\(\pm 2\)</span>%. Si este fuera el caso, las diferencias menores al 2% no se consideran importantes incluso si son estadísticamente significativas.</p>
+<p>La importancia práctica es subjetiva; dos personas pueden tener ideas muy diferentes en el umbral de la importancia. Sin embargo, más adelante mostraremos que esta consideración puede resultar muy útil a la hora de decidir entre modelos.</p>
+</section>
+<section id="métodos-simples-de-prueba-de-hipótesis" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="métodos-simples-de-prueba-de-hipótesis"><span class="header-section-number">11.3</span> Métodos Simples De Prueba De Hipótesis</h2>
+<p>Podemos utilizar pruebas de hipótesis simples para hacer comparaciones formales entre modelos. Considere el conocido modelo estadístico lineal:</p>
+<p><span class="math display">\[y_{ij} = \beta_0 + \beta_1x_{i1} + \ldots + \beta_px_{ip} + \epsilon_{ij}\]</span></p>
+<p>Este modelo versátil se utiliza para crear modelos de regresión, además de ser la base de la popular técnica de análisis de varianza (ANOVA) para comparar grupos. Con el modelo ANOVA, los predictores (<span class="math inline">\(x_{ij}\)</span>) son variables binarias ficticias para diferentes grupos. A partir de esto, los parámetros <span class="math inline">\(\beta\)</span> estiman si dos o más grupos son diferentes entre sí utilizando técnicas de prueba de hipótesis.</p>
+<p>En nuestra situación específica, el ANOVA también puede realizar comparaciones de modelos. Supongamos que las estadísticas individuales <span class="math inline">\(R^2\)</span> remuestreadas sirven como <em>datos de resultado</em> (es decir, <span class="math inline">\(y_{ij}\)</span>) y los modelos como <em>predictores</em> en el modelo ANOVA. Se muestra una muestra de esta estructura de datos en <a href="#tbl-model-anova-data" class="quarto-xref">Tabla&nbsp;<span>11.1</span></a>.</p>
+<div id="tbl-model-anova-data" class="cell quarto-float anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-model-anova-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;11.1: Modelar estadísticas de rendimiento como un conjunto de datos para análisis.
+</figcaption>
+<div aria-describedby="tbl-model-anova-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Y = rsq</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">X1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">X2</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">X3</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">id</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.8108</td>
+<td style="text-align: left;">basic_lm</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Fold01</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.8134</td>
+<td style="text-align: left;">interact_lm</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Fold01</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.8615</td>
+<td style="text-align: left;">random_forest</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Fold01</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.8217</td>
+<td style="text-align: left;">splines_lm</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Fold01</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.8045</td>
+<td style="text-align: left;">basic_lm</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Fold02</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.8103</td>
+<td style="text-align: left;">interact_lm</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">Fold02</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</figure>
+</div>
+<p>Las columnas <code>X1</code>, <code>X2</code> y <code>X3</code> de la tabla son indicadores de los valores de la columna <code>modelo</code>. Su orden se definió de la misma manera que R los definiría, ordenados alfabéticamente por <code>modelo</code>.</p>
+<p>Para nuestra comparación de modelos, el modelo ANOVA específico es:</p>
+<p><span class="math display">\[y_{ij} = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \beta_3x_{i3} + \epsilon_{ij}\]</span></p>
+<p>donde</p>
+<ul>
+<li><p><span class="math inline">\(\beta_0\)</span> es la estimación del estadístico <span class="math inline">\(R^2\)</span> medio para los modelos lineales básicos (es decir, sin splines ni interacciones),</p></li>
+<li><p><span class="math inline">\(\beta_1\)</span> es el cambio en la media <span class="math inline">\(R^2\)</span> cuando se agregan interacciones al modelo lineal básico,</p></li>
+<li><p><span class="math inline">\(\beta_2\)</span> es el cambio en la media <span class="math inline">\(R^2\)</span> entre el modelo lineal básico y el modelo de random forest, y</p></li>
+<li><p><span class="math inline">\(\beta_3\)</span> es el cambio en la media <span class="math inline">\(R^2\)</span> entre el modelo lineal básico y uno con interacciones y splines.</p></li>
+</ul>
+<p>A partir de estos parámetros del modelo, se generan pruebas de hipótesis y valores p para comparar modelos estadísticamente, pero debemos lidiar con cómo manejar el efecto de remuestreo a remuestre. Históricamente, los grupos de remuestreo se consideraban un <em>efecto de bloque</em> y se agregaba un término apropiado al modelo. Alternativamente, el efecto de remuestreo podría considerarse un <em>efecto aleatorio</em> en el que estas remuestras particulares se extrajeron al azar de una población más grande de posibles remuestras. Sin embargo, no estamos realmente interesados en estos efectos; sólo queremos ajustarlos en el modelo para que las varianzas de las diferencias interesantes se estimen adecuadamente.</p>
+<p>Tratar las remuestras como efectos aleatorios es teóricamente atractivo. Los métodos para ajustar un modelo ANOVA con este tipo de efecto aleatorio podrían incluir el modelo lineal mixto <span class="citation" data-cites="faraway2016extending">(<a href="references.html#ref-faraway2016extending" role="doc-biblioref">Faraway 2016</a>)</span> o un modelo jerárquico bayesiano (que se muestra en la siguiente sección).</p>
+<p>Un método simple y rápido para comparar dos modelos a la vez es usar las diferencias en los valores de <span class="math inline">\(R^2\)</span> como datos de resultado en el modelo ANOVA. Dado que los resultados coinciden mediante remuestreo, las diferencias no contienen el efecto de remuestreo a remuestre y, por esta razón, el modelo ANOVA estándar es apropiado. Para ilustrar, esta llamada a <code>lm()</code> prueba la diferencia entre dos de los modelos de regresión lineal:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>compare_lm <span class="ot">&lt;-</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  rsq_wider <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">difference =</span> splines_lm <span class="sc">-</span> basic_lm)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(difference <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> compare_lm) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">conf.int =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(estimate, p.value, <span class="fu">starts_with</span>(<span class="st">"conf"</span>))</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 4</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   estimate   p.value conf.low conf.high</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="do">##      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  0.00913 0.0000256  0.00650    0.0118</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Alternativamente, también se podría utilizar una prueba t pareada: </span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>rsq_wider <span class="sc">%&gt;%</span> </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>( <span class="fu">t.test</span>(splines_lm, basic_lm, <span class="at">paired =</span> <span class="cn">TRUE</span>) ) <span class="sc">%&gt;%</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(estimate, p.value, <span class="fu">starts_with</span>(<span class="st">"conf"</span>))</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 4</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a><span class="do">##   estimate   p.value conf.low conf.high</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a><span class="do">##      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  0.00913 0.0000256  0.00650    0.0118</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Podríamos evaluar cada diferencia por pares de esta manera. Tenga en cuenta que el valor p indica una señal <em>estadísticamente significativa</em>; la colección de términos splines para longitud y latitud parece tener un efecto. Sin embargo, la diferencia en <span class="math inline">\(R^2\)</span> se estima en 0.91%. Si nuestro tamaño de efecto práctico fuera del 2%, es posible que no consideráramos que valga la pena incluir estos términos en el modelo.</p>
+<div class="rmdnote">
+<p>Ya hemos mencionado brevemente los valores p, pero ¿qué son realmente? De <span class="citation" data-cites="pvalue">Wasserstein y Lazar (<a href="references.html#ref-pvalue" role="doc-biblioref">2016</a>)</span>: “Informalmente, un valor p es la probabilidad, según un modelo estadístico específico, de que un resumen estadístico de los datos (por ejemplo, la diferencia de medias muestrales entre dos grupos comparados) sea igual o más extremo que su valor observado.”</p>
+<p>En otras palabras, si este análisis se repitiera una gran cantidad de veces bajo la hipótesis nula de que no hay diferencias, el valor p refleja cuán extremos serían nuestros resultados observados en comparación.</p>
+</div>
+</section>
+<section id="sec-tidyposterior" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="sec-tidyposterior"><span class="header-section-number">11.4</span> Métodos Bayesianos</h2>
+<p>Simplemente utilizamos pruebas de hipótesis para comparar modelos formalmente, pero también podemos adoptar un enfoque más general para realizar estas comparaciones formales utilizando efectos aleatorios y estadísticas bayesianas <span class="citation" data-cites="mcelreath2020statistical">(<a href="references.html#ref-mcelreath2020statistical" role="doc-biblioref">McElreath 2020</a>)</span>. Si bien el modelo es más complejo que el método ANOVA, la interpretación es más simple y directa que el método del valor p.&nbsp;El modelo ANOVA anterior tenía la forma:</p>
+<p><span class="math display">\[y_{ij} = \beta_0 + \beta_1x_{i1} + \beta_2x_{i2} + \beta_3x_{i3} + \epsilon_{ij}\]</span></p>
+<p>donde se supone que los residuales <span class="math inline">\(\epsilon_{ij}\)</span> son independientes y siguen una distribución gaussiana con media cero y desviación estándar constante de <span class="math inline">\(\sigma\)</span>. A partir de este supuesto, la teoría estadística muestra que los parámetros de regresión estimados siguen una distribución gaussiana multivariada y, de ahí, se derivan los valores p y los intervalos de confianza.</p>
+<p>Un modelo lineal bayesiano hace suposiciones adicionales. Además de especificar una distribución para los residuos, requerimos especificaciones de <em>distribución previa</em> para los parámetros del modelo ( <span class="math inline">\(\beta_j\)</span> y <span class="math inline">\(\sigma\)</span> ). Estas son distribuciones de los parámetros que asume el modelo antes de ser expuesto a los datos observados. Por ejemplo, un conjunto simple de distribuciones previas para nuestro modelo podría ser:</p>
+<span class="math display">\[\begin{align}
+\epsilon_{ij} &amp;\sim N(0, \sigma) \notag \\
+\beta_j &amp;\sim N(0, 10) \notag \\
+\sigma &amp;\sim \text{exponential}(1) \notag
+\end{align}\]</span>
+<p>Estos antecedentes establecen los rangos posibles/probables de los parámetros del modelo y no tienen parámetros desconocidos. Por ejemplo, el valor anterior de <span class="math inline">\(\sigma\)</span> indica que los valores deben ser mayores que cero, están muy sesgados a la derecha y tienen valores que generalmente son menores que 3 o 4.</p>
+<p>Tenga en cuenta que los parámetros de regresión tienen una distribución a priori bastante amplia, con una desviación estándar de 10. En muchos casos, es posible que no tengamos una opinión sólida sobre el a priori más allá de que sea simétrico y tenga forma de campana. La gran desviación estándar implica un previo bastante poco informativo; no es demasiado restrictivo en términos de los posibles valores que podrían adoptar los parámetros. Esto permite que los datos tengan más influencia durante la estimación de parámetros.</p>
+<p>Dados los datos observados y las especificaciones de distribución previas, se pueden estimar los parámetros del modelo. Las distribuciones finales de los parámetros del modelo son combinaciones de las estimaciones previas y de probabilidad. Estas <em>distribuciones posteriores</em> de los parámetros son las distribuciones clave de interés. Son una descripción probabilística completa de los parámetros estimados del modelo.</p>
+<section id="un-modelo-de-intersección-aleatoria" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="un-modelo-de-intersección-aleatoria">Un modelo de intersección aleatoria</h3>
+<p>Para adaptar nuestro modelo ANOVA bayesiano de modo que las remuestras se modelen adecuadamente, consideramos un <em>modelo de intersección aleatoria</em>. Aquí, asumimos que los remuestreos impactan el modelo solo al cambiar la intersección. Tenga en cuenta que esto impide que los remuestreos tengan un impacto diferencial en los parámetros de regresión <span class="math inline">\(\beta_j\)</span>; Se supone que estos tienen la misma relación entre remuestreos. Esta ecuación modelo es:</p>
+<p><span class="math display">\[y_{ij} = (\beta_0 + b_{i}) + \beta_1x_{i1} + \beta_2x_{i2} + \beta_3x_{i3} + \epsilon_{ij}\]</span></p>
+<p>Este no es un modelo irrazonable para estadísticas remuestreadas que, cuando se trazan entre modelos como en <a href="#fig-rsquared-resamples" class="quarto-xref">Figura&nbsp;<span>11.2</span></a>, tienden a tener efectos bastante paralelos entre modelos (es decir, poco cruce de líneas).</p>
+<p>Para la configuración de este modelo, se hace un supuesto adicional para la distribución previa de efectos aleatorios. Una suposición razonable para esta distribución es otra distribución simétrica, como otra curva en forma de campana. Dado el tamaño de muestra efectivo de 10 en nuestro resumen de datos estadísticos, usemos una distribución previa que sea más amplia que una distribución normal estándar. Usaremos una distribución t con un solo grado de libertad (es decir, <span class="math inline">\(b_i \sim t(1)\)</span>), que tiene colas más pesadas que una distribución gaussiana análoga.</p>
+<p>El paquete <span class="pkg">tidyposterior</span> tiene funciones para ajustarse a dichos modelos bayesianos con el fin de comparar modelos remuestreados. La función principal se llama <code>perf_mod()</code> y está configurada para “simplemente funcionar” para diferentes tipos de objetos:</p>
+<ul>
+<li><p>Para conjuntos de flujos de trabajo, crea un modelo ANOVA donde los grupos corresponden a los flujos de trabajo. Nuestros modelos existentes no optimizaron ningún parámetro de ajuste (consulte los siguientes tres capítulos). Si uno de los flujos de trabajo del conjunto tenía datos sobre parámetros de ajuste, en el análisis bayesiano se utilizan los mejores parámetros de ajuste establecidos para cada flujo de trabajo. En otras palabras, a pesar de la presencia de parámetros de ajuste, <code>perf_mod()</code> se centra en hacer <em>comparaciones entre flujos de trabajo</em>.</p></li>
+<li><p>Para los objetos que contienen un único modelo que ha sido ajustado usando remuestreo, <code>perf_mod()</code> hace <em>comparaciones dentro del modelo</em>. En esta situación, las variables de agrupación probadas en el modelo ANOVA bayesiano son los submodelos definidos por los parámetros de ajuste.</p></li>
+<li><p>La función <code>perf_mod()</code> también puede tomar un marco de datos producido por <span class="pkg">rsample</span> que tiene columnas de métricas de rendimiento asociadas con dos o más resultados de modelo/flujo de trabajo. Estos podrían haberse generado por medios no estándar.</p></li>
+</ul>
+<p>A partir de cualquiera de estos tipos de objetos, la función <code>perf_mod()</code> determina un modelo bayesiano apropiado y lo ajusta con las estadísticas de remuestreo. Para nuestro ejemplo, modelará los cuatro conjuntos de estadísticas <span class="math inline">\(R^2\)</span> asociadas con los flujos de trabajo.</p>
+<p>El paquete <span class="pkg">tidyposterior</span> utiliza el <a href="https://mc-stan.org/">software Stan</a> para especificar y ajustar los modelos a través del paquete <span class="pkg">rstanarm</span>. Las funciones dentro de ese paquete tienen prioridades predeterminadas (consulte <code>?priors</code> para obtener más detalles). El siguiente modelo utiliza los valores previos predeterminados para todos los parámetros excepto para las intersecciones aleatorias (que siguen una distribución <em>t</em>). El proceso de estimación utiliza números aleatorios para que la semilla se establezca dentro de la llamada a la función. El proceso de estimación es iterativo y se replica varias veces en colecciones llamadas <em>cadenas</em>. El parámetro <code>iter</code> le dice a la función cuánto tiempo ejecutar el proceso de estimación en cada cadena. Cuando se utilizan varias cadenas, sus resultados se combinan (supongamos que esto está validado mediante evaluaciones diagnósticas).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyposterior)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstanarm)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># El paquete rstanarm genera grandes cantidades de producción; esos resultados</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># no se muestran aquí, pero vale la pena inspeccionarlos para detectar posibles problemas. El</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># opción `refresh = 0` se puede utilizar para eliminar el registro.. </span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>rsq_anova <span class="ot">&lt;-</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">perf_mod</span>(</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    four_models,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">metric =</span> <span class="st">"rsq"</span>,</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">prior_intercept =</span> rstanarm<span class="sc">::</span><span class="fu">student_t</span>(<span class="at">df =</span> <span class="dv">1</span>),</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">chains =</span> <span class="dv">4</span>,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">5000</span>,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">seed =</span> <span class="dv">1102</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El objeto resultante tiene información sobre el proceso de remuestreo, así como el objeto Stan incrustado en él (en un elemento llamado “stan”). Lo que más nos interesa son las distribuciones posteriores de los parámetros de regresión. El paquete <span class="pkg">tidyposterior</span> tiene un método <code>tidy()</code> que extrae estas distribuciones posteriores en un tibble:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>model_post <span class="ot">&lt;-</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  rsq_anova <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Tomaa una muestra aleatoria de la distribución posterior</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># así que se configura la semilla nuevamente para que sea reproducible. </span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">seed =</span> <span class="dv">1103</span>) </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(model_post)</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Rows: 40,000</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Columns: 2</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="do">## $ model     &lt;chr&gt; "random_forest", "basic_lm", "interact_lm", "splines_lm", "rando…</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="do">## $ posterior &lt;dbl&gt; 0.8287, 0.7898, 0.7921, 0.8000, 0.8338, 0.7944, 0.7970, 0.8002, …</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Las cuatro distribuciones posteriores se visualizan en <a href="#fig-four-posteriors" class="quarto-xref">Figura&nbsp;<span>11.3</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model_post <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model =</span> forcats<span class="sc">::</span><span class="fu">fct_inorder</span>(model)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> posterior)) <span class="sc">+</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fill =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> model, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-four-posteriors" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Distribuciones posteriores del coeficiente de determinación utilizando cuatro modelos diferentes. La distribución correspondiente al random forest es la más grande y tiene poca superposición con las posteriores del otro modelo.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-four-posteriors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-four-posteriors-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Distribuciones posteriores del coeficiente de determinación utilizando cuatro modelos diferentes. La distribución correspondiente al random forest es la más grande y tiene poca superposición con las posteriores del otro modelo." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-four-posteriors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;11.3: Distribuciones posteriores del coeficiente de determinación utilizando cuatro modelos diferentes.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Estos histogramas describen las distribuciones de probabilidad estimadas del valor medio <span class="math inline">\(R^2\)</span> para cada modelo. Existe cierta superposición, especialmente para los tres modelos lineales.</p>
+<p>También hay un método básico <code>autoplot()</code> para los resultados del modelo, que se muestra en <a href="#fig-credible-intervals" class="quarto-xref">Figura&nbsp;<span>11.4</span></a>, así como el objeto ordenado que muestra gráficos de densidad superpuestos.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(rsq_anova) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> workflow), <span class="at">nudge_x =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">8</span>, <span class="at">nudge_y =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">100</span>) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-credible-intervals" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Intervalos creíbles derivados de las distribuciones posteriores del modelo. El random forest muestra los mejores resultados sin superposición con los otros intervalos creíbles.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-credible-intervals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-credible-intervals-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Intervalos creíbles derivados de las distribuciones posteriores del modelo. El random forest muestra los mejores resultados sin superposición con los otros intervalos creíbles." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-credible-intervals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;11.4: Intervalos creíbles derivados de las distribuciones posteriores del modelo.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Un aspecto maravilloso del uso del remuestreo con modelos bayesianos es que, una vez que tenemos los parámetros posteriores, es trivial obtener las distribuciones posteriores para las combinaciones de los parámetros. Por ejemplo, para comparar los dos modelos de regresión lineal, nos interesa la diferencia de medias. La parte posterior de esta diferencia se calcula tomando muestras de las partes posteriores individuales y tomando las diferencias. La función <code>contrast_models()</code> puede hacer esto. Para especificar las comparaciones a realizar, los parámetros <code>list_1</code> y <code>list_2</code> toman vectores de caracteres y calculan las diferencias entre los modelos en esas listas (parametrizados como <code>list_1 - list_2</code>).</p>
+<p>Podemos comparar dos de los modelos lineales y visualizar los resultados en <a href="#fig-posterior-difference" class="quarto-xref">Figura&nbsp;<span>11.5</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>rqs_diff <span class="ot">&lt;-</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">contrast_models</span>(rsq_anova,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">list_1 =</span> <span class="st">"splines_lm"</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">list_2 =</span> <span class="st">"basic_lm"</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">seed =</span> <span class="dv">1104</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>rqs_diff <span class="sc">%&gt;%</span> </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> difference)) <span class="sc">+</span> </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fill =</span> <span class="st">"red"</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-posterior-difference" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="La distribución posterior de la diferencia en el coeficiente de determinación. La distribución casi no se superpone con cero.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-posterior-difference-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-posterior-difference-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="La distribución posterior de la diferencia en el coeficiente de determinación. La distribución casi no se superpone con cero." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-posterior-difference-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;11.5: Distribución posterior de la diferencia en el coeficiente de determinación.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>La parte posterior muestra que el centro de la distribución es mayor que cero (lo que indica que el modelo con splines normalmente tenía valores más grandes) pero se superpone con cero hasta cierto punto. El método <code>summary()</code> para este objeto calcula la media de la distribución así como los intervalos creíbles, el análogo bayesiano de los intervalos de confianza.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rqs_diff) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="fu">starts_with</span>(<span class="st">"pract"</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 6</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   contrast               probability    mean   lower  upper  size</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                        &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 splines_lm vs basic_lm        1.00 0.00917 0.00509 0.0132     0</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>La columna <code>probability</code> refleja la proporción del posterior que es mayor que cero. Ésta es la probabilidad de que la diferencia positiva sea real. El valor no es cercano a cero, lo que proporciona un fuerte argumento a favor de la significancia estadística, es decir, la idea de que estadísticamente la diferencia real no es cero.</p>
+<p>Sin embargo, la estimación de la diferencia de medias es bastante cercana a cero. Recuerde que el tamaño del efecto práctico que sugerimos anteriormente es del 2%. Con una distribución posterior, también podemos calcular la probabilidad de que sea prácticamente significativo. En el análisis bayesiano, esta es una <em>estimación ROPE</em> (para Región de equivalencia práctica, <span class="citation" data-cites="kruschke2018bayesian">Kruschke y Liddell (<a href="references.html#ref-kruschke2018bayesian" role="doc-biblioref">2018</a>)</span>). Para estimar esto, se utiliza la opción <code>size</code> de la función de <code>summary</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rqs_diff, <span class="at">size =</span> <span class="fl">0.02</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(contrast, <span class="fu">starts_with</span>(<span class="st">"pract"</span>))</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 4</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   contrast               pract_neg pract_equiv pract_pos</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                      &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 splines_lm vs basic_lm         0           1         0</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>La columna <code>pract_equiv</code> es la proporción del posterior que está dentro de <code>[-size, size]</code> (las columnas <code>pract_neg</code> y <code>pract_pos</code> son las proporciones que están debajo y encima de este intervalo). Este gran valor indica que, para nuestro tamaño del efecto, existe una probabilidad abrumadora de que los dos modelos sean prácticamente iguales. Aunque el gráfico anterior mostró que nuestra diferencia probablemente sea distinta de cero, la prueba de equivalencia sugiere que es lo suficientemente pequeña como para no ser significativa en la práctica.</p>
+<p>Se podría utilizar el mismo proceso para comparar el modelo de random forest con una o ambas regresiones lineales que se volvieron a muestrear. De hecho, cuando se usa <code>perf_mod()</code> con un conjunto de flujo de trabajo, el método <code>autoplot()</code> puede mostrar los resultados de <code>pract_equiv</code> que comparan cada flujo de trabajo con el mejor actual (el modelo de bosque aleatorio, en este caso).</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(rsq_anova, <span class="at">type =</span> <span class="st">"ROPE"</span>, <span class="at">size =</span> <span class="fl">0.02</span>) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> workflow)) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-practical-equivalence" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Probabilidad de equivalencia práctica para un tamaño del efecto del 2%. Ningún otro modelo tiene un cambio distinto de cero al coincidir con los resultados del random forest.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-practical-equivalence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-practical-equivalence-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Probabilidad de equivalencia práctica para un tamaño del efecto del 2%. Ningún otro modelo tiene un cambio distinto de cero al coincidir con los resultados del random forest." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-practical-equivalence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;11.6: Probabilidad de equivalencia práctica para un tamaño del efecto del 2%
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-practical-equivalence" class="quarto-xref">Figura&nbsp;<span>11.6</span></a> nos muestra que ninguno de los modelos lineales se acerca al modelo de random forest cuando se utiliza un tamaño de efecto práctico del 2%.</p>
+</section>
+<section id="el-efecto-de-la-cantidad-de-remuestreo." class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="el-efecto-de-la-cantidad-de-remuestreo.">El efecto de la cantidad de remuestreo.</h3>
+<p>¿Cómo afecta el número de remuestreos a estos tipos de comparaciones bayesianas formales? Más remuestreos aumentan la precisión de la estimación general del remuestreo; esa precisión se propaga a este tipo de análisis. A modo de ilustración, se agregaron nuevas muestras adicionales mediante validación cruzada repetida. ¿Cómo cambió la distribución posterior? <a href="#fig-intervals-over-replicates" class="quarto-xref">Figura&nbsp;<span>11.7</span></a> muestra los intervalos de credibilidad del 90% con hasta 100 remuestreos (generados a partir de 10 repeticiones de validación cruzada 10 veces).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(intervals,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> resamples, <span class="at">y =</span> mean)) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>() <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower, <span class="at">ymax =</span> upper), <span class="at">fill =</span> <span class="st">"red"</span>, <span class="at">alpha =</span> .<span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Número de remuestras (validación cruzada repetida 10 veces)"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-intervals-over-replicates" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="La probabilidad de equivalencia práctica con el modelo de bosque aleatorio.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-intervals-over-replicates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-intervals-over-replicates-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="La probabilidad de equivalencia práctica con el modelo de bosque aleatorio." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-intervals-over-replicates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;11.7: Probabilidad de equivalencia práctica con el modelo de bosque aleatorio.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>El ancho de los intervalos disminuye a medida que se agregan más muestras. Claramente, pasar de diez remuestreos a treinta tiene un impacto mayor que pasar de ochenta a 100. Hay rendimientos decrecientes por utilizar un número “grande” de remuestreos (“grande” será diferente para diferentes conjuntos de datos).</p>
+</section>
+</section>
+<section id="sec-compare-summary" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="sec-compare-summary"><span class="header-section-number">11.5</span> Resumen Del Capítulo</h2>
+<p>Este capítulo describió métodos estadísticos formales para probar diferencias en el rendimiento entre modelos. Demostramos el efecto dentro de la nueva muestra, donde los resultados para la misma nueva muestra tienden a ser similares; este aspecto de las estadísticas resumidas remuestreadas requiere un análisis apropiado para realizar comparaciones de modelos válidas. Además, aunque la significación estadística y la significancia práctica son conceptos importantes para las comparaciones de modelos, son diferentes.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-faraway2016extending" class="csl-entry" role="listitem">
+Faraway, J. 2016. <em>Extending the linear model with <span>R</span>: generalized linear, mixed effects and nonparametric regression models</em>. CRC press.
+</div>
+<div id="ref-kruschke2018bayesian" class="csl-entry" role="listitem">
+Kruschke, J, y T Liddell. 2018. <span>«The <span>Bayesian</span> New Statistics: Hypothesis testing, estimation, meta-analysis, and power analysis from a <span>Bayesian</span> perspective»</span>. <em>Psychonomic Bulletin and Review</em> 25 (1): 178-206.
+</div>
+<div id="ref-mcelreath2020statistical" class="csl-entry" role="listitem">
+McElreath, R. 2020. <em>Statistical rethinking: A <span>Bayesian</span> course with examples in <span>R</span> and <span>Stan</span></em>. CRC press.
+</div>
+<div id="ref-pvalue" class="csl-entry" role="listitem">
+Wasserstein, R, y N Lazar. 2016. <span>«The <span>ASA</span> statement on p-values: Context, process, and purpose»</span>. <em>The American Statistician</em> 70 (2): 129-33.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>El código para generar <code>intervalos</code> está disponible en <a href="https://github.com/tidymodels/TMwR/blob/main/extras/ames_posterior_intervals.R" class="uri">https://github.com/tidymodels/TMwR/blob/main/extras/ames_posterior_intervals.R</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+
+<script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./10-resampling.html" class="pagination-link" aria-label="Remuestrear Para Evaluar El Rendimiento">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./12-tuning-parameters.html" class="pagination-link" aria-label="Ajuste De Modelos Y Los Peligros Del Sobreajuste">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Este libro fue creado usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

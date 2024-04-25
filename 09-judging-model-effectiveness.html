@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Max Kuhn, y Julia Silge">
+
+<title>Modelado Ordenado con R - 9&nbsp; Juzgar La Eficacia Del Modelo</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./10-resampling.html" rel="next">
+<link href="./08-feature-engineering.html" rel="prev">
+<link href="./images/cover.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="TMwR.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./09-judging-model-effectiveness.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Modelado Ordenado con R</a> 
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hola Mundo</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#métricas-de-rendimiento-e-inferencia" id="toc-métricas-de-rendimiento-e-inferencia" class="nav-link active" data-scroll-target="#métricas-de-rendimiento-e-inferencia"><span class="header-section-number">9.1</span> Métricas De Rendimiento E Inferencia</a></li>
+  <li><a href="#métricas-de-regresión" id="toc-métricas-de-regresión" class="nav-link" data-scroll-target="#métricas-de-regresión"><span class="header-section-number">9.2</span> Métricas De Regresión</a></li>
+  <li><a href="#métricas-de-clasificación-binaria" id="toc-métricas-de-clasificación-binaria" class="nav-link" data-scroll-target="#métricas-de-clasificación-binaria"><span class="header-section-number">9.3</span> Métricas De Clasificación Binaria</a></li>
+  <li><a href="#métricas-de-clasificación-multiclase" id="toc-métricas-de-clasificación-multiclase" class="nav-link" data-scroll-target="#métricas-de-clasificación-multiclase"><span class="header-section-number">9.4</span> Métricas De Clasificación Multiclase</a></li>
+  <li><a href="#sec-performance-summary" id="toc-sec-performance-summary" class="nav-link" data-scroll-target="#sec-performance-summary"><span class="header-section-number">9.5</span> Resumen Del Capítulo</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./09-judging-model-effectiveness.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-performance" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Una vez que tenemos un modelo, necesitamos saber qué tan bien funciona. Un enfoque cuantitativo para estimar la efectividad nos permite comprender el modelo, comparar diferentes modelos o modificar el modelo para mejorar el rendimiento. Nuestro enfoque en tidymodels está en la validación empírica; Esto generalmente significa usar datos que no se usaron para crear el modelo como sustrato para medir la efectividad.</p>
+<div class="rmdwarning">
+<p>El mejor enfoque para la validación empírica implica el uso de métodos de <em>resampling</em> que se presentarán en el <a href="10-resampling.html" class="quarto-xref">Capítulo&nbsp;<span>10</span></a>. En este capítulo, motivaremos la necesidad de una validación empírica mediante el uso del conjunto de pruebas. Tenga en cuenta que el conjunto de prueba solo se puede utilizar una vez, como se explica en <a href="05-data-spending.html#sec-splitting-methods" class="quarto-xref"><span>Sección 5.1</span></a>.</p>
+</div>
+<p>Al juzgar la eficacia del modelo, su decisión sobre qué métricas examinar puede ser fundamental. En capítulos posteriores, se optimizarán empíricamente ciertos parámetros del modelo y se utilizará una métrica de rendimiento primaria para elegir el mejor submodelo. Elegir la métrica incorrecta puede fácilmente tener consecuencias no deseadas. Por ejemplo, dos métricas comunes para los modelos de regresión son la raíz del error cuadrático medio (RMSE) y el coeficiente de determinación (también conocido como <span class="math inline">\(R^2\)</span>). El primero mide la <em>precisión</em> mientras que el segundo mide la <em>correlación</em>. Estos no son necesariamente lo mismo. <span class="quarto-unresolved-ref">?fig-Performance-reg-metrics</span> demuestra la diferencia entre los dos.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-performance-reg-metrics" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Gráficos de dispersión de valores numéricos observados versus valores predichos para modelos optimizados utilizando el RMSE y el coeficiente de determinación. El primero produce resultados cercanos a la línea de identidad de 45 grados, mientras que el segundo muestra resultados con una estrecha correlación lineal pero se aleja mucho de la línea de identidad." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-performance-reg-metrics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-performance-reg-metrics-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Gráficos de dispersión de valores numéricos observados versus valores predichos para modelos optimizados utilizando el RMSE y el coeficiente de determinación. El primero produce resultados cercanos a la línea de identidad de 45 grados, mientras que el segundo muestra resultados con una estrecha correlación lineal pero se aleja mucho de la línea de identidad." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-performance-reg-metrics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;9.1: Valores observados versus valores predichos para modelos optimizados utilizando el RMSE en comparación con el coeficiente de determinación
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Un modelo optimizado para RMSE tiene más variabilidad pero tiene una precisión relativamente uniforme en todo el rango del resultado. El panel derecho muestra que existe una correlación más estrecha entre los valores observados y predichos, pero este modelo funciona mal en las colas.</p>
+<p>Este capítulo demostrará el paquete <span class="pkg">yardstick</span>, un paquete central de tidymodels cuyo objetivo es medir el rendimiento del modelo. Antes de ilustrar la sintaxis, exploremos si vale la pena la validación empírica mediante métricas de rendimiento cuando un modelo se centra en la inferencia en lugar de la predicción.</p>
+<section id="métricas-de-rendimiento-e-inferencia" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="métricas-de-rendimiento-e-inferencia"><span class="header-section-number">9.1</span> Métricas De Rendimiento E Inferencia</h2>
+<p>La eficacia de cualquier modelo depende de cómo se utilizará. Un modelo inferencial se utiliza principalmente para comprender las relaciones y normalmente enfatiza la elección (y validez) de distribuciones probabilísticas y otras cualidades generativas que definen el modelo. Por el contrario, para un modelo utilizado principalmente para la predicción, la fuerza predictiva es de primordial importancia y otras preocupaciones sobre las cualidades estadísticas subyacentes pueden ser menos importantes. La fuerza predictiva generalmente está determinada por qué tan cerca están nuestras predicciones de los datos observados, es decir, la fidelidad de las predicciones del modelo a los resultados reales. Este capítulo se centra en funciones que se pueden utilizar para medir la fuerza predictiva. Sin embargo, nuestro consejo para quienes desarrollan modelos inferenciales es utilizar estas técnicas incluso cuando el modelo no se utilizará con el objetivo principal de predicción.</p>
+<p>Un problema de larga data con la práctica de la estadística inferencial es que, centrándose exclusivamente en la inferencia, es difícil evaluar la credibilidad de un modelo. Por ejemplo, considere los datos sobre la enfermedad de Alzheimer de <span class="citation" data-cites="CraigSchapiro">Craig–Schapiro et&nbsp;al. (<a href="references.html#ref-CraigSchapiro" role="doc-biblioref">2011</a>)</span> cuando se estudiaron pacientes con 333 para determinar los factores que influyen en el deterioro cognitivo. Un análisis podría tomar los factores de riesgo conocidos y construir un modelo de regresión logística donde el resultado sea binario (deteriorado/no deteriorado). Consideremos los predictores de edad, sexo y genotipo de apolipoproteína E. Esta última es una variable categórica con las seis combinaciones posibles de las tres variantes principales de este gen. Se sabe que la apolipoproteína E tiene una asociación con la demencia <span class="citation" data-cites="Kim:2009p4370">(<a href="references.html#ref-Kim:2009p4370" role="doc-biblioref">Jungsu, Basak, y Holtzman 2009</a>)</span>.</p>
+<p>Un enfoque superficial, pero no infrecuente, para este análisis sería ajustar un modelo grande con efectos e interacciones principales y luego utilizar pruebas estadísticas para encontrar el conjunto mínimo de términos del modelo que sean estadísticamente significativos en algún nivel predefinido. Si se utilizara un modelo completo con los tres factores y sus interacciones de dos y tres vías, una fase inicial sería probar las interacciones utilizando pruebas de índice de probabilidad secuencial <span class="citation" data-cites="HosmerLemeshow">(<a href="references.html#ref-HosmerLemeshow" role="doc-biblioref">Hosmer y Lemeshow 2000</a>)</span>. Analicemos este tipo de enfoque para el ejemplo de datos sobre la enfermedad de Alzheimer:</p>
+<ul>
+<li><p>Al comparar el modelo con todas las interacciones de dos vías con uno con la interacción de tres vías adicional, las pruebas de razón de verosimilitud producen un valor p de 0.888. Esto implica que no hay evidencia de que los términos del modelo adicionales four asociados con la interacción de tres vías expliquen suficiente variación en los datos para mantenerlos en el modelo.</p></li>
+<li><p>A continuación, las interacciones bidireccionales se evalúan de manera similar con respecto al modelo sin interacciones. El valor p aquí es 0.0382. Esto es algo dudoso, pero, dado el pequeño tamaño de la muestra, sería prudente concluir que hay evidencia de que algunas de las posibles interacciones bidireccionales 10 son importantes para la modelo.</p></li>
+<li><p>A partir de aquí, construiríamos alguna explicación de los resultados. Sería particularmente importante discutir las interacciones, ya que pueden generar hipótesis fisiológicas o neurológicas interesantes que se explorarán más a fondo.</p></li>
+</ul>
+<p>Si bien superficial, esta estrategia de análisis es común tanto en la práctica como en la literatura. Esto es especialmente cierto si el profesional tiene una formación formal limitada en análisis de datos.</p>
+<p>Un dato que falta en este enfoque es qué tan cerca se ajusta este modelo a los datos reales. Usando métodos de remuestreo, discutidos en el <a href="10-resampling.html" class="quarto-xref">Capítulo&nbsp;<span>10</span></a>, podemos estimar que la precisión de este modelo es aproximadamente 73.4%. La precisión es a menudo una mala medida del rendimiento del modelo; Lo usamos aquí porque se entiende comúnmente. Si el modelo tiene 73.4% de fidelidad a los datos, ¿deberíamos confiar en las conclusiones que produce? Podríamos pensar así hasta que nos demos cuenta de que la tasa inicial de pacientes no deteriorados en los datos es 72.7%. Esto significa que, a pesar de nuestro análisis estadístico, el modelo de dos factores parece ser sólo 0.8% mejor que una simple heurística que siempre predice que los pacientes no sufrirán daños, independientemente de los datos observados.</p>
+<div class="rmdnote">
+<p>El objetivo de este análisis es demostrar la idea de que la optimización de las características estadísticas del modelo no implica que el modelo se ajuste bien a los datos. Incluso para modelos puramente inferenciales, alguna medida de fidelidad a los datos debería acompañar a los resultados inferenciales. Con esto, los consumidores de los análisis pueden calibrar sus expectativas sobre los resultados.</p>
+</div>
+<p>En el resto de este capítulo, discutiremos enfoques generales para evaluar modelos mediante validación empírica. Estos enfoques se agrupan según la naturaleza de los datos de resultados: puramente numéricos, clases binarias y tres o más niveles de clase.</p>
+</section>
+<section id="métricas-de-regresión" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="métricas-de-regresión"><span class="header-section-number">9.2</span> Métricas De Regresión</h2>
+<p>Recuerde de <a href="06-fitting-models.html#sec-parsnip-predictions" class="quarto-xref"><span>Sección 6.3</span></a> que las funciones de predicción de tidymodels producen tibbles con columnas para los valores predichos. Estas columnas tienen nombres consistentes y las funciones en el paquete <span class="pkg">yardstick</span> que producen métricas de rendimiento tienen interfaces consistentes. Las funciones están basadas en marcos de datos, a diferencia de vectores, con la sintaxis general de:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">function</span>(data, truth, ...)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>donde <code>data</code> es un marco de datos o tibble y <code>truth</code> es la columna con los valores de resultados observados. Las elipses u otros argumentos se utilizan para especificar las columnas que contienen las predicciones.</p>
+<p>Para ilustrar, tomemos el modelo de <a href="08-feature-engineering.html#sec-recipes-summary" class="quarto-xref"><span>Sección 8.8</span></a>. Este modelo <code>lm_wflow_fit</code> combina un modelo de regresión lineal con un conjunto de predictores complementado con una interacción y funciones spline para longitud y latitud. Fue creado a partir de un conjunto de entrenamiento (llamado <code>ames_train</code>). Aunque no recomendamos utilizar el conjunto de pruebas en este punto del proceso de modelado, se utilizará aquí para ilustrar la funcionalidad y la sintaxis. El marco de datos <code>ames_test</code> consta de las propiedades 588. Para empezar, hagamos predicciones:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ames_test_res <span class="ot">&lt;-</span> <span class="fu">predict</span>(lm_fit, <span class="at">new_data =</span> ames_test <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>Sale_Price))</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>ames_test_res</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 588 × 1</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   .pred</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;dbl&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  5.07</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  5.31</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  5.28</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4  5.33</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 5  5.30</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 6  5.24</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 582 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El resultado numérico previsto por el modelo de regresión se denomina <code>.pred</code>. Hagamos coincidir los valores predichos con sus correspondientes valores de resultado observados:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ames_test_res <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(ames_test_res, ames_test <span class="sc">%&gt;%</span> <span class="fu">select</span>(Sale_Price))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>ames_test_res</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 588 × 2</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   .pred Sale_Price</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;dbl&gt;      &lt;dbl&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  5.07       5.02</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  5.31       5.39</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  5.28       5.28</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4  5.33       5.28</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 5  5.30       5.28</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 6  5.24       5.26</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 582 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Vemos que estos valores en su mayoría parecen cercanos, pero aún no tenemos una comprensión cuantitativa de cómo funciona el modelo porque no hemos calculado ninguna métrica de rendimiento. Tenga en cuenta que tanto los resultados previstos como los observados están en unidades log-10. Es una buena práctica analizar las predicciones en la escala transformada (si se usara una), incluso si las predicciones se informan utilizando las unidades originales.</p>
+<p>Trazamos los datos en <a href="#fig-ames-performance-plot" class="quarto-xref">Figura&nbsp;<span>9.2</span></a> antes de calcular las métricas:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ames_test_res, <span class="fu">aes</span>(<span class="at">x =</span> Sale_Price, <span class="at">y =</span> .pred)) <span class="sc">+</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Crear una línea diagonal:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">lty =</span> <span class="dv">2</span>) <span class="sc">+</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Precio de Venta Predecido (log10)"</span>, <span class="at">x =</span> <span class="st">"Precio de Venta (log10)"</span>) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Escale y dimensione los ejes x e y de manera uniforme:</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_obs_pred</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ames-performance-plot" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Gráficos de dispersión de valores numéricos observados versus valores predichos para un modelo de regresión de Ames. Ambos ejes utilizan unidades log-10. El modelo muestra una buena concordancia con algunos puntos que no se ajustan bien a precios altos y bajos." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ames-performance-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-ames-performance-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Gráficos de dispersión de valores numéricos observados versus valores predichos para un modelo de regresión de Ames. Ambos ejes utilizan unidades log-10. El modelo muestra una buena concordancia con algunos puntos que no se ajustan bien a precios altos y bajos." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ames-performance-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;9.2: Valores observados versus valores predichos para un modelo de regresión de Ames, con unidades log-10 en ambos ejes
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Hay una propiedad de bajo precio que está sustancialmente sobreestimada, es decir, bastante por encima de la línea discontinua.</p>
+<p>Calculemos la raíz del error cuadrático medio para este modelo usando la función <code>rmse()</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(ames_test_res, <span class="at">truth =</span> Sale_Price, <span class="at">estimate =</span> .pred)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator .estimate</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 rmse    standard      0.0736</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esto nos muestra el formato estándar de salida de las funciones <span class="pkg">yardstick</span>. Las métricas para resultados numéricos suelen tener un valor “estándar” para la columna <code>.estimator</code>. En las siguientes secciones se muestran ejemplos con diferentes valores para esta columna.</p>
+<p>Para calcular varias métricas a la vez, podemos crear un <em>conjunto de métricas</em>. Sumemos <span class="math inline">\(R^2\)</span> y el error absoluto medio:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ames_metrics <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(rmse, rsq, mae)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ames_metrics</span>(ames_test_res, <span class="at">truth =</span> Sale_Price, <span class="at">estimate =</span> .pred)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 3</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator .estimate</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 rmse    standard      0.0736</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 rsq     standard      0.836 </span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 mae     standard      0.0549</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Este formato de datos ordenado apila las métricas verticalmente. Las métricas del error cuadrático medio y del error absoluto medio están en la escala del resultado (por lo tanto, <code>log10(Sale_Price)</code> para nuestro ejemplo) y miden la diferencia entre los valores previstos y observados. El valor de <span class="math inline">\(R^2\)</span> mide la correlación al cuadrado entre los valores previstos y observados, por lo que los valores más cercanos a uno son mejores.</p>
+<div class="rmdwarning">
+<p>El paquete <span class="pkg">yardstick</span> <em>no</em> contiene una función para <span class="math inline">\(R^2\)</span> ajustado. Esta modificación del coeficiente de determinación se utiliza comúnmente cuando los mismos datos utilizados para ajustar el modelo se utilizan para evaluar el modelo. Esta métrica no es totalmente compatible con tidymodels porque siempre es un mejor enfoque para calcular el rendimiento en un conjunto de datos separado que el utilizado para ajustar el modelo.</p>
+</div>
+</section>
+<section id="métricas-de-clasificación-binaria" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="métricas-de-clasificación-binaria"><span class="header-section-number">9.3</span> Métricas De Clasificación Binaria</h2>
+<p>Para ilustrar otras formas de medir el rendimiento del modelo, cambiaremos a un ejemplo diferente. El paquete <span class="pkg">modeldata</span> (otro de los paquetes tidymodels) contiene predicciones de ejemplo de un conjunto de datos de prueba con dos clases (“Class1” y “Class2”):</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(two_class_example)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(two_class_example)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 500 × 4</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   truth   Class1   Class2 predicted</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;fct&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;fct&gt;    </span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 Class2 0.00359 0.996    Class2   </span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 Class1 0.679   0.321    Class1   </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Class2 0.111   0.889    Class2   </span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 Class1 0.735   0.265    Class1   </span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 Class2 0.0162  0.984    Class2   </span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 Class1 0.999   0.000725 Class1   </span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 494 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>La segunda y tercera columnas son las probabilidades de clase predichas para el conjunto de prueba, mientras que <code>predicted</code> son las predicciones discretas.</p>
+<p>Para las predicciones de clases difíciles, una variedad de funciones <span class="pkg">yardstick</span> son útiles:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Una matriz de confusión:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">conf_mat</span>(two_class_example, <span class="at">truth =</span> truth, <span class="at">estimate =</span> predicted)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="do">##           Truth</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Prediction Class1 Class2</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="do">##     Class1    227     50</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="do">##     Class2     31    192</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Exactitud:</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(two_class_example, truth, predicted)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric  .estimator .estimate</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 accuracy binary         0.838</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Coeficiente de correlación de Matthews:</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a><span class="fu">mcc</span>(two_class_example, truth, predicted)</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator .estimate</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 mcc     binary         0.677</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Métrica F1:</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="fu">f_meas</span>(two_class_example, truth, predicted)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator .estimate</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 f_meas  binary         0.849</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Combinando estas tres métricas de clasificación juntas</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>classification_metrics <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(accuracy, mcc, f_meas)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="fu">classification_metrics</span>(two_class_example, <span class="at">truth =</span> truth, <span class="at">estimate =</span> predicted)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 3</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric  .estimator .estimate</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 accuracy binary         0.838</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 mcc      binary         0.677</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 f_meas   binary         0.849</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El coeficiente de correlación de Matthews y la puntuación F1 resumen la matriz de confusión, pero en comparación con <code>mcc()</code>, que mide la calidad de ejemplos tanto positivos como negativos, la métrica <code>f_meas()</code> enfatiza la clase positiva, es decir, el evento de interés. Para conjuntos de datos de clasificación binaria como este ejemplo, las funciones <span class="pkg">yardstick</span> tienen un argumento estándar llamado <code>event_level</code> para distinguir los niveles positivos y negativos. El valor predeterminado (que utilizamos en este código) es que el <em>primer</em> nivel del factor de resultado es el evento de interés.</p>
+<div class="rmdnote">
+<p>Existe cierta heterogeneidad en las funciones R a este respecto; algunos utilizan el primer nivel y otros el segundo para denotar el evento de interés. Consideramos más intuitivo que el primer nivel es el más importante. La lógica de segundo nivel surge de codificar el resultado como 0/1 (en cuyo caso el segundo valor es el evento) y desafortunadamente permanece en algunos paquetes. Sin embargo, tidymodels (junto con muchos otros paquetes de R) requieren que se codifique un resultado categórico como factor y, por esta razón, la justificación heredada para el segundo nivel como evento se vuelve irrelevante.</p>
+</div>
+<p>Como ejemplo donde el segundo nivel es el evento:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">f_meas</span>(two_class_example, truth, predicted, <span class="at">event_level =</span> <span class="st">"second"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator .estimate</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 f_meas  binary         0.826</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>En este resultado, el valor <code>.estimator</code> de “binario” indica que se utilizará la fórmula estándar para clases binarias.</p>
+<p>Existen numerosas métricas de clasificación que utilizan las probabilidades predichas como entradas en lugar de las predicciones de clase estrictas. Por ejemplo, la curva de características operativas del receptor (ROC) calcula la sensibilidad y la especificidad sobre un continuo de diferentes umbrales de eventos. La columna de clase prevista no se utiliza. Hay dos funciones <span class="pkg">yardstick</span> para este método: <code>roc_curve()</code> calcula los puntos de datos que forman la curva ROC y <code>roc_auc()</code> calcula el área bajo la curva.</p>
+<p>Las interfaces para estos tipos de funciones métricas utilizan el marcador de posición del argumento <code>...</code> para pasar la columna de probabilidad de clase apropiada. Para problemas de dos clases, la columna de probabilidad del evento de interés se pasa a la función:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>two_class_curve <span class="ot">&lt;-</span> <span class="fu">roc_curve</span>(two_class_example, truth, Class1)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>two_class_curve</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 502 × 3</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   .threshold specificity sensitivity</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="do">##        &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 -Inf           0                 1</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2    1.79e-7     0                 1</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3    4.50e-6     0.00413           1</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4    5.81e-6     0.00826           1</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 5    5.92e-6     0.0124            1</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 6    1.22e-5     0.0165            1</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 496 more rows</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="fu">roc_auc</span>(two_class_example, truth, Class1)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator .estimate</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 roc_auc binary         0.939</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El objeto <code>two_class_curve</code> se puede usar en una llamada <code>ggplot</code> para visualizar la curva, como se muestra en <a href="#fig-example-roc-curve" class="quarto-xref">Figura&nbsp;<span>9.3</span></a>. Existe un método <code>autoplot()</code> que se encargará de los detalles:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">autoplot</span>(two_class_curve)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-example-roc-curve" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Un ejemplo de curva ROC. El eje x es uno menos la especificidad y el eje y es la sensibilidad. La curva se inclina hacia el lado superior izquierdo del área de la gráfica." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-example-roc-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-example-roc-curve-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Un ejemplo de curva ROC. El eje x es uno menos la especificidad y el eje y es la sensibilidad. La curva se inclina hacia el lado superior izquierdo del área de la gráfica." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-example-roc-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;9.3: Ejemplo de curva ROC
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Si la curva estuviera cerca de la línea diagonal, entonces las predicciones del modelo no serían mejores que las conjeturas aleatorias. Dado que la curva está arriba en la esquina superior izquierda, vemos que nuestro modelo funciona bien en diferentes umbrales.</p>
+<p>Hay otras funciones que utilizan estimaciones de probabilidad, incluidas <code>gain_curve()</code>, <code>lift_curve()</code> y <code>pr_curve()</code>.</p>
+</section>
+<section id="métricas-de-clasificación-multiclase" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="métricas-de-clasificación-multiclase"><span class="header-section-number">9.4</span> Métricas De Clasificación Multiclase</h2>
+<p>¿Qué pasa con los datos con tres o más clases? Para demostrarlo, exploremos un conjunto de datos de ejemplo diferente que tiene cuatro clases:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(hpc_cv)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(hpc_cv)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3,467 × 7</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   obs   pred     VF      F       M          L Resample</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;fct&gt; &lt;fct&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;   </span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 VF    VF    0.914 0.0779 0.00848 0.0000199  Fold01  </span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 VF    VF    0.938 0.0571 0.00482 0.0000101  Fold01  </span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 VF    VF    0.947 0.0495 0.00316 0.00000500 Fold01  </span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 VF    VF    0.929 0.0653 0.00579 0.0000156  Fold01  </span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 VF    VF    0.942 0.0543 0.00381 0.00000729 Fold01  </span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 VF    VF    0.951 0.0462 0.00272 0.00000384 Fold01  </span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 3,461 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Como antes, hay factores para los resultados observados y previstos junto con otras cuatro columnas de probabilidades previstas para cada clase. (Estos datos también incluyen una columna <code>Resample</code>. Estos resultados <code>hpc_cv</code> son para predicciones fuera de muestra asociadas con una validación cruzada de 10 veces. Por el momento, esta columna se ignorará y discutiremos el remuestreo en profundidad en <a href="10-resampling.html" class="quarto-xref">Capítulo&nbsp;<span>10</span></a>.)</p>
+<p>Las funciones para las métricas que utilizan predicciones de clases discretas son idénticas a sus contrapartes binarias:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(hpc_cv, obs, pred)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric  .estimator .estimate</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 accuracy multiclass     0.709</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mcc</span>(hpc_cv, obs, pred)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator .estimate</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 mcc     multiclass     0.515</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Tenga en cuenta que, en estos resultados, aparece un <code>.estimator</code> “multiclase”. Al igual que “binario”, esto indica que se utilizó la fórmula para resultados con tres o más niveles de clase. El coeficiente de correlación de Matthews se diseñó originalmente para dos clases, pero se ha extendido a casos con más niveles de clase.</p>
+<p>Existen métodos para tomar métricas diseñadas para manejar resultados con solo dos clases y extenderlas para resultados con más de dos clases. Por ejemplo, una métrica como la sensibilidad mide la tasa de verdaderos positivos que, por definición, es específica de dos clases (es decir, “evento” y “no evento”). ¿Cómo se puede utilizar esta métrica en nuestros datos de ejemplo?</p>
+<p>Existen métodos contenedores que se pueden utilizar para aplicar sensibilidad a nuestro resultado de cuatro clases. Estas opciones son promedio macro, promedio macroponderado y micropromedio:</p>
+<ul>
+<li><p>El promedio macro calcula un conjunto de métricas de uno contra todos utilizando las estadísticas estándar de dos clases. Estos están promediados.</p></li>
+<li><p>El promedio macroponderado hace lo mismo, pero el promedio se pondera según el número de muestras de cada clase.</p></li>
+<li><p>El micropromedio calcula la contribución de cada clase, las agrega y luego calcula una única métrica a partir de los agregados.</p></li>
+</ul>
+<p>Consulte <span class="citation" data-cites="wu2017unified">Wu y Zhou (<a href="references.html#ref-wu2017unified" role="doc-biblioref">2017</a>)</span> y <span class="citation" data-cites="OpitzBurst">Opitz y Burst (<a href="references.html#ref-OpitzBurst" role="doc-biblioref">2019</a>)</span> para obtener más información sobre cómo ampliar las métricas de clasificación a resultados con más de dos clases.</p>
+<p>Usando la sensibilidad como ejemplo, el cálculo habitual de dos clases es la relación entre el número de eventos predichos correctamente dividido por el número de eventos verdaderos. Los cálculos manuales para estos métodos de promediación son:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>class_totals <span class="ot">&lt;-</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(hpc_cv, obs, <span class="at">name =</span> <span class="st">"totals"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">class_wts =</span> totals <span class="sc">/</span> <span class="fu">sum</span>(totals))</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>class_totals</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   obs totals class_wts</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  VF   1769   0.51024</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2   F   1078   0.31093</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3   M    412   0.11883</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4   L    208   0.05999</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>cell_counts <span class="ot">&lt;-</span> </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>  hpc_cv <span class="sc">%&gt;%</span> </span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(obs, pred) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcule las cuatro sensibilidades usando 1 contra todos</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>one_versus_all <span class="ot">&lt;-</span> </span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  cell_counts <span class="sc">%&gt;%</span> </span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(obs <span class="sc">==</span> pred) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">full_join</span>(class_totals, <span class="at">by =</span> <span class="st">"obs"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sens =</span> n <span class="sc">/</span> totals)</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>one_versus_all</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 4 × 6</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a><span class="do">##   obs   pred      n totals class_wts  sens</span></span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;fct&gt; &lt;fct&gt; &lt;int&gt;  &lt;int&gt;     &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 VF    VF     1620   1769    0.510  0.916</span></span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 F     F       647   1078    0.311  0.600</span></span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 M     M        79    412    0.119  0.192</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 L     L       111    208    0.0600 0.534</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Tres estimaciones diferentes:</span></span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>one_versus_all <span class="sc">%&gt;%</span> </span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">macro =</span> <span class="fu">mean</span>(sens), </span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">macro_wts =</span> <span class="fu">weighted.mean</span>(sens, class_wts),</span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">micro =</span> <span class="fu">sum</span>(n) <span class="sc">/</span> <span class="fu">sum</span>(totals)</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a><span class="do">##   macro macro_wts micro</span></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 0.560     0.709 0.709</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Afortunadamente, no es necesario implementar manualmente estos métodos de promedio. En cambio, las funciones <span class="pkg">yardstick</span> pueden aplicar automáticamente estos métodos a través del argumento <code>estimator</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sensitivity</span>(hpc_cv, obs, pred, <span class="at">estimator =</span> <span class="st">"macro"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric     .estimator .estimate</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 sensitivity macro          0.560</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sensitivity</span>(hpc_cv, obs, pred, <span class="at">estimator =</span> <span class="st">"macro_weighted"</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric     .estimator     .estimate</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;       &lt;chr&gt;              &lt;dbl&gt;</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 sensitivity macro_weighted     0.709</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="fu">sensitivity</span>(hpc_cv, obs, pred, <span class="at">estimator =</span> <span class="st">"micro"</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric     .estimator .estimate</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 sensitivity micro          0.709</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Cuando se trata de estimaciones de probabilidad, existen algunas métricas con análogos multiclase. Por ejemplo, <span class="citation" data-cites="HandTill">Hand y Till (<a href="references.html#ref-HandTill" role="doc-biblioref">2001</a>)</span> determinó una técnica multiclase para curvas ROC. En este caso, <em>todas</em> las columnas de probabilidad de clase deben asignarse a la función:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">roc_auc</span>(hpc_cv, obs, VF, F, M, L)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator .estimate</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 roc_auc hand_till      0.829</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El promedio macroponderado también está disponible como opción para aplicar esta métrica a un resultado multiclase:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">roc_auc</span>(hpc_cv, obs, VF, F, M, L, <span class="at">estimator =</span> <span class="st">"macro_weighted"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator     .estimate</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;              &lt;dbl&gt;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 roc_auc macro_weighted     0.868</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Finalmente, todas estas métricas de rendimiento se pueden calcular utilizando agrupaciones <span class="pkg">dplyr</span>. Recuerde que estos datos tienen una columna para los grupos de remuestreo. Aún no hemos analizado el remuestreo en detalle, pero observe cómo podemos pasar un marco de datos agrupados a la función métrica para calcular las métricas para cada grupo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>hpc_cv <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Resample) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">accuracy</span>(obs, pred)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 10 × 4</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   Resample .metric  .estimator .estimate</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 Fold01   accuracy multiclass     0.726</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 Fold02   accuracy multiclass     0.712</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Fold03   accuracy multiclass     0.758</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 Fold04   accuracy multiclass     0.712</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 Fold05   accuracy multiclass     0.712</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 Fold06   accuracy multiclass     0.697</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 4 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Las agrupaciones también se traducen a los métodos <code>autoplot()</code>, y los resultados se muestran en <a href="#fig-grouped-roc-curves" class="quarto-xref">Figura&nbsp;<span>9.4</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cuatro curvas ROC 1 contra todos para cada pliegue</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>hpc_cv <span class="sc">%&gt;%</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Resample) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">roc_curve</span>(obs, VF, F, M, L) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-grouped-roc-curves" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Curvas ROC remuestreadas para cada una de las cuatro clases de resultados. Hay cuatro paneles para las clases VF, F, M y L. Cada panel contiene diez curvas ROC para cada uno de los conjuntos de datos remuestreados." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-grouped-roc-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-grouped-roc-curves-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Curvas ROC remuestreadas para cada una de las cuatro clases de resultados. Hay cuatro paneles para las clases VF, F, M y L. Cada panel contiene diez curvas ROC para cada uno de los conjuntos de datos remuestreados." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-grouped-roc-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;9.4: Curvas ROC remuestreadas para cada una de las cuatro clases de resultados.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Esta visualización nos muestra que todos los diferentes grupos se desempeñan más o menos igual, pero que la clase <code>VF</code> se predice mejor que las clases <code>F</code> o <code>M</code>, ya que las curvas ROC <code>VF</code> están más en la esquina superior izquierda. . Este ejemplo utiliza remuestreos como grupos, pero se puede utilizar cualquier agrupación de sus datos. Este método <code>autoplot()</code> puede ser un método de visualización rápida para la efectividad del modelo en todas las clases y/o grupos de resultados.</p>
+</section>
+<section id="sec-performance-summary" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="sec-performance-summary"><span class="header-section-number">9.5</span> Resumen Del Capítulo</h2>
+<p>Diferentes métricas miden diferentes aspectos del ajuste de un modelo, por ejemplo, RMSE mide la precisión mientras que <span class="math inline">\(R^2\)</span> mide la correlación. Medir el rendimiento del modelo es importante incluso cuando un modelo determinado no se utilizará principalmente para predicción; el poder predictivo también es importante para los modelos inferenciales o descriptivos. Las funciones del paquete <span class="pkg">yardstick</span> miden la efectividad de un modelo utilizando datos. La interfaz principal de tidymodels utiliza principios de tidyverse y marcos de datos (en lugar de tener argumentos vectoriales). Diferentes métricas son apropiadas para las métricas de regresión y clasificación y, dentro de ellas, a veces hay diferentes formas de estimar las estadísticas, como para resultados multiclase.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-CraigSchapiro" class="csl-entry" role="listitem">
+Craig–Schapiro, R, M Kuhn, C Xiong, E Pickering, J Liu, T Misko, R Perrin, et&nbsp;al. 2011. <span>«Multiplexed immunoassay panel identifies novel <span>CSF</span> biomarkers for <span>Alzheimer’s</span> disease diagnosis and prognosis»</span>. <em>PLoS ONE</em> 6 (4): e18850.
+</div>
+<div id="ref-HandTill" class="csl-entry" role="listitem">
+Hand, D, y R Till. 2001. <span>«A simple generalisation of the area under the <span>ROC</span> curve for multiple class classification problems»</span>. <em>Machine Learning</em> 45 (agosto): 171-86.
+</div>
+<div id="ref-HosmerLemeshow" class="csl-entry" role="listitem">
+Hosmer, D, y Sy Lemeshow. 2000. <em>Applied Logistic Regression</em>. New York: John Wiley; Sons.
+</div>
+<div id="ref-Kim:2009p4370" class="csl-entry" role="listitem">
+Jungsu, K, D Basak, y D Holtzman. 2009. <span>«The role of Apolipoprotein <span>E</span> in <span>Alzheimer’s</span> disease»</span>. <em>Neuron</em> 63 (3): 287-303.
+</div>
+<div id="ref-OpitzBurst" class="csl-entry" role="listitem">
+Opitz, J, y S Burst. 2019. <span>«Macro F1 and Macro F1»</span>. <a href="https://arxiv.org/abs/1911.03347">https://arxiv.org/abs/1911.03347</a>.
+</div>
+<div id="ref-wu2017unified" class="csl-entry" role="listitem">
+Wu, X, y Z Zhou. 2017. <span>«A unified view of multi-label performance measures»</span>. En <em>International Conference on Machine Learning</em>, 3780-88.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+
+<script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./08-feature-engineering.html" class="pagination-link" aria-label="Ingeniería De Características Con recipes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./10-resampling.html" class="pagination-link" aria-label="Remuestrear Para Evaluar El Rendimiento">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Este libro fue creado usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

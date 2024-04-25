@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Max Kuhn, y Julia Silge">
+
+<title>Modelado Ordenado con R - 1&nbsp; Software Para Modelar</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./02-tidyverse.html" rel="next">
+<link href="./index.html" rel="prev">
+<link href="./images/cover.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="TMwR.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-software-modeling.html">INTRODUCCIÓN</a></li><li class="breadcrumb-item"><a href="./01-software-modeling.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Modelado Ordenado con R</a> 
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hola Mundo</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#fundamentos-del-software-de-modelado" id="toc-fundamentos-del-software-de-modelado" class="nav-link active" data-scroll-target="#fundamentos-del-software-de-modelado"><span class="header-section-number">1.1</span> Fundamentos Del Software De Modelado</a></li>
+  <li><a href="#sec-model-types" id="toc-sec-model-types" class="nav-link" data-scroll-target="#sec-model-types"><span class="header-section-number">1.2</span> Tipos De Modelos</a>
+  <ul class="collapse">
+  <li><a href="#modelos-descriptivos" id="toc-modelos-descriptivos" class="nav-link" data-scroll-target="#modelos-descriptivos">Modelos descriptivos</a></li>
+  <li><a href="#modelos-inferenciales" id="toc-modelos-inferenciales" class="nav-link" data-scroll-target="#modelos-inferenciales">Modelos inferenciales</a></li>
+  <li><a href="#modelos-predictivos" id="toc-modelos-predictivos" class="nav-link" data-scroll-target="#modelos-predictivos">Modelos predictivos</a></li>
+  </ul></li>
+  <li><a href="#conexiones-entre-tipos-de-modelos" id="toc-conexiones-entre-tipos-de-modelos" class="nav-link" data-scroll-target="#conexiones-entre-tipos-de-modelos"><span class="header-section-number">1.3</span> Conexiones Entre Tipos De Modelos</a></li>
+  <li><a href="#sec-model-terminology" id="toc-sec-model-terminology" class="nav-link" data-scroll-target="#sec-model-terminology"><span class="header-section-number">1.4</span> Terminología</a></li>
+  <li><a href="#sec-model-phases" id="toc-sec-model-phases" class="nav-link" data-scroll-target="#sec-model-phases"><span class="header-section-number">1.5</span> ¿Cómo Encaja El Modelado En El Proceso De Análisis de Datos?</a></li>
+  <li><a href="#sec-software-summary" id="toc-sec-software-summary" class="nav-link" data-scroll-target="#sec-software-summary"><span class="header-section-number">1.6</span> Resumen Del Capítulo</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-software-modeling.html">INTRODUCCIÓN</a></li><li class="breadcrumb-item"><a href="./01-software-modeling.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-software-modeling" class="quarto-section-identifier"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Los modelos son herramientas matemáticas que pueden describir un sistema y capturar relaciones en los datos que se les proporcionan. Los modelos se pueden utilizar para diversos fines, incluida la predicción de eventos futuros, determinar si hay una diferencia entre varios grupos, ayudar en la visualización basada en mapas, descubrir patrones novedosos en los datos que podrían investigarse más a fondo y más. La utilidad de un modelo depende de su capacidad para ser reductivo o para reducir relaciones complejas a términos más simples. Las influencias principales en los datos se pueden capturar matemáticamente de una manera útil, como en una relación que se puede expresar como una ecuación.</p>
+<p>Desde principios del siglo XXI, los modelos matemáticos se han vuelto omnipresentes en nuestra vida diaria, tanto de manera obvia como sutil. Un día típico para muchas personas puede implicar consultar el clima para ver cuándo podría ser un buen momento para pasear al perro, pedir un producto en un sitio web, escribir un mensaje de texto a un amigo y corregirlo automáticamente, y consultar el correo electrónico. En cada uno de estos casos, existe una buena probabilidad de que haya estado involucrado algún tipo de modelo. En algunos casos, la contribución del modelo puede percibirse fácilmente (“Es posible que también esté interesado en comprar el producto <em>X</em>”), mientras que en otros casos, el impacto podría ser la ausencia de algo (por ejemplo, correo electrónico no deseado). Los modelos se utilizan para elegir la ropa que podría gustarle a un cliente, para identificar una molécula que debería evaluarse como candidata a fármaco e incluso podrían ser el mecanismo que utiliza una empresa nefasta para evitar el descubrimiento de automóviles que contaminan demasiado. Para bien o para mal, los modelos llegaron para quedarse.</p>
+<div class="rmdnote">
+<p>Hay dos razones por las que los modelos impregnan nuestras vidas hoy en día:</p>
+<ul>
+<li><p>existe una gran cantidad de software para crear modelos, y</p></li>
+<li><p>se ha vuelto más fácil capturar y almacenar datos, así como hacerlos accesibles.</p></li>
+</ul>
+</div>
+<p>Este libro se centra principalmente en el software. Obviamente, es fundamental que el software produzca las relaciones correctas para representar los datos. En general, es posible determinar la corrección matemática, pero la creación fiable de modelos apropiados requiere más. En este capítulo, describimos consideraciones para crear o elegir software de modelado, los propósitos de los modelos y dónde se ubica el modelado en el proceso más amplio de análisis de datos.</p>
+<section id="fundamentos-del-software-de-modelado" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="fundamentos-del-software-de-modelado"><span class="header-section-number">1.1</span> Fundamentos Del Software De Modelado</h2>
+<p>Es importante que el software de modelado que utilice sea fácil de utilizar correctamente. La interfaz de usuario no debe estar tan mal diseñada que el usuario no sepa que la utilizó de manera inapropiada. Por ejemplo, <span class="citation" data-cites="baggerly2009">Baggerly y Coombes (<a href="references.html#ref-baggerly2009" role="doc-biblioref">2009</a>)</span> informa innumerables problemas en los análisis de datos de una publicación de biología computacional de alto perfil. Uno de los problemas estaba relacionado con cómo se requería que los usuarios agregaran los nombres de las entradas del modelo. La interfaz de usuario del software facilitó la compensación de los nombres de las columnas de datos de las columnas de datos reales. Esto dio lugar a que se identificaran genes equivocados como importantes para el tratamiento de pacientes con cáncer y, finalmente, contribuyó a la interrupción de varios ensayos clínicos. <span class="citation" data-cites="Carlson2012">(<a href="references.html#ref-Carlson2012" role="doc-biblioref">Carlson 2012</a>)</span>.</p>
+<p>Si necesitamos modelos de alta calidad, el software debe facilitar su uso adecuado. <span class="citation" data-cites="abrams2003">Abrams (<a href="references.html#ref-abrams2003" role="doc-biblioref">2003</a>)</span> describe un principio interesante para guiarnos:</p>
+<blockquote class="blockquote">
+<p>El pozo del éxito: en marcado contraste con una cumbre, un pico o un viaje a través de un desierto para encontrar la victoria a través de muchas pruebas y sorpresas, queremos que nuestros clientes simplemente adopten prácticas ganadoras utilizando nuestra plataforma y marcos.</p>
+</blockquote>
+<p>El software de análisis y modelado de datos debería abrazar esta idea.</p>
+<p>En segundo lugar, el software de modelado debería promover una buena metodología científica. Cuando se trabaja con modelos predictivos complejos, puede resultar fácil cometer errores, sin saberlo, relacionados con falacias lógicas o suposiciones inapropiadas. Muchos modelos de aprendizaje automático son tan hábiles en descubrir patrones que pueden encontrar sin esfuerzo patrones empíricos en los datos que no logran reproducir más adelante. Algunos de los errores metodológicos son insidiosos en el sentido de que el problema puede pasar desapercibido hasta un momento posterior, cuando se obtienen nuevos datos que contienen el resultado verdadero.</p>
+<div class="rmdwarning">
+<p>A medida que nuestros modelos se han vuelto más poderosos y complejos, también se ha vuelto más fácil cometer errores latentes.</p>
+</div>
+<p>Este mismo principio también se aplica a la programación. Siempre que sea posible, el software debería poder proteger a los usuarios de cometer errores. El software debería facilitar a los usuarios hacer lo correcto.</p>
+<p>Estos dos aspectos del desarrollo de modelos (facilidad de uso adecuado y buenas prácticas metodológicas) son cruciales. Dado que las herramientas para crear modelos son fácilmente accesibles y los modelos pueden tener un impacto tan profundo, muchas más personas los están creando. En términos de experiencia técnica y capacitación, los antecedentes de los creadores variarán. Es importante que sus herramientas sean sólidas para la experiencia del usuario. Las herramientas deben ser lo suficientemente potentes como para crear modelos de alto rendimiento, pero, por otro lado, deben ser fáciles de utilizar de forma adecuada. Este libro describe un conjunto de software para modelado que ha sido diseñado teniendo en cuenta estas características.</p>
+<p>El software está basado en el lenguaje de programación R <span class="citation" data-cites="baseR">(<a href="references.html#ref-baseR" role="doc-biblioref">R Core Team 2014</a>)</span>. R ha sido diseñado especialmente para el análisis y modelado de datos. Es una implementación del lenguaje S (con reglas de alcance léxico adaptadas de Scheme y Lisp) que se creó en la década de 1970 para</p>
+<blockquote class="blockquote">
+<p>“convertir ideas en software, de forma rápida y fiel” <span class="citation" data-cites="Chambers:1998">(<a href="references.html#ref-Chambers:1998" role="doc-biblioref">Chambers 1998</a>)</span></p>
+</blockquote>
+<p>R es de código abierto y gratuito. Es un poderoso lenguaje de programación que se puede utilizar para muchos propósitos diferentes, pero se especializa en análisis de datos, modelado, visualización y aprendizaje automático. R es fácilmente extensible; Tiene un vasto ecosistema de paquetes, en su mayoría módulos aportados por los usuarios que se centran en un tema específico, como modelado, visualización, etc.</p>
+<p>Una colección de paquetes se llama <em>tidyverse</em> <span class="citation" data-cites="tidyverse">(<a href="references.html#ref-tidyverse" role="doc-biblioref">Wickham et&nbsp;al. 2019</a>)</span>. Tidyverse es una colección obstinada de paquetes R diseñados para la ciencia de datos. Todos los paquetes comparten una filosofía de diseño, gramática y estructuras de datos subyacentes. Varias de estas filosofías de diseño están directamente informadas por los aspectos del software para modelado descritos en este capítulo. Si nunca ha usado los paquetes tidyverse, el <a href="02-tidyverse.html" class="quarto-xref">Capítulo&nbsp;<span>2</span></a> contiene una revisión de los conceptos básicos. Dentro de tidyverse, el subconjunto de paquetes centrados específicamente en el modelado se conoce como paquetes <em>tidymodels</em>. Este libro es una guía práctica para realizar modelados utilizando los paquetes tidyverse y tidymodels. Muestra cómo utilizar un conjunto de paquetes, cada uno con su propósito específico, juntos para crear modelos de alta calidad.</p>
+</section>
+<section id="sec-model-types" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="sec-model-types"><span class="header-section-number">1.2</span> Tipos De Modelos</h2>
+<p>Antes de continuar, describamos una taxonomía de tipos de modelos, agrupados por propósito. Esta taxonomía informa tanto cómo se utiliza un modelo como muchos aspectos de cómo se puede crear o evaluar el modelo. Si bien esta lista no es exhaustiva, la mayoría de los modelos caen en al menos una de estas categorías:</p>
+<section id="modelos-descriptivos" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="modelos-descriptivos">Modelos descriptivos</h3>
+<p>El propósito de un modelo descriptivo es describir o ilustrar las características de algunos datos. Es posible que el análisis no tenga otro propósito que enfatizar visualmente alguna tendencia o artefacto en los datos.</p>
+<p>Por ejemplo, desde hace algún tiempo es posible realizar mediciones de ARN a gran escala utilizando microarrays. Los primeros métodos de laboratorio colocaban una muestra biológica en un pequeño microchip. Ubicaciones muy pequeñas en el chip pueden medir una señal basada en la abundancia de una secuencia de ARN específica. El chip contendría miles (o más) de resultados, cada uno de los cuales sería una cuantificación del ARN relacionado con un proceso biológico. Sin embargo, podría haber problemas de calidad en el chip que podrían provocar malos resultados. Por ejemplo, una huella digital dejada accidentalmente en una parte del chip podría provocar mediciones inexactas al escanearla.</p>
+<p>Uno de los primeros métodos para evaluar estas cuestiones fueron los modelos a nivel de sonda, o PLM <span class="citation" data-cites="bolstad2004">(<a href="references.html#ref-bolstad2004" role="doc-biblioref">Bolstad 2004</a>)</span>. Se crearía un modelo estadístico que tuviera en cuenta las diferencias conocidas en los datos, como el chip, la secuencia de ARN, el tipo de secuencia, etc. Si hubiera otros factores desconocidos en los datos, estos efectos se capturarían en los residuos del modelo. Cuando los residuos se trazaron según su ubicación en el chip, un chip de buena calidad no mostraría patrones. Cuando ocurría un problema, se podía discernir algún tipo de patrón espacial. A menudo, el tipo de patrón sugeriría el problema subyacente (por ejemplo, una huella digital) y una posible solución (limpiar el chip y volver a escanear, repetir la muestra, etc.). <a href="#fig-software-descr-examples" class="quarto-xref">Figura&nbsp;<span>1.1</span></a> (a) muestra una aplicación de este método para dos microarrays tomados de <span class="citation" data-cites="Gentleman2005">Gentleman et&nbsp;al. (<a href="references.html#ref-Gentleman2005" role="doc-biblioref">2005</a>)</span>. Las imágenes muestran dos valores de color diferentes; Las áreas más oscuras son aquellas donde la intensidad de la señal fue mayor de lo esperado por el modelo, mientras que el color más claro muestra valores inferiores a los esperados. El panel de la izquierda muestra un patrón bastante aleatorio, mientras que el panel de la derecha muestra un artefacto indeseable en el medio del chip.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-software-descr-examples" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-software-descr-examples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-software-descr-examples-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-software-descr-examples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1.1: Dos ejemplos de cómo se pueden utilizar modelos descriptivos para ilustrar patrones específicos
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Otro ejemplo de modelo descriptivo es el modelo de <em>suavizado de diagrama de dispersión estimado localmente</em>, más comúnmente conocido como LOESS <span class="citation" data-cites="cleveland1979">(<a href="references.html#ref-cleveland1979" role="doc-biblioref">Cleveland 1979</a>)</span>. En este caso, se ajusta un modelo de regresión suave y flexible a un conjunto de datos, generalmente con una única variable independiente, y se utiliza la línea de regresión ajustada para dilucidar alguna tendencia en los datos. Estos tipos de suavizadores se utilizan para descubrir formas potenciales de representar una variable en un modelo. Esto se demuestra en <a href="#fig-software-descr-examples" class="quarto-xref">Figura&nbsp;<span>1.1</span></a> (b), donde el suavizador flexible ilumina una tendencia no lineal. De este gráfico se desprende claramente que existe una relación altamente no lineal entre el precio de venta de una casa y su latitud.</p>
+</section>
+<section id="modelos-inferenciales" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="modelos-inferenciales">Modelos inferenciales</h3>
+<p>El objetivo de un modelo inferencial es producir una decisión para una pregunta de investigación o explorar una hipótesis específica, de forma similar a cómo se utilizan las pruebas estadísticas.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Un modelo inferencial comienza con una conjetura o idea predefinida sobre una población y produce una conclusión estadística como una estimación de intervalo o el rechazo de una hipótesis.</p>
+<p>Por ejemplo, el objetivo de un ensayo clínico podría ser confirmar que una nueva terapia logra prolongar la vida mejor que una alternativa, como una terapia existente o ningún tratamiento. Si el criterio de valoración clínico se relaciona con la supervivencia de un paciente, la <em>hipótesis nula</em> podría ser que el nuevo tratamiento tiene una mediana de supervivencia igual o menor, siendo la <em>hipótesis alternativa</em> que la nueva terapia tiene una mediana de supervivencia más alta. Si este ensayo se evaluara utilizando pruebas de significancia de hipótesis nulas tradicionales mediante modelado, la prueba de significancia produciría un valor p usando alguna metodología predefinida basada en un conjunto de suposiciones para los datos. Valores pequeños para el valor p en los resultados del modelo indicarían que hay evidencia de que la nueva terapia ayuda a los pacientes a vivir más tiempo. Valores grandes para el valor p en los resultados del modelo concluirían que no se puede mostrar tal diferencia; Esta falta de evidencia podría deberse a varias razones, incluida la terapia que no funciona.</p>
+<p>¿Cuáles son los aspectos importantes de este tipo de análisis? Las técnicas de modelado inferencial suelen producir algún tipo de resultado probabilístico, como un valor p, un intervalo de confianza o una probabilidad posterior. Generalmente, para calcular tal cantidad, se deben hacer supuestos probabilísticos formales sobre los datos y los procesos subyacentes que generaron los datos. La calidad de los resultados del modelado estadístico depende en gran medida de estos supuestos predefinidos, así como de hasta qué punto los datos observados parecen coincidir con ellos. Los factores más críticos aquí son teóricos: “Si mis datos fueran independientes y los residuos siguieran la distribución <em>X</em>, entonces el estadístico de prueba <em>Y</em> se puede utilizar para producir un valor p.&nbsp;De lo contrario, el valor p resultante podría ser inexacto.”</p>
+<div class="rmdwarning">
+<p>Un aspecto de los análisis inferenciales es que tiende a haber un ciclo de retroalimentación retardada en la comprensión de qué tan bien coinciden los datos con los supuestos del modelo. En nuestro ejemplo de ensayo clínico, si la significación estadística (y clínica) indica que la nueva terapia debería estar disponible para que la utilicen los pacientes, aún pueden pasar años antes de que se utilice en el campo y se generen suficientes datos para una evaluación independiente de si el análisis estadístico original condujo a la decisión adecuada.</p>
+</div>
+</section>
+<section id="modelos-predictivos" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="modelos-predictivos">Modelos predictivos</h3>
+<p>A veces, los datos se modelan para producir la predicción más precisa posible para datos nuevos. Aquí, el objetivo principal es que los valores predichos tengan la mayor fidelidad posible al valor real de los nuevos datos.</p>
+<p>Un ejemplo sencillo sería que un comprador de libros predijera cuántas copias de un libro en particular debería enviar a su tienda durante el próximo mes. Una predicción excesiva desperdicia espacio y dinero debido al exceso de libros. Si la predicción es menor de lo que debería ser, hay pérdida de oportunidades y menos ganancias.</p>
+<p>Para este tipo de modelo, el tipo de problema es de estimación más que de inferencia. Por ejemplo, al comprador normalmente no le preocupa una pregunta como “¿Venderé más de 100 copias del libro <em>X</em> el próximo mes?” sino “¿Cuántas copias del libro <em>X</em> comprarán los clientes el próximo mes?” Además, dependiendo del contexto, puede que no haya ningún interés en saber por qué el valor previsto es <em>X</em>. En otras palabras, hay más interés en el valor en sí que en evaluar una hipótesis formal relacionada con los datos. La predicción también puede incluir medidas de incertidumbre. En el caso del comprador de libros, proporcionar un error de pronóstico puede resultar útil para decidir cuántos libros comprar. También puede servir como métrica para evaluar qué tan bien funcionó el método de predicción.</p>
+<p>¿Cuáles son los factores más importantes que afectan los modelos predictivos? Hay muchas formas diferentes de crear un modelo predictivo, por lo que los factores importantes dependen de cómo se desarrolló el modelo.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>Se podría derivar un <em>modelo mecanicista</em> utilizando primeros principios para producir una ecuación modelo que dependa de suposiciones. Por ejemplo, al predecir la cantidad de una droga que hay en el cuerpo de una persona en un momento determinado, se hacen algunas suposiciones formales sobre cómo se administra, absorbe, metaboliza y elimina la droga. En base a esto, se puede utilizar un conjunto de ecuaciones diferenciales para derivar una ecuación modelo específica. Los datos se utilizan para estimar los parámetros desconocidos de esta ecuación para poder generar predicciones. Al igual que los modelos inferenciales, los modelos predictivos mecanicistas dependen en gran medida de los supuestos que definen las ecuaciones de sus modelos. Sin embargo, a diferencia de los modelos inferenciales, es fácil hacer afirmaciones basadas en datos sobre qué tan bien se desempeña el modelo en función de qué tan bien predice los datos existentes. Aquí el ciclo de retroalimentación para el practicante de modelos es mucho más rápido de lo que sería para una prueba de hipótesis.</p>
+<p><em>Modelos impulsados empíricamente</em> se crean con suposiciones más vagas. Estos modelos tienden a caer en la categoría de aprendizaje automático. Un buen ejemplo es el modelo <em>K</em>-vecino más cercano (KNN). Dado un conjunto de datos de referencia, se predice una nueva muestra utilizando los valores de los <em>K</em> datos más similares en el conjunto de referencia. Por ejemplo, si un comprador de libros necesita una predicción para un libro nuevo, es posible que haya disponibles datos históricos de libros existentes. Un modelo de cinco vecinos más cercanos estimaría el número de libros nuevos a comprar basándose en las cifras de ventas de los cinco libros que son más similares al nuevo (para alguna definición de “similar”). Este modelo se define únicamente por la estructura de la predicción (el promedio de cinco libros similares). No se hacen suposiciones teóricas o probabilísticas sobre las cifras de ventas o las variables que se utilizan para definir la similitud. De hecho, el método principal para evaluar la idoneidad del modelo es evaluar su precisión utilizando datos existentes. Si la estructura de este tipo de modelo fuera una buena elección, las predicciones se aproximarían a los valores reales.</p>
+</section>
+</section>
+<section id="conexiones-entre-tipos-de-modelos" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="conexiones-entre-tipos-de-modelos"><span class="header-section-number">1.3</span> Conexiones Entre Tipos De Modelos</h2>
+<div class="rmdnote">
+<p>Tenga en cuenta que hemos definido el tipo de modelo por cómo se utiliza, más que por sus cualidades matemáticas.</p>
+</div>
+<p>Un modelo de regresión lineal ordinario podría pertenecer a cualquiera de estas tres clases de modelos, dependiendo de cómo se utilice:</p>
+<ul>
+<li><p>Se puede utilizar un suavizador descriptivo, similar a LOESS, llamado <em>splines de suavizado restringido</em> <span class="citation" data-cites="Durrleman1989">(<a href="references.html#ref-Durrleman1989" role="doc-biblioref">Durrleman y Simon 1989</a>)</span> para describir tendencias en datos usando regresión lineal ordinaria con términos especializados.</p></li>
+<li><p>Un modelo de <em>análisis de varianza</em> (ANOVA) es un método popular para producir los valores p utilizados para la inferencia. Los modelos ANOVA son un caso especial de regresión lineal.</p></li>
+<li><p>Si un modelo de regresión lineal simple produce predicciones precisas, puede utilizarse como modelo predictivo.</p></li>
+</ul>
+<p>Hay muchos ejemplos de modelos predictivos que no pueden (o al menos no deberían) usarse para inferencias. Incluso si se hicieran suposiciones probabilísticas para los datos, la naturaleza del modelo <em>K</em> de vecinos más cercanos, por ejemplo, hace que las matemáticas necesarias para la inferencia sean intratables.</p>
+<p>Existe una conexión adicional entre los tipos de modelos. Si bien el propósito principal de los modelos descriptivos e inferenciales puede no estar relacionado con la predicción, no se debe ignorar la capacidad predictiva del modelo. Por ejemplo, la regresión logística es un modelo popular para datos en los que el resultado es cualitativo con dos valores posibles. Puede modelar cómo se relacionan las variables con la probabilidad de los resultados. Cuando se utiliza de manera inferencial, se presta mucha atención a las cualidades estadísticas del modelo. Por ejemplo, los analistas tienden a centrarse fuertemente en la selección de variables independientes contenidas en el modelo. Se pueden utilizar muchas iteraciones de la construcción de modelos para determinar un subconjunto mínimo de variables independientes que tengan una relación “estadísticamente significativa” con la variable de resultado. Esto generalmente se logra cuando todos los valores p de las variables independientes están por debajo de cierto valor (por ejemplo, 0,05). A partir de aquí, el analista puede centrarse en hacer afirmaciones cualitativas sobre la influencia relativa que tienen las variables en el resultado (por ejemplo, “Existe una relación estadísticamente significativa entre la edad y las probabilidades de enfermedad cardíaca”).</p>
+<p>Sin embargo, este enfoque puede resultar peligroso cuando se utiliza la significación estadística como única medida de la calidad del modelo. Es posible que este modelo estadísticamente optimizado tenga una precisión deficiente o que tenga un desempeño deficiente en alguna otra medida de capacidad predictiva. Si bien es posible que el modelo no se utilice para la predicción, ¿cuánto se debe confiar en las inferencias de un modelo que tiene valores p significativos pero una precisión lamentable? El rendimiento predictivo tiende a estar relacionado con qué tan cerca están los valores ajustados del modelo a los datos observados.</p>
+<div class="rmdwarning">
+<p>Si un modelo tiene una fidelidad limitada a los datos, las inferencias generadas por el modelo deberían ser muy sospechosas. En otras palabras, la significancia estadística puede no ser prueba suficiente de que un modelo es apropiado.</p>
+</div>
+<p>Esto puede parecer intuitivamente obvio, pero a menudo se ignora en el análisis de datos del mundo real.</p>
+</section>
+<section id="sec-model-terminology" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="sec-model-terminology"><span class="header-section-number">1.4</span> Terminología</h2>
+<p>Antes de continuar, describiremos terminología adicional relacionada con el modelado y los datos. Estas descripciones pretenden ser útiles a medida que lee este libro, pero no son exhaustivas.</p>
+<p>En primer lugar, muchos modelos pueden clasificarse como <em>supervisados</em> o <em>no supervisados</em>. Los modelos no supervisados ​​son aquellos que aprenden patrones, grupos u otras características de los datos pero carecen de un resultado, es decir, una variable dependiente. El análisis de componentes principales (PCA), la agrupación en clústeres y los codificadores automáticos son ejemplos de modelos no supervisados; se utilizan para comprender las relaciones entre variables o conjuntos de variables sin una relación explícita entre los predictores y un resultado. Los modelos supervisados ​​son aquellos que tienen una variable de resultado. La regresión lineal, las redes neuronales y muchas otras metodologías entran en esta categoría.</p>
+<p>Dentro de los modelos supervisados, hay dos subcategorías principales:</p>
+<ul>
+<li><p><em>Regresión</em> predice un resultado numérico.</p></li>
+<li><p><em>Clasificación</em> predice un resultado que es un conjunto ordenado o desordenado de valores cualitativos.</p></li>
+</ul>
+<p>Estas son definiciones imperfectas y no tienen en cuenta todos los tipos de modelos posibles. En el <a href="06-fitting-models.html" class="quarto-xref">Capítulo&nbsp;<span>6</span></a>, nos referimos a esta característica de las técnicas supervisadas como <em>modo modelo</em>.</p>
+<p>Diferentes variables pueden tener diferentes <em>roles</em>, especialmente en un análisis de modelado supervisado. Los resultados (también conocidos como etiquetas, criterios de valoración o variables dependientes) son el valor que se predice en los modelos supervisados. Las variables independientes, que son el sustrato para hacer predicciones del resultado, también se denominan predictores, características o covariables (según el contexto). Los términos <em>resultados</em> y <em>predictores</em> se utilizan con mayor frecuencia en este libro.</p>
+<p>En términos de los datos o variables en sí, ya sea que se utilicen para modelos supervisados ​​o no supervisados, como predictores o resultados, las dos categorías principales son cuantitativas y cualitativas. Ejemplos del primero son números reales como “3.14159” y números enteros como “42”. Los valores cualitativos, también conocidos como datos nominales, son aquellos que representan algún tipo de estado discreto que no se puede ubicar naturalmente en una escala numérica, como “rojo”, “verde” y “azul”.</p>
+</section>
+<section id="sec-model-phases" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="sec-model-phases"><span class="header-section-number">1.5</span> ¿Cómo Encaja El Modelado En El Proceso De Análisis de Datos?</h2>
+<p>¿En qué circunstancias se crean los modelos? ¿Hay pasos que preceden a tal empresa? ¿Es la creación de modelos el primer paso en el análisis de datos?</p>
+<div class="rmdnote">
+<p>Hay algunas fases críticas del análisis de datos que siempre vienen antes del modelado.</p>
+</div>
+<p>En primer lugar, está el proceso crónicamente subestimado de <em>limpiar los datos</em>. Independientemente de las circunstancias, debe investigar los datos para asegurarse de que sean aplicables a los objetivos de su proyecto, precisos y apropiados. Estos pasos fácilmente pueden llevar más tiempo que el resto del proceso de análisis de datos (según las circunstancias).</p>
+<p>La limpieza de datos también puede superponerse con la segunda fase de <em>comprensión de los datos</em>, a menudo denominada análisis de datos exploratorios (EDA). EDA saca a la luz cómo se relacionan las diferentes variables entre sí, sus distribuciones, rangos típicos y otros atributos. Una buena pregunta para hacer en esta fase es: “¿Cómo obtuve <em>estos</em> datos?” Esta pregunta puede ayudarle a comprender cómo se muestrearon o filtraron los datos disponibles y si estas operaciones fueron apropiadas. Por ejemplo, al fusionar tablas de bases de datos, una unión puede salir mal y eliminar accidentalmente una o más subpoblaciones. Otra buena idea es preguntar si los datos son relevantes. Por ejemplo, para predecir si los pacientes tienen la enfermedad de Alzheimer, no sería prudente tener un conjunto de datos que contenga sujetos con la enfermedad y una muestra aleatoria de adultos sanos de la población general. Dada la naturaleza progresiva de la enfermedad, el modelo puede simplemente predecir quiénes son los pacientes de mayor edad.</p>
+<p>Finalmente, antes de iniciar un proceso de análisis de datos, deben existir expectativas claras sobre el objetivo del modelo y cómo se juzgará el desempeño (y el éxito). Se debe identificar al menos una <em>métrica de desempeño</em> con objetivos realistas de lo que se puede lograr. Las métricas estadísticas comunes, que se analizan con más detalle en el <a href="09-judging-model-effectiveness.html" class="quarto-xref">Capítulo&nbsp;<span>9</span></a>, son la precisión de la clasificación, las tasas de verdaderos y falsos positivos, el error cuadrático medio, etc. Deben sopesarse los beneficios y desventajas relativos de estas métricas. También es importante que la métrica sea pertinente; la alineación con los objetivos más amplios del análisis de datos es fundamental.</p>
+<p>El proceso de investigación de los datos puede no ser sencillo. <span class="citation" data-cites="wickham2016">Wickham y Grolemund (<a href="references.html#ref-wickham2016" role="doc-biblioref">2016</a>)</span> contiene una excelente ilustración del proceso general de análisis de datos, reproducida en <a href="#fig-software-data-science-model" class="quarto-xref">Figura&nbsp;<span>1.2</span></a>. La ingesta de datos y la limpieza/ordenamiento se muestran como pasos iniciales. Cuando comienzan los pasos analíticos para la comprensión, son un proceso heurístico; No podemos predeterminar cuánto tiempo pueden tardar. El ciclo de transformación, modelado y visualización a menudo requiere múltiples iteraciones.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-software-data-science-model" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-software-data-science-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="premade/data-science-model.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-software-data-science-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1.2: El proceso de ciencia de datos (de R para Ciencia de Datos, usado con permiso)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Este proceso iterativo es especialmente cierto para el modelado. <a href="#fig-software-modeling-process" class="quarto-xref">Figura&nbsp;<span>1.3</span></a> emula la ruta típica para determinar un modelo apropiado. Las fases generales son:</p>
+<ul>
+<li><p><em>Análisis de datos exploratorios (EDA):</em> Inicialmente hay un vaivén entre el análisis numérico y la visualización de datos (representado en <a href="#fig-software-data-science-model" class="quarto-xref">Figura&nbsp;<span>1.2</span></a>) donde diferentes descubrimientos conducen a más preguntas y misiones secundarias de análisis de datos para comprender mejor los datos.</p></li>
+<li><p><em>Ingeniería de características:</em> La comprensión obtenida con EDA da como resultado la creación de términos de modelo específicos que facilitan el modelado preciso de los datos observados. Esto puede incluir metodologías complejas (por ejemplo, PCA) o características más simples (usando la proporción de dos predictores). <a href="08-feature-engineering.html" class="quarto-xref">Capítulo&nbsp;<span>8</span></a> se centra completamente en este importante paso.</p></li>
+<li><p><em>Ajuste y selección de modelos (círculos grandes con segmentos alternos):</em> Se genera una variedad de modelos y se compara su rendimiento. Algunos modelos requieren ajuste de parámetros en el que se deben especificar u optimizar algunos parámetros estructurales. Los segmentos alternos dentro de los círculos significan la división repetida de datos utilizada durante el remuestreo (consulte el <a href="10-resampling.html" class="quarto-xref">Capítulo&nbsp;<span>10</span></a>).</p></li>
+<li><p><em>Evaluación del modelo:</em> Durante esta fase del desarrollo del modelo, evaluamos las métricas de rendimiento del modelo, examinamos gráficos residuales y realizamos otros análisis similares a EDA para comprender qué tan bien funcionan los modelos. En algunos casos, las comparaciones formales entre modelos (<a href="11-comparing-models.html" class="quarto-xref">Capítulo&nbsp;<span>11</span></a>) le ayudan a comprender si hay diferencias en los modelos dentro del ruido experimental.</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-software-modeling-process" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-software-modeling-process-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="premade/modeling-process.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-software-modeling-process-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1.3: Un esquema para el proceso de modelado típico.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Después de una secuencia inicial de estas tareas, se obtiene una mayor comprensión sobre qué modelos son superiores y qué subpoblaciones de datos no se están estimando de manera efectiva. Esto conduce a EDA adicional y a ingeniería de características, otra ronda de modelado, etc. Una vez que se logran los objetivos del análisis de datos, normalmente los últimos pasos son finalizar, documentar y comunicar el modelo. Para los modelos predictivos, es común al final validar el modelo con un conjunto adicional de datos reservados para este propósito específico.</p>
+<p>Como ejemplo, <span class="citation" data-cites="fes">Kuhn y Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> utiliza datos para modelar el número de pasajeros diario del sistema de trenes públicos de Chicago utilizando predictores como la fecha, los resultados anteriores del número de pasajeros, el clima y otros factores. @ tbl-inner-monologue muestra una aproximación al hipotético monólogo interno de estos autores al analizar estos datos y eventualmente seleccionar un modelo con suficiente rendimiento.</p>
+<div id="tbl-inner-monologue" class="cell quarto-float anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-inner-monologue-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;1.1: Monólogo interior hipotético de un desarrollador de modelos.
+</figcaption>
+<div aria-describedby="tbl-inner-monologue-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Pensamientos</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Actividad</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left; width: 75%; font-style: italic;">Los valores de pasajeros diarios entre estaciones están extremadamente correlacionados.</td>
+<td style="text-align: left; width: 25%;">EDA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 75%; font-style: italic;">El número de pasajeros entre semana y los fines de semana se ve muy diferente.</td>
+<td style="text-align: left; width: 25%;">EDA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 75%; font-style: italic;">Un día del verano de 2010 tiene un número anormalmente grande de ciclistas.</td>
+<td style="text-align: left; width: 25%;">EDA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 75%; font-style: italic;">¿Qué estaciones tuvieron los valores más bajos de pasajeros diarios?</td>
+<td style="text-align: left; width: 25%;">EDA</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 75%; font-style: italic;">Las fechas deben codificarse al menos como día de la semana y año.</td>
+<td style="text-align: left; width: 25%;">Ingeniería de características</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 75%; font-style: italic;">Quizás se podría utilizar PCA en los predictores correlacionados para facilitar su uso por parte de los modelos.</td>
+<td style="text-align: left; width: 25%;">Ingeniería de características</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 75%; font-style: italic;">Los registros meteorológicos horarios probablemente deberían resumirse en mediciones diarias.</td>
+<td style="text-align: left; width: 25%;">Ingeniería de características</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 75%; font-style: italic;">Comencemos con una regresión lineal simple, K vecinos más cercanos y un árbol de decisión mejorado.</td>
+<td style="text-align: left; width: 25%;">Entrenamiento del modelo</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 75%; font-style: italic;">¿Cuántos vecinos se deben utilizar?</td>
+<td style="text-align: left; width: 25%;">Ajuste del modelo</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 75%; font-style: italic;">¿Deberíamos ejecutar muchas iteraciones de impulso o solo unas pocas?</td>
+<td style="text-align: left; width: 25%;">Ajuste del modelo</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 75%; font-style: italic;">¿Cuántos vecinos parecían óptimos para estos datos?</td>
+<td style="text-align: left; width: 25%;">Ajuste del modelo</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 75%; font-style: italic;">¿Qué modelos tienen los errores cuadráticos medios más bajos?</td>
+<td style="text-align: left; width: 25%;">Evaluación del Modelo</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 75%; font-style: italic;">¿Qué días fueron mal predichos?</td>
+<td style="text-align: left; width: 25%;">EDA</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 75%; font-style: italic;">Las puntuaciones de importancia variable indican que la información meteorológica no es predictiva. Los eliminaremos del siguiente conjunto de modelos.</td>
+<td style="text-align: left; width: 25%;">Evaluación del Modelo</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 75%; font-style: italic;">Parece que deberíamos centrarnos en muchas iteraciones de impulso para ese modelo.</td>
+<td style="text-align: left; width: 25%;">Evaluación del Modelo</td>
+</tr>
+<tr class="even">
+<td style="text-align: left; width: 75%; font-style: italic;">Necesitamos codificar funciones de vacaciones para mejorar las predicciones en (y alrededor de) esas fechas.</td>
+<td style="text-align: left; width: 25%;">Ingeniería de características</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left; width: 75%; font-style: italic;">Eliminemos a KNN de la lista de modelos.</td>
+<td style="text-align: left; width: 25%;">Evaluación del Modelo</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</figure>
+</div>
+</section>
+<section id="sec-software-summary" class="level2" data-number="1.6">
+<h2 data-number="1.6" class="anchored" data-anchor-id="sec-software-summary"><span class="header-section-number">1.6</span> Resumen Del Capítulo</h2>
+<p>Este capítulo se centró en cómo los modelos describen relaciones en los datos y en diferentes tipos de modelos, como modelos descriptivos, modelos inferenciales y modelos predictivos. La capacidad predictiva de un modelo puede utilizarse para evaluarlo, incluso cuando su objetivo principal no sea la predicción. El modelado en sí forma parte del proceso más amplio de análisis de datos, y el análisis de datos exploratorio es una parte clave de la construcción de modelos de alta calidad.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-abrams2003" class="csl-entry" role="listitem">
+Abrams, B. 2003. <span>«The Pit of Success»</span>. <a href="https://blogs.msdn.microsoft.com/brada/2003/10/02/the-pit-of-success/" class="uri">https://blogs.msdn.microsoft.com/brada/2003/10/02/the-pit-of-success/</a>.
+</div>
+<div id="ref-baggerly2009" class="csl-entry" role="listitem">
+Baggerly, K, y K Coombes. 2009. <span>«Deriving chemosensitivity from cell lines: <span>F</span>orensic bioinformatics and reproducible research in high-throughput biology»</span>. <em>The Annals of Applied Statistics</em> 3 (4): 1309-34.
+</div>
+<div id="ref-bolstad2004" class="csl-entry" role="listitem">
+Bolstad, B. 2004. <em>Low-level analysis of high-density oligonucleotide array data: Background, normalization and summarization</em>. University of California, Berkeley.
+</div>
+<div id="ref-breiman2001" class="csl-entry" role="listitem">
+Breiman, L. 2001. <span>«Statistical modeling: The two cultures»</span>. <em>Statistical Science</em> 16 (3): 199-231.
+</div>
+<div id="ref-Carlson2012" class="csl-entry" role="listitem">
+Carlson, B. 2012. <span>«Putting oncology patients at risk»</span>. <em>Biotechnology Healthcare</em> 9 (3): 17-21.
+</div>
+<div id="ref-Chambers:1998" class="csl-entry" role="listitem">
+Chambers, J. 1998. <em>Programming with Data: A Guide to the <span>S</span> Language</em>. Berlin, Heidelberg: Springer-Verlag.
+</div>
+<div id="ref-cleveland1979" class="csl-entry" role="listitem">
+Cleveland, W. 1979. <span>«Robust locally weighted regression and smoothing scatterplots»</span>. <em>Journal of the American Statistical Association</em> 74 (368): 829-36.
+</div>
+<div id="ref-Durrleman1989" class="csl-entry" role="listitem">
+Durrleman, S, y R Simon. 1989. <span>«Flexible regression models with cubic splines»</span>. <em>Statistics in Medicine</em> 8 (5): 551-61.
+</div>
+<div id="ref-Gentleman2005" class="csl-entry" role="listitem">
+Gentleman, R, V Carey, W Huber, R Irizarry, y S Dudoit. 2005. <em>Bioinformatics and Computational Biology Solutions Using <span>R</span> and <span>B</span>ioconductor</em>. Berlin, Heidelberg: Springer-Verlag.
+</div>
+<div id="ref-fes" class="csl-entry" role="listitem">
+Kuhn, M, y K Johnson. 2020. <em>Feature engineering and selection: A practical approach for predictive models</em>. CRC Press.
+</div>
+<div id="ref-baseR" class="csl-entry" role="listitem">
+R Core Team. 2014. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="http://www.R-project.org/">http://www.R-project.org/</a>.
+</div>
+<div id="ref-shmueli2010" class="csl-entry" role="listitem">
+Shmueli, G. 2010. <span>«To explain or to predict?»</span> <em>Statistical science</em> 25 (3): 289-310.
+</div>
+<div id="ref-tidyverse" class="csl-entry" role="listitem">
+Wickham, H, M Averick, J Bryan, W Chang, L McGowan, R François, G Grolemund, et&nbsp;al. 2019. <span>«Welcome to the <span>Tidyverse</span>»</span>. <em>Journal of Open Source Software</em> 4 (43).
+</div>
+<div id="ref-wickham2016" class="csl-entry" role="listitem">
+Wickham, H, y G Grolemund. 2016. <em><span class="sans-serif">R</span> for Data Science: <span>I</span>mport, Tidy, Transform, Visualize, and Model Data</em>. O’Reilly Media, Inc.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>De hecho, muchas pruebas estadísticas específicas son equivalentes a modelos. Por ejemplo, las pruebas t y los métodos de análisis de varianza (ANOVA) son casos particulares del modelo lineal generalizado.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Se pueden encontrar discusiones más amplias sobre estas distinciones en <span class="citation" data-cites="breiman2001">Breiman (<a href="references.html#ref-breiman2001" role="doc-biblioref">2001</a>)</span> y <span class="citation" data-cites="shmueli2010">Shmueli (<a href="references.html#ref-shmueli2010" role="doc-biblioref">2010</a>)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+
+<script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Hola Mundo">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Hola Mundo</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./02-tidyverse.html" class="pagination-link" aria-label="Una Introducción Tidyverse">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Este libro fue creado usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

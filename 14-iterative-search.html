@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Max Kuhn, y Julia Silge">
+
+<title>Modelado Ordenado con R - 14&nbsp; Búsqueda Iterativa</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./15-workflow-sets.html" rel="next">
+<link href="./13-grid-search.html" rel="prev">
+<link href="./images/cover.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="TMwR.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./14-iterative-search.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Modelado Ordenado con R</a> 
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hola Mundo</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-resampling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#sec-svm" id="toc-sec-svm" class="nav-link active" data-scroll-target="#sec-svm"><span class="header-section-number">14.1</span> Un Modelo De Máquina De Vectores De Soporte</a></li>
+  <li><a href="#optimización-bayesiana" id="toc-optimización-bayesiana" class="nav-link" data-scroll-target="#optimización-bayesiana"><span class="header-section-number">14.2</span> Optimización Bayesiana</a>
+  <ul class="collapse">
+  <li><a href="#un-modelo-de-proceso-gaussiano" id="toc-un-modelo-de-proceso-gaussiano" class="nav-link" data-scroll-target="#un-modelo-de-proceso-gaussiano"><span class="header-section-number">14.2.1</span> Un modelo de proceso gaussiano</a></li>
+  <li><a href="#funciones-de-adquisición" id="toc-funciones-de-adquisición" class="nav-link" data-scroll-target="#funciones-de-adquisición"><span class="header-section-number">14.2.2</span> Funciones de adquisición</a></li>
+  <li><a href="#sec-tune-bayes" id="toc-sec-tune-bayes" class="nav-link" data-scroll-target="#sec-tune-bayes"><span class="header-section-number">14.2.3</span> La función <code>tune_bayes()</code></a></li>
+  </ul></li>
+  <li><a href="#recocido-simulado" id="toc-recocido-simulado" class="nav-link" data-scroll-target="#recocido-simulado"><span class="header-section-number">14.3</span> Recocido Simulado</a>
+  <ul class="collapse">
+  <li><a href="#proceso-de-búsqueda-de-recocido-simulado" id="toc-proceso-de-búsqueda-de-recocido-simulado" class="nav-link" data-scroll-target="#proceso-de-búsqueda-de-recocido-simulado"><span class="header-section-number">14.3.1</span> Proceso de búsqueda de recocido simulado</a></li>
+  <li><a href="#sec-tune-sim-anneal" id="toc-sec-tune-sim-anneal" class="nav-link" data-scroll-target="#sec-tune-sim-anneal"><span class="header-section-number">14.3.2</span> La función <code>tune_sim_anneal()</code></a></li>
+  </ul></li>
+  <li><a href="#sec-iterative-summary" id="toc-sec-iterative-summary" class="nav-link" data-scroll-target="#sec-iterative-summary"><span class="header-section-number">14.4</span> Resumen Del Capítulo</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./14-iterative-search.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-iterative-search" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>El <a href="13-grid-search.html" class="quarto-xref">Capítulo&nbsp;<span>13</span></a> demostró cómo la búsqueda en cuadrícula toma un conjunto predefinido de valores candidatos, los evalúa y luego elige la mejor configuración. Los métodos de búsqueda iterativos siguen una estrategia diferente. Durante el proceso de búsqueda, predicen qué valores probar a continuación.</p>
+<div class="rmdnote">
+<p>Cuando la búsqueda en cuadrícula no es factible o ineficiente, los métodos iterativos son un enfoque sensato para optimizar los parámetros de ajuste.</p>
+</div>
+<p>Este capítulo describe dos métodos de búsqueda. Primero, analizamos la <em>optimización bayesiana</em>, que utiliza un modelo estadístico para predecir mejores configuraciones de parámetros. Después de eso, el capítulo describe un método de búsqueda global llamado <em>recocido simulado</em>.</p>
+<p>Usamos los mismos datos sobre las características de las células que en el capítulo anterior a modo de ilustración, pero cambiamos el modelo. Este capítulo utiliza un modelo de máquina de vectores de soporte porque proporciona bonitas visualizaciones bidimensionales de los procesos de búsqueda.</p>
+<section id="sec-svm" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="sec-svm"><span class="header-section-number">14.1</span> Un Modelo De Máquina De Vectores De Soporte</h2>
+<p>Una vez más utilizamos los datos de segmentación de celdas, descritos en <a href="13-grid-search.html#sec-evaluating-grid" class="quarto-xref"><span>Sección 13.2</span></a>, para modelar, con un modelo de máquina de vectores de soporte (SVM) para demostrar métodos de ajuste secuencial. Consulte <span class="citation" data-cites="apm">Kuhn y Johnson (<a href="references.html#ref-apm" role="doc-biblioref">2013</a>)</span> para obtener más información sobre este modelo. Los dos parámetros de ajuste a optimizar son el valor del costo de SVM y el parámetro del núcleo de la función de base radial <span class="math inline">\(\sigma\)</span>. Ambos parámetros pueden tener un efecto profundo en la complejidad y el rendimiento del modelo.</p>
+<p>El modelo SVM utiliza un producto escalar y, por este motivo, es necesario centrar y escalar los predictores. Al igual que el modelo de perceptrón multicapa, este modelo se beneficiaría del uso de la extracción de características PCA. Sin embargo, no utilizaremos este tercer parámetro de ajuste en este capítulo para que podamos visualizar el proceso de búsqueda en dos dimensiones.</p>
+<p>Junto con los objetos utilizados anteriormente (que se muestran en <a href="13-grid-search.html#sec-grid-summary" class="quarto-xref"><span>Sección 13.6</span></a>), los objetos tidymodels <code>svm_rec</code>, <code>svm_spec</code> y <code>svm_wflow</code> definen el proceso del modelo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidymodels_prefer</span>()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>svm_rec <span class="ot">&lt;-</span> </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(class <span class="sc">~</span> ., <span class="at">data =</span> cells) <span class="sc">%&gt;%</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_YeoJohnson</span>(<span class="fu">all_numeric_predictors</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_normalize</span>(<span class="fu">all_numeric_predictors</span>())</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>svm_spec <span class="ot">&lt;-</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">svm_rbf</span>(<span class="at">cost =</span> <span class="fu">tune</span>(), <span class="at">rbf_sigma =</span> <span class="fu">tune</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"kernlab"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>svm_wflow <span class="ot">&lt;-</span> </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(svm_spec) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(svm_rec)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los rangos de parámetros predeterminados para los dos parámetros de ajuste <code>cost</code> y <code>rbf_sigma</code> son:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cost</span>()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Cost (quantitative)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="do">## Transformer: log-2 [1e-100, Inf]</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Range (transformed scale): [-10, 5]</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rbf_sigma</span>()</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Radial Basis Function sigma (quantitative)</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Transformer: log-10 [1e-100, Inf]</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Range (transformed scale): [-10, 0]</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>A modo de ilustración, cambiemos ligeramente el rango de parámetros del kernel para mejorar las visualizaciones de la búsqueda:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>svm_param <span class="ot">&lt;-</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  svm_wflow <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_parameter_set_dials</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  Matrix<span class="sc">::</span><span class="fu">update</span>(<span class="at">rbf_sigma =</span> <span class="fu">rbf_sigma</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">7</span>, <span class="sc">-</span><span class="dv">1</span>)))</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Antes de analizar detalles específicos sobre la búsqueda iterativa y cómo funciona, exploremos la relación entre los dos parámetros de ajuste de SVM y el área bajo la curva ROC para este conjunto de datos específico. Construimos una cuadrícula regular muy grande, compuesta por 2500 valores candidatos, y evaluamos la cuadrícula mediante remuestreo. Obviamente, esto es poco práctico en el análisis de datos regular y tremendamente ineficiente. Sin embargo, aclara el camino que debe tomar el proceso de búsqueda y dónde ocurren los valores numéricamente óptimos.</p>
+<p><a href="#fig-roc-surface" class="quarto-xref">Figura&nbsp;<span>14.1</span></a> muestra los resultados de la evaluación de esta cuadrícula, donde el color más claro corresponde a un mayor (mejor) rendimiento del modelo. Hay una gran franja en la diagonal inferior del espacio de parámetros que es relativamente plana con un rendimiento deficiente. En la parte superior derecha del espacio se produce una cresta de mejor rendimiento. El punto negro indica la mejor configuración. La transición desde la meseta de los malos resultados a la cima del mejor desempeño es muy pronunciada. También hay una fuerte caída en el área bajo la curva ROC justo a la derecha de la cresta.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-roc-surface" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un mapa de calor del área media bajo la curva ROC para una cuadrícula de alta densidad de valores de parámetros de ajuste. El mejor punto es un punto sólido en la esquina superior derecha. La superficie tiene una cresta de alto rendimiento que se desplaza hacia la parte inferior derecha. ">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-roc-surface-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="premade/roc_surface.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Un mapa de calor del área media bajo la curva ROC para una cuadrícula de alta densidad de valores de parámetros de ajuste. El mejor punto es un punto sólido en la esquina superior derecha. La superficie tiene una cresta de alto rendimiento que se desplaza hacia la parte inferior derecha. ">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-roc-surface-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;14.1: Mapa de calor del área media bajo la curva ROC para una cuadrícula de alta densidad de valores de parámetros de ajuste. El mejor punto es un punto sólido en la esquina superior derecha.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Los siguientes procedimientos de búsqueda requieren al menos algunas estadísticas de rendimiento remuestreadas antes de continuar. Para ello, el siguiente código crea una pequeña cuadrícula regular que reside en la parte plana del espacio de parámetros. La función <code>tune_grid()</code> vuelve a muestrear esta cuadrícula:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1401</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>start_grid <span class="ot">&lt;-</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  svm_param <span class="sc">%&gt;%</span> </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  Matrix<span class="sc">::</span><span class="fu">update</span>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">cost =</span> <span class="fu">cost</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="dv">1</span>)),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">rbf_sigma =</span> <span class="fu">rbf_sigma</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">6</span>, <span class="sc">-</span><span class="dv">4</span>))</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">grid_regular</span>(<span class="at">levels =</span> <span class="dv">2</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1402</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>svm_initial <span class="ot">&lt;-</span> </span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  svm_wflow <span class="sc">%&gt;%</span> </span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_grid</span>(<span class="at">resamples =</span> cell_folds, <span class="at">grid =</span> start_grid, <span class="at">metrics =</span> roc_res)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(svm_initial)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 4 × 8</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="do">##     cost rbf_sigma .metric .estimator  mean     n std_err .config             </span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               </span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 0.0156  0.000001 roc_auc binary     0.864    10 0.00864 Preprocessor1_Model1</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 2       0.000001 roc_auc binary     0.863    10 0.00867 Preprocessor1_Model2</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 0.0156  0.0001   roc_auc binary     0.863    10 0.00862 Preprocessor1_Model3</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 2       0.0001   roc_auc binary     0.866    10 0.00855 Preprocessor1_Model4</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esta cuadrícula inicial muestra resultados bastante equivalentes, sin que ningún punto individual sea mucho mejor que los demás. Estos resultados pueden ser absorbidos por las funciones de ajuste iterativas analizadas en las siguientes secciones para usarse como valores iniciales.</p>
+</section>
+<section id="optimización-bayesiana" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="optimización-bayesiana"><span class="header-section-number">14.2</span> Optimización Bayesiana</h2>
+<p>Las técnicas de optimización bayesiana analizan los resultados del remuestreo actual y crean un modelo predictivo para sugerir valores de parámetros de ajuste que aún no se han evaluado. A continuación se vuelve a muestrear la combinación de parámetros sugerida. Estos resultados luego se utilizan en otro modelo predictivo que recomienda más valores candidatos para realizar pruebas, y así sucesivamente. El proceso continúa durante un número determinado de iteraciones o hasta que no se produzcan más mejoras. <span class="citation" data-cites="Shahriari">Shahriari et&nbsp;al. (<a href="references.html#ref-Shahriari" role="doc-biblioref">2016</a>)</span> y <span class="citation" data-cites="frazier2018tutorial">Frazier (<a href="references.html#ref-frazier2018tutorial" role="doc-biblioref">2018</a>)</span> son buenas introducciones a la optimización bayesiana.</p>
+<p>Cuando se utiliza la optimización bayesiana, las principales preocupaciones son cómo crear el modelo y cómo seleccionar los parámetros recomendados por ese modelo. Primero, consideremos la técnica más comúnmente utilizada para la optimización bayesiana, el modelo de proceso gaussiano.</p>
+<section id="un-modelo-de-proceso-gaussiano" class="level3" data-number="14.2.1">
+<h3 data-number="14.2.1" class="anchored" data-anchor-id="un-modelo-de-proceso-gaussiano"><span class="header-section-number">14.2.1</span> Un modelo de proceso gaussiano</h3>
+<p>Los modelos de proceso gaussiano (GP) <span class="citation" data-cites="SCHULZ20181">(<a href="references.html#ref-SCHULZ20181" role="doc-biblioref">Schulz, Speekenbrink, y Krause 2018</a>)</span> son técnicas estadísticas bien conocidas que tienen una historia en la estadística espacial (bajo el nombre de <em>métodos de kriging</em>). Se pueden derivar de múltiples formas, incluso como modelo bayesiano; consulte <span class="citation" data-cites="RaWi06">Rasmussen y Williams (<a href="references.html#ref-RaWi06" role="doc-biblioref">2006</a>)</span> para obtener una excelente referencia.</p>
+<p>Matemáticamente, un GP es una colección de variables aleatorias cuya distribución de probabilidad conjunta es gaussiana multivariada. En el contexto de nuestra aplicación, esta es la colección de métricas de rendimiento para los valores candidatos de los parámetros de ajuste. Para la cuadrícula inicial anterior de cuatro muestras, la realización de estas cuatro variables aleatorias fue 0.8639, 0.8625, 0.8627, and 0.8659. Se supone que están distribuidos como gaussianos multivariados. Las entradas que definen las variables/predictores independientes para el modelo GP son los valores de los parámetros de ajuste correspondientes (que se muestran en <a href="#tbl-initial-gp-data" class="quarto-xref">Tabla&nbsp;<span>14.1</span></a>).</p>
+<div id="tbl-initial-gp-data" class="cell quarto-float anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-initial-gp-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;14.1: Estadísticas de remuestreo utilizadas como sustrato inicial del modelo de proceso gaussiano.
+</figcaption>
+<div aria-describedby="tbl-initial-gp-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+outcome
+</div></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+predictors
+</div></th>
+</tr>
+<tr class="odd">
+<th style="text-align: left;" data-quarto-table-cell-role="th">ROC</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">cost</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">rbf_sigma</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0.8639</td>
+<td style="text-align: left;">0.01562</td>
+<td style="text-align: left;">0.000001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0.8625</td>
+<td style="text-align: left;">2.00000</td>
+<td style="text-align: left;">0.000001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0.8627</td>
+<td style="text-align: left;">0.01562</td>
+<td style="text-align: left;">0.000100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0.8659</td>
+<td style="text-align: left;">2.00000</td>
+<td style="text-align: left;">0.000100</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</figure>
+</div>
+<p>Los modelos de procesos gaussianos se especifican por sus funciones de media y covarianza, aunque esta última tiene el mayor efecto sobre la naturaleza del modelo GP. La función de covarianza a menudo se parametriza en términos de los valores de entrada (denotados como <span class="math inline">\(x\)</span>). Como ejemplo, una función de covarianza comúnmente utilizada es la función exponencial al cuadrado<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
+<p><span class="math display">\[\operatorname{cov}(\boldsymbol{x}_i, \boldsymbol{x}_j) = \exp\left(-\frac{1}{2}|\boldsymbol{x}_i - \boldsymbol{x}_j|^2\right) + \sigma^2_{ij}\]</span></p>
+<p>donde <span class="math inline">\(\sigma^2_{ij}\)</span> es un término de varianza de error constante que es cero cuando <span class="math inline">\(i=j\)</span>. Esta ecuación se traduce en:</p>
+<blockquote class="blockquote">
+<p>A medida que aumenta la distancia entre dos combinaciones de parámetros de ajuste, la covarianza entre las métricas de rendimiento aumenta exponencialmente.</p>
+</blockquote>
+<p>La naturaleza de la ecuación también implica que la variación de la métrica del resultado se minimiza en los puntos que ya se han observado (es decir, cuando <span class="math inline">\(|\boldsymbol{x}_i - \boldsymbol{x}_j|^2\)</span> es cero) .</p>
+<p>La naturaleza de esta función de covarianza permite que el proceso gaussiano represente relaciones altamente no lineales entre el rendimiento del modelo y los parámetros de ajuste incluso cuando sólo existe una pequeña cantidad de datos.</p>
+<div class="rmdwarning">
+<p>Sin embargo, ajustar estos modelos puede resultar difícil en algunos casos y el modelo se vuelve más costoso computacionalmente a medida que aumenta el número de combinaciones de parámetros de ajuste.</p>
+</div>
+<p>Una virtud importante de este modelo es que, dado que se especifica un modelo de probabilidad total, las predicciones de nuevos insumos pueden reflejar la distribución completa del resultado. En otras palabras, se pueden predecir nuevas estadísticas de desempeño tanto en términos de media como de varianza.</p>
+<p>Supongamos que se estuvieran considerando dos nuevos parámetros de ajuste. En <a href="#tbl-tuning-candidates" class="quarto-xref">Tabla&nbsp;<span>14.2</span></a>, el candidato <em>A</em> tiene un valor ROC medio ligeramente mejor que el candidato <em>B</em> (el mejor actual es 0.8659). Sin embargo, su varianza es cuatro veces mayor que <em>B</em>. ¿Esto es bueno o malo? Elegir la opción <em>A</em> es más riesgoso pero tiene un rendimiento potencialmente mayor. El aumento en la varianza también refleja que este nuevo valor está más alejado de los datos existentes que <em>B</em>. La siguiente sección considera con más detalle estos aspectos de las predicciones de GP para la optimización bayesiana.</p>
+<div class="cell" data-layout-align="center" data-result="asis">
+<div id="tbl-tuning-candidates" class="cell quarto-float anchored" data-result="asis" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-tuning-candidates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;14.2: Dos ejemplos de parámetros de ajuste considerados para un muestreo posterior.
+</figcaption>
+<div aria-describedby="tbl-tuning-candidates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<div>
+<table class="table do-not-create-environment cell table-sm table-striped small" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide; border-bottom: hidden;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Predicción GP de ROC AUC
+</div></th>
+</tr>
+<tr class="odd">
+<th style="text-align: left;" data-quarto-table-cell-role="th">candidate</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">mean</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">variance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">A</td>
+<td style="text-align: left;">0.90</td>
+<td style="text-align: left;">0.000400</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">0.89</td>
+<td style="text-align: left;">0.000025</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="rmdnote">
+<p>La optimización bayesiana es un proceso iterativo.</p>
+</div>
+<p>Con base en la cuadrícula inicial de cuatro resultados, se ajusta el modelo GP, se predicen los candidatos y se selecciona una quinta combinación de parámetros de ajuste. Calculamos estimaciones de rendimiento para la nueva configuración, el GP se reajusta con los cinco resultados existentes (y así sucesivamente).</p>
+</section>
+<section id="funciones-de-adquisición" class="level3" data-number="14.2.2">
+<h3 data-number="14.2.2" class="anchored" data-anchor-id="funciones-de-adquisición"><span class="header-section-number">14.2.2</span> Funciones de adquisición</h3>
+<p>Una vez que el proceso gaussiano se ajusta a los datos actuales, ¿cómo se utiliza? Nuestro objetivo es elegir la siguiente combinación de parámetros de ajuste que tenga más probabilidades de tener “mejores resultados” que los mejores actuales. Un enfoque para hacer esto es crear un gran conjunto de candidatos (quizás usando un diseño que llene el espacio) y luego hacer predicciones de media y varianza para cada uno. Utilizando esta información, elegimos el valor del parámetro de ajuste más ventajoso.</p>
+<p>Una clase de funciones objetivo, llamadas <em>funciones de adquisición</em>, facilitan el equilibrio entre media y varianza. Recuerde que la varianza prevista de los modelos GP depende principalmente de qué tan lejos están de los datos existentes. El equilibrio entre la media y la varianza previstas para nuevos candidatos se ve frecuentemente a través del lente de la exploración y la explotación:</p>
+<ul>
+<li><p>La <em>Exploración</em> sesga la selección hacia regiones donde hay menos (si es que hay alguno) modelos candidatos observados. Esto tiende a dar más peso a los candidatos con mayor variación y se centra en encontrar nuevos resultados.</p></li>
+<li><p>La <em>explotación</em> se basa principalmente en la predicción media para encontrar el mejor valor (medio). Se centra en los resultados existentes.</p></li>
+</ul>
+<p>Para demostrarlo, veamos un ejemplo de juguete con un único parámetro que tiene valores entre [0, 1] y la métrica de rendimiento es <span class="math inline">\(R^2\)</span>. La función verdadera se muestra en <a href="#fig-performance-profile" class="quarto-xref">Figura&nbsp;<span>14.2</span></a>, junto con los valores candidatos five que tienen resultados existentes como puntos.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-performance-profile" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un perfil de rendimiento real hipotético sobre un parámetro de ajuste arbitrario. También se muestran cinco puntos estimados. El perfil es altamente no lineal con un pico entre dos de los puntos observados.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-performance-profile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-performance-profile-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Un perfil de rendimiento real hipotético sobre un parámetro de ajuste arbitrario. También se muestran cinco puntos estimados. El perfil es altamente no lineal con un pico entre dos de los puntos observados." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-performance-profile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;14.2: Perfil de rendimiento real hipotético sobre un parámetro de ajuste arbitrario, con cinco puntos estimados
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Para estos datos, el ajuste del modelo GP se muestra en <a href="#fig-estimated-profile" class="quarto-xref">Figura&nbsp;<span>14.3</span></a>. La región sombreada indica el error estándar medio <span class="math inline">\(\pm\)</span> 1. Las dos líneas verticales indican dos puntos candidatos que se examinan con más detalle más adelante.</p>
+<p>La región de confianza sombreada demuestra la función de varianza exponencial al cuadrado; se vuelve muy grande entre puntos y converge a cero en los puntos de datos existentes.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-estimated-profile" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="El perfil de rendimiento estimado generado por el modelo de proceso gaussiano. La región sombreada muestra límites de error estándar. Dos líneas verticales muestran puntos potenciales que se muestrearán en la siguiente iteración.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-estimated-profile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-estimated-profile-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="El perfil de rendimiento estimado generado por el modelo de proceso gaussiano. La región sombreada muestra límites de error estándar. Dos líneas verticales muestran puntos potenciales que se muestrearán en la siguiente iteración." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-estimated-profile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;14.3: Perfil de rendimiento estimado generado por el modelo de proceso gaussiano. La región sombreada muestra límites de error estándar.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Esta tendencia no lineal pasa por cada punto observado, pero el modelo no es perfecto. No se observan puntos cercanos al verdadero ajuste óptimo y, en esta región, el ajuste podría ser mucho mejor. A pesar de esto, el modelo GP puede orientarnos efectivamente en la dirección correcta.</p>
+<p>Desde un punto de vista puramente de explotación, la mejor opción sería seleccionar el valor del parámetro que tenga la mejor predicción media. Aquí, esto sería un valor de 0.106, justo a la derecha del punto mejor observado existente en 0,09.</p>
+<p>Como forma de fomentar la exploración, un enfoque simple (pero no utilizado con frecuencia) es encontrar el parámetro de ajuste asociado con el intervalo de confianza más grande. Por ejemplo, al usar una única desviación estándar para el límite de confianza <span class="math inline">\(R^2\)</span>, el siguiente punto a muestrear sería 0.236. Esto es un poco más en la región sin resultados observados. Aumentar el número de desviaciones estándar utilizadas en el límite superior empujaría la selección hacia regiones vacías.</p>
+<p>Una de las funciones de adquisición más utilizadas es <em>mejora esperada</em>. La noción de mejora requiere un valor para los mejores resultados actuales (a diferencia del enfoque de confianza). Dado que el médico de cabecera puede describir un nuevo punto candidato utilizando una distribución, podemos ponderar las partes de la distribución que muestran una mejora utilizando la probabilidad de que se produzca la mejora.</p>
+<p>Por ejemplo, considere dos valores de parámetros candidatos de 0,10 y 0,25 (indicados por las líneas verticales en <a href="#fig-estimated-profile" class="quarto-xref">Figura&nbsp;<span>14.3</span></a>). Utilizando el modelo GP ajustado, sus distribuciones <span class="math inline">\(R^2\)</span> previstas se muestran en <a href="#fig-two-candidates" class="quarto-xref">Figura&nbsp;<span>14.4</span></a> junto con una línea de referencia para los mejores resultados actuales.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-two-candidates" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Distribuciones de rendimiento previstas para dos valores de parámetros de ajuste muestreados. Por un lado, la distribución es ligeramente mejor que el valor actual con un pequeño diferencial. El otro valor del parámetro es ligeramente peor pero tiene una distribución muy amplia.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-two-candidates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-two-candidates-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Distribuciones de rendimiento previstas para dos valores de parámetros de ajuste muestreados. Por un lado, la distribución es ligeramente mejor que el valor actual con un pequeño diferencial. El otro valor del parámetro es ligeramente peor pero tiene una distribución muy amplia.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-two-candidates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;14.4: Distribuciones de rendimiento previstas para dos valores de parámetros de ajuste muestreados
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Cuando solo se considera la predicción media de <span class="math inline">\(R^2\)</span>, un valor de parámetro de 0,10 es la mejor opción (consulte <a href="#tbl-two-exp-improve" class="quarto-xref">Tabla&nbsp;<span>14.3</span></a>). Se prevé, en promedio, que la recomendación del parámetro de ajuste de 0,25 será peor que el mejor nivel actual. Sin embargo, dado que tiene una mayor varianza, tiene más área de probabilidad general por encima del mejor nivel actual. Como resultado, tiene una mejora esperada mayor:</p>
+<div id="tbl-two-exp-improve" class="cell quarto-float anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-two-exp-improve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;14.3: Mejora esperada para los dos parámetros de ajuste candidatos.
+</figcaption>
+<div aria-describedby="tbl-two-exp-improve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide; border-bottom: hidden;"></th>
+<th colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Predicciones
+</div></th>
+</tr>
+<tr class="odd">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Parameter Value</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Mean</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Std Dev</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Expected Improvment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0.10</td>
+<td style="text-align: left;">0.8679</td>
+<td style="text-align: left;">0.0004317</td>
+<td style="text-align: left;">0.000190</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0.25</td>
+<td style="text-align: left;">0.8671</td>
+<td style="text-align: left;">0.0039301</td>
+<td style="text-align: left;">0.001216</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</figure>
+</div>
+<p>Cuando la mejora esperada se calcula en todo el rango del parámetro de ajuste, el punto de muestreo recomendado está mucho más cerca de 0,25 que de 0,10, como se muestra en <a href="#fig-expected-improvement" class="quarto-xref">Figura&nbsp;<span>14.5</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-expected-improvement" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="El perfil de rendimiento estimado generado por el modelo de proceso gaussiano (panel superior) y la mejora esperada (panel inferior). La línea vertical indica el punto de máxima mejora donde el rendimiento estimado es alto y la variación prevista también es grande.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-expected-improvement-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-expected-improvement-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="El perfil de rendimiento estimado generado por el modelo de proceso gaussiano (panel superior) y la mejora esperada (panel inferior). La línea vertical indica el punto de máxima mejora donde el rendimiento estimado es alto y la variación prevista también es grande." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-expected-improvement-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;14.5: El perfil de rendimiento estimado generado por el modelo de proceso gaussiano (panel superior) y la mejora esperada (panel inferior). La línea vertical indica el punto de máxima mejora.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Se han propuesto y discutido numerosas funciones de adquisición; en tidymodels, la mejora esperada es la predeterminada.</p>
+</section>
+<section id="sec-tune-bayes" class="level3" data-number="14.2.3">
+<h3 data-number="14.2.3" class="anchored" data-anchor-id="sec-tune-bayes"><span class="header-section-number">14.2.3</span> La función <code>tune_bayes()</code></h3>
+<p>Para implementar la búsqueda iterativa mediante optimización bayesiana, utilice la función <code>tune_bayes()</code>. Su sintaxis es muy similar a <code>tune_grid()</code> pero con varios argumentos adicionales:</p>
+<ul>
+<li><p><code>iter</code> es el número máximo de iteraciones de búsqueda.</p></li>
+<li><p><code>initial</code> Puede ser un número entero, un objeto producido usando <code>tune_grid()</code> o una de las funciones de carrera. El uso de un número entero especifica el tamaño de un diseño de relleno de espacio que se muestrea antes del primer modelo GP.</p></li>
+<li><p><code>objective</code> es un argumento para qué función de adquisición se debe utilizar. El paquete <span class="pkg">tune</span> contiene funciones para pasar aquí, como <code>exp_improve()</code> o <code>conf_bound()</code>.</p></li>
+<li><p>El argumento <code>param_info</code>, en este caso, especifica el rango de los parámetros así como cualquier transformación que se utilice. Se utilizan para definir el espacio de búsqueda. En situaciones en las que los objetos de parámetros predeterminados son insuficientes, se utiliza <code>param_info</code> para anular los valores predeterminados.</p></li>
+</ul>
+<p>El argumento <code>control</code> ahora usa los resultados de <code>control_bayes()</code>. Algunos argumentos útiles son:</p>
+<ul>
+<li><p><code>no_improve</code> es un número entero que detendrá la búsqueda si no se descubren parámetros mejorados dentro de las iteraciones <code>no_improve</code>.</p></li>
+<li><p><code>uncertain</code> también es un número entero (o <code>Inf</code>) que tomará una <em>muestra de incertidumbre</em> si no hay mejora dentro de las iteraciones <code>inciertas</code>. Esto seleccionará al siguiente candidato que tenga una gran variación. Tiene el efecto de exploración pura ya que no considera la predicción media.</p></li>
+<li><p><code>verbose</code> es un método lógico que imprimirá información de registro a medida que avanza la búsqueda.</p></li>
+</ul>
+<p>Usemos los primeros resultados de SVM de <a href="#sec-svm" class="quarto-xref"><span>Sección 14.1</span></a> como sustrato inicial para el modelo de proceso gaussiano. Recuerde que, para esta aplicación, queremos maximizar el área bajo la curva ROC. Nuestro código es:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ctrl <span class="ot">&lt;-</span> <span class="fu">control_bayes</span>(<span class="at">verbose =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1403</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>svm_bo <span class="ot">&lt;-</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  svm_wflow <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_bayes</span>(</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">resamples =</span> cell_folds,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> roc_res,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">initial =</span> svm_initial,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">param_info =</span> svm_param,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">25</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> ctrl</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El proceso de búsqueda comienza con un mejor valor inicial de 0.8659 para el área bajo la curva ROC. Un modelo de proceso gaussiano utiliza estas estadísticas four para crear un modelo. El gran conjunto de candidatos se genera y califica automáticamente utilizando la función de adquisición de mejora esperada. La primera iteración no logró mejorar el resultado con un valor ROC de 0.86315. Después de ajustar otro modelo de proceso gaussiano con el nuevo valor de resultado, la segunda iteración tampoco logró producir una mejora.</p>
+<p>El registro de las dos primeras iteraciones, generado por la opción “detallado”, fue:</p>
+<p>La búsqueda continúa. Hubo un total de 9 mejoras en el resultado a lo largo del camino en las iteraciones 3, 4, 5, 6, 8, 13, 22, 23, and 24. El mejor resultado se produjo en la iteración 24 con un área bajo la curva ROC de 0.8986.</p>
+<p>El último paso fue:</p>
+<p>Las funciones que se utilizan para interrogar los resultados son las mismas que se utilizan para la búsqueda en cuadrícula (por ejemplo, <code>collect_metrics()</code>, etc.). Por ejemplo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">show_best</span>(svm_bo)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning in show_best(svm_bo): No value of `metric` was given; "roc_auc" will be</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="do">## used.</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 5 × 9</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="do">##    cost rbf_sigma .metric .estimator  mean     n std_err .config .iter</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;   &lt;int&gt;</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  31.8   0.00160 roc_auc binary     0.899    10 0.00785 Iter24     24</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  30.8   0.00191 roc_auc binary     0.899    10 0.00791 Iter23     23</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  31.4   0.00166 roc_auc binary     0.899    10 0.00784 Iter22     22</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 4  31.8   0.00153 roc_auc binary     0.899    10 0.00783 Iter13     13</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 5  30.8   0.00163 roc_auc binary     0.899    10 0.00782 Iter15     15</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>La función <code>autoplot()</code> tiene varias opciones para métodos de búsqueda iterativos. <a href="#fig-progress-plot" class="quarto-xref">Figura&nbsp;<span>14.6</span></a> muestra cómo cambió el resultado durante la búsqueda usando <code>autoplot(svm_bo, type = "performance")</code>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-progress-plot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="El progreso de la optimización bayesiana se produce cuando se utiliza el método `autoplot()` con `type = 'performance'`. El gráfico muestra el rendimiento estimado en el eje y frente al número de iteraciones en el eje x. Se muestran intervalos de confianza para los puntos.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-progress-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-progress-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="El progreso de la optimización bayesiana se produce cuando se utiliza el método `autoplot()` con `type = 'performance'`. El gráfico muestra el rendimiento estimado en el eje y frente al número de iteraciones en el eje x. Se muestran intervalos de confianza para los puntos." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-progress-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;14.6: El progreso de la optimización bayesiana producido cuando se utiliza el método <code>autoplot()</code> con <code>type = "performance"</code>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Un tipo adicional de gráfico utiliza <code>type = "parameters"</code> que muestra los valores de los parámetros en iteraciones.</p>
+<p>La siguiente animación visualiza los resultados de la búsqueda. Los valores negros <span class="math inline">\(\times\)</span> muestran los valores iniciales contenidos en <code>svm_initial</code>. El panel azul superior izquierdo muestra el valor medio previsto del área bajo la curva ROC. El panel rojo en la parte superior derecha muestra la variación prevista en los valores de ROC, mientras que el gráfico inferior visualiza la mejora esperada. En cada panel, los colores más oscuros indican valores menos atractivos (por ejemplo, valores medios pequeños, variación grande y mejoras pequeñas).</p>
+<video width="720" height="720" controls="">
+<source src="bo_search.mp4" type="video/mp4">
+</video>
+<p>La superficie de la superficie media prevista es muy inexacta en las primeras iteraciones de la búsqueda. A pesar de esto, ayuda a guiar el proceso hacia la región de buen desempeño. En otras palabras, el modelo del proceso gaussiano es incorrecto pero resulta muy útil. Dentro de las primeras diez iteraciones, la búsqueda realiza un muestreo cerca de la ubicación óptima.</p>
+<p>Si bien la mejor combinación de parámetros de ajuste se encuentra en el límite del espacio de parámetros, la optimización bayesiana a menudo elegirá nuevos puntos en otros lados del límite. Si bien podemos ajustar la proporción de exploración y explotación, la búsqueda tiende a muestrear puntos fronterizos desde el principio.</p>
+<div class="rmdnote">
+<p>Si la búsqueda se basa en una cuadrícula inicial, un diseño que llene el espacio probablemente sería una mejor opción que un diseño normal. Muestra valores más únicos del espacio de parámetros y mejoraría las predicciones de la desviación estándar en las primeras iteraciones.</p>
+</div>
+<p>Finalmente, si el usuario interrumpe los cálculos de <code>tune_bayes()</code>, la función devuelve los resultados actuales (en lugar de generar un error).</p>
+</section>
+</section>
+<section id="recocido-simulado" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="recocido-simulado"><span class="header-section-number">14.3</span> Recocido Simulado</h2>
+<p><em>Recocido simulado</em> (SA) <span class="citation" data-cites="kirkpatrick1983optimization van1987simulated">(<a href="references.html#ref-kirkpatrick1983optimization" role="doc-biblioref">Kirkpatrick, Gelatt, y Vecchi 1983</a>; <a href="references.html#ref-van1987simulated" role="doc-biblioref">Van Laarhoven y Aarts 1987</a>)</span> es una rutina de búsqueda no lineal general inspirada en el proceso en el que se enfría el metal. Es un método de búsqueda global que puede navegar eficazmente por muchos tipos diferentes de entornos de búsqueda, incluidas funciones discontinuas. A diferencia de la mayoría de las rutinas de optimización basadas en gradientes, el recocido simulado puede reevaluar soluciones anteriores.</p>
+<section id="proceso-de-búsqueda-de-recocido-simulado" class="level3" data-number="14.3.1">
+<h3 data-number="14.3.1" class="anchored" data-anchor-id="proceso-de-búsqueda-de-recocido-simulado"><span class="header-section-number">14.3.1</span> Proceso de búsqueda de recocido simulado</h3>
+<p>El proceso de uso del recocido simulado comienza con un valor inicial y se embarca en un recorrido aleatorio controlado a través del espacio de parámetros. Cada nuevo valor de parámetro candidato es una pequeña perturbación del valor anterior que mantiene el nuevo punto dentro de una vecindad local.</p>
+<p>El punto candidato se vuelve a muestrear para obtener su valor de rendimiento correspondiente. Si con este se logran mejores resultados que los parámetros anteriores, se acepta como el nuevo mejor y el proceso continúa. Si los resultados son peores que el valor anterior, el procedimiento de búsqueda aún puede usar este parámetro para definir pasos adicionales. Esto depende de dos factores. Primero, la probabilidad de aceptar un mal resultado disminuye a medida que el desempeño empeora. En otras palabras, un resultado ligeramente peor tiene más posibilidades de aceptación que uno con una gran caída en el rendimiento. El otro factor es el número de iteraciones de búsqueda. El recocido simulado quiere aceptar menos valores subóptimos a medida que avanza la búsqueda. A partir de estos dos factores, la <em>probabilidad de aceptación</em> de un mal resultado puede formalizarse como:</p>
+<p><span class="math display">\[\operatorname{Pr}[\text{accept suboptimal parameters at iteration } i] = \exp(c\times D_i \times i)\]</span></p>
+<p>donde <span class="math inline">\(i\)</span> es el número de iteración, <span class="math inline">\(c\)</span> es una constante especificada por el usuario y <span class="math inline">\(D_i\)</span> es la diferencia porcentual entre los valores antiguos y nuevos (donde los valores negativos implican peores resultados). Para un mal resultado, determinamos la probabilidad de aceptación y la comparamos con un número uniforme aleatorio. Si el número aleatorio es mayor que el valor de probabilidad, la búsqueda descarta los parámetros actuales y la siguiente iteración crea su valor candidato en la vecindad del valor anterior. De lo contrario, la siguiente iteración forma el siguiente conjunto de parámetros en función de los valores actuales (subóptimos).</p>
+<div class="rmdnote">
+<p>Las probabilidades de aceptación del recocido simulado permiten que la búsqueda avance en la dirección equivocada, al menos a corto plazo, con el potencial de encontrar una región mucho mejor del espacio de parámetros a largo plazo.</p>
+</div>
+<p>¿Cómo se ven influenciadas las probabilidades de aceptación? El mapa de calor en <a href="#fig-acceptance-prob" class="quarto-xref">Figura&nbsp;<span>14.7</span></a> muestra cómo la probabilidad de aceptación puede cambiar a lo largo de las iteraciones, el rendimiento y el coeficiente especificado por el usuario.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-acceptance-prob" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un mapa de calor de las probabilidades de aceptación de recocido simuladas para diferentes valores de coeficientes. Las probabilidades se ven afectadas tanto por el número de iteraciones como por la distancia entre el rendimiento y el mejor nivel actual.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-acceptance-prob-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-acceptance-prob-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Un mapa de calor de las probabilidades de aceptación de recocido simuladas para diferentes valores de coeficientes. Las probabilidades se ven afectadas tanto por el número de iteraciones como por la distancia entre el rendimiento y el mejor nivel actual.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-acceptance-prob-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;14.7: Mapa de calor de las probabilidades de aceptación del recocido simuladas para diferentes valores de coeficientes
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>El usuario puede ajustar los coeficientes para encontrar un perfil de probabilidad que se adapte a sus necesidades. En <code>finetune::control_sim_anneal()</code>, el valor predeterminado para este argumento <code>cooling_coef</code> es 0.02. Disminuir este coeficiente fomentará que la búsqueda sea más indulgente con los malos resultados.</p>
+<p>Este proceso continúa durante una cantidad determinada de iteraciones, pero puede detenerse si no se obtienen los mejores resultados globales dentro de un número predeterminado de iteraciones. Sin embargo, puede resultar muy útil establecer un <em>umbral de reinicio</em>. Si hay una serie de fallas, esta función revisa la última configuración de parámetros globalmente mejor y comienza de nuevo.</p>
+<p>El principal detalle importante es definir cómo perturbar los parámetros de ajuste de una iteración a otra. Hay una variedad de métodos en la literatura para esto. Seguimos el método dado en <span class="citation" data-cites="gsa">Bohachevsky, Johnson, y Stein (<a href="references.html#ref-gsa" role="doc-biblioref">1986</a>)</span> llamado <em>recocido simulado generalizado</em>. Para parámetros de ajuste continuo, definimos un radio pequeño para especificar el “vecindario” local. Por ejemplo, supongamos que hay dos parámetros de ajuste y cada uno está limitado por cero y uno. El proceso de recocido simulado genera valores aleatorios en el radio circundante y elige aleatoriamente uno como valor candidato actual.</p>
+<p>En nuestra implementación, la vecindad se determina escalando el candidato actual para que esté entre cero y uno según el rango del objeto de parámetro, por lo que los valores de radio entre 0,05 y 0,15 parecen razonables. Para estos valores, lo más rápido que puede ir la búsqueda de un lado al otro del espacio de parámetros es de aproximadamente 10 iteraciones. El tamaño del radio controla la rapidez con la que la búsqueda explora el espacio de parámetros. En nuestra implementación, se especifica un rango de radios para que diferentes magnitudes de “local” definan los nuevos valores candidatos.</p>
+<p>Para ilustrar, usaremos los dos parámetros de ajuste principales <span class="pkg">glmnet</span>:</p>
+<ul>
+<li><p>El importe de la regularización total (<code>penalty</code>). El rango predeterminado para este parámetro es <span class="math inline">\(10^{-10}\)</span> a <span class="math inline">\(10^{0}\)</span>. Es típico utilizar una transformación logarítmica (base-10) para este parámetro.</p></li>
+<li><p>La proporción de la pena de lazo (<code>mixture</code>). Esto está acotado en cero y uno sin transformación.</p></li>
+</ul>
+<p>El proceso comienza con valores iniciales de <code>penalty = 0,025</code> y <code>mixture = 0,050</code>. Utilizando un radio que fluctúa aleatoriamente entre 0,050 y 0,015, los datos se escalan adecuadamente, se generan valores aleatorios en los radios alrededor del punto inicial y luego se elige uno al azar como candidato. A modo de ilustración, asumiremos que todos los valores candidatos son mejoras. Utilizando el nuevo valor, se genera un conjunto de nuevos vecinos aleatorios, se elige uno, y así sucesivamente. <a href="#fig-iterative-neighborhood" class="quarto-xref">Figura&nbsp;<span>14.8</span></a> muestra six iteraciones a medida que la búsqueda avanza hacia la esquina superior izquierda.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-iterative-neighborhood" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Una ilustración de cómo el recocido simulado determina cuál es la vecindad local para dos parámetros de ajuste numéricos. Las nubes de puntos muestran posibles siguientes valores donde se seleccionaría uno al azar. Los puntos candidatos son pequeñas nubes circulares que rodean el mejor punto actual.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-iterative-neighborhood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-iterative-neighborhood-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Una ilustración de cómo el recocido simulado determina cuál es la vecindad local para dos parámetros de ajuste numéricos. Las nubes de puntos muestran posibles siguientes valores donde se seleccionaría uno al azar. Los puntos candidatos son pequeñas nubes circulares que rodean el mejor punto actual.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-iterative-neighborhood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;14.8: Una ilustración de cómo el recocido simulado determina cuál es la vecindad local para dos parámetros de ajuste numéricos. Las nubes de puntos muestran posibles siguientes valores donde se seleccionaría uno al azar.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Tenga en cuenta que, durante algunas iteraciones, los conjuntos candidatos a lo largo del radio excluyen puntos fuera de los límites del parámetro. Además, nuestra implementación desvía la elección de las siguientes configuraciones de parámetros de ajuste <em>lejos</em> de nuevos valores que son muy similares a las configuraciones anteriores.</p>
+<p>Para parámetros no numéricos, asignamos una probabilidad de con qué frecuencia cambia el valor del parámetro.</p>
+</section>
+<section id="sec-tune-sim-anneal" class="level3" data-number="14.3.2">
+<h3 data-number="14.3.2" class="anchored" data-anchor-id="sec-tune-sim-anneal"><span class="header-section-number">14.3.2</span> La función <code>tune_sim_anneal()</code></h3>
+<p>Para implementar la búsqueda iterativa mediante recocido simulado, utilice la función <code>tune_sim_anneal()</code>. La sintaxis de esta función es casi idéntica a <code>tune_bayes()</code>. No hay opciones para funciones de adquisición o muestreo de incertidumbre. La función <code>control_sim_anneal()</code> tiene algunos detalles que definen la vecindad local y el programa de enfriamiento:</p>
+<ul>
+<li><p><code>no_improve</code>, para recocido simulado, es un número entero que detendrá la búsqueda si no se descubren resultados globales mejores o mejorados dentro de las iteraciones <code>no_improve</code>. Los parámetros subóptimos aceptados o descartados cuentan como “sin mejora”.</p></li>
+<li><p><code>restart</code> es el número de iteraciones sin nuevos mejores resultados antes de comenzar con los mejores resultados anteriores.</p></li>
+<li><p><code>radius</code> es un vector numérico en (0, 1) que define el radio mínimo y máximo de la vecindad local alrededor del punto inicial.</p></li>
+<li><p><code>flip</code> es un valor de probabilidad que define las posibilidades de alterar el valor de parámetros categóricos o enteros.</p></li>
+<li><p><code>cooling_coef</code> es el coeficiente <span class="math inline">\(c\)</span> en <span class="math inline">\(\exp(c\times D_i \times i)\)</span> que modula la rapidez con la que la probabilidad de aceptación disminuye a lo largo de las iteraciones. Los valores más grandes de <code>cooling_coef</code> disminuyen la probabilidad de aceptar una configuración de parámetro subóptima.</p></li>
+</ul>
+<p>Para los datos de segmentación de celdas, la sintaxis es muy consistente con las funciones utilizadas anteriormente:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ctrl_sa <span class="ot">&lt;-</span> <span class="fu">control_sim_anneal</span>(<span class="at">verbose =</span> <span class="cn">TRUE</span>, <span class="at">no_improve =</span> <span class="dv">10</span>L)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1404</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>svm_sa <span class="ot">&lt;-</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  svm_wflow <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tune_sim_anneal</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">resamples =</span> cell_folds,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> roc_res,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">initial =</span> svm_initial,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">param_info =</span> svm_param,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">iter =</span> <span class="dv">50</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">control =</span> ctrl_sa</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El proceso de recocido simulado descubrió nuevos óptimos globales en 0 diferentes iteraciones. Había 4 se reinicia en iteraciones 13, 21, 35, and 43.</p>
+<p>La opción <code>verbose</code> imprime detalles del proceso de búsqueda. El resultado de las primeras cinco iteraciones fue:</p>
+<p>El resultado de las últimas diez iteraciones fue:</p>
+<div class="cell" data-layout-align="center">
+<pre><code>## 40 ◯ accept suboptimal  roc_auc=0.89606 (+/-0.008203)
+## 
+## 41 ─ discard suboptimal roc_auc=0.87556 (+/-0.009272)
+## 
+## 42 ─ discard suboptimal roc_auc=0.87198 (+/-0.009301)
+## 
+## 43 ✖ restart from best  roc_auc=0.89801 (+/-0.008224)
+## 
+## 44 ◯ accept suboptimal  roc_auc=0.89006 (+/-0.008789)
+## 
+## 45 + better suboptimal  roc_auc=0.89781 (+/-0.008104)
+## 
+## 46 ◯ accept suboptimal  roc_auc=0.89563 (+/-0.008601)
+## 
+## 47 ─ discard suboptimal roc_auc=0.88527 (+/-0.008766)
+## 
+## 48 ◯ accept suboptimal  roc_auc=0.8922 (+/-0.008891)
+## 
+## 49 ─ discard suboptimal roc_auc=0.87691 (+/-0.008352)
+## 
+## 50 ◯ accept suboptimal  roc_auc=0.88803 (+/-0.008728)</code></pre>
+</div>
+<p>Al igual que con las otras funciones <code>tune_*()</code>, la función <code>autoplot()</code> correspondiente produce evaluaciones visuales de los resultados. El uso de <code>autoplot(svm_sa, type = "performance")</code> muestra el rendimiento en iteraciones (<a href="#fig-sa-iterations" class="quarto-xref">Figura&nbsp;<span>14.9</span></a>) mientras que <code>autoplot(svm_sa, type = "parameters")</code> traza el rendimiento versus valores de parámetros de ajuste específicos (<a href="#fig-sa-parameters" class="quarto-xref">Figura&nbsp;<span>14.10</span></a>).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-sa-iterations" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="El progreso del proceso de recocido simulado se muestra cuando se usa el método `autoplot()` con `type = 'performance'`. El gráfico muestra el rendimiento estimado en el eje y frente al número de iteraciones en el eje x. Se muestran intervalos de confianza para los puntos.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sa-iterations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-sa-iterations-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="El progreso del proceso de recocido simulado se muestra cuando se usa el método `autoplot()` con `type = 'performance'`. El gráfico muestra el rendimiento estimado en el eje y frente al número de iteraciones en el eje x. Se muestran intervalos de confianza para los puntos." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sa-iterations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;14.9: El progreso del proceso de recocido simulado se muestra cuando se usa el método <code>autoplot()</code> con <code>type = "performance"</code>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-sa-parameters" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Una visualización del rendimiento frente a los valores de los parámetros de ajuste cuando se utiliza el método `autoplot()` con `type = 'parameters'`. El gráfico muestra diferentes paneles para cada parámetro de sintonización en sus unidades transformadas.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sa-parameters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-sa-parameters-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Una visualización del rendimiento frente a los valores de los parámetros de ajuste cuando se utiliza el método `autoplot()` con `type = 'parameters'`. El gráfico muestra diferentes paneles para cada parámetro de sintonización en sus unidades transformadas." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sa-parameters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;14.10: Rendimiento versus valores de parámetros de ajuste cuando el método <code>autoplot()</code> se usa con <code>type = "parameters"</code>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Una visualización de la ruta de búsqueda ayuda a comprender dónde funcionó bien el proceso de búsqueda y dónde se extravió:</p>
+<video width="720" height="720" controls="">
+<source src="sa_search.mp4" type="video/mp4">
+</video>
+<p>Al igual que <code>tune_bayes()</code>, detener manualmente la ejecución devolverá las iteraciones completadas.</p>
+</section>
+</section>
+<section id="sec-iterative-summary" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="sec-iterative-summary"><span class="header-section-number">14.4</span> Resumen Del Capítulo</h2>
+<p>Este capítulo describió dos métodos de búsqueda iterativos para optimizar los parámetros de ajuste. La optimización de Bayes utiliza un modelo predictivo entrenado en los resultados de remuestreo existentes para sugerir valores de parámetros de ajuste, mientras que el recocido simulado recorre el espacio de hiperparámetros para encontrar buenos valores. Ambos pueden ser eficaces para encontrar buenos valores por sí solos o como método de seguimiento utilizado después de una búsqueda inicial en la cuadrícula para mejorar el rendimiento de <span class="pkg">finetune</span>.</p>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-gsa" class="csl-entry" role="listitem">
+Bohachevsky, I, M Johnson, y M Stein. 1986. <span>«Generalized Simulated Annealing for Function Optimization»</span>. <em>Technometrics</em> 28 (3): 209-17.
+</div>
+<div id="ref-frazier2018tutorial" class="csl-entry" role="listitem">
+Frazier, R. 2018. <span>«A Tutorial on Bayesian Optimization»</span>. <a href="https://arxiv.org/abs/1807.02811">https://arxiv.org/abs/1807.02811</a>.
+</div>
+<div id="ref-kirkpatrick1983optimization" class="csl-entry" role="listitem">
+Kirkpatrick, S, D Gelatt, y M Vecchi. 1983. <span>«Optimization by Simulated Annealing»</span>. <em>Science</em> 220 (4598): 671-80.
+</div>
+<div id="ref-apm" class="csl-entry" role="listitem">
+Kuhn, M, y K Johnson. 2013. <em>Applied Predictive Modeling</em>. Springer.
+</div>
+<div id="ref-RaWi06" class="csl-entry" role="listitem">
+Rasmussen, C, y C Williams. 2006. <em>Gaussian Processes for Machine Learning</em>. <em>Gaussian Processes for Machine Learning</em>. MIT Press.
+</div>
+<div id="ref-SCHULZ20181" class="csl-entry" role="listitem">
+Schulz, E, M Speekenbrink, y A Krause. 2018. <span>«A tutorial on Gaussian process regression: Modelling, exploring, and exploiting functions»</span>. <em>Journal of Mathematical Psychology</em> 85: 1-16.
+</div>
+<div id="ref-Shahriari" class="csl-entry" role="listitem">
+Shahriari, B., K. Swersky, Z. Wang, R. P. Adams, y N. de Freitas. 2016. <span>«Taking the Human Out of the Loop: A Review of Bayesian Optimization»</span>. <em>Proceedings of the IEEE</em> 104 (1): 148-75.
+</div>
+<div id="ref-van1987simulated" class="csl-entry" role="listitem">
+Van Laarhoven, P, y E Aarts. 1987. <span>«Simulated Annealing»</span>. En <em>Simulated Annealing: Theory and applications</em>, 7-15. Springer.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Esta ecuación también es la misma que la <em>función de base radial</em> utilizada en los métodos del núcleo, como el modelo SVM que se utiliza actualmente. Esto es una coincidencia; esta función de covarianza no está relacionada con el parámetro de ajuste SVM que estamos usando.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+
+<script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./13-grid-search.html" class="pagination-link" aria-label="Búsqueda De Cuadrícula">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./15-workflow-sets.html" class="pagination-link" aria-label="Probando Muchos Modelos">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Este libro fue creado usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

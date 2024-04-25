@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Max Kuhn, y Julia Silge">
+
+<title>Modelado Ordenado con R - 10&nbsp; Remuestrear Para Evaluar El Rendimiento</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./11-comparing-models.html" rel="next">
+<link href="./09-judging-model-effectiveness.html" rel="prev">
+<link href="./images/cover.png" rel="icon" type="image/png">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sin resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="TMwR.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./10-resampling.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Modelado Ordenado con R</a> 
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
+            Original
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/davidrsch/TMwRes">
+            Traducción
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Alternar modo lector">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Hola Mundo</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">INTRODUCCIÓN</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-software-modeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-tidyverse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Una Introducción Tidyverse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-base-r.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-ames.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Los Datos De Vivienda De Ames</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-data-spending.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Gastar Nuestros Datos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-fitting-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Creando Modelos Con parsnip</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07-the-model-workflow.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Un Flujo De Modelado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-feature-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-judging-model-effectiveness.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./10-resampling.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./11-comparing-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./12-tuning-parameters.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Ajuste De Modelos Y Los Peligros Del Sobreajuste</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./13-grid-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Búsqueda De Cuadrícula</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./14-iterative-search.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Búsqueda Iterativa</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./15-workflow-sets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Probando Muchos Modelos</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./16-dimensionality-reduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Reducción De Dimensionalidad</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./17-encoding-categorical-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./19-when-should-you-trust-predictions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">¿Cuándo Debería Confiar En Sus Predicciones?</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./20-ensemble-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Conjuntos De Modelos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21-inferential-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Análisis Inferencial</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./pre-proc-table.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Preprocesamiento Recomendado</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Referencias</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Tabla de contenidos</h2>
+   
+  <ul>
+  <li><a href="#sec-resampling-resubstition" id="toc-sec-resampling-resubstition" class="nav-link active" data-scroll-target="#sec-resampling-resubstition"><span class="header-section-number">10.1</span> El Enfoque De La Resustitución</a></li>
+  <li><a href="#métodos-de-remuestreo" id="toc-métodos-de-remuestreo" class="nav-link" data-scroll-target="#métodos-de-remuestreo"><span class="header-section-number">10.2</span> Métodos De Remuestreo</a>
+  <ul class="collapse">
+  <li><a href="#sec-cv" id="toc-sec-cv" class="nav-link" data-scroll-target="#sec-cv"><span class="header-section-number">10.2.1</span> Validación cruzada</a></li>
+  <li><a href="#validación-cruzada-repetida" id="toc-validación-cruzada-repetida" class="nav-link" data-scroll-target="#validación-cruzada-repetida">Validación cruzada repetida</a></li>
+  <li><a href="#validación-cruzada-de-dejar-uno-fuera" id="toc-validación-cruzada-de-dejar-uno-fuera" class="nav-link" data-scroll-target="#validación-cruzada-de-dejar-uno-fuera">Validación cruzada de dejar uno fuera</a></li>
+  <li><a href="#validación-cruzada-de-monte-carlo" id="toc-validación-cruzada-de-monte-carlo" class="nav-link" data-scroll-target="#validación-cruzada-de-monte-carlo">Validación cruzada de Monte Carlo</a></li>
+  <li><a href="#sec-validation" id="toc-sec-validation" class="nav-link" data-scroll-target="#sec-validation"><span class="header-section-number">10.2.2</span> Conjuntos de validación</a></li>
+  <li><a href="#sec-bootstrap" id="toc-sec-bootstrap" class="nav-link" data-scroll-target="#sec-bootstrap"><span class="header-section-number">10.2.3</span> Bootstrapping</a></li>
+  <li><a href="#sec-rolling" id="toc-sec-rolling" class="nav-link" data-scroll-target="#sec-rolling"><span class="header-section-number">10.2.4</span> Remuestreo continuo del origen de la previsión</a></li>
+  </ul></li>
+  <li><a href="#sec-resampling-performance" id="toc-sec-resampling-performance" class="nav-link" data-scroll-target="#sec-resampling-performance"><span class="header-section-number">10.3</span> Estimación Del Rendimiento</a></li>
+  <li><a href="#sec-parallel" id="toc-sec-parallel" class="nav-link" data-scroll-target="#sec-parallel"><span class="header-section-number">10.4</span> Procesamiento En Paralelo</a></li>
+  <li><a href="#sec-extract" id="toc-sec-extract" class="nav-link" data-scroll-target="#sec-extract"><span class="header-section-number">10.5</span> Guardar Los Objetos Remuestreados</a></li>
+  <li><a href="#sec-resampling-summary" id="toc-sec-resampling-summary" class="nav-link" data-scroll-target="#sec-resampling-summary"><span class="header-section-number">10.6</span> Resumen Del Capítulo</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./10-resampling.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-resampling" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Ya hemos cubierto varias piezas que se deben juntar para evaluar el desempeño de un modelo. El <a href="09-judging-model-effectiveness.html" class="quarto-xref">Capítulo&nbsp;<span>9</span></a> describió estadísticas para medir el rendimiento del modelo. El <a href="05-data-spending.html" class="quarto-xref">Capítulo&nbsp;<span>5</span></a> introdujo la idea del gasto de datos y recomendamos el conjunto de pruebas para obtener una estimación imparcial del rendimiento. Sin embargo, normalmente necesitamos comprender el rendimiento de un modelo o incluso de varios modelos <em>antes de utilizar el conjunto de prueba</em>.</p>
+<div class="rmdwarning">
+<p>Normalmente no podemos decidir qué modelo final usar con el conjunto de pruebas antes de evaluar primero el rendimiento del modelo. Existe una brecha entre nuestra necesidad de medir el desempeño de manera confiable y las divisiones de datos (capacitación y pruebas) que tenemos disponibles.</p>
+</div>
+<p>En este capítulo, describimos un enfoque llamado remuestreo que puede llenar este vacío. Las estimaciones de rendimiento remuestreadas pueden generalizarse a nuevos datos de manera similar a las estimaciones de un conjunto de pruebas. El próximo capítulo complementa éste demostrando métodos estadísticos que comparan los resultados del remuestreo.</p>
+<p>Para apreciar plenamente el valor del remuestreo, primero echemos un vistazo al enfoque de resustitución, que a menudo puede fallar.</p>
+<section id="sec-resampling-resubstition" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="sec-resampling-resubstition"><span class="header-section-number">10.1</span> El Enfoque De La Resustitución</h2>
+<p>Cuando medimos el rendimiento con los mismos datos que utilizamos para el entrenamiento (a diferencia de datos nuevos o datos de prueba), decimos que hemos <em>resustituido</em> los datos. Utilicemos nuevamente los datos de vivienda de Ames para demostrar estos conceptos. <a href="08-feature-engineering.html#sec-recipes-summary" class="quarto-xref"><span>Sección 8.8</span></a> resume el estado actual de nuestro análisis de Ames. Incluye un objeto de receta llamado <code>ames_rec</code>, un modelo lineal y un flujo de trabajo que usa esa receta y modelo llamado <code>lm_wflow</code>. Este flujo de trabajo se ajustó al conjunto de entrenamiento, lo que dio como resultado <code>lm_fit</code>.</p>
+<p>Para comparar con este modelo lineal, también podemos ajustar un tipo diferente de modelo. Los <em>random forest</em> son un método de conjunto de árboles que opera creando una gran cantidad de árboles de decisión a partir de versiones ligeramente diferentes del conjunto de entrenamiento <span class="citation" data-cites="breiman2001random">(<a href="references.html#ref-breiman2001random" role="doc-biblioref">Breiman 2001</a>)</span>. Esta colección de árboles conforma el conjunto. Al predecir una nueva muestra, cada miembro del conjunto realiza una predicción por separado. Estos se promedian para crear la predicción conjunta final para el nuevo punto de datos.</p>
+<p>Los modelos de random forest son muy potentes y pueden emular muy fielmente los patrones de datos subyacentes. Si bien este modelo puede requerir un uso intensivo de computación, requiere muy poco mantenimiento; se requiere muy poco preprocesamiento (como se documenta en <a href="pre-proc-table.html" class="quarto-xref">Apéndice&nbsp;<span>A</span></a>).</p>
+<p>Usando el mismo conjunto de predictores que el modelo lineal (sin los pasos de preprocesamiento adicionales), podemos ajustar un modelo de random forest al conjunto de entrenamiento a través del motor <code>"ranger"</code> (que usa el paquete R <span class="pkg">ranger</span> para cálculo). Este modelo no requiere procesamiento previo, por lo que se puede utilizar una fórmula simple:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rf_model <span class="ot">&lt;-</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">1000</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"ranger"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>rf_wflow <span class="ot">&lt;-</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_formula</span>(</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      Latitude <span class="sc">+</span> Longitude) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(rf_model) </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>rf_fit <span class="ot">&lt;-</span> rf_wflow <span class="sc">%&gt;%</span> <span class="fu">fit</span>(<span class="at">data =</span> ames_train)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>¿Cómo deberíamos comparar los modelos forestales lineales y aleatorios? A modo de demostración, predeciremos que el conjunto de entrenamiento producirá lo que se conoce como <em>métrica aparente</em> o <em>métrica de resustitución</em>. Esta función crea predicciones y formatea los resultados:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>estimate_perf <span class="ot">&lt;-</span> <span class="cf">function</span>(model, dat) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Captura los nombres de los objetos `model` y `dat`</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  cl <span class="ot">&lt;-</span> <span class="fu">match.call</span>()</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  obj_name <span class="ot">&lt;-</span> <span class="fu">as.character</span>(cl<span class="sc">$</span>model)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  data_name <span class="ot">&lt;-</span> <span class="fu">as.character</span>(cl<span class="sc">$</span>dat)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  data_name <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">"ames_"</span>, <span class="st">""</span>, data_name)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Estima estas metricas</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  reg_metrics <span class="ot">&lt;-</span> <span class="fu">metric_set</span>(rmse, rsq)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  model <span class="sc">%&gt;%</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">predict</span>(dat) <span class="sc">%&gt;%</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">bind_cols</span>(dat <span class="sc">%&gt;%</span> <span class="fu">select</span>(Sale_Price)) <span class="sc">%&gt;%</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">reg_metrics</span>(Sale_Price, .pred) <span class="sc">%&gt;%</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>.estimator) <span class="sc">%&gt;%</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">object =</span> obj_name, <span class="at">data =</span> data_name)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Se calculan tanto RMSE como <span class="math inline">\(R^2\)</span>. Las estadísticas de resustitución son:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">estimate_perf</span>(rf_fit, ames_train)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 4</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimate object data </span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 rmse       0.0365 rf_fit train</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 rsq        0.960  rf_fit train</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">estimate_perf</span>(lm_fit, ames_train)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 4</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimate object data </span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 rmse       0.0754 lm_fit train</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 rsq        0.816  lm_fit train</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>En base a estos resultados, el random forest es mucho más capaz de predecir los precios de venta; la estimación de RMSE es two, veces mejor que la regresión lineal. Si tuviéramos que elegir entre estos dos modelos para este problema de predicción de precios, probablemente elegiríamos el random fores porque, en la escala logarítmica que estamos usando, su RMSE es aproximadamente la mitad. El siguiente paso aplica el modelo de random forest al conjunto de prueba para la verificación final:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">estimate_perf</span>(rf_fit, ames_test)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 4</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimate object data </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;       &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 rmse       0.0704 rf_fit test </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 rsq        0.852  rf_fit test</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>¡La estimación RMSE del conjunto de prueba, 0.0704, es <em>much worse than the training set</em> valor de 0.0365! ¿Por qué pasó esto?</p>
+<p>Muchos modelos predictivos son capaces de aprender tendencias complejas a partir de los datos. En estadística, estos se conocen comúnmente como <em>modelos de bajo sesgo</em>.</p>
+<div class="rmdnote">
+<p>En este contexto, <em>sesgo</em> es la diferencia entre el patrón o las relaciones verdaderas en los datos y los tipos de patrones que el modelo puede emular. Muchos modelos de aprendizaje automático de caja negra tienen un sesgo bajo, lo que significa que pueden reproducir relaciones complejas. Otros modelos (como la regresión lineal/logística, el análisis discriminante y otros) no son tan adaptables y se consideran modelos de <em>alto sesgo</em>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+</div>
+<p>Para un modelo de bajo sesgo, el alto grado de capacidad predictiva a veces puede hacer que el modelo casi memorice los datos del conjunto de entrenamiento. Como ejemplo obvio, considere un modelo de 1 vecino más cercano. Siempre proporcionará predicciones perfectas para el conjunto de entrenamiento, sin importar qué tan bien funcione para otros conjuntos de datos. Los modelos de random forest son similares; Repredecir el conjunto de entrenamiento siempre dará como resultado una estimación artificialmente optimista del rendimiento.</p>
+<p>Para ambos modelos, <a href="#tbl-rmse-results" class="quarto-xref">Tabla&nbsp;<span>10.1</span></a> resume la estimación de RMSE para los conjuntos de entrenamiento y prueba:</p>
+<div id="tbl-rmse-results" class="cell quarto-float anchored" data-layout-align="center">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-rmse-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabla&nbsp;10.1: Estadísticas de rendimiento para conjuntos de entrenamiento y prueba.
+</figcaption>
+<div aria-describedby="tbl-rmse-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide; border-bottom: hidden;"></th>
+<th colspan="2" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Estimaciones de RMSE
+</div></th>
+</tr>
+<tr class="odd">
+<th style="text-align: left;" data-quarto-table-cell-role="th">object</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">train</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">test</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">&lt;tt&gt;lm_fit&lt;/tt&gt;</td>
+<td style="text-align: right;">0.0754</td>
+<td style="text-align: right;">0.0736</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">&lt;tt&gt;rf_fit&lt;/tt&gt;</td>
+<td style="text-align: right;">0.0365</td>
+<td style="text-align: right;">0.0704</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</figure>
+</div>
+<p>Observe que el modelo de regresión lineal es consistente entre el entrenamiento y las pruebas, debido a su complejidad limitada.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="rmdwarning">
+<p>La principal conclusión de este ejemplo es que repredecir el conjunto de entrenamiento dará como resultado una estimación del rendimiento artificialmente optimista. Es una mala idea para la mayoría de los modelos.</p>
+</div>
+<p>Si el conjunto de prueba no se debe utilizar de inmediato y repredecir el conjunto de entrenamiento es una mala idea, ¿qué se debe hacer? Los métodos de remuestreo, como la validación cruzada o los conjuntos de validación, son la solución.</p>
+</section>
+<section id="métodos-de-remuestreo" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="métodos-de-remuestreo"><span class="header-section-number">10.2</span> Métodos De Remuestreo</h2>
+<p>Los métodos de remuestreo son sistemas de simulación empíricos que emulan el proceso de utilizar algunos datos para modelar y diferentes datos para evaluación. La mayoría de los métodos de remuestreo son iterativos, lo que significa que este proceso se repite varias veces. El diagrama en <a href="#fig-resampling-scheme" class="quarto-xref">Figura&nbsp;<span>10.1</span></a> ilustra cómo funcionan generalmente los métodos de remuestreo.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-resampling-scheme" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Un diagrama del esquema de división de datos desde la división de datos inicial hasta el remuestreo. El primer nivel es la partición del conjunto de entrenamiento/prueba. El segundo nivel de división toma el conjunto de entrenamiento y lo divide en múltiples conjuntos de `análisis` y `evaluación` (que son análogos al entrenamiento y la prueba)." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-resampling-scheme-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="premade/resampling.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%" alt="Un diagrama del esquema de división de datos desde la división de datos inicial hasta el remuestreo. El primer nivel es la partición del conjunto de entrenamiento/prueba. El segundo nivel de división toma el conjunto de entrenamiento y lo divide en múltiples conjuntos de `análisis` y `evaluación` (que son análogos al entrenamiento y la prueba).">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-resampling-scheme-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.1: Esquema de división de datos desde la división de datos inicial hasta el remuestreo
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>El remuestreo se realiza solo en el conjunto de entrenamiento, como se ve en <a href="#fig-resampling-scheme" class="quarto-xref">Figura&nbsp;<span>10.1</span></a>. El equipo de prueba no está involucrado. Para cada iteración de remuestreo, los datos se dividen en dos submuestras:</p>
+<ul>
+<li><p>El modelo se ajusta a la <em>conjunto de análisis</em>.</p></li>
+<li><p>El modelo se evalúa con el <em>conjunto de evaluación</em>.</p></li>
+</ul>
+<p>Estas dos submuestras son algo análogas a los conjuntos de entrenamiento y prueba. Nuestro lenguaje de <em>análisis</em> y <em>evaluación</em> evita confusiones con la división inicial de los datos. Estos conjuntos de datos son mutuamente excluyentes. El esquema de partición utilizado para crear los conjuntos de análisis y evaluación suele ser la característica definitoria del método.</p>
+<p>Supongamos que se realizan 20 iteraciones de remuestreo. Esto significa que se ajustan 20 modelos separados a los conjuntos de análisis y los conjuntos de evaluación correspondientes producen 20 conjuntos de estadísticas de desempeño. La estimación final del rendimiento de un modelo es el promedio de las 20 réplicas de las estadísticas. Este promedio tiene muy buenas propiedades de generalización y es mucho mejor que las estimaciones de resustitución.</p>
+<p>La siguiente sección define varios métodos de remuestreo comúnmente utilizados y analiza sus ventajas y desventajas.</p>
+<section id="sec-cv" class="level3" data-number="10.2.1">
+<h3 data-number="10.2.1" class="anchored" data-anchor-id="sec-cv"><span class="header-section-number">10.2.1</span> Validación cruzada</h3>
+<p>La validación cruzada es un método de remuestreo bien establecido. Si bien existen varias variaciones, el método de validación cruzada más común es la validación cruzada <em>V</em>. Los datos se dividen aleatoriamente en <em>V</em> conjuntos de tamaño aproximadamente igual (llamados pliegues). A modo de ilustración, <em>V</em> = 3 se muestra en <a href="#fig-cross-validation-allocation" class="quarto-xref">Figura&nbsp;<span>10.2</span></a> para un conjunto de datos de 30 puntos de configuración de entrenamiento con asignaciones de pliegues aleatorios. El número dentro de los símbolos es el número de muestra.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-cross-validation-allocation" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Un diagrama de cómo la validación cruzada de pliegues en V asigna aleatoriamente datos a los pliegues (donde V es igual a tres). Se asigna un conjunto de treinta puntos de datos a tres grupos de aproximadamente el mismo tamaño." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cross-validation-allocation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="premade/three-CV.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%" alt="Un diagrama de cómo la validación cruzada de pliegues en V asigna aleatoriamente datos a los pliegues (donde V es igual a tres). Se asigna un conjunto de treinta puntos de datos a tres grupos de aproximadamente el mismo tamaño.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cross-validation-allocation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.2: La validación cruzada de pliegues en V asigna aleatoriamente datos a los pliegues
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>El color de los símbolos en <a href="#fig-cross-validation-allocation" class="quarto-xref">Figura&nbsp;<span>10.2</span></a> representa sus pliegues asignados aleatoriamente. El muestreo estratificado también es una opción para asignar pliegues (analizado anteriormente en <a href="05-data-spending.html#sec-splitting-methods" class="quarto-xref"><span>Sección 5.1</span></a>).</p>
+<p>Para una validación cruzada triple, las tres iteraciones de remuestreo se ilustran en <a href="#fig-cross-validation" class="quarto-xref">Figura&nbsp;<span>10.3</span></a>. Para cada iteración, se reserva un pliegue para las estadísticas de evaluación y los pliegues restantes son sustrato para el modelo. Este proceso continúa en cada pliegue, de modo que tres modelos producen tres conjuntos de estadísticas de rendimiento.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-cross-validation" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Un diagrama del uso de datos de validación cruzada multiplicado por V (donde V es igual a tres). Para cada uno de los tres grupos, los datos del pliegue se reservan para el rendimiento, mientras que los otros dos se utilizan para modelar." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cross-validation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="premade/three-CV-iter.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Un diagrama del uso de datos de validación cruzada multiplicado por V (donde V es igual a tres). Para cada uno de los tres grupos, los datos del pliegue se reservan para el rendimiento, mientras que los otros dos se utilizan para modelar.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cross-validation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.3: Uso de datos de validación cruzada V-fold
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Cuando <em>V</em> = 3, los conjuntos de análisis son 2/3 del conjunto de entrenamiento y cada conjunto de evaluación es un 1/3 distinto. La estimación final del remuestreo del rendimiento promedia cada una de las <em>V</em> réplicas.</p>
+<p>Usar <em>V</em> = 3 es una buena opción para ilustrar la validación cruzada, pero en la práctica es una mala opción porque es demasiado baja para generar estimaciones confiables. En la práctica, los valores de <em>V</em> suelen ser 5 o 10; Generalmente preferimos la validación cruzada 10 veces como valor predeterminado porque es lo suficientemente grande para obtener buenos resultados en la mayoría de las situaciones.</p>
+<div class="rmdnote">
+<p>¿Cuáles son los efectos de cambiar <em>V</em>? Los valores más grandes dan como resultado estimaciones de remuestreo con un sesgo pequeño pero una varianza sustancial. Los valores más pequeños de <em>V</em> tienen un sesgo grande pero una varianza baja. Preferimos 10 veces, ya que la replicación reduce el ruido, pero no el sesgo.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+</div>
+<p>La entrada principal es el marco de datos del conjunto de entrenamiento, así como el número de pliegues (por defecto, 10):</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1001</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>ames_folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(ames_train, <span class="at">v =</span> <span class="dv">10</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ames_folds</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="do">## #  10-fold cross-validation </span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 10 × 2</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   splits             id    </span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;             &lt;chr&gt; </span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;split [2107/235]&gt; Fold01</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 &lt;split [2107/235]&gt; Fold02</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 &lt;split [2108/234]&gt; Fold03</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 &lt;split [2108/234]&gt; Fold04</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 &lt;split [2108/234]&gt; Fold05</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 &lt;split [2108/234]&gt; Fold06</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 4 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>La columna denominada <code>splits</code> contiene información sobre cómo dividir los datos (similar al objeto utilizado para crear la partición de entrenamiento/prueba inicial). Si bien cada fila de “divisiones” tiene una copia incrustada de todo el conjunto de entrenamiento, R es lo suficientemente inteligente como para no hacer copias de los datos en la memoria.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> El método de impresión dentro del tibble muestra la frecuencia de cada: <code>[2107/235]</code> indica que alrededor de dos mil muestras están en el conjunto de análisis y 235 están en ese conjunto de evaluación en particular.</p>
+<p>Estos objetos también contienen siempre una columna de caracteres llamada <code>id</code> que etiqueta la partición.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>Para recuperar manualmente los datos particionados, las funciones <code>analysis()</code> y <code>assessment()</code> devuelven los marcos de datos correspondientes:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Para el primer pliegue:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ames_folds<span class="sc">$</span>splits[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> <span class="fu">analysis</span>() <span class="sc">%&gt;%</span> <span class="fu">dim</span>()</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2107   74</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los paquetes <span class="pkg">tidymodels</span>, como <a href="https://tune.tidymodels.org/"><span class="pkg">tune</span></a>, contienen interfaces de usuario de alto nivel para que funciones como <code>analysis()</code> no sean generalmente necesarias para el trabajo diario. <a href="#sec-resampling-performance" class="quarto-xref"><span>Sección 10.3</span></a> demuestra una función para ajustar un modelo sobre estos remuestreos.</p>
+<p>Existe una variedad de variaciones de validación cruzada; repasaremos los más importantes.</p>
+</section>
+<section id="validación-cruzada-repetida" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="validación-cruzada-repetida">Validación cruzada repetida</h3>
+<p>La variación más importante de la validación cruzada es la validación cruzada repetida <em>V</em> veces. Dependiendo del tamaño de los datos u otras características, la estimación de remuestreo producida por la validación cruzada <em>V</em> veces puede ser excesivamente ruidosa.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> Como ocurre con muchos problemas estadísticos, una forma de reducir el ruido es recopilar más datos . Para la validación cruzada, esto significa promediar más de <em>V</em> estadísticas.</p>
+<p>Para crear repeticiones <em>R</em> de validación cruzada de pliegues <em>V</em>, se realiza el mismo proceso de generación de pliegues <em>R</em> veces para generar colecciones <em>R</em> de particiones <em>V</em>. Ahora, en lugar de promediar las estadísticas <em>V</em>, las estadísticas <span class="math inline">\(V \times R\)</span> producen la estimación final del remuestreo. Debido al teorema del límite central, las estadísticas resumidas de cada modelo tienden a una distribución normal, siempre que tengamos muchos datos relativos a <span class="math inline">\(V \times R\)</span>.</p>
+<p>Consideremos los datos de Ames. En promedio, la validación cruzada 10 veces utiliza conjuntos de evaluación que contienen aproximadamente propiedades 234. Si RMSE es la estadística elegida, podemos denotar la desviación estándar de esa estimación como <span class="math inline">\(\sigma\)</span>. Con una validación cruzada simple de 10 veces, el error estándar del RMSE medio es <span class="math inline">\(\sigma/\sqrt{10}\)</span>. Si esto es demasiado ruidoso, las repeticiones reducen el error estándar a <span class="math inline">\(\sigma/\sqrt{10R}\)</span>. Para una validación cruzada de 10 veces con réplicas de <span class="math inline">\(R\)</span>, el gráfico en <a href="#fig-variance-reduction" class="quarto-xref">Figura&nbsp;<span>10.4</span></a> muestra qué tan rápido disminuye el error estándar<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> con las réplicas.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-variance-reduction" class="quarto-figure quarto-figure-center quarto-float anchored" alt="La relación entre la varianza relativa en las estimaciones de rendimiento versus el número de repeticiones de validación cruzada. A medida que aumentan las repeticiones, la varianza se reduce en un patrón armónicamente decreciente con rendimientos decrecientes para un gran número de repeticiones." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-variance-reduction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-variance-reduction-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="La relación entre la varianza relativa en las estimaciones de rendimiento versus el número de repeticiones de validación cruzada. A medida que aumentan las repeticiones, la varianza se reduce en un patrón armónicamente decreciente con rendimientos decrecientes para un gran número de repeticiones." width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-variance-reduction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.4: Relación entre la varianza relativa en las estimaciones de desempeño versus el número de repeticiones de validación cruzada
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Un mayor número de réplicas tiende a tener menos impacto en el error estándar. Sin embargo, si el valor de referencia de <span class="math inline">\(\sigma\)</span> es imprácticamente grande, los rendimientos decrecientes de la replicación aún pueden valer los costos computacionales adicionales.</p>
+<p>Para crear repeticiones, invoque <code>vfold_cv()</code> con un argumento adicional <code>repeats</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">vfold_cv</span>(ames_train, <span class="at">v =</span> <span class="dv">10</span>, <span class="at">repeats =</span> <span class="dv">5</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="do">## #  10-fold cross-validation repeated 5 times </span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 50 × 3</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   splits             id      id2   </span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;             &lt;chr&gt;   &lt;chr&gt; </span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;split [2107/235]&gt; Repeat1 Fold01</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 &lt;split [2107/235]&gt; Repeat1 Fold02</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 &lt;split [2108/234]&gt; Repeat1 Fold03</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 &lt;split [2108/234]&gt; Repeat1 Fold04</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 &lt;split [2108/234]&gt; Repeat1 Fold05</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 &lt;split [2108/234]&gt; Repeat1 Fold06</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 44 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="validación-cruzada-de-dejar-uno-fuera" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="validación-cruzada-de-dejar-uno-fuera">Validación cruzada de dejar uno fuera</h3>
+<p>Una variación de la validación cruzada es la validación cruzada de dejar uno fuera (LOO). Si hay <span class="math inline">\(n\)</span> muestras de conjuntos de entrenamiento, <span class="math inline">\(n\)</span> modelos se ajustan usando <span class="math inline">\(n-1\)</span> filas del conjunto de entrenamiento. Cada modelo predice el único punto de datos excluido. Al final del remuestreo, las predicciones <span class="math inline">\(n\)</span> se combinan para producir una única estadística de rendimiento.</p>
+<p>Los métodos de dejar uno fuera son deficientes en comparación con casi cualquier otro método. Para cualquier cosa que no sea una muestra patológicamente pequeña, LOO es computacionalmente excesivo y puede que no tenga buenas propiedades estadísticas. Aunque el paquete <span class="pkg">rsample</span> contiene una función <code>loo_cv()</code>, estos objetos generalmente no están integrados en los marcos más amplios de tidymodels.</p>
+</section>
+<section id="validación-cruzada-de-monte-carlo" class="level3 unnumbered">
+<h3 class="unnumbered anchored" data-anchor-id="validación-cruzada-de-monte-carlo">Validación cruzada de Monte Carlo</h3>
+<p>Otra variante de la validación cruzada <em>V</em> es la validación cruzada de Monte Carlo (MCCV, <span class="citation" data-cites="xu2001monte">Xu y Liang (<a href="references.html#ref-xu2001monte" role="doc-biblioref">2001</a>)</span>). Al igual que la validación cruzada <em>V</em> veces, asigna una proporción fija de datos a los conjuntos de evaluación. La diferencia entre MCCV y la validación cruzada regular es que, para MCCV, esta proporción de datos se selecciona aleatoriamente cada vez. Esto da como resultado conjuntos de evaluación que no son mutuamente excluyentes. Para crear estos objetos de remuestreo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mc_cv</span>(ames_train, <span class="at">prop =</span> <span class="dv">9</span><span class="sc">/</span><span class="dv">10</span>, <span class="at">times =</span> <span class="dv">20</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # Monte Carlo cross-validation (0.9/0.1) with 20 resamples  </span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 20 × 2</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   splits             id        </span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;             &lt;chr&gt;     </span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;split [2107/235]&gt; Resample01</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 &lt;split [2107/235]&gt; Resample02</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 &lt;split [2107/235]&gt; Resample03</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 &lt;split [2107/235]&gt; Resample04</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 &lt;split [2107/235]&gt; Resample05</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 &lt;split [2107/235]&gt; Resample06</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 14 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sec-validation" class="level3" data-number="10.2.2">
+<h3 data-number="10.2.2" class="anchored" data-anchor-id="sec-validation"><span class="header-section-number">10.2.2</span> Conjuntos de validación</h3>
+<p>En <a href="05-data-spending.html#sec-what-about-a-validation-set" class="quarto-xref"><span>Sección 5.2</span></a>, analizamos brevemente el uso de un conjunto de validación, una única partición que se reserva para estimar el rendimiento separada del conjunto de prueba. Cuando se utiliza un conjunto de validación, el conjunto de datos inicial disponible se divide en un conjunto de entrenamiento, un conjunto de validación y un conjunto de prueba (consulte <a href="#fig-three-way-split" class="quarto-xref">Figura&nbsp;<span>10.5</span></a>).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-three-way-split" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Una división inicial de tres vías en conjuntos de entrenamiento, pruebas y validación." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-three-way-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="premade/validation.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%" alt="Una división inicial de tres vías en conjuntos de entrenamiento, pruebas y validación.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-three-way-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.5: Una división inicial de tres vías en conjuntos de entrenamiento, pruebas y validación.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Los conjuntos de validación se utilizan a menudo cuando el conjunto de datos original es muy grande. En este caso, una única partición grande puede ser adecuada para caracterizar el rendimiento del modelo sin tener que realizar múltiples iteraciones de remuestreo.</p>
+<p>Con el paquete <span class="pkg">rsample</span>, un conjunto de validación es como cualquier otro objeto de remuestreo; este tipo se diferencia únicamente en que tiene una única iteración.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> <a href="#fig-validation-split" class="quarto-xref">Figura&nbsp;<span>10.6</span></a> muestra este esquema.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-validation-split" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Una división inicial bidireccional en entrenamiento y prueba con un conjunto de validación adicional dividido en el conjunto de entrenamiento." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-validation-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="premade/validation-alt.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:45.0%" alt="Una división inicial bidireccional en entrenamiento y prueba con un conjunto de validación adicional dividido en el conjunto de entrenamiento.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-validation-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.6: Una división inicial bidireccional en entrenamiento y pruebas con un conjunto de validación adicional dividido en el conjunto de entrenamiento
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Para construir sobre el código de <a href="05-data-spending.html#sec-what-about-a-validation-set" class="quarto-xref"><span>Sección 5.2</span></a>, la función <code>validation_set()</code> puede tomar los resultados de <code>initial_validation_split()</code> y convertirlos en un objeto rset similar a los producidos. mediante funciones como <code>vfold_cv()</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Previamente:</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">52</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Para dedicar el 60 % al entrenamiento, el 20 % a la validación y el 20 % a las pruebas:</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>ames_val_split <span class="ot">&lt;-</span> <span class="fu">initial_validation_split</span>(ames, <span class="at">prop =</span> <span class="fu">c</span>(<span class="fl">0.6</span>, <span class="fl">0.2</span>))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ames_val_split</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="do">## &lt;Training/Validation/Testing/Total&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">## &lt;1758/586/586/2930&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Objeto utilizado para remuestreo: </span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>val_set <span class="ot">&lt;-</span> <span class="fu">validation_set</span>(ames_val_split)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>val_set</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 2</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="do">##   splits             id        </span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;             &lt;chr&gt;     </span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;split [1758/586]&gt; validation</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Como verá en <span class="quarto-unresolved-ref">?sec-resampling-rendimiento</span>, la función <code>fit_resamples()</code> se utilizará para calcular estimaciones correctas de rendimiento mediante el remuestreo. El objeto <code>val_set</code> se puede utilizar en esta y otras funciones aunque sea una única “muestra” de los datos.</p>
+</section>
+<section id="sec-bootstrap" class="level3" data-number="10.2.3">
+<h3 data-number="10.2.3" class="anchored" data-anchor-id="sec-bootstrap"><span class="header-section-number">10.2.3</span> Bootstrapping</h3>
+<p>El remuestreo Bootstrap se inventó originalmente como un método para aproximar la distribución muestral de estadísticas cuyas propiedades teóricas son intratables <span class="citation" data-cites="davison1997bootstrap">(<a href="references.html#ref-davison1997bootstrap" role="doc-biblioref">Davison y Hinkley 1997</a>)</span>. Usarlo para estimar el desempeño del modelo es una aplicación secundaria del método.</p>
+<p>Una muestra bootstrap del conjunto de entrenamiento es una muestra que tiene el mismo tamaño que el conjunto de entrenamiento pero que se extrae <em>con reemplazo</em>. Esto significa que algunos puntos de datos del conjunto de entrenamiento se seleccionan varias veces para el conjunto de análisis. Cada punto de datos tiene una probabilidad 63.2% de ser incluido en el conjunto de entrenamiento al menos una vez. El conjunto de evaluación contiene todas las muestras del conjunto de entrenamiento que no fueron seleccionadas para el conjunto de análisis (en promedio, con 36.8% del conjunto de entrenamiento). Al realizar el arranque, el conjunto de evaluación a menudo se denomina muestra <em>fuera de la bolsa</em>.</p>
+<p>Para un conjunto de entrenamiento de 30 muestras, en la siguiente figura se muestra un esquema de tres muestras bootstrap <a href="#fig-bootstrapping" class="quarto-xref">Figura&nbsp;<span>10.7</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-bootstrapping" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Un diagrama del uso de datos en bootstrapping. Para cada remuestreo de bootstrap, el conjunto de análisis es del mismo tamaño que el conjunto de entrenamiento (debido al muestreo con reemplazo) y el conjunto de evaluación consta de muestras que no están en el conjunto de análisis." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bootstrapping-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="premade/bootstraps.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Un diagrama del uso de datos en bootstrapping. Para cada remuestreo de bootstrap, el conjunto de análisis es del mismo tamaño que el conjunto de entrenamiento (debido al muestreo con reemplazo) y el conjunto de evaluación consta de muestras que no están en el conjunto de análisis.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bootstrapping-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.7: Uso de datos Bootstraping
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Tenga en cuenta que los tamaños de los conjuntos de evaluación varían.</p>
+<p>Usando el paquete <span class="pkg">rsample</span>, podemos crear tales remuestreos de bootstrap:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bootstraps</span>(ames_train, <span class="at">times =</span> <span class="dv">5</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # Bootstrap sampling </span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 5 × 2</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   splits             id        </span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;             &lt;chr&gt;     </span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;split [2342/867]&gt; Bootstrap1</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 &lt;split [2342/869]&gt; Bootstrap2</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 &lt;split [2342/859]&gt; Bootstrap3</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 &lt;split [2342/858]&gt; Bootstrap4</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 &lt;split [2342/873]&gt; Bootstrap5</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Las muestras Bootstrap producen estimaciones de rendimiento que tienen una varianza muy baja (a diferencia de la validación cruzada) pero tienen un sesgo pesimista significativo. Esto significa que, si la precisión real de un modelo es del 90%, el bootstrap tendería a estimar que el valor es inferior al 90%. La cantidad de sesgo no se puede determinar empíricamente con suficiente precisión. Además, la cantidad de sesgo cambia a lo largo de la escala de la métrica de desempeño. Por ejemplo, es probable que el sesgo sea diferente cuando la precisión es del 90 % y cuando es del 70 %.</p>
+<p>El bootstrap también se utiliza en muchos modelos. Por ejemplo, el modelo de random forest mencionado anteriormente contenía 1000 árboles de decisión individuales. Cada árbol fue producto de una muestra de bootstrap diferente del conjunto de entrenamiento.</p>
+</section>
+<section id="sec-rolling" class="level3" data-number="10.2.4">
+<h3 data-number="10.2.4" class="anchored" data-anchor-id="sec-rolling"><span class="header-section-number">10.2.4</span> Remuestreo continuo del origen de la previsión</h3>
+<p>Cuando los datos tienen un fuerte componente temporal, un método de remuestreo debería respaldar el modelado para estimar tendencias estacionales y otras tendencias temporales dentro de los datos. Una técnica que muestrea aleatoriamente valores del conjunto de entrenamiento puede alterar la capacidad del modelo para estimar estos patrones.</p>
+<p>El remuestreo continuo del origen del pronóstico <span class="citation" data-cites="hyndman2018forecasting">(<a href="references.html#ref-hyndman2018forecasting" role="doc-biblioref">Hyndman y Athanasopoulos 2018</a>)</span> proporciona un método que emula cómo los datos de series de tiempo a menudo se dividen en la práctica, estimando el modelo con datos históricos y evaluándolo con los datos más recientes. Para este tipo de remuestreo, se especifica el tamaño de los conjuntos de análisis y evaluación iniciales. La primera iteración de remuestreo utiliza estos tamaños, comenzando desde el principio de la serie. La segunda iteración utiliza los mismos tamaños de datos pero cambia en un número determinado de muestras.</p>
+<p>A modo de ilustración, se volvió a muestrear un conjunto de entrenamiento de quince muestras con un tamaño de análisis de ocho muestras y un tamaño de conjunto de evaluación de tres. La segunda iteración descarta la primera muestra del conjunto de entrenamiento y ambos conjuntos de datos avanzan uno. Esta configuración da como resultado cinco remuestreos, como se muestra en <a href="#fig-rolling" class="quarto-xref">Figura&nbsp;<span>10.8</span></a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-rolling" class="quarto-figure quarto-figure-center quarto-float anchored" alt="El uso de datos para el remuestreo continuo del origen de la previsión. Para cada división, se utilizan datos anteriores para modelar y algunas instancias posteriores se utilizan para medir el desempeño." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rolling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="premade/rolling.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:65.0%" alt="El uso de datos para el remuestreo continuo del origen de la previsión. Para cada división, se utilizan datos anteriores para modelar y algunas instancias posteriores se utilizan para medir el desempeño.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rolling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.8: Uso de datos para el remuestreo continuo del origen de la previsión
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Aquí hay dos configuraciones diferentes de este método:</p>
+<ul>
+<li><p>El conjunto de análisis puede crecer acumulativamente (en lugar de permanecer del mismo tamaño). Después del primer conjunto de análisis inicial, se pueden acumular nuevas muestras sin descartar los datos anteriores.</p></li>
+<li><p>Los remuestreos no necesitan incrementarse en uno. Por ejemplo, para conjuntos de datos grandes, el bloque incremental podría ser una semana o un mes en lugar de un día.</p></li>
+</ul>
+<p>Para los datos de un año, supongamos que seis conjuntos de bloques de 30 días definen el conjunto de análisis. Para conjuntos de evaluación de 30 días con un salto de 29 días, podemos usar el paquete <span class="pkg">rsample</span> para especificar:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>time_slices <span class="ot">&lt;-</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">365</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rolling_origin</span>(<span class="at">initial =</span> <span class="dv">6</span> <span class="sc">*</span> <span class="dv">30</span>, <span class="at">assess =</span> <span class="dv">30</span>, <span class="at">skip =</span> <span class="dv">29</span>, <span class="at">cumulative =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>data_range <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(x, <span class="at">first =</span> <span class="fu">min</span>(x), <span class="at">last =</span> <span class="fu">max</span>(x))</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(time_slices<span class="sc">$</span>splits, <span class="sc">~</span>   <span class="fu">analysis</span>(.x) <span class="sc">%&gt;%</span> <span class="fu">data_range</span>())</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 6 × 2</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   first  last</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;int&gt; &lt;int&gt;</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 1     1   180</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 2    31   210</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 3    61   240</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 4    91   270</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 5   121   300</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 6   151   330</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(time_slices<span class="sc">$</span>splits, <span class="sc">~</span> <span class="fu">assessment</span>(.x) <span class="sc">%&gt;%</span> <span class="fu">data_range</span>())</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 6 × 2</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="do">##   first  last</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;int&gt; &lt;int&gt;</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a><span class="do">## 1   181   210</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a><span class="do">## 2   211   240</span></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="do">## 3   241   270</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="do">## 4   271   300</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a><span class="do">## 5   301   330</span></span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="do">## 6   331   360</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="sec-resampling-performance" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="sec-resampling-performance"><span class="header-section-number">10.3</span> Estimación Del Rendimiento</h2>
+<p>Cualquiera de los métodos de remuestreo discutidos en este capítulo se puede utilizar para evaluar el proceso de modelado (incluido el preprocesamiento, el ajuste del modelo, etc.). Estos métodos son eficaces porque se utilizan diferentes grupos de datos para entrenar el modelo y evaluarlo. Para reiterar, el proceso para utilizar el remuestreo es:</p>
+<ol type="1">
+<li><p>Durante el remuestreo, el conjunto de análisis se utiliza para preprocesar los datos, aplicar el preprocesamiento a sí mismo y utilizar estos datos procesados para ajustarse al modelo.</p></li>
+<li><p>Las estadísticas de preprocesamiento producidas por el conjunto de análisis se aplican al conjunto de evaluación. Las predicciones del conjunto de evaluación estiman el rendimiento con datos nuevos.</p></li>
+</ol>
+<p>Esta secuencia se repite para cada nuevo muestreo. Si hay <em>B</em> remuestreos, hay <em>B</em> réplicas de cada una de las métricas de rendimiento. La estimación final del remuestreo es el promedio de estas estadísticas <em>B</em>. Si <em>B</em> = 1, como ocurre con un conjunto de validación, las estadísticas individuales representan el rendimiento general.</p>
+<p>Reconsideremos el modelo de random forest anterior contenido en el objeto <code>rf_wflow</code>. La función <code>fit_resamples()</code> es análoga a <code>fit()</code>, pero en lugar de tener un argumento <code>data</code>, <code>fit_resamples()</code> tiene <code>resamples</code>, que espera un objeto <code>rset</code> como los que se muestran en este capítulo Las posibles interfaces para la función son:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model_spec <span class="sc">%&gt;%</span> <span class="fu">fit_resamples</span>(formula,  resamples, ...)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>model_spec <span class="sc">%&gt;%</span> <span class="fu">fit_resamples</span>(recipe,   resamples, ...)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>workflow   <span class="sc">%&gt;%</span> <span class="fu">fit_resamples</span>(          resamples, ...)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Hay una serie de otros argumentos opcionales, como por ejemplo:</p>
+<ul>
+<li><p><code>metrics</code>: Un conjunto de métricas de estadísticas de rendimiento para calcular. De forma predeterminada, los modelos de regresión utilizan RMSE y <span class="math inline">\(R^2\)</span>, mientras que los modelos de clasificación calculan el área bajo la curva ROC y la precisión general. Tenga en cuenta que esta elección también define qué predicciones se producen durante la evaluación del modelo. Para la clasificación, si solo se solicita precisión, no se generan estimaciones de probabilidad de clase para el conjunto de evaluación (ya que no son necesarias).</p></li>
+<li><p><code>control</code>: Una lista creada por <code>control_resamples()</code> con varias opciones.</p></li>
+</ul>
+<p>Los argumentos de control incluyen:</p>
+<ul>
+<li><p><code>verbose</code>: Una lógica para imprimir el registro.</p></li>
+<li><p><code>extract</code>: Una función para retener objetos de cada iteración del modelo (que se analiza más adelante en este capítulo).</p></li>
+<li><p><code>save_pred</code>: Una lógica para guardar las predicciones del conjunto de evaluación.</p></li>
+</ul>
+<p>Para nuestro ejemplo, guardemos las predicciones para visualizar el ajuste y los residuos del modelo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>keep_pred <span class="ot">&lt;-</span> <span class="fu">control_resamples</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>, <span class="at">save_workflow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1003</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>rf_res <span class="ot">&lt;-</span> </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  rf_wflow <span class="sc">%&gt;%</span> </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fit_resamples</span>(<span class="at">resamples =</span> ames_folds, <span class="at">control =</span> keep_pred)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>rf_res</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="do">## # Resampling results</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="do">## # 10-fold cross-validation </span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 10 × 5</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   splits             id     .metrics         .notes           .predictions      </span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;           &lt;list&gt;           &lt;list&gt;            </span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;split [2107/235]&gt; Fold01 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble [235 × 4]&gt;</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 &lt;split [2107/235]&gt; Fold02 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble [235 × 4]&gt;</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 &lt;split [2108/234]&gt; Fold03 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble [234 × 4]&gt;</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 &lt;split [2108/234]&gt; Fold04 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble [234 × 4]&gt;</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 &lt;split [2108/234]&gt; Fold05 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble [234 × 4]&gt;</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 &lt;split [2108/234]&gt; Fold06 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble [234 × 4]&gt;</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 4 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>El valor de retorno es un tibble similar a las muestras de entrada, junto con algunas columnas adicionales:</p>
+<ul>
+<li><p><code>.metrics</code> es una columna de lista de tibbles que contiene las estadísticas de rendimiento del conjunto de evaluación.</p></li>
+<li><p><code>.notes</code> Hay otra columna de lista de tibbles que cataloga cualquier advertencia o error generado durante el remuestreo. Tenga en cuenta que los errores no detendrán la ejecución posterior del remuestreo.</p></li>
+<li><p><code>.predictions</code> está presente cuando <code>save_pred = TRUE</code>. Esta columna de lista contiene tibbles con predicciones fuera de muestra.</p></li>
+</ul>
+<p>Si bien estas columnas de lista pueden parecer desalentadoras, se pueden reconfigurar fácilmente usando <span class="pkg">tidyr</span> o con las funciones convenientes que proporciona tidymodels. Por ejemplo, para devolver las métricas de rendimiento en un formato más utilizable:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(rf_res)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 6</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator   mean     n std_err .config             </span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               </span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 rmse    standard   0.0721    10 0.00305 Preprocessor1_Model1</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 rsq     standard   0.831     10 0.0108  Preprocessor1_Model1</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Estas son las estimaciones de remuestreo promediadas sobre las réplicas individuales. Para obtener las métricas para cada remuestreo, use la opción <code>summarize = FALSE</code>.</p>
+<p>¡Observe cuánto más realistas son las estimaciones de rendimiento que las estimaciones de resustitución de <a href="#sec-resampling-resubstition" class="quarto-xref"><span>Sección 10.1</span></a>!</p>
+<p>Para obtener las predicciones del conjunto de evaluación:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>assess_res <span class="ot">&lt;-</span> <span class="fu">collect_predictions</span>(rf_res)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>assess_res</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2,342 × 5</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   .pred id      .row Sale_Price .config             </span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;               </span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  5.10 Fold01    10       5.09 Preprocessor1_Model1</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  4.92 Fold01    27       4.90 Preprocessor1_Model1</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 3  5.21 Fold01    47       5.08 Preprocessor1_Model1</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 4  5.13 Fold01    52       5.10 Preprocessor1_Model1</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 5  5.13 Fold01    59       5.10 Preprocessor1_Model1</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 6  5.13 Fold01    63       5.11 Preprocessor1_Model1</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 2,336 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los nombres de las columnas de predicción siguen las convenciones analizadas para los modelos <span class="pkg">parsnip</span> en el <a href="06-fitting-models.html" class="quarto-xref">Capítulo&nbsp;<span>6</span></a>, para mayor coherencia y facilidad de uso. La columna de resultados observados siempre utiliza el nombre de la columna original de los datos de origen. La columna <code>.row</code> es un número entero que coincide con la fila del conjunto de entrenamiento original para que estos resultados puedan organizarse y unirse adecuadamente con los datos originales.</p>
+<div class="rmdnote">
+<p>Para algunos métodos de remuestreo, como el bootstrap o la validación cruzada repetida, habrá múltiples predicciones por fila del conjunto de entrenamiento original. Para obtener valores resumidos (promedios de las predicciones replicadas), utilice <code>collect_predictions(object, summarize = TRUE)</code>.</p>
+</div>
+<p>Dado que este análisis utilizó una validación cruzada de 10 veces, existe una predicción única para cada muestra del conjunto de entrenamiento. Estos datos pueden generar gráficos útiles del modelo para comprender dónde potencialmente falló. Por ejemplo, <span class="quarto-unresolved-ref">?fig-ames-resampled-dance</span> compara los valores observados y predichos retenidos (análogo a <span class="quarto-unresolved-ref">?fig-ames-rendimiento-plot</span>):</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>assess_res <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Sale_Price, <span class="at">y =</span> .pred)) <span class="sc">+</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> .<span class="dv">15</span>) <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">color =</span> <span class="st">"red"</span>) <span class="sc">+</span> </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_obs_pred</span>() <span class="sc">+</span> </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Predichos"</span>) <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Precio de Venta"</span>)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-ames-resampled-performance" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Gráficos de dispersión de valores observados versus valores predichos fuera de la muestra para un modelo de regresión de Ames. Ambos ejes utilizan unidades log-10. El modelo muestra una buena concordancia con dos puntos de datos periféricos que están significativamente sobreestimados." data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ames-resampled-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/fig-ames-resampled-performance-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Gráficos de dispersión de valores observados versus valores predichos fuera de la muestra para un modelo de regresión de Ames. Ambos ejes utilizan unidades log-10. El modelo muestra una buena concordancia con dos puntos de datos periféricos que están significativamente sobreestimados." width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ames-resampled-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.9: Valores observados versus predichos fuera de la muestra para un modelo de regresión de Ames, utilizando unidades log-10 en ambos ejes
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Hay dos casas en el conjunto de entrenamiento con un precio de venta bajo observado que el modelo sobreestima significativamente. ¿Qué casas son estas? Averigüemos por el resultado de <code>assess_res</code>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>over_predicted <span class="ot">&lt;-</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  assess_res <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">residual =</span> Sale_Price <span class="sc">-</span> .pred) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(<span class="fu">abs</span>(residual))) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>over_predicted</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 6</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   .pred id      .row Sale_Price .config              residual</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;dbl&gt; &lt;chr&gt;  &lt;int&gt;      &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 1  4.97 Fold09    32       4.11 Preprocessor1_Model1   -0.858</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 2  4.93 Fold08   317       4.12 Preprocessor1_Model1   -0.815</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>ames_train <span class="sc">%&gt;%</span> </span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(over_predicted<span class="sc">$</span>.row) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Gr_Liv_Area, Neighborhood, Year_Built, Bedroom_AbvGr, Full_Bath)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 5</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="do">##   Gr_Liv_Area Neighborhood           Year_Built Bedroom_AbvGr Full_Bath</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="do">##         &lt;int&gt; &lt;fct&gt;                       &lt;int&gt;         &lt;int&gt;     &lt;int&gt;</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="do">## 1         832 Old_Town                     1923             2         1</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 2         733 Iowa_DOT_and_Rail_Road       1952             2         1</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Identificar ejemplos como estos con un desempeño especialmente pobre puede ayudarnos a realizar un seguimiento e investigar por qué estas predicciones específicas son tan pobres.</p>
+<p>Volvamos a las casas en general. ¿Cómo podemos utilizar un conjunto de validación en lugar de validación cruzada? De nuestro objeto anterior <span class="pkg">rsample</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>val_res <span class="ot">&lt;-</span> rf_wflow <span class="sc">%&gt;%</span> <span class="fu">fit_resamples</span>(<span class="at">resamples =</span> val_set)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>val_res</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # Resampling results</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # Validation Set (0.75/0.25) </span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 4</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   splits             id         .metrics         .notes          </span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;             &lt;chr&gt;      &lt;list&gt;           &lt;list&gt;          </span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;split [1758/586]&gt; validation &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt;</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="fu">collect_metrics</span>(val_res)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 6</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   .metric .estimator   mean     n std_err .config             </span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt; &lt;int&gt;   &lt;dbl&gt; &lt;chr&gt;               </span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 rmse    standard   0.0728     1      NA Preprocessor1_Model1</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 rsq     standard   0.822      1      NA Preprocessor1_Model1</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Estos resultados también están mucho más cerca de los resultados del conjunto de pruebas que las estimaciones de rendimiento de resustitución.</p>
+<div class="rmdnote">
+<p>En estos análisis, los resultados del remuestreo son muy cercanos a los resultados del conjunto de pruebas. Los dos tipos de estimaciones tienden a estar bien correlacionados. Sin embargo, esto podría deberse al azar. Un valor inicial de “55” fijó los números aleatorios antes de crear las nuevas muestras. Intente cambiar este valor y vuelva a ejecutar los análisis para investigar si las estimaciones remuestreadas también coinciden con los resultados del conjunto de pruebas.</p>
+</div>
+</section>
+<section id="sec-parallel" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="sec-parallel"><span class="header-section-number">10.4</span> Procesamiento En Paralelo</h2>
+<p>Los modelos creados durante el remuestreo son independientes entre sí. Los cálculos de este tipo a veces se denominan <em>vergonzosamente paralelos</em>; cada modelo podría adaptarse simultáneamente sin problemas.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> El paquete <span class="pkg">tune</span> usa <a href="https://CRAN.R-project.org/%20package=foreach"><span class="pkg">foreach</span></a> paquete para facilitar los cálculos paralelos. Estos cálculos podrían dividirse entre procesadores de la misma computadora o entre computadoras diferentes, según la tecnología elegida.</p>
+<p>Para cálculos realizados en una sola computadora, el número de procesos de trabajo posibles está determinado por el paquete <span class="pkg">parallel</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># La cantidad de núcleos físicos en el hardware:</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>parallel<span class="sc">::</span><span class="fu">detectCores</span>(<span class="at">logical =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># El número de posibles procesadors independientes que pueden</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co"># ser utilizados simultáneamente:  </span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>parallel<span class="sc">::</span><span class="fu">detectCores</span>(<span class="at">logical =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 4</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>La diferencia entre estos dos valores está relacionada con el procesador de la computadora. Por ejemplo, la mayoría de los procesadores Intel utilizan hyperthreading, que crea dos núcleos virtuales para cada núcleo físico. Si bien estos recursos adicionales pueden mejorar el rendimiento, la mayoría de las aceleraciones producidas por el procesamiento paralelo ocurren cuando el procesamiento utiliza menos núcleos físicos.</p>
+<p>Para <code>fit_resamples()</code> y otras funciones en <span class="pkg">tune</span>, el procesamiento paralelo ocurre cuando el usuario registra un paquete backend paralelo. Estos paquetes de R definen cómo ejecutar el procesamiento paralelo. En los sistemas operativos Unix y macOS, un método para dividir los cálculos es bifurcar subprocesos. Para habilitar esto, cargue el paquete <span class="pkg">doMC</span> y registre el número de núcleos paralelos con <span class="pkg">foreach</span>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Solo Unix y macOS</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doMC)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoMC</span>(<span class="at">cores =</span> <span class="dv">2</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Ahora ejecute fit_resamples()...</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esto indica a <code>fit_resamples()</code> que ejecute la mitad de los cálculos en cada uno de los dos núcleos. Para restablecer los cálculos al procesamiento secuencial:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoSEQ</span>()</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Alternativamente, un enfoque diferente para paralelizar los cálculos utiliza sockets de red. El paquete <span class="pkg">doParallel</span> habilita este método (utilizable en todos los sistemas operativos):</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Todos los sistemas operativos</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Cree un objeto de clúster y luego regístrelo: </span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makePSOCKcluster</span>(<span class="dv">2</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(cl)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Ahora ejecute fit_resamples()`...</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Otro paquete de R que facilita el procesamiento paralelo es el paquete <a href="https://future.futureverse.org/"><span class="pkg">future</span></a>. Al igual que <span class="pkg">foreach</span>, proporciona un marco para el paralelismo. Este paquete se usa junto con <span class="pkg">foreach</span> a través del paquete <span class="pkg">doFuture</span>.</p>
+<div class="rmdnote">
+<p>Los paquetes R con backends paralelos para <span class="pkg">foreach</span> comienzan con el prefijo <code>"do"</code>.</p>
+</div>
+<p>El procesamiento paralelo con el paquete <span class="pkg">tune</span> tiende a proporcionar aceleraciones lineales para los primeros núcleos. Esto significa que, con dos núcleos, los cálculos son el doble de rápidos. Dependiendo de los datos y del tipo de modelo, la aceleración lineal se deteriora después de cuatro o cinco núcleos. El uso de más núcleos seguirá reduciendo el tiempo necesario para completar la tarea; simplemente hay rendimientos decrecientes para los núcleos adicionales.</p>
+<p>Concluyamos con una nota final sobre el paralelismo. Para cada una de estas tecnologías, los requisitos de memoria se multiplican por cada núcleo adicional utilizado. Por ejemplo, si el conjunto de datos actual tiene 2 GB de memoria y se utilizan tres núcleos, el requisito total de memoria es de 8 GB (2 para cada proceso de trabajo más el original). El uso de demasiados núcleos puede hacer que los cálculos (y la computadora) se ralenticen considerablemente.</p>
+</section>
+<section id="sec-extract" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="sec-extract"><span class="header-section-number">10.5</span> Guardar Los Objetos Remuestreados</h2>
+<p>Los modelos creados durante el remuestreo no se conservan. Estos modelos se entrenan con el fin de evaluar el desempeño y, por lo general, no los necesitamos después de haber calculado las estadísticas de desempeño. Si un enfoque de modelado particular resulta ser la mejor opción para nuestro conjunto de datos, entonces la mejor opción es ajustar nuevamente todo el conjunto de entrenamiento para que los parámetros del modelo puedan estimarse con más datos.</p>
+<p>Si bien estos modelos creados durante el remuestreo no se conservan, existe un método para conservarlos o algunos de sus componentes. La opción <code>extract</code> de <code>control_resamples()</code> especifica una función que toma un solo argumento; Usaremos <code>x</code>. Cuando se ejecuta, <code>x</code> da como resultado un objeto de flujo de trabajo ajustado, independientemente de si proporcionó a <code>fit_resamples()</code> un flujo de trabajo. Recuerde que el paquete <span class="pkg">workflows</span> tiene funciones que pueden extraer los diferentes componentes de los objetos (por ejemplo, el modelo, la receta, etc.).</p>
+<p>Ajustemos un modelo de regresión lineal usando la receta que desarrollamos en el <a href="08-feature-engineering.html" class="quarto-xref">Capítulo&nbsp;<span>8</span></a>:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ames_rec <span class="ot">&lt;-</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>           Latitude <span class="sc">+</span> Longitude, <span class="at">data =</span> ames_train) <span class="sc">%&gt;%</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(Neighborhood, <span class="at">threshold =</span> <span class="fl">0.01</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>( <span class="sc">~</span> Gr_Liv_Area<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">"Bldg_Type_"</span>) ) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ns</span>(Latitude, Longitude, <span class="at">deg_free =</span> <span class="dv">20</span>)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>lm_wflow <span class="ot">&lt;-</span>  </span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(ames_rec) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(<span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>)) </span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>lm_fit <span class="ot">&lt;-</span> lm_wflow <span class="sc">%&gt;%</span> <span class="fu">fit</span>(<span class="at">data =</span> ames_train)</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Selecciona la receta:</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_recipe</span>(lm_fit, <span class="at">estimated =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Recipe ───────────────────────────────────────────────────────────────────────────</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Inputs</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="do">## Number of variables by role</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a><span class="do">## outcome:   1</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a><span class="do">## predictor: 6</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Training information</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="do">## Training data contained 2342 data points and no incomplete rows.</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a><span class="do">## ── Operations</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a><span class="do">## • Collapsing factor levels for: Neighborhood | Trained</span></span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a><span class="do">## • Dummy variables from: Neighborhood and Bldg_Type | Trained</span></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a><span class="do">## • Interactions with: Gr_Liv_Area:(Bldg_Type_TwoFmCon + Bldg_Type_Duplex +</span></span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a><span class="do">##   Bldg_Type_Twnhs + Bldg_Type_TwnhsE) | Trained</span></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a><span class="do">## • Natural splines on: Latitude and Longitude | Trained</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Podemos guardar los coeficientes del modelo lineal para un objeto de modelo ajustado desde un flujo de trabajo:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>get_model <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">extract_fit_parsnip</span>(x) <span class="sc">%&gt;%</span> <span class="fu">tidy</span>()</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pruébelo usando:</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="co"># get_model(lm_fit)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ahora apliquemos esta función a los diez ajustes remuestreados. Los resultados de la función de extracción se envuelven en un objeto de lista y se devuelven en un tibble:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ctrl <span class="ot">&lt;-</span> <span class="fu">control_resamples</span>(<span class="at">extract =</span> get_model)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>lm_res <span class="ot">&lt;-</span> lm_wflow <span class="sc">%&gt;%</span>  <span class="fu">fit_resamples</span>(<span class="at">resamples =</span> ames_folds, <span class="at">control =</span> ctrl)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>lm_res</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # Resampling results</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="do">## # 10-fold cross-validation </span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 10 × 5</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   splits             id     .metrics         .notes           .extracts       </span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;             &lt;chr&gt;  &lt;list&gt;           &lt;list&gt;           &lt;list&gt;          </span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;split [2107/235]&gt; Fold01 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble [1 × 2]&gt;</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 &lt;split [2107/235]&gt; Fold02 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble [1 × 2]&gt;</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 &lt;split [2108/234]&gt; Fold03 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble [1 × 2]&gt;</span></span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 &lt;split [2108/234]&gt; Fold04 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble [1 × 2]&gt;</span></span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 &lt;split [2108/234]&gt; Fold05 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble [1 × 2]&gt;</span></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 &lt;split [2108/234]&gt; Fold06 &lt;tibble [2 × 4]&gt; &lt;tibble [0 × 3]&gt; &lt;tibble [1 × 2]&gt;</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 4 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Ahora hay una columna <code>.extracts</code> con tibbles anidados. ¿Qué contienen estos? Averigüemos subconjuntos.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>lm_res<span class="sc">$</span>.extracts[[<span class="dv">1</span>]]</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 2</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="do">##   .extracts         .config             </span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;list&gt;            &lt;chr&gt;               </span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 &lt;tibble [73 × 5]&gt; Preprocessor1_Model1</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Para obtener los resultados</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>lm_res<span class="sc">$</span>.extracts[[<span class="dv">1</span>]][[<span class="dv">1</span>]]</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="do">## [[1]]</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 73 × 5</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   term                        estimate  std.error statistic   p.value</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                          &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)                 1.48     0.320         4.62   4.11e-  6</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 Gr_Liv_Area                 0.000158 0.00000476   33.2    9.72e-194</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Year_Built                  0.00180  0.000149     12.1    1.57e- 32</span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 Neighborhood_College_Creek -0.00163  0.0373       -0.0438 9.65e-  1</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 Neighborhood_Old_Town      -0.0757   0.0138       -5.47   4.92e-  8</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 Neighborhood_Edwards       -0.109    0.0310       -3.53   4.21e-  4</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 67 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Esto podría parecer un método complicado para guardar los resultados del modelo. Sin embargo, <code>extract</code> es flexible y no supone que el usuario solo guardará un tibble por remuestreo. Por ejemplo, el método <code>tidy()</code> podría ejecutarse tanto en la receta como en el modelo. En este caso, se devolverá una lista de dos tibbles.</p>
+<p>Para nuestro ejemplo más simple, todos los resultados se pueden aplanar y recopilar usando:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>all_coef <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(lm_res<span class="sc">$</span>.extracts, <span class="sc">~</span> .x[[<span class="dv">1</span>]][[<span class="dv">1</span>]])</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Muestre las réplicas de un único predictor:</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(all_coef, term <span class="sc">==</span> <span class="st">"Year_Built"</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 10 × 5</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term       estimate std.error statistic  p.value</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;         &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 Year_Built  0.00180  0.000149      12.1 1.57e-32</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 Year_Built  0.00180  0.000151      12.0 6.45e-32</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 Year_Built  0.00185  0.000150      12.3 1.00e-33</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 Year_Built  0.00183  0.000147      12.5 1.90e-34</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 5 Year_Built  0.00184  0.000150      12.2 2.47e-33</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 6 Year_Built  0.00180  0.000150      12.0 3.35e-32</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="do">## # ℹ 4 more rows</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Los capítulos <a href="13-grid-search.html" class="quarto-xref"><span>13</span></a> y <a href="14-iterative-search.html" class="quarto-xref"><span>14</span></a> analizan un conjunto de funciones para ajustar modelos. Sus interfaces son similares a <code>fit_resamples()</code> y muchas de las características descritas aquí se aplican a esas funciones.</p>
+</section>
+<section id="sec-resampling-summary" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="sec-resampling-summary"><span class="header-section-number">10.6</span> Resumen Del Capítulo</h2>
+<p>Este capítulo describe una de las herramientas fundamentales del análisis de datos, la capacidad de medir el rendimiento y la variación en los resultados del modelo. El remuestreo nos permite determinar qué tan bien funciona el modelo sin utilizar el conjunto de prueba.</p>
+<p>Se introdujo una función importante del paquete <span class="pkg">tune</span>, llamada <code>fit_resamples()</code>. La interfaz para esta función también se utiliza en capítulos futuros que describen las herramientas de ajuste de modelos.</p>
+<p>El código de análisis de datos, hasta ahora, para los datos de Ames es:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(ames)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">mutate</span>(ames, <span class="at">Sale_Price =</span> <span class="fu">log10</span>(Sale_Price))</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">502</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>ames_split <span class="ot">&lt;-</span> <span class="fu">initial_split</span>(ames, <span class="at">prop =</span> <span class="fl">0.80</span>, <span class="at">strata =</span> Sale_Price)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>ames_train <span class="ot">&lt;-</span> <span class="fu">training</span>(ames_split)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>ames_test  <span class="ot">&lt;-</span>  <span class="fu">testing</span>(ames_split)</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>ames_rec <span class="ot">&lt;-</span> </span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">recipe</span>(Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>           Latitude <span class="sc">+</span> Longitude, <span class="at">data =</span> ames_train) <span class="sc">%&gt;%</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_log</span>(Gr_Liv_Area, <span class="at">base =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_other</span>(Neighborhood, <span class="at">threshold =</span> <span class="fl">0.01</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_dummy</span>(<span class="fu">all_nominal_predictors</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_interact</span>( <span class="sc">~</span> Gr_Liv_Area<span class="sc">:</span><span class="fu">starts_with</span>(<span class="st">"Bldg_Type_"</span>) ) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">step_ns</span>(Latitude, Longitude, <span class="at">deg_free =</span> <span class="dv">20</span>)</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a>lm_model <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> <span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a>lm_wflow <span class="ot">&lt;-</span> </span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(lm_model) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_recipe</span>(ames_rec)</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a>lm_fit <span class="ot">&lt;-</span> <span class="fu">fit</span>(lm_wflow, ames_train)</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-28"><a href="#cb28-28" aria-hidden="true" tabindex="-1"></a>rf_model <span class="ot">&lt;-</span> </span>
+<span id="cb28-29"><a href="#cb28-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rand_forest</span>(<span class="at">trees =</span> <span class="dv">1000</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-30"><a href="#cb28-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">"ranger"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-31"><a href="#cb28-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb28-32"><a href="#cb28-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-33"><a href="#cb28-33" aria-hidden="true" tabindex="-1"></a>rf_wflow <span class="ot">&lt;-</span> </span>
+<span id="cb28-34"><a href="#cb28-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb28-35"><a href="#cb28-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_formula</span>(</span>
+<span id="cb28-36"><a href="#cb28-36" aria-hidden="true" tabindex="-1"></a>    Sale_Price <span class="sc">~</span> Neighborhood <span class="sc">+</span> Gr_Liv_Area <span class="sc">+</span> Year_Built <span class="sc">+</span> Bldg_Type <span class="sc">+</span> </span>
+<span id="cb28-37"><a href="#cb28-37" aria-hidden="true" tabindex="-1"></a>      Latitude <span class="sc">+</span> Longitude) <span class="sc">%&gt;%</span> </span>
+<span id="cb28-38"><a href="#cb28-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_model</span>(rf_model) </span>
+<span id="cb28-39"><a href="#cb28-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-40"><a href="#cb28-40" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1001</span>)</span>
+<span id="cb28-41"><a href="#cb28-41" aria-hidden="true" tabindex="-1"></a>ames_folds <span class="ot">&lt;-</span> <span class="fu">vfold_cv</span>(ames_train, <span class="at">v =</span> <span class="dv">10</span>)</span>
+<span id="cb28-42"><a href="#cb28-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-43"><a href="#cb28-43" aria-hidden="true" tabindex="-1"></a>keep_pred <span class="ot">&lt;-</span> <span class="fu">control_resamples</span>(<span class="at">save_pred =</span> <span class="cn">TRUE</span>, <span class="at">save_workflow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-44"><a href="#cb28-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-45"><a href="#cb28-45" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1003</span>)</span>
+<span id="cb28-46"><a href="#cb28-46" aria-hidden="true" tabindex="-1"></a>rf_res <span class="ot">&lt;-</span> rf_wflow <span class="sc">%&gt;%</span> <span class="fu">fit_resamples</span>(<span class="at">resamples =</span> ames_folds, <span class="at">control =</span> keep_pred)</span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-breiman2001random" class="csl-entry" role="listitem">
+Breiman, L. 2001. <span>«Random forests»</span>. <em>Machine learning</em> 45 (1): 5-32.
+</div>
+<div id="ref-davison1997bootstrap" class="csl-entry" role="listitem">
+Davison, A, y D Hinkley. 1997. <em>Bootstrap methods and their application</em>. Vol. 1. Cambridge university press.
+</div>
+<div id="ref-hyndman2018forecasting" class="csl-entry" role="listitem">
+Hyndman, R, y G Athanasopoulos. 2018. <em>Forecasting: principles and practice</em>. OTexts.
+</div>
+<div id="ref-fes" class="csl-entry" role="listitem">
+Kuhn, M, y K Johnson. 2020. <em>Feature engineering and selection: A practical approach for predictive models</em>. CRC Press.
+</div>
+<div id="ref-parallel" class="csl-entry" role="listitem">
+Schmidberger, M, M Morgan, D Eddelbuettel, H Yu, L Tierney, y U Mansmann. 2009. <span>«State of the art in parallel computing with <span>R</span>»</span>. <em>Journal of Statistical Software</em> 31 (1): 1-27. <a href="https://www.jstatsoft.org/v031/i01">https://www.jstatsoft.org/v031/i01</a>.
+</div>
+<div id="ref-xu2001monte" class="csl-entry" role="listitem">
+Xu, Q, y Y Liang. 2001. <span>«<span>Monte Carlo</span> cross validation»</span>. <em>Chemometrics and Intelligent Laboratory Systems</em> 56 (1): 1-11.
+</div>
+</div>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Consulte la Sección 1.2.5 de <span class="citation" data-cites="fes">Kuhn y Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> para una discusión: <a href="https://bookdown.org/max/FES/important-concepts.html#model-bias-and-variance" class="uri">https://bookdown.org/max/FES/important-concepts.html#model-bias-and-variance</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Es posible que un modelo lineal casi memorice el conjunto de entrenamiento, como lo hizo el modelo de bosque aleatorio. En el objeto <code>ames_rec</code>, cambie el número de términos spline para <code>longitud</code> y <code>latitud</code> a un número grande (digamos 1000). Esto produciría un modelo ajustado con un RMSE de resustitución muy pequeño y un RMSE del conjunto de prueba que es mucho más grande.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Consulte la Sección 3.4 de <span class="citation" data-cites="fes">Kuhn y Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> para obtener una descripción más detallada de los resultados del cambio de <em>V</em>: <a href="https://bookdown.org/max/FES/resampling.html" class="uri">https://bookdown.org/max/FES/resampling.html</a><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Para comprobarlo usted mismo, intente ejecutar <code>lobstr::obj_size(ames_folds)</code> y <code>lobstr::obj_size(ames_train)</code>. El tamaño del objeto de remuestreo es mucho menor que diez veces el tamaño de los datos originales.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Algunos métodos de remuestreo requieren múltiples campos <code>id</code>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Para obtener más detalles, consulte la Sección 3.4.6 de <span class="citation" data-cites="fes">Kuhn y Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span>: <a href="https://bookdown.org/max/FES/resampling.html#resample-var-bias" class="uri">https://bookdown.org/max/FES/resampling.html#resample-var-bias</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Estos son errores estándar <em>aproximados</em>. Como se analizará en el próximo capítulo, existe una correlación dentro de las réplicas que es típica de los resultados remuestreados. Al ignorar este componente adicional de variación, los cálculos simples que se muestran en este gráfico son sobreestimaciones de la reducción del ruido en los errores estándar.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>En esencia, un conjunto de validación puede considerarse una iteración única de la validación cruzada de Monte Carlo.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p><span class="citation" data-cites="parallel">Schmidberger et&nbsp;al. (<a href="references.html#ref-parallel" role="doc-biblioref">2009</a>)</span> ofrece una descripción técnica de estas tecnologías.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+
+<script>
+
+  // Chapter name
+  const currentChapterFile = window.location.pathname.split('/').pop().replace('.html', '');
+
+  //Deffining urls
+  const originalURL = "https://github.com/tidymodels/TMwR";
+  const translationURL = "https://github.com/davidrsch/TMwRes";
+
+  //Deffining texts
+  const edit_text = "Editar esta página";
+  const issue_text = "Informar de un problema"
+
+  //Deffining git_i
+  const git_i = '<div><i class="bi bi-github"></i></div>';
+
+  // Adding TOC if not exist
+  const sidebarmargin = document.getElementById('quarto-margin-sidebar');
+  const buscar_TOC = document.getElementById('TOC');
+
+  if (!buscar_TOC) {
+    const crear_TOC = document.createElement('nav');
+    crear_TOC.id = 'TOC';
+    crear_TOC.role = "doc-toc";
+    crear_TOC.class = "toc-active";
+    sidebarmargin.appendChild(crear_TOC);
+  }
+
+
+  // Adding original github actions
+  const TOC = document.getElementById('TOC');
+  const originalga = document.createElement('h2');
+  originalga.textContent = "Original";
+  const toc_act_O = document.createElement('div');
+  toc_act_O.className = 'toc-actions';
+  toc_act_O.id = 'toc-act-O';
+  const act_link_O = document.createElement('div');
+  act_link_O.className='action-links';
+  act_link_O.id='act-link-O';
+  const edit_issue_O ='<p><a href="'+originalURL+'/edit/main/'+currentChapterFile+'.Rmd" class="toc-action">'+edit_text+'</p><p><a href="'+originalURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(originalga);
+  TOC.appendChild(toc_act_O);
+  toc_act_O.innerHTML += git_i;
+  toc_act_O.appendChild(act_link_O);
+  act_link_O.innerHTML += edit_issue_O;
+
+  // Adding translation github actions
+  const translationga = document.createElement('h2');
+  translationga.textContent = "Traducción";
+  const toc_act_T = document.createElement('div');
+  toc_act_T.className = 'toc-actions';
+  toc_act_T.id = 'toc-act-T';
+  const act_link_T = document.createElement('div');
+  act_link_T.className='action-links';
+  act_link_T.id='act-link-T';
+  const edit_issue_T ='<p><a href="'+translationURL+'/edit/main/'+currentChapterFile+'.qmd" class="toc-action">'+edit_text+'</p><p><a href="'+translationURL+'/issues/new" class="toc-action">'+issue_text+'</p>';
+
+
+  TOC.appendChild(translationga);
+  TOC.appendChild(toc_act_T);
+  toc_act_T.innerHTML += git_i;
+  toc_act_T.appendChild(act_link_T);
+  act_link_T.innerHTML += edit_issue_T;
+
+
+</script>
+
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiado");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiado");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./09-judging-model-effectiveness.html" class="pagination-link" aria-label="Juzgar La Eficacia Del Modelo">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Juzgar La Eficacia Del Modelo</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./11-comparing-models.html" class="pagination-link" aria-label="Comparación De Modelos Con Remuestreo">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Comparación De Modelos Con Remuestreo</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Modelado Ordenado con R fue escrito por Max Kuhn, y Julia Silge.</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p>Este libro fue creado usando <a href="https://quarto.org/">Quarto</a>.</p>
+</div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
