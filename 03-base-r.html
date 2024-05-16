@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.554">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
 <title>Modelado Ordenado con R - 3&nbsp; Una Revisión De Los Fundamentos Del Modelado Con R</title>
@@ -809,7 +809,7 @@ Figura&nbsp;3.3: Correlaciones (e intervalos de confianza del 95%) entre los pre
 <span><span class="co">## ✖ dplyr::lag()             masks stats::lag()</span></span>
 <span><span class="co">## ✖ yardstick::spec()        masks readr::spec()</span></span>
 <span><span class="co">## ✖ recipes::step()          masks stats::step()</span></span>
-<span><span class="co">## • Dig deeper into tidy modeling with R at https://www.tmwr.org</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## • Search for functions across packages at https://www.tidymodels.org/find/</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Si ha utilizado tidyverse, notará algunos nombres familiares ya que algunos paquetes de tidyverse, como <span class="pkg">dplyr</span> y <span class="pkg">ggplot2</span>, se cargan junto con los paquetes tidymodels. Ya hemos dicho que el marco tidymodels aplica los principios de tidyverse al modelado, pero el marco tidymodels también se basa literalmente en algunos de los paquetes tidyverse más fundamentales, como estos.</p>
 <p>La carga del metapaquete también muestra si hay conflictos de nombres de funciones con paquetes cargados previamente. Como ejemplo de un conflicto de nombres, antes de cargar <span class="pkg">tidymodels</span>, al invocar la función <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> se ejecutará la función en el paquete <span class="pkg">stats</span>. Después de cargar tidymodels, ejecutará la función <span class="pkg">dplyr</span> del mismo nombre.</p>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.554">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
 <title>Modelado Ordenado con R - 8&nbsp; Ingeniería De Características Con recipes</title>
@@ -617,7 +617,7 @@ window.Quarto = {
 <p>Además, <code>step_other()</code> se puede utilizar para analizar las frecuencias de los niveles de factores en el conjunto de entrenamiento y convertir valores que ocurren con poca frecuencia a un nivel general de “otro”, con un umbral que se puede especificar. Un buen ejemplo es el predictor <code>Neighborhood</code> de nuestros datos, que se muestra en <a href="#fig-ames-neighborhoods" class="quarto-xref">Figura&nbsp;<span>8.1</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-ames-neighborhoods" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Un gráfico de barras de las frecuencias de los barrios en el conjunto de entrenamiento de Ames. La mayoría de las casas se encuentran en North Ames, mientras que los vecindarios Greens, Green Hills y Landmark tienen muy pocos casos." data-fig-align="center">
+<div id="fig-ames-neighborhoods" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un gráfico de barras de las frecuencias de los barrios en el conjunto de entrenamiento de Ames. La mayoría de las casas se encuentran en North Ames, mientras que los vecindarios Greens, Green Hills y Landmark tienen muy pocos casos.">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ames-neighborhoods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-ames-neighborhoods-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Un gráfico de barras de las frecuencias de los barrios en el conjunto de entrenamiento de Ames. La mayoría de las casas se encuentran en North Ames, mientras que los vecindarios Greens, Green Hills y Landmark tienen muy pocos casos." width="672">
 </div>
@@ -718,7 +718,7 @@ Tabla&nbsp;8.1: Ilustración de codificaciones binarias (es decir, variables fic
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-building-type-interactions" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Gráficos de dispersión de la superficie habitable bruta (en unidades log-10) versus el precio de venta (también en unidades log-10) para cinco tipos diferentes de edificios. Todas las tendencias son lineales pero parecen tener diferentes pendientes e intersecciones para los diferentes tipos de edificios." data-fig-align="center">
+<div id="fig-building-type-interactions" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Gráficos de dispersión de la superficie habitable bruta (en unidades log-10) versus el precio de venta (también en unidades log-10) para cinco tipos diferentes de edificios. Todas las tendencias son lineales pero parecen tener diferentes pendientes e intersecciones para los diferentes tipos de edificios.">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-building-type-interactions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-building-type-interactions-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Gráficos de dispersión de la superficie habitable bruta (en unidades log-10) versus el precio de venta (también en unidades log-10) para cinco tipos diferentes de edificios. Todas las tendencias son lineales pero parecen tener diferentes pendientes e intersecciones para los diferentes tipos de edificios." width="672">
 </div>
@@ -782,7 +782,7 @@ Figura&nbsp;8.2: Superficie habitable bruta (en unidades log-10) versus precio d
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-ames-latitude-splines" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Gráficos de dispersión de precio de venta versus latitud con líneas de tendencia utilizando splines naturales con diferentes grados de libertad. A medida que aumentan los grados de libertad, las líneas responden mejor a las tendencias de los datos, pero comienzan a volverse excesivamente complejas con 100 términos spline." data-fig-align="center">
+<div id="fig-ames-latitude-splines" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Gráficos de dispersión de precio de venta versus latitud con líneas de tendencia utilizando splines naturales con diferentes grados de libertad. A medida que aumentan los grados de libertad, las líneas responden mejor a las tendencias de los datos, pero comienzan a volverse excesivamente complejas con 100 términos spline.">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ames-latitude-splines-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-ames-latitude-splines-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Gráficos de dispersión de precio de venta versus latitud con líneas de tendencia utilizando splines naturales con diferentes grados de libertad. A medida que aumentan los grados de libertad, las líneas responden mejor a las tendencias de los datos, pero comienzan a volverse excesivamente complejas con 100 términos spline." width="672">
 </div>

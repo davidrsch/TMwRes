@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.4.554">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
 <title>Modelado Ordenado con R - 18&nbsp; Explicando Modelos Y Predicciones</title>
@@ -441,7 +441,7 @@ window.Quarto = {
 <p>En los capítulos <a href="10-resampling.html" class="quarto-xref"><span>10</span></a> y <a href="11-comparing-models.html" class="quarto-xref"><span>11</span></a>, entrenamos y comparamos varios modelos para predecir el precio de las viviendas en Ames, IA, incluido un modelo lineal con interacciones y un modelo forestal aleatorio, y los resultados se muestran en <a href="#fig-explain-obs-pred" class="quarto-xref">Figura&nbsp;<span>18.1</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-explain-obs-pred" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Comparación de precios previstos para un modelo lineal con interacciones y un modelo forestal aleatorio. El bosque aleatorio da como resultado predicciones más precisas.">
+<div id="fig-explain-obs-pred" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Comparación de precios previstos para un modelo lineal con interacciones y un modelo forestal aleatorio. El bosque aleatorio da como resultado predicciones más precisas." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-explain-obs-pred-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-explain-obs-pred-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Comparación de precios previstos para un modelo lineal con interacciones y un modelo forestal aleatorio. El bosque aleatorio da como resultado predicciones más precisas." width="672">
 </div>
@@ -578,7 +578,7 @@ Figura&nbsp;18.1: Comparación de precios previstos para un modelo lineal con in
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-duplex-rf-shap" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Explicaciones aditivas de Shapley a partir del modelo de bosque aleatorio para una propiedad dúplex. El año de construcción y la superficie habitable bruta tienen las mayores contribuciones.">
+<div id="fig-duplex-rf-shap" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Explicaciones aditivas de Shapley a partir del modelo de bosque aleatorio para una propiedad dúplex. El año de construcción y la superficie habitable bruta tienen las mayores contribuciones." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-duplex-rf-shap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-duplex-rf-shap-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Explicaciones aditivas de Shapley a partir del modelo de bosque aleatorio para una propiedad dúplex. El año de construcción y la superficie habitable bruta tienen las mayores contribuciones." width="672">
 </div>
@@ -611,7 +611,7 @@ Figura&nbsp;18.2: Explicaciones aditivas de Shapley del modelo de bosque aleator
 <p>Los resultados se muestran en <a href="#fig-gilbert-shap" class="quarto-xref">Figura&nbsp;<span>18.3</span></a>; a diferencia del dúplex, el tamaño y antigüedad de esta vivienda contribuyen a que su precio sea más elevado.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-gilbert-shap" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Explicaciones aditivas de Shapley a partir del modelo de bosque aleatorio para una vivienda unifamiliar en Gilbert. La superficie habitable bruta y el año de construcción tienen las mayores contribuciones, pero en la dirección opuesta a la explicación anterior.">
+<div id="fig-gilbert-shap" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Explicaciones aditivas de Shapley a partir del modelo de bosque aleatorio para una vivienda unifamiliar en Gilbert. La superficie habitable bruta y el año de construcción tienen las mayores contribuciones, pero en la dirección opuesta a la explicación anterior." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-gilbert-shap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-gilbert-shap-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Explicaciones aditivas de Shapley a partir del modelo de bosque aleatorio para una vivienda unifamiliar en Gilbert. La superficie habitable bruta y el año de construcción tienen las mayores contribuciones, pero en la dirección opuesta a la explicación anterior." width="672">
 </div>
@@ -677,7 +677,7 @@ Figura&nbsp;18.3: Explicaciones aditivas de Shapley a partir del modelo de bosqu
 <p>El uso de <code>ggplot_imp(vip_lm, vip_rf)</code> produce <a href="#fig-global-rf" class="quarto-xref">Figura&nbsp;<span>18.4</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-global-rf" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Explicador global para los modelos de bosque aleatorio y de regresión lineal. Para ambos modelos, la superficie habitable bruta y el año de construcción tienen las mayores contribuciones, pero el modelo lineal utiliza el predictor de vecindario en gran medida.">
+<div id="fig-global-rf" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Explicador global para los modelos de bosque aleatorio y de regresión lineal. Para ambos modelos, la superficie habitable bruta y el año de construcción tienen las mayores contribuciones, pero el modelo lineal utiliza el predictor de vecindario en gran medida." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-global-rf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-global-rf-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Explicador global para los modelos de bosque aleatorio y de regresión lineal. Para ambos modelos, la superficie habitable bruta y el año de construcción tienen las mayores contribuciones, pero el modelo lineal utiliza el predictor de vecindario en gran medida." width="768">
 </div>
@@ -731,7 +731,7 @@ Figura&nbsp;18.4: Explicador global para los modelos de regresión lineal y de b
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-year-built" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en el predictor del año de construcción. Los perfiles son en su mayoría relativamente constantes, pero luego aumentan linealmente alrededor de 1950.">
+<div id="fig-year-built" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en el predictor del año de construcción. Los perfiles son en su mayoría relativamente constantes, pero luego aumentan linealmente alrededor de 1950." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-year-built-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-year-built-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en el predictor del año de construcción. Los perfiles son en su mayoría relativamente constantes, pero luego aumentan linealmente alrededor de 1950." width="672">
 </div>
@@ -758,7 +758,7 @@ Figura&nbsp;18.5: Perfiles de dependencia parcial para el modelo de bosque aleat
 <p>Este código produce <a href="#fig-building-type-profiles" class="quarto-xref">Figura&nbsp;<span>18.6</span></a>, donde vemos que el precio de venta aumenta más entre aproximadamente 1,000 y 3,000 pies cuadrados de área habitable, y que los diferentes tipos de viviendas (como casas unifamiliares o diferentes tipos de casas adosadas) exhiben en su mayoría tendencias crecientes similares en el precio con más espacio habitable.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-building-type-profiles" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en los tipos de construcción y la superficie habitable bruta. Los perfiles tipo edificio son, en su mayor parte, paralelos sobre la superficie habitable bruta.">
+<div id="fig-building-type-profiles" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en los tipos de construcción y la superficie habitable bruta. Los perfiles tipo edificio son, en su mayor parte, paralelos sobre la superficie habitable bruta." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-building-type-profiles-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-building-type-profiles-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en los tipos de construcción y la superficie habitable bruta. Los perfiles tipo edificio son, en su mayor parte, paralelos sobre la superficie habitable bruta." width="672">
 </div>
@@ -786,7 +786,7 @@ Figura&nbsp;18.6: Perfiles de dependencia parcial para el modelo de bosque aleat
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-building-type-facets" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en los tipos de construcción y la superficie habitable bruta mediante facetas. Los perfiles tipo edificio son, en su mayor parte, paralelos sobre la superficie habitable bruta.">
+<div id="fig-building-type-facets" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en los tipos de construcción y la superficie habitable bruta mediante facetas. Los perfiles tipo edificio son, en su mayor parte, paralelos sobre la superficie habitable bruta." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-building-type-facets-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-building-type-facets-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Perfiles de dependencia parcial para el modelo de bosque aleatorio que se centran en los tipos de construcción y la superficie habitable bruta mediante facetas. Los perfiles tipo edificio son, en su mayor parte, paralelos sobre la superficie habitable bruta." width="672">
 </div>
@@ -815,7 +815,7 @@ Figura&nbsp;18.7: Perfiles de dependencia parcial para el modelo de bosque aleat
 <p>Usando nuestra función de trazado de importancia previamente definida, <code>ggplot_imp(vip_beans)</code> produce <a href="#fig-bean-explainer" class="quarto-xref">Figura&nbsp;<span>18.8</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-bean-explainer" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Explicador global del modelo de análisis discriminante regularizado de los datos de frijoles. Casi todos los predictores tienen una contribución significativa, siendo los factores de forma uno y cuatro los que más contribuyen. ">
+<div id="fig-bean-explainer" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Explicador global del modelo de análisis discriminante regularizado de los datos de frijoles. Casi todos los predictores tienen una contribución significativa, siendo los factores de forma uno y cuatro los que más contribuyen. " data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bean-explainer-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-bean-explainer-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Explicador global del modelo de análisis discriminante regularizado de los datos de frijoles. Casi todos los predictores tienen una contribución significativa, siendo los factores de forma uno y cuatro los que más contribuyen. " width="768">
 </div>
