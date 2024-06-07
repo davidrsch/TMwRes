@@ -15,7 +15,7 @@ book:
     right: |
       Este libro fue creado usando <a href="https://quarto.org/">Quarto</a>.
   cover-image: images/cover.png
-  favicon: images/cover.png
+  favicon: logo.png
   
   author: 
     - name: Max Kuhn
