@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
 <title>Modelado Ordenado con R - 7&nbsp; Un Flujo De Modelado</title>
@@ -62,7 +62,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="./">
 <link href="./08-feature-engineering.html" rel="next">
 <link href="./06-fitting-models.html" rel="prev">
-<link href="./images/cover.png" rel="icon" type="image/png">
+<link href="./logo.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -438,7 +438,7 @@ window.Quarto = {
 <p>Hay dos formas de pensar sobre el flujo de trabajo del modelo. <a href="#fig-bad-workflow" class="quarto-xref">Figura&nbsp;<span>7.1</span></a> ilustra el método <em>incorrecto</em>: pensar que el paso de preprocesamiento de PCA <em>no forma parte del flujo de trabajo de modelado</em>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-bad-workflow" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Un modelo mental incorrecto de dónde ocurre la estimación del modelo en el proceso de análisis de datos. Los datos y el conjunto de predictores son sustratos para un paso de preprocesamiento inicial utilizando PCA. Estos datos se pasan al algoritmo de ajuste del modelo para producir un modelo ajustado. La figura indica que el flujo de trabajo del modelo solo incluye el proceso de ajuste del modelo. Esto implica que el ajuste del modelo es el único lugar donde se produce la estimación." data-fig-align="center">
+<div id="fig-bad-workflow" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un modelo mental incorrecto de dónde ocurre la estimación del modelo en el proceso de análisis de datos. Los datos y el conjunto de predictores son sustratos para un paso de preprocesamiento inicial utilizando PCA. Estos datos se pasan al algoritmo de ajuste del modelo para producir un modelo ajustado. La figura indica que el flujo de trabajo del modelo solo incluye el proceso de ajuste del modelo. Esto implica que el ajuste del modelo es el único lugar donde se produce la estimación.">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bad-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/bad-workflow.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Un modelo mental incorrecto de dónde ocurre la estimación del modelo en el proceso de análisis de datos. Los datos y el conjunto de predictores son sustratos para un paso de preprocesamiento inicial utilizando PCA. Estos datos se pasan al algoritmo de ajuste del modelo para producir un modelo ajustado. La figura indica que el flujo de trabajo del modelo solo incluye el proceso de ajuste del modelo. Esto implica que el ajuste del modelo es el único lugar donde se produce la estimación.">
 </div>
@@ -452,7 +452,7 @@ Figura&nbsp;7.1: Modelo mental incorrecto de dónde ocurre la estimación del mo
 <p><a href="#fig-good-workflow" class="quarto-xref">Figura&nbsp;<span>7.2</span></a> muestra un enfoque <em>apropiado</em>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-good-workflow" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Un modelo mental correcto de dónde ocurre la estimación del modelo en el proceso de análisis de datos. Los datos y el conjunto de predictores son sustratos para un paso de preprocesamiento inicial utilizando PCA. Estos datos se pasan al algoritmo de ajuste del modelo para producir un modelo ajustado. La figura indica que el flujo de trabajo del modelo incluye el proceso de ajuste del modelo y el paso PCA. Esto implica que ambas operaciones deben considerarse pasos de estimación." data-fig-align="center">
+<div id="fig-good-workflow" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un modelo mental correcto de dónde ocurre la estimación del modelo en el proceso de análisis de datos. Los datos y el conjunto de predictores son sustratos para un paso de preprocesamiento inicial utilizando PCA. Estos datos se pasan al algoritmo de ajuste del modelo para producir un modelo ajustado. La figura indica que el flujo de trabajo del modelo incluye el proceso de ajuste del modelo y el paso PCA. Esto implica que ambas operaciones deben considerarse pasos de estimación.">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-good-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/proper-workflow.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Un modelo mental correcto de dónde ocurre la estimación del modelo en el proceso de análisis de datos. Los datos y el conjunto de predictores son sustratos para un paso de preprocesamiento inicial utilizando PCA. Estos datos se pasan al algoritmo de ajuste del modelo para producir un modelo ajustado. La figura indica que el flujo de trabajo del modelo incluye el proceso de ajuste del modelo y el paso PCA. Esto implica que ambas operaciones deben considerarse pasos de estimación.">
 </div>

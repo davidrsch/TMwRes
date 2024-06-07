@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
 <title>Modelado Ordenado con R - 15&nbsp; Probando Muchos Modelos</title>
@@ -82,7 +82,7 @@ div.csl-indent {
 <meta name="quarto:offset" content="./">
 <link href="./16-dimensionality-reduction.html" rel="next">
 <link href="./14-iterative-search.html" rel="prev">
-<link href="./images/cover.png" rel="icon" type="image/png">
+<link href="./logo.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -739,7 +739,7 @@ Figura&nbsp;15.2: Los resultados <code><a href="https://ggplot2.tidyverse.org/re
 </div>
 </div>
 <p>También hay métodos para <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_predictions()</a></code> y <code><a href="https://tune.tidymodels.org/reference/collect_predictions.html">collect_metrics()</a></code>.</p>
-<p>La selección del modelo de ejemplo con nuestros datos de mezcla de concreto se ajusta a un total de modelos 12,600. Utilizando trabajadores de 4 en paralelo, el proceso de estimación tardó 1 horas en completarse.</p>
+<p>La selección del modelo de ejemplo con nuestros datos de mezcla de concreto se ajusta a un total de modelos 12,600. Utilizando trabajadores de 4 en paralelo, el proceso de estimación tardó 0.9 horas en completarse.</p>
 </section><section id="sec-racing-example" class="level2" data-number="15.4"><h2 data-number="15.4" class="anchored" data-anchor-id="sec-racing-example">
 <span class="header-section-number">15.4</span> Modelos De Detección Eficiente</h2>
 <p>Un método eficaz para seleccionar un gran conjunto de modelos de manera eficiente es utilizar el enfoque de carreras descrito en <a href="13-grid-search.html#sec-racing" class="quarto-xref"><span>Sección 13.5.5</span></a>. Con un flujo de trabajo configurado, podemos usar la función <code>workflow_map()</code> para este enfoque de carrera. Recuerde que después de canalizar nuestro conjunto de flujos de trabajo, el argumento que usamos es la función que se aplicará a los flujos de trabajo; en este caso, podemos usar un valor de <code>"tune_race_anova"</code>. También pasamos un objeto de control apropiado; de lo contrario, las opciones serían las mismas que el código de la sección anterior.</p>
@@ -801,7 +801,7 @@ Figura&nbsp;15.3: RMSE estimado (e intervalos de confianza aproximados) para la 
 </div>
 </div>
 </div>
-<p>En general, el enfoque de carreras estimó un total de 1,100 modelos, 8.73% del conjunto completo de 12,600 modelos en la cuadrícula completa. Como resultado, el enfoque de carrera fue 5.1-veces más rápido.</p>
+<p>En general, el enfoque de carreras estimó un total de 1,100 modelos, 8.73% del conjunto completo de 12,600 modelos en la cuadrícula completa. Como resultado, el enfoque de carrera fue 5-veces más rápido.</p>
 <p>¿Obtuvimos resultados similares? Para ambos objetos, clasificamos los resultados, los fusionamos y los comparamos entre sí en <a href="#fig-racing-concordance" class="quarto-xref">Figura&nbsp;<span>15.4</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">matched_results</span> <span class="op">&lt;-</span> </span>

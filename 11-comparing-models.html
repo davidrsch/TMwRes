@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
 <title>Modelado Ordenado con R - 11&nbsp; Comparación De Modelos Con Remuestreo</title>
@@ -82,7 +82,7 @@ div.csl-indent {
 <meta name="quarto:offset" content="./">
 <link href="./12-tuning-parameters.html" rel="next">
 <link href="./10-resampling.html" rel="prev">
-<link href="./images/cover.png" rel="icon" type="image/png">
+<link href="./logo.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -481,9 +481,9 @@ window.Quarto = {
 <span>               <span class="co"># Options to `fit_resamples()`: </span></span>
 <span>               resamples <span class="op">=</span> <span class="va">ames_folds</span>, control <span class="op">=</span> <span class="va">keep_pred</span><span class="op">)</span></span>
 <span><span class="co">## i 1 of 3 resampling: basic_lm</span></span>
-<span><span class="co">## ✔ 1 of 3 resampling: basic_lm (648ms)</span></span>
+<span><span class="co">## ✔ 1 of 3 resampling: basic_lm (627ms)</span></span>
 <span><span class="co">## i 2 of 3 resampling: interact_lm</span></span>
-<span><span class="co">## ✔ 2 of 3 resampling: interact_lm (683ms)</span></span>
+<span><span class="co">## ✔ 2 of 3 resampling: interact_lm (666ms)</span></span>
 <span><span class="co">## i 3 of 3 resampling: splines_lm</span></span>
 <span><span class="co">## ✔ 3 of 3 resampling: splines_lm (1.4s)</span></span>
 <span><span class="va">lm_models</span></span>
@@ -529,7 +529,7 @@ window.Quarto = {
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-workflow-set-r-squared" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Intervalos de confianza para el coeficiente de determinación utilizando cuatro modelos diferentes. El modelo de bosque aleatorio tiene los mejores resultados y sus intervalos no se superponen con los intervalos de los otros modelos.">
+<div id="fig-workflow-set-r-squared" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Intervalos de confianza para el coeficiente de determinación utilizando cuatro modelos diferentes. El modelo de bosque aleatorio tiene los mejores resultados y sus intervalos no se superponen con los intervalos de los otros modelos." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-workflow-set-r-squared-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-workflow-set-r-squared-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Intervalos de confianza para el coeficiente de determinación utilizando cuatro modelos diferentes. El modelo de bosque aleatorio tiene los mejores resultados y sus intervalos no se superponen con los intervalos de los otros modelos." width="672">
 </div>
@@ -578,7 +578,7 @@ Figura&nbsp;11.1: Intervalos de confianza para el coeficiente de determinación 
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-rsquared-resamples" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un gráfico que conecta las estadísticas de remuestreo entre modelos. La gráfica conecta los resultados de cada modelo con la misma línea. Las métricas de rendimiento tienden a ser relativamente similares en todos los resultados del modelo.">
+<div id="fig-rsquared-resamples" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Un gráfico que conecta las estadísticas de remuestreo entre modelos. La gráfica conecta los resultados de cada modelo con la misma línea. Las métricas de rendimiento tienden a ser relativamente similares en todos los resultados del modelo." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-rsquared-resamples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-rsquared-resamples-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Un gráfico que conecta las estadísticas de remuestreo entre modelos. La gráfica conecta los resultados de cada modelo con la misma línea. Las métricas de rendimiento tienden a ser relativamente similares en todos los resultados del modelo." width="672">
 </div>
@@ -618,8 +618,7 @@ Figura&nbsp;11.2: Remuestrear estadísticas entre modelos
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-model-anova-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;11.1: Modelar estadísticas de rendimiento como un conjunto de datos para análisis.
 </figcaption><div aria-describedby="tbl-model-anova-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div>
-<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
+<table class="table cell caption-top table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
 <th style="text-align: right;" data-quarto-table-cell-role="th">Y = rsq</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">model</th>
@@ -679,7 +678,6 @@ Tabla&nbsp;11.1: Modelar estadísticas de rendimiento como un conjunto de datos 
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </figure>
 </div>
@@ -792,7 +790,7 @@ Tabla&nbsp;11.1: Modelar estadísticas de rendimiento como un conjunto de datos 
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-four-posteriors" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Distribuciones posteriores del coeficiente de determinación utilizando cuatro modelos diferentes. La distribución correspondiente al random forest es la más grande y tiene poca superposición con las posteriores del otro modelo.">
+<div id="fig-four-posteriors" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Distribuciones posteriores del coeficiente de determinación utilizando cuatro modelos diferentes. La distribución correspondiente al random forest es la más grande y tiene poca superposición con las posteriores del otro modelo." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-four-posteriors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-four-posteriors-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Distribuciones posteriores del coeficiente de determinación utilizando cuatro modelos diferentes. La distribución correspondiente al random forest es la más grande y tiene poca superposición con las posteriores del otro modelo." width="672">
 </div>
@@ -811,7 +809,7 @@ Figura&nbsp;11.3: Distribuciones posteriores del coeficiente de determinación u
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-credible-intervals" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Intervalos creíbles derivados de las distribuciones posteriores del modelo. El random forest muestra los mejores resultados sin superposición con los otros intervalos creíbles.">
+<div id="fig-credible-intervals" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Intervalos creíbles derivados de las distribuciones posteriores del modelo. El random forest muestra los mejores resultados sin superposición con los otros intervalos creíbles." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-credible-intervals-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-credible-intervals-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Intervalos creíbles derivados de las distribuciones posteriores del modelo. El random forest muestra los mejores resultados sin superposición con los otros intervalos creíbles." width="672">
 </div>
@@ -838,7 +836,7 @@ Figura&nbsp;11.4: Intervalos creíbles derivados de las distribuciones posterior
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-posterior-difference" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="La distribución posterior de la diferencia en el coeficiente de determinación. La distribución casi no se superpone con cero.">
+<div id="fig-posterior-difference" class="quarto-figure quarto-figure-center quarto-float anchored" alt="La distribución posterior de la diferencia en el coeficiente de determinación. La distribución casi no se superpone con cero." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-posterior-difference-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-posterior-difference-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="La distribución posterior de la diferencia en el coeficiente de determinación. La distribución casi no se superpone con cero." width="672">
 </div>
@@ -876,7 +874,7 @@ Figura&nbsp;11.5: Distribución posterior de la diferencia en el coeficiente de 
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-practical-equivalence" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Probabilidad de equivalencia práctica para un tamaño del efecto del 2%. Ningún otro modelo tiene un cambio distinto de cero al coincidir con los resultados del random forest.">
+<div id="fig-practical-equivalence" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Probabilidad de equivalencia práctica para un tamaño del efecto del 2%. Ningún otro modelo tiene un cambio distinto de cero al coincidir con los resultados del random forest." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-practical-equivalence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-practical-equivalence-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Probabilidad de equivalencia práctica para un tamaño del efecto del 2%. Ningún otro modelo tiene un cambio distinto de cero al coincidir con los resultados del random forest." width="672">
 </div>
@@ -898,7 +896,7 @@ Figura&nbsp;11.6: Probabilidad de equivalencia práctica para un tamaño del efe
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-intervals-over-replicates" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="La probabilidad de equivalencia práctica con el modelo de bosque aleatorio.">
+<div id="fig-intervals-over-replicates" class="quarto-figure quarto-figure-center quarto-float anchored" alt="La probabilidad de equivalencia práctica con el modelo de bosque aleatorio." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-intervals-over-replicates-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-intervals-over-replicates-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="La probabilidad de equivalencia práctica con el modelo de bosque aleatorio." width="672">
 </div>

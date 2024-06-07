@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
 <title>Modelado Ordenado con R - 6&nbsp; Creando Modelos Con parsnip</title>
@@ -82,7 +82,7 @@ div.csl-indent {
 <meta name="quarto:offset" content="./">
 <link href="./07-the-model-workflow.html" rel="next">
 <link href="./05-data-spending.html" rel="prev">
-<link href="./images/cover.png" rel="icon" type="image/png">
+<link href="./logo.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -555,8 +555,7 @@ window.Quarto = {
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-rand-forest-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;6.1: Ejemplos de nombres de argumentos para diferentes funciones de random forest.
 </figcaption><div aria-describedby="tbl-rand-forest-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div>
-<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
+<table class="table cell caption-top table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Tipo de argumento</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">ranger</th>
@@ -585,7 +584,6 @@ Tabla&nbsp;6.1: Ejemplos de nombres de argumentos para diferentes funciones de r
 </tbody>
 </table>
 </div>
-</div>
 </figure>
 </div>
 <p>En un esfuerzo por hacer que la especificación de argumentos sea menos complicada, <span class="pkg">parsnip</span> utiliza nombres de argumentos comunes dentro y entre paquetes. <a href="#tbl-parsnip-args" class="quarto-xref">Tabla&nbsp;<span>6.2</span></a> muestra, para radom forest, qué utilizan los modelos <span class="pkg">parsnip</span>.</p>
@@ -593,8 +591,7 @@ Tabla&nbsp;6.1: Ejemplos de nombres de argumentos para diferentes funciones de r
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-parsnip-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;6.2: Nombres de argumentos de random forest utilizados por parsnip.
 </figcaption><div aria-describedby="tbl-parsnip-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div>
-<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
+<table class="table cell caption-top table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Tipo de argumento</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">parsnip</th>
@@ -614,7 +611,6 @@ Tabla&nbsp;6.2: Nombres de argumentos de random forest utilizados por parsnip.
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </figure>
 </div>
@@ -764,8 +760,7 @@ Tabla&nbsp;6.2: Nombres de argumentos de random forest utilizados por parsnip.
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-predict-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;6.3: Diferentes valores de retorno para tipos de predicción glmnet.
 </figcaption><div aria-describedby="tbl-predict-types-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div>
-<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
+<table class="table cell caption-top table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">Tipo de Predicción</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Devuelve:</th>
@@ -790,7 +785,6 @@ Tabla&nbsp;6.3: Diferentes valores de retorno para tipos de predicción glmnet.
 </tbody>
 </table>
 </div>
-</div>
 </figure>
 </div>
 <p>Además, los nombres de las columnas de los resultados contienen valores codificados que se asignan a un vector llamado <code>lambda</code> dentro del objeto del modelo glmnet. Este excelente método estadístico puede resultar desalentador en la práctica debido a todos los casos especiales que un analista puede encontrar y que requieren código adicional para ser útil.</p>
@@ -799,8 +793,7 @@ Tabla&nbsp;6.3: Diferentes valores de retorno para tipos de predicción glmnet.
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-predictable-column-names-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;6.4: El mapeo de tidymodels de tipos de predicción y nombres de columnas.
 </figcaption><div aria-describedby="tbl-predictable-column-names-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div>
-<table class="table cell table-sm table-striped small" data-quarto-postprocess="true">
+<table class="table cell caption-top table-sm table-striped small" data-quarto-postprocess="true">
 <thead><tr class="header">
 <th style="text-align: left;" data-quarto-table-cell-role="th">tipo de valor</th>
 <th style="text-align: left;" data-quarto-table-cell-role="th">nombre(s) de columna(s)</th>
@@ -828,7 +821,6 @@ Tabla&nbsp;6.4: El mapeo de tidymodels de tipos de predicción y nombres de colu
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </figure>
 </div>

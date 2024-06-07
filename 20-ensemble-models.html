@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
 <title>Modelado Ordenado con R - 20&nbsp; Conjuntos De Modelos</title>
@@ -82,7 +82,7 @@ div.csl-indent {
 <meta name="quarto:offset" content="./">
 <link href="./21-inferential-analysis.html" rel="next">
 <link href="./19-when-should-you-trust-predictions.html" rel="prev">
-<link href="./images/cover.png" rel="icon" type="image/png">
+<link href="./logo.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -456,8 +456,7 @@ window.Quarto = {
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-ensemble-candidate-preds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;20.1: Predicciones a partir de configuraciones de parámetros de ajuste candidatos.
 </figcaption><div aria-describedby="tbl-ensemble-candidate-preds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div>
-<table class="table table-striped cell table-sm small" data-quarto-postprocess="true">
+<table class="table table-striped cell caption-top table-sm small" data-quarto-postprocess="true">
 <colgroup>
 <col style="width: 12%">
 <col style="width: 12%">
@@ -550,7 +549,6 @@ Predicciones Candidatas Apiladas
 </tbody>
 </table>
 </div>
-</div>
 </figure>
 </div>
 <p>Hay una sola columna para el modelo de árbol en bolsas ya que no tiene parámetros de ajuste. Además, recuerde que MARS se sintonizó en función de un único parámetro (el grado del producto) con dos configuraciones posibles, por lo que este modelo está representado por dos columnas. La mayoría de los otros modelos tienen 25 columnas correspondientes, como se muestra para Cubist en este ejemplo.</p>
@@ -622,7 +620,7 @@ Predicciones Candidatas Apiladas
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-stacking-autoplot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Resultados del uso del método `autoplot()` en el objeto de pilas combinadas.">
+<div id="fig-stacking-autoplot" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Resultados del uso del método `autoplot()` en el objeto de pilas combinadas." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-stacking-autoplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-stacking-autoplot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Resultados del uso del método `autoplot()` en el objeto de pilas combinadas." width="672">
 </div>
@@ -644,7 +642,7 @@ Figura&nbsp;20.1: Resultados del uso del método <code><a href="https://ggplot2.
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-stacking-autoplot-redo" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Los resultados del uso del método `autoplot()` en el objeto de pilas combinadas actualizado.">
+<div id="fig-stacking-autoplot-redo" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Los resultados del uso del método `autoplot()` en el objeto de pilas combinadas actualizado." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-stacking-autoplot-redo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-stacking-autoplot-redo-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Los resultados del uso del método `autoplot()` en el objeto de pilas combinadas actualizado." width="672">
 </div>
@@ -691,7 +689,7 @@ Figura&nbsp;20.2: Los resultados del uso del método <code><a href="https://ggpl
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-blending-weights" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="blending_alt">
+<div id="fig-blending-weights" class="quarto-figure quarto-figure-center quarto-float anchored" alt="blending_alt" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-blending-weights-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-blending-weights-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="blending_alt" width="672">
 </div>

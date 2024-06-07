@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.554">
+<meta name="generator" content="quarto-1.4.555">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
 <title>Modelado Ordenado con R - 9&nbsp; Juzgar La Eficacia Del Modelo</title>
@@ -82,7 +82,7 @@ div.csl-indent {
 <meta name="quarto:offset" content="./">
 <link href="./10-resampling.html" rel="next">
 <link href="./08-feature-engineering.html" rel="prev">
-<link href="./images/cover.png" rel="icon" type="image/png">
+<link href="./logo.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -432,7 +432,7 @@ window.Quarto = {
 <p>Al juzgar la eficacia del modelo, su decisión sobre qué métricas examinar puede ser fundamental. En capítulos posteriores, se optimizarán empíricamente ciertos parámetros del modelo y se utilizará una métrica de rendimiento primaria para elegir el mejor submodelo. Elegir la métrica incorrecta puede fácilmente tener consecuencias no deseadas. Por ejemplo, dos métricas comunes para los modelos de regresión son la raíz del error cuadrático medio (RMSE) y el coeficiente de determinación (también conocido como <span class="math inline">\(R^2\)</span>). El primero mide la <em>precisión</em> mientras que el segundo mide la <em>correlación</em>. Estos no son necesariamente lo mismo. <a href="#fig-performance-reg-metrics" class="quarto-xref">Figura&nbsp;<span>9.1</span></a> demuestra la diferencia entre los dos.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-performance-reg-metrics" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Gráficos de dispersión de valores numéricos observados versus valores predichos para modelos optimizados utilizando el RMSE y el coeficiente de determinación. El primero produce resultados cercanos a la línea de identidad de 45 grados, mientras que el segundo muestra resultados con una estrecha correlación lineal pero se aleja mucho de la línea de identidad.">
+<div id="fig-performance-reg-metrics" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Gráficos de dispersión de valores numéricos observados versus valores predichos para modelos optimizados utilizando el RMSE y el coeficiente de determinación. El primero produce resultados cercanos a la línea de identidad de 45 grados, mientras que el segundo muestra resultados con una estrecha correlación lineal pero se aleja mucho de la línea de identidad." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-performance-reg-metrics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-performance-reg-metrics-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Gráficos de dispersión de valores numéricos observados versus valores predichos para modelos optimizados utilizando el RMSE y el coeficiente de determinación. El primero produce resultados cercanos a la línea de identidad de 45 grados, mientras que el segundo muestra resultados con una estrecha correlación lineal pero se aleja mucho de la línea de identidad." width="672">
 </div>
@@ -508,7 +508,7 @@ Figura&nbsp;9.1: Valores observados versus valores predichos para modelos optimi
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-ames-performance-plot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Gráficos de dispersión de valores numéricos observados versus valores predichos para un modelo de regresión de Ames. Ambos ejes utilizan unidades log-10. El modelo muestra una buena concordancia con algunos puntos que no se ajustan bien a precios altos y bajos.">
+<div id="fig-ames-performance-plot" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Gráficos de dispersión de valores numéricos observados versus valores predichos para un modelo de regresión de Ames. Ambos ejes utilizan unidades log-10. El modelo muestra una buena concordancia con algunos puntos que no se ajustan bien a precios altos y bajos." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ames-performance-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-ames-performance-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Gráficos de dispersión de valores numéricos observados versus valores predichos para un modelo de regresión de Ames. Ambos ejes utilizan unidades log-10. El modelo muestra una buena concordancia con algunos puntos que no se ajustan bien a precios altos y bajos." width="672">
 </div>
@@ -642,7 +642,7 @@ Figura&nbsp;9.2: Valores observados versus valores predichos para un modelo de r
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-example-roc-curve" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un ejemplo de curva ROC. El eje x es uno menos la especificidad y el eje y es la sensibilidad. La curva se inclina hacia el lado superior izquierdo del área de la gráfica.">
+<div id="fig-example-roc-curve" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Un ejemplo de curva ROC. El eje x es uno menos la especificidad y el eje y es la sensibilidad. La curva se inclina hacia el lado superior izquierdo del área de la gráfica." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-example-roc-curve-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-example-roc-curve-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Un ejemplo de curva ROC. El eje x es uno menos la especificidad y el eje y es la sensibilidad. La curva se inclina hacia el lado superior izquierdo del área de la gráfica." width="672">
 </div>
@@ -800,7 +800,7 @@ Figura&nbsp;9.3: Ejemplo de curva ROC
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-grouped-roc-curves" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Curvas ROC remuestreadas para cada una de las cuatro clases de resultados. Hay cuatro paneles para las clases VF, F, M y L. Cada panel contiene diez curvas ROC para cada uno de los conjuntos de datos remuestreados.">
+<div id="fig-grouped-roc-curves" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Curvas ROC remuestreadas para cada una de las cuatro clases de resultados. Hay cuatro paneles para las clases VF, F, M y L. Cada panel contiene diez curvas ROC para cada uno de los conjuntos de datos remuestreados." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-grouped-roc-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-grouped-roc-curves-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Curvas ROC remuestreadas para cada una de las cuatro clases de resultados. Hay cuatro paneles para las clases VF, F, M y L. Cada panel contiene diez curvas ROC para cada uno de los conjuntos de datos remuestreados." width="672">
 </div>
