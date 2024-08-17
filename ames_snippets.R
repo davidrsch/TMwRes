@@ -4,6 +4,8 @@
 library(tidymodels)
 data(ames)
 ames <- mutate(ames, Sale_Price = log10(Sale_Price))
+ames <- ames |> 
+  mutate(across(where(is.integer), as.numeric))
 
 set.seed(502)
 ames_split <- initial_split(ames, prop = 0.80, strata = Sale_Price)
