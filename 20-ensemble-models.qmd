@@ -12,7 +12,7 @@ load("RData/concrete_results.RData")
 
 # Conjuntos De Modelos {#sec-ensembles}
 
-Un conjunto de modelos, donde las predicciones de varios alumnos individuales se agregan para hacer una predicción, puede producir un modelo final de alto rendimiento. Los métodos más populares para crear modelos de conjunto son el embolsado [@breiman1996bagging], el bosque aleatorio [@ho1995random; @breiman2001random] e impulsando [@freund1997decision]. Cada uno de estos métodos combina las predicciones de múltiples versiones del mismo tipo de modelo (por ejemplo, árboles de clasificación). Sin embargo, uno de los primeros métodos para crear conjuntos es *apilamiento de modelos* [@wolpert1992stacked; @breiman1996stacked].
+Un conjunto de modelos, donde las predicciones de varios alumnos individuales se agregan para hacer una predicción, puede producir un modelo final de alto rendimiento. Los métodos más populares para crear modelos de conjunto son el ensacado [@breiman1996bagging], el bosque aleatorio [@ho1995random; @breiman2001random] e impulsar [@freund1997decision]. Cada uno de estos métodos combina las predicciones de múltiples versiones del mismo tipo de modelo (por ejemplo, árboles de clasificación). Sin embargo, uno de los primeros métodos para crear conjuntos es *apilamiento de modelos* [@wolpert1992stacked; @breiman1996stacked].
 
 ::: rmdnote
 El apilamiento de modelos combina las predicciones de múltiples modelos de cualquier tipo. Por ejemplo, en un conjunto de apilamiento se pueden incluir una regresión logística, un árbol de clasificación y una máquina de vectores de soporte.
@@ -338,7 +338,7 @@ Esto actualiza el objeto de apilamiento con los objetos de flujo de trabajo ajus
 
 ## Resultados Del Conjunto De Pruebas
 
-Dado que el proceso de combinación utilizó remuestreo, podemos estimar que el conjunto con miembros `r num_coefs` tenía un RMSE estimado de `r round(ens_rmse, 2)`. Recuerde del [Capítulo @sec-workflow-sets] que el árbol mejor impulsado tenía un conjunto de prueba RMSE de `r round(boost_rmse$.estimate, 2)`. ¿Cómo se comparará el modelo de conjunto en el conjunto de prueba? Podemos usar `predecit()` para averiguarlo:
+Dado que el proceso de combinación utilizó remuestreo, podemos estimar que el conjunto con miembros `r num_coefs` tenía un RMSE estimado de `r round(ens_rmse, 2)`. Recuerde del [Capítulo @sec-workflow-sets] que el árbol mejor impulsado tenía un conjunto de prueba RMSE de `r round(boost_rmse$.estimate, 2)`. ¿Cómo se comparará el modelo de conjunto en el conjunto de prueba? Podemos usar `predict()` para averiguarlo:
 
 ```{r ensembles-test-set}
 reg_metrics <- metric_set(rmse, rsq)

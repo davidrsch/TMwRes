@@ -12,7 +12,7 @@ source("ames_snippets.R")
 
 # Creando Modelos Con parsnip {#sec-models}
 
-El paquete `r pkg(parsnip)`, un de los paquetes de R que es parte del metaapaquete `r pkg(tidymodels)`, proporciona una interfaz fluida y estandarizada para una variedad de modelos diferentes. En este capítulo, damos algunas motivaciones sobre por qué una interfaz común es beneficiosa para comprender y construir modelos en la práctica y mostramos cómo usar el paquete `r pkg(parsnip)`.
+El paquete `r pkg(parsnip)`, un de los paquetes de R que es parte del metapaquete `r pkg(tidymodels)`, proporciona una interfaz fluida y estandarizada para una variedad de modelos diferentes. En este capítulo, damos algunas motivaciones sobre por qué una interfaz común es beneficiosa para comprender y construir modelos en la práctica y mostramos cómo usar el paquete `r pkg(parsnip)`.
 
 Específicamente, nos centraremos en cómo `fit()` y `predict()` directamente con un objeto `r pkg(parsnip)`, que puede ser una buena opción para algunos problemas de modelado sencillos. El próximo capítulo ilustra un mejor enfoque para muchas tareas de modelado al combinar modelos y preprocesadores en algo llamado un objeto de "flujo de trabajo".
 
@@ -94,7 +94,7 @@ linear_reg() %>% set_engine("stan") %>% translate()
 Tenga en cuenta que `missing_arg()` es solo un marcador de posición para los datos que aún no se han proporcionado.
 
 ::: rmdnote
-Proporcionamos un argumento de `penalty` (penalización) requerido para el motor glmnet. Además, para los motores Stan y glmnet, el argumento `famiy`(familia) se agregó automáticamente como valor predeterminado. Como se mostrará más adelante en esta sección, esta opción se puede cambiar.
+Proporcionamos un argumento de `penalty` (penalización) requerido para el motor glmnet. Además, para los motores Stan y glmnet, el argumento `family`(familia) se agregó automáticamente como valor predeterminado. Como se mostrará más adelante en esta sección, esta opción se puede cambiar.
 :::
 
 Veamos cómo predecir el precio de venta de las casas en los datos de Ames en función únicamente de la longitud y la latitud:[^06-fitting-models-2]
@@ -159,7 +159,7 @@ arg_info %>%
   column_spec(2:4, monospace = TRUE)
 ```
 
-En un esfuerzo por hacer que la especificación de argumentos sea menos complicada, `r pkg(parsnip)` utiliza nombres de argumentos comunes dentro y entre paquetes. @tbl-parsnip-args muestra, para radom forest, qué utilizan los modelos `r pkg(parsnip)`.
+En un esfuerzo por hacer que la especificación de argumentos sea menos complicada, `r pkg(parsnip)` utiliza nombres de argumentos comunes dentro y entre paquetes. @tbl-parsnip-args muestra, para random forest, qué utilizan los modelos `r pkg(parsnip)`.
 
 ```{r}
 #| label: tbl-parsnip-args

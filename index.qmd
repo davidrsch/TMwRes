@@ -93,6 +93,6 @@ Esta versión del libro fue construida con `r R.version.string`, [pandoc](https:
 
 <a href="https://amzn.to/35Hn96s"><img src="logo.png" alt="Cover image" width="285" align="right" style="margin: 0 1em 0 1em"/></a> Esta traducción de "Modelado Ordenado con R" es un proyecto personal de [David Díaz Rodríguez](https://github.com/davidrsch) con el objetivo de facilitar el estudio de construcción de modelos mediante el uso de R, tanto al propio traductor como a todas aquellas personas de habla hispana que deseen aprender sobre este tema.
 
-Señalar que esta es una traducción textual del libro por lo que cuando los autores se refieren así mismo en primera persona, serán Max Kuhn & Julia Slige no el traductor.
+Señalar que esta es una traducción textual del libro por lo que cuando los autores se refieren a sí mismos en primera persona, serán Max Kuhn & Julia Slige no el traductor.
 
 La traducción fue realizada usando Google Translate y fueron corregidos algunos errores gramaticales y de coherencia. Si detecta algún error relacionado con el contenido de la traducción, siéntase libre de abrir un issue o un pull request en este [repositorio](https://github.com/davidrsch/TMwRes).
