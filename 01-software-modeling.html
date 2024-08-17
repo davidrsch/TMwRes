@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.56">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 1&nbsp; Software Para Modelar</title>
+<title>1&nbsp; Software Para Modelar – Modelado Ordenado con R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -91,13 +91,13 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-software-modeling.html">INTRODUCCIÓN</a></li><li class="breadcrumb-item"><a href="./01-software-modeling.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Software Para Modelar</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -108,7 +108,7 @@ div.csl-indent {
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
     <div class="dropdown">
-      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
 <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
@@ -145,9 +145,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">INTRODUCCIÓN</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -174,9 +174,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -221,9 +221,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -268,9 +268,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -290,7 +290,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">ames_train </span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -315,9 +315,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">Apéndices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -414,7 +414,7 @@ div.csl-indent {
 <p>Uno de los primeros métodos para evaluar estas cuestiones fueron los modelos a nivel de sonda, o PLM <span class="citation" data-cites="bolstad2004">(<a href="references.html#ref-bolstad2004" role="doc-biblioref">Bolstad 2004</a>)</span>. Se crearía un modelo estadístico que tuviera en cuenta las diferencias conocidas en los datos, como el chip, la secuencia de ARN, el tipo de secuencia, etc. Si hubiera otros factores desconocidos en los datos, estos efectos se capturarían en los residuos del modelo. Cuando los residuos se trazaron según su ubicación en el chip, un chip de buena calidad no mostraría patrones. Cuando ocurría un problema, se podía discernir algún tipo de patrón espacial. A menudo, el tipo de patrón sugeriría el problema subyacente (por ejemplo, una huella digital) y una posible solución (limpiar el chip y volver a escanear, repetir la muestra, etc.). <a href="#fig-software-descr-examples" class="quarto-xref">Figura&nbsp;<span>1.1</span></a> (a) muestra una aplicación de este método para dos microarrays tomados de <span class="citation" data-cites="Gentleman2005">Gentleman et&nbsp;al. (<a href="references.html#ref-Gentleman2005" role="doc-biblioref">2005</a>)</span>. Las imágenes muestran dos valores de color diferentes; Las áreas más oscuras son aquellas donde la intensidad de la señal fue mayor de lo esperado por el modelo, mientras que el color más claro muestra valores inferiores a los esperados. El panel de la izquierda muestra un patrón bastante aleatorio, mientras que el panel de la derecha muestra un artefacto indeseable en el medio del chip.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-software-descr-examples" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<div id="fig-software-descr-examples" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-software-descr-examples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-software-descr-examples-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
 </div>
@@ -481,7 +481,7 @@ Figura&nbsp;1.1: Dos ejemplos de cómo se pueden utilizar modelos descriptivos p
 <p>El proceso de investigación de los datos puede no ser sencillo. <span class="citation" data-cites="wickham2016">Wickham y Grolemund (<a href="references.html#ref-wickham2016" role="doc-biblioref">2016</a>)</span> contiene una excelente ilustración del proceso general de análisis de datos, reproducida en <a href="#fig-software-data-science-model" class="quarto-xref">Figura&nbsp;<span>1.2</span></a>. La ingesta de datos y la limpieza/ordenamiento se muestran como pasos iniciales. Cuando comienzan los pasos analíticos para la comprensión, son un proceso heurístico; No podemos predeterminar cuánto tiempo pueden tardar. El ciclo de transformación, modelado y visualización a menudo requiere múltiples iteraciones.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-software-data-science-model" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<div id="fig-software-data-science-model" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-software-data-science-model-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/data-science-model.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%">
 </div>
@@ -500,7 +500,7 @@ Figura&nbsp;1.2: El proceso de ciencia de datos (de R para Ciencia de Datos, usa
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-software-modeling-process" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center">
+<div id="fig-software-modeling-process" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-software-modeling-process-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/modeling-process.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%">
 </div>
@@ -512,7 +512,7 @@ Figura&nbsp;1.3: Un esquema para el proceso de modelado típico.
 </div>
 <p>Después de una secuencia inicial de estas tareas, se obtiene una mayor comprensión sobre qué modelos son superiores y qué subpoblaciones de datos no se están estimando de manera efectiva. Esto conduce a EDA adicional y a ingeniería de características, otra ronda de modelado, etc. Una vez que se logran los objetivos del análisis de datos, normalmente los últimos pasos son finalizar, documentar y comunicar el modelo. Para los modelos predictivos, es común al final validar el modelo con un conjunto adicional de datos reservados para este propósito específico.</p>
 <p>Como ejemplo, <span class="citation" data-cites="fes">Kuhn y Johnson (<a href="references.html#ref-fes" role="doc-biblioref">2020</a>)</span> utiliza datos para modelar el número de pasajeros diario del sistema de trenes públicos de Chicago utilizando predictores como la fecha, los resultados anteriores del número de pasajeros, el clima y otros factores. @ tbl-inner-monologue muestra una aproximación al hipotético monólogo interno de estos autores al analizar estos datos y eventualmente seleccionar un modelo con suficiente rendimiento.</p>
-<div id="tbl-inner-monologue" class="cell quarto-float anchored" data-layout-align="center">
+<div id="tbl-inner-monologue" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-inner-monologue-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;1.1: Monólogo interior hipotético de un desarrollador de modelos.
 </figcaption><div aria-describedby="tbl-inner-monologue-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -750,18 +750,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -793,7 +782,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -801,7 +812,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

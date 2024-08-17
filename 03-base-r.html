@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.56">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 3&nbsp; Una Revisión De Los Fundamentos Del Modelado Con R</title>
+<title>3&nbsp; Una Revisión De Los Fundamentos Del Modelado Con R – Modelado Ordenado con R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -125,13 +125,13 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-software-modeling.html">INTRODUCCIÓN</a></li><li class="breadcrumb-item"><a href="./03-base-r.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Una Revisión De Los Fundamentos Del Modelado Con R</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -142,7 +142,7 @@ div.csl-indent {
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
     <div class="dropdown">
-      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
 <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
@@ -179,9 +179,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">INTRODUCCIÓN</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -208,9 +208,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -255,9 +255,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -302,9 +302,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -324,7 +324,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">ames_train </span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -349,9 +349,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">Apéndices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -427,7 +427,7 @@ div.csl-indent {
 <div class="cell" data-layout-align="center">
 <pre><code>## [1] "species" "temp"    "rate"</code></pre>
 <div class="cell-output-display">
-<div id="fig-cricket-plot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un diagrama de dispersión de la tasa de chirrido y la temperatura de dos especies diferentes de grillos con líneas de tendencia lineales por especie. Las tendencias aumentan linealmente con una separación entre las dos especies.">
+<div id="fig-cricket-plot" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Un diagrama de dispersión de la tasa de chirrido y la temperatura de dos especies diferentes de grillos con líneas de tendencia lineales por especie. Las tendencias aumentan linealmente con una separación entre las dos especies." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-cricket-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-cricket-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Un diagrama de dispersión de la tasa de chirrido y la temperatura de dos especies diferentes de grillos con líneas de tendencia lineales por especie. Las tendencias aumentan linealmente con una separación entre las dos especies.">
 </div>
@@ -500,7 +500,7 @@ Figura&nbsp;3.1: Relación entre la tasa de chirrido y la temperatura de dos esp
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-interaction-plots" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="A la izquierda hay un diagrama de dispersión de los residuos del modelo versus los valores predichos. No hay tendencias fuertes en los datos. El panel de la derecha muestra un gráfico cuantil-cuantil normal donde los puntos indican que la normalidad probablemente sea una buena suposición.">
+<div id="fig-interaction-plots" class="quarto-float quarto-figure quarto-figure-center anchored" alt="A la izquierda hay un diagrama de dispersión de los residuos del modelo versus los valores predichos. No hay tendencias fuertes en los datos. El panel de la derecha muestra un gráfico cuantil-cuantil normal donde los puntos indican que la normalidad probablemente sea una buena suposición." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-interaction-plots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-interaction-plots-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%" alt="A la izquierda hay un diagrama de dispersión de los residuos del modelo versus los valores predichos. No hay tendencias fuertes en los datos. El panel de la derecha muestra un gráfico cuantil-cuantil normal donde los puntos indican que la normalidad probablemente sea una buena suposición.">
 </div>
@@ -606,7 +606,7 @@ Figura&nbsp;3.2: Gráficos de diagnóstico residuales para el modelo lineal con 
 <p>R es bastante diferente de Python a este respecto. Una ventaja de la diversidad de interfaces de R es que puede evolucionar con el tiempo y adaptarse a diferentes necesidades de diferentes usuarios.</p>
 <p>Desafortunadamente, parte de la diversidad sintáctica se debe a un enfoque en las necesidades de la persona que <em>desarrolla</em> el código en lugar de las necesidades de la persona que <em>usa</em> el código. Las inconsistencias entre paquetes pueden ser un obstáculo para los usuarios de R.</p>
 <p>Suponga que su proyecto de modelado tiene un resultado con dos clases. Existe una variedad de modelos estadísticos y de aprendizaje automático entre los que puede elegir. Para producir una estimación de probabilidad de clase para cada muestra, es común que una función de modelo tenga un método <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> correspondiente. Sin embargo, existe una heterogeneidad significativa en los valores de los argumentos utilizados por esos métodos para hacer predicciones de probabilidad de clase; esta heterogeneidad puede resultar difícil de navegar incluso para los usuarios experimentados. En <a href="#tbl-probability-args" class="quarto-xref">Tabla&nbsp;<span>3.1</span></a> se muestra una muestra de estos valores de argumentos para diferentes modelos.</p>
-<div id="tbl-probability-args" class="cell quarto-float anchored" data-layout-align="center">
+<div id="tbl-probability-args" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-probability-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;3.1: Nombres de argumentos heterogéneos para diferentes funciones de modelado.
 </figcaption><div aria-describedby="tbl-probability-args-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -733,7 +733,7 @@ Tabla&nbsp;3.1: Nombres de argumentos heterogéneos para diferentes funciones de
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-corr-plot" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un gráfico de las correlaciones (e intervalos de confianza del 95%) entre los predictores y el resultado en el conjunto de datos `mtcars`. Ninguno de los intervalos se superpone con cero. El peso del automóvil tuvo la mayor correlación negativa y la relación del eje trasero tiene la mayor correlación positiva.">
+<div id="fig-corr-plot" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Un gráfico de las correlaciones (e intervalos de confianza del 95%) entre los predictores y el resultado en el conjunto de datos `mtcars`. Ninguno de los intervalos se superpone con cero. El peso del automóvil tuvo la mayor correlación negativa y la relación del eje trasero tiene la mayor correlación positiva." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-corr-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-corr-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Un gráfico de las correlaciones (e intervalos de confianza del 95%) entre los predictores y el resultado en el conjunto de datos `mtcars`. Ninguno de los intervalos se superpone con cero. El peso del automóvil tuvo la mayor correlación negativa y la relación del eje trasero tiene la mayor correlación positiva." width="672">
 </div>
@@ -794,11 +794,11 @@ Figura&nbsp;3.3: Correlaciones (e intervalos de confianza del 95%) entre los pre
 <div class="cell" data-layout-align="center">
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidymodels.tidymodels.org">tidymodels</a></span><span class="op">)</span></span>
 <span><span class="co">## ── Attaching packages ─────────────────────────────────────────── tidymodels 1.2.0 ──</span></span>
-<span><span class="co">## ✔ dials        1.2.1      ✔ rsample      1.2.1 </span></span>
-<span><span class="co">## ✔ infer        1.0.7      ✔ tune         1.2.1 </span></span>
-<span><span class="co">## ✔ modeldata    1.3.0      ✔ workflows    1.1.4 </span></span>
-<span><span class="co">## ✔ parsnip      1.2.1      ✔ workflowsets 1.1.0 </span></span>
-<span><span class="co">## ✔ recipes      1.0.10     ✔ yardstick    1.3.1</span></span>
+<span><span class="co">## ✔ dials        1.3.0     ✔ rsample      1.2.1</span></span>
+<span><span class="co">## ✔ infer        1.0.7     ✔ tune         1.2.1</span></span>
+<span><span class="co">## ✔ modeldata    1.4.0     ✔ workflows    1.1.4</span></span>
+<span><span class="co">## ✔ parsnip      1.2.1     ✔ workflowsets 1.1.0</span></span>
+<span><span class="co">## ✔ recipes      1.1.0     ✔ yardstick    1.3.1</span></span>
 <span><span class="co">## ── Conflicts ────────────────────────────────────────────── tidymodels_conflicts() ──</span></span>
 <span><span class="co">## ✖ scales::discard()        masks purrr::discard()</span></span>
 <span><span class="co">## ✖ dplyr::filter()          masks stats::filter()</span></span>
@@ -807,7 +807,7 @@ Figura&nbsp;3.3: Correlaciones (e intervalos de confianza del 95%) entre los pre
 <span><span class="co">## ✖ dplyr::lag()             masks stats::lag()</span></span>
 <span><span class="co">## ✖ yardstick::spec()        masks readr::spec()</span></span>
 <span><span class="co">## ✖ recipes::step()          masks stats::step()</span></span>
-<span><span class="co">## • Search for functions across packages at https://www.tidymodels.org/find/</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co">## • Dig deeper into tidy modeling with R at https://www.tmwr.org</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Si ha utilizado tidyverse, notará algunos nombres familiares ya que algunos paquetes de tidyverse, como <span class="pkg">dplyr</span> y <span class="pkg">ggplot2</span>, se cargan junto con los paquetes tidymodels. Ya hemos dicho que el marco tidymodels aplica los principios de tidyverse al modelado, pero el marco tidymodels también se basa literalmente en algunos de los paquetes tidyverse más fundamentales, como estos.</p>
 <p>La carga del metapaquete también muestra si hay conflictos de nombres de funciones con paquetes cargados previamente. Como ejemplo de un conflicto de nombres, antes de cargar <span class="pkg">tidymodels</span>, al invocar la función <code><a href="https://dplyr.tidyverse.org/reference/filter.html">filter()</a></code> se ejecutará la función en el paquete <span class="pkg">stats</span>. Después de cargar tidymodels, ejecutará la función <span class="pkg">dplyr</span> del mismo nombre.</p>
@@ -989,18 +989,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1032,7 +1021,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -1040,7 +1051,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.56">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 8&nbsp; Ingeniería De Características Con recipes</title>
+<title>8&nbsp; Ingeniería De Características Con recipes – Modelado Ordenado con R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -118,7 +118,7 @@ div.csl-indent {
     "search-label": "Buscar"
   }
 }</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -150,13 +150,13 @@ window.Quarto = {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-ames.html">FUNDAMENTOS DE MODELADO</a></li><li class="breadcrumb-item"><a href="./08-feature-engineering.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Ingeniería De Características Con recipes</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -167,7 +167,7 @@ window.Quarto = {
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
     <div class="dropdown">
-      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
 <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
@@ -204,9 +204,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">INTRODUCCIÓN</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -233,9 +233,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -280,9 +280,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -327,9 +327,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -349,7 +349,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">ames_train </span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -374,9 +374,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">Apéndices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -617,7 +617,7 @@ window.Quarto = {
 <p>Además, <code>step_other()</code> se puede utilizar para analizar las frecuencias de los niveles de factores en el conjunto de entrenamiento y convertir valores que ocurren con poca frecuencia a un nivel general de “otro”, con un umbral que se puede especificar. Un buen ejemplo es el predictor <code>Neighborhood</code> de nuestros datos, que se muestra en <a href="#fig-ames-neighborhoods" class="quarto-xref">Figura&nbsp;<span>8.1</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-ames-neighborhoods" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un gráfico de barras de las frecuencias de los barrios en el conjunto de entrenamiento de Ames. La mayoría de las casas se encuentran en North Ames, mientras que los vecindarios Greens, Green Hills y Landmark tienen muy pocos casos.">
+<div id="fig-ames-neighborhoods" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="Un gráfico de barras de las frecuencias de los barrios en el conjunto de entrenamiento de Ames. La mayoría de las casas se encuentran en North Ames, mientras que los vecindarios Greens, Green Hills y Landmark tienen muy pocos casos.">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ames-neighborhoods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-ames-neighborhoods-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Un gráfico de barras de las frecuencias de los barrios en el conjunto de entrenamiento de Ames. La mayoría de las casas se encuentran en North Ames, mientras que los vecindarios Greens, Green Hills y Landmark tienen muy pocos casos." width="672">
 </div>
@@ -641,7 +641,7 @@ Figura&nbsp;8.1: Frecuencias de barrios en el conjunto de entrenamiento de Ames
 <p>Muchos, pero no todos, los cálculos del modelo subyacente requieren que los valores predictores se codifiquen como números. Las excepciones notables incluyen modelos basados en árboles, modelos basados en reglas y modelos ingenuos de Bayes.</p>
 </div>
 <p>El método más común para convertir un factor predictivo a un formato numérico es crear variables ficticias o indicadoras. Tomemos el predictor en los datos de Ames para el tipo de edificio, que es una variable factorial con cinco niveles (ver <a href="#tbl-dummy-vars" class="quarto-xref">Tabla&nbsp;<span>8.1</span></a>). Para variables ficticias, la única columna <code>Bldg_Type</code> se reemplazaría con cuatro columnas numéricas cuyos valores son cero o uno. Estas variables binarias representan valores de nivel de factor específicos. En R, la convención es excluir una columna para el primer nivel de factor (<code>OneFam</code>, en este caso). La columna <code>Bldg_Type</code> se reemplazaría con una columna llamada <code>TwoFmCon</code> que es uno cuando la fila tiene ese valor y cero en caso contrario. Se crean otras tres columnas de manera similar:</p>
-<div id="tbl-dummy-vars" class="cell quarto-float anchored" data-layout-align="center">
+<div id="tbl-dummy-vars" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-dummy-vars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;8.1: Ilustración de codificaciones binarias (es decir, variables ficticias) para un predictor cualitativo.
 </figcaption><div aria-describedby="tbl-dummy-vars-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -716,7 +716,7 @@ Tabla&nbsp;8.1: Ilustración de codificaciones binarias (es decir, variables fic
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-building-type-interactions" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Gráficos de dispersión de la superficie habitable bruta (en unidades log-10) versus el precio de venta (también en unidades log-10) para cinco tipos diferentes de edificios. Todas las tendencias son lineales pero parecen tener diferentes pendientes e intersecciones para los diferentes tipos de edificios.">
+<div id="fig-building-type-interactions" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="Gráficos de dispersión de la superficie habitable bruta (en unidades log-10) versus el precio de venta (también en unidades log-10) para cinco tipos diferentes de edificios. Todas las tendencias son lineales pero parecen tener diferentes pendientes e intersecciones para los diferentes tipos de edificios.">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-building-type-interactions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-building-type-interactions-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Gráficos de dispersión de la superficie habitable bruta (en unidades log-10) versus el precio de venta (también en unidades log-10) para cinco tipos diferentes de edificios. Todas las tendencias son lineales pero parecen tener diferentes pendientes e intersecciones para los diferentes tipos de edificios." width="672">
 </div>
@@ -780,7 +780,7 @@ Figura&nbsp;8.2: Superficie habitable bruta (en unidades log-10) versus precio d
 </div>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-ames-latitude-splines" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Gráficos de dispersión de precio de venta versus latitud con líneas de tendencia utilizando splines naturales con diferentes grados de libertad. A medida que aumentan los grados de libertad, las líneas responden mejor a las tendencias de los datos, pero comienzan a volverse excesivamente complejas con 100 términos spline.">
+<div id="fig-ames-latitude-splines" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center" alt="Gráficos de dispersión de precio de venta versus latitud con líneas de tendencia utilizando splines naturales con diferentes grados de libertad. A medida que aumentan los grados de libertad, las líneas responden mejor a las tendencias de los datos, pero comienzan a volverse excesivamente complejas con 100 términos spline.">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-ames-latitude-splines-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-ames-latitude-splines-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Gráficos de dispersión de precio de venta versus latitud con líneas de tendencia utilizando splines naturales con diferentes grados de libertad. A medida que aumentan los grados de libertad, las líneas responden mejor a las tendencias de los datos, pero comienzan a volverse excesivamente complejas con 100 términos spline." width="672">
 </div>
@@ -1080,18 +1080,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1123,7 +1112,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -1131,7 +1142,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

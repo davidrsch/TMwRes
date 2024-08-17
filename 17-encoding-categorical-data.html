@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.56">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 17&nbsp; Codificación De Datos Categóricos</title>
+<title>17&nbsp; Codificación De Datos Categóricos – Modelado Ordenado con R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -125,13 +125,13 @@ div.csl-indent {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./16-dimensionality-reduction.html">MAS ALLÁ DE LO BÁSICO</a></li><li class="breadcrumb-item"><a href="./17-encoding-categorical-data.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Codificación De Datos Categóricos</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -142,7 +142,7 @@ div.csl-indent {
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
     <div class="dropdown">
-      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
 <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
@@ -179,9 +179,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">INTRODUCCIÓN</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -208,9 +208,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -255,9 +255,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -302,9 +302,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -324,7 +324,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">ames_train </span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -349,9 +349,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">Apéndices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -408,7 +408,7 @@ div.csl-indent {
 
 
 </header><p>Para el modelado estadístico en R, la representación preferida para datos categóricos o nominales es un <em>factor</em>, que es una variable que puede tomar un número limitado de valores diferentes; internamente, los factores se almacenan como un vector de valores enteros junto con un conjunto de etiquetas de texto.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> En <a href="08-feature-engineering.html#sec-dummies" class="quarto-xref"><span>Sección 8.4.1</span></a> introdujimos enfoques de ingeniería de características para codificar o transformar datos cualitativos o nominales en una representación más adecuada para la mayoría de los algoritmos modelo. Discutimos cómo transformar una variable categórica, como <code>Bldg_Type</code> en nuestros datos de vivienda de Ames (con niveles <code>OneFam</code>, <code>TwoFmCon</code>, <code>Duplex</code>, <code>Twnhs</code>, and <code>TwnhsE</code>), en un conjunto de Variables ficticias o indicadoras como las que se muestran en <a href="#tbl-encoding-dummies" class="quarto-xref">Tabla&nbsp;<span>17.1</span></a>.</p>
-<div id="tbl-encoding-dummies" class="cell quarto-float anchored" data-layout-align="center">
+<div id="tbl-encoding-dummies" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-encoding-dummies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;17.1: Codificaciones de variables ficticias o indicadoras para el predictor de tipo de edificio en el conjunto de entrenamiento de Ames.
 </figcaption><div aria-describedby="tbl-encoding-dummies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -476,7 +476,7 @@ Tabla&nbsp;17.1: Codificaciones de variables ficticias o indicadoras para el pre
 </section><section id="codificación-de-predictores-ordinales" class="level2" data-number="17.2"><h2 data-number="17.2" class="anchored" data-anchor-id="codificación-de-predictores-ordinales">
 <span class="header-section-number">17.2</span> Codificación De Predictores Ordinales</h2>
 <p>A veces, las columnas cualitativas se pueden <em>ordenar</em>, como “baja”, “media” y “alta”. En base R, la estrategia de codificación predeterminada es crear nuevas columnas numéricas que sean expansiones polinómicas de los datos. Para las columnas que tienen cinco valores ordinales, como el ejemplo que se muestra en <a href="#tbl-encoding-ordered-table" class="quarto-xref">Tabla&nbsp;<span>17.2</span></a>, la columna de factores se reemplaza con columnas para términos lineales, cuadráticos, cúbicos y cuárticos:</p>
-<div id="tbl-encoding-ordered-table" class="cell quarto-float anchored" data-layout-align="center">
+<div id="tbl-encoding-ordered-table" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-encoding-ordered-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;17.2: Polynominal expansions for encoding an ordered variable.
 </figcaption><div aria-describedby="tbl-encoding-ordered-table-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -543,7 +543,7 @@ Tabla&nbsp;17.2: Polynominal expansions for encoding an ordered variable.
 <span>  <span class="fu">geom_errorbar</span><span class="op">(</span><span class="fu">aes</span><span class="op">(</span>xmin <span class="op">=</span> <span class="va">mean</span> <span class="op">-</span> <span class="fl">1.64</span> <span class="op">*</span> <span class="va">std_err</span>, xmax <span class="op">=</span> <span class="va">mean</span> <span class="op">+</span> <span class="fl">1.64</span> <span class="op">*</span> <span class="va">std_err</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">labs</span><span class="op">(</span>y <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="st">"Price (mean, log scale)"</span><span class="op">)</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="fig-encoding-mean-price" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Un gráfico con puntos y barras de error para el precio medio de la vivienda en los barrios del conjunto de entrenamiento de Ames. Los vecindarios más caros son Northridge y Stone Brook, mientras que los menos costosos son Iowa DOT y Railroad y Meadow Village." data-fig-align="center">
+<div id="fig-encoding-mean-price" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Un gráfico con puntos y barras de error para el precio medio de la vivienda en los barrios del conjunto de entrenamiento de Ames. Los vecindarios más caros son Northridge y Stone Brook, mientras que los menos costosos son Iowa DOT y Railroad y Meadow Village." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-encoding-mean-price-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="17-encoding-categorical-data_files/figure-html/fig-encoding-mean-price-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Un gráfico con puntos y barras de error para el precio medio de la vivienda en los barrios del conjunto de entrenamiento de Ames. Los vecindarios más caros son Northridge y Stone Brook, mientras que los menos costosos son Iowa DOT y Railroad y Meadow Village." width="672">
 </div>
@@ -693,7 +693,7 @@ Figura&nbsp;17.1: Precio medio de la vivienda para vecindarios en el conjunto de
 <span><span class="co">## Warning: Removed 1 row containing missing values or values outside the scale range</span></span>
 <span><span class="co">## (`geom_point()`).</span></span></code><button title="Copiar al portapapeles" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="fig-encoding-compare-pooling" class="quarto-figure quarto-figure-center quarto-float anchored" alt="Un gráfico de dispersión que compara las codificaciones de efectos para el vecindario estimado sin agrupación con aquellas con agrupación parcial. Casi todos los barrios están muy cerca de la pendiente = línea 1, pero los barrios con menos viviendas están más alejados." data-fig-align="center">
+<div id="fig-encoding-compare-pooling" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Un gráfico de dispersión que compara las codificaciones de efectos para el vecindario estimado sin agrupación con aquellas con agrupación parcial. Casi todos los barrios están muy cerca de la pendiente = línea 1, pero los barrios con menos viviendas están más alejados." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-encoding-compare-pooling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="17-encoding-categorical-data_files/figure-html/fig-encoding-compare-pooling-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="Un gráfico de dispersión que compara las codificaciones de efectos para el vecindario estimado sin agrupación con aquellas con agrupación parcial. Casi todos los barrios están muy cerca de la pendiente = línea 1, pero los barrios con menos viviendas están más alejados." width="672">
 </div>
@@ -784,7 +784,7 @@ Figura&nbsp;17.2: Comparación de las codificaciones de efectos para el vecindar
 </div>
 <p>El hash de funciones es rápido y eficiente, pero tiene algunas desventajas. Por ejemplo, diferentes valores de categorías a menudo se asignan al mismo valor hash. Esto se llama <em>colisión</em> o <em>aliasing</em>. ¿Con qué frecuencia sucedió esto en nuestros vecindarios de Ames? <a href="#tbl-encoding-hash" class="quarto-xref">Tabla&nbsp;<span>17.3</span></a> presenta la distribución del número de vecindarios por valor hash.</p>
 <div class="cell" data-layout-align="center">
-<div id="tbl-encoding-hash" class="cell quarto-float anchored" data-layout-align="center">
+<div id="tbl-encoding-hash" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-encoding-hash-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;17.3: La cantidad de características hash en cada número de vecindarios.
 </figcaption><div aria-describedby="tbl-encoding-hash-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -976,18 +976,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1019,7 +1008,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -1027,7 +1038,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -1355,8 +1366,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./18-explaining-models-and-predictions.html" class="pagination-link" aria-label="Explicando Modelos Y Predicciones">
-        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./18-explaining-models-and-predictions.html" class="pagination-link" aria-label="ames_train <- ames_train |>">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">ames_train &lt;- ames_train |&gt;</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

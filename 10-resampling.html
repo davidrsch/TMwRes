@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.56">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Max Kuhn, y Julia Silge">
-<title>Modelado Ordenado con R - 10&nbsp; Remuestrear Para Evaluar El Rendimiento</title>
+<title>10&nbsp; Remuestrear Para Evaluar El Rendimiento – Modelado Ordenado con R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -118,7 +118,7 @@ div.csl-indent {
     "search-label": "Buscar"
   }
 }</script><script src="site_libs/kePrint-0.0.1/kePrint.js"></script><link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+<script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
 const typesetMath = (el) => {
   if (window.MathJax) {
     // MathJax Typeset
@@ -150,13 +150,13 @@ window.Quarto = {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top"><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./10-resampling.html">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</a></li><li class="breadcrumb-item"><a href="./10-resampling.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Remuestrear Para Evaluar El Rendimiento</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -167,7 +167,7 @@ window.Quarto = {
       <a href="./">Modelado Ordenado con R</a> 
         <div class="sidebar-tools-main">
     <div class="dropdown">
-      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label=""><i class="bi bi-github"></i></a>
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
 <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://github.com/tidymodels/TMwR">
@@ -204,9 +204,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">INTRODUCCIÓN</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -233,9 +233,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
  <span class="menu-text">FUNDAMENTOS DE MODELADO</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -280,9 +280,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">HERRAMIENTAS PARA CREAR MODELOS EFECTIVOS</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -327,9 +327,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">MAS ALLÁ DE LO BÁSICO</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -349,7 +349,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./18-explaining-models-and-predictions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Explicando Modelos Y Predicciones</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">ames_train </span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -374,9 +374,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
  <span class="menu-text">Apéndices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Alternar sección">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar sección">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -516,7 +516,7 @@ window.Quarto = {
 </div>
 <p>Para un modelo de bajo sesgo, el alto grado de capacidad predictiva a veces puede hacer que el modelo casi memorice los datos del conjunto de entrenamiento. Como ejemplo obvio, considere un modelo de 1 vecino más cercano. Siempre proporcionará predicciones perfectas para el conjunto de entrenamiento, sin importar qué tan bien funcione para otros conjuntos de datos. Los modelos de random forest son similares; Repredecir el conjunto de entrenamiento siempre dará como resultado una estimación artificialmente optimista del rendimiento.</p>
 <p>Para ambos modelos, <a href="#tbl-rmse-results" class="quarto-xref">Tabla&nbsp;<span>10.1</span></a> resume la estimación de RMSE para los conjuntos de entrenamiento y prueba:</p>
-<div id="tbl-rmse-results" class="cell quarto-float anchored" data-layout-align="center">
+<div id="tbl-rmse-results" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-layout-align="center">
 <figure class="quarto-float quarto-float-tbl figure"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-rmse-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabla&nbsp;10.1: Estadísticas de rendimiento para conjuntos de entrenamiento y prueba.
 </figcaption><div aria-describedby="tbl-rmse-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -565,7 +565,7 @@ Estimaciones de RMSE
 <p>Los métodos de remuestreo son sistemas de simulación empíricos que emulan el proceso de utilizar algunos datos para modelar y diferentes datos para evaluación. La mayoría de los métodos de remuestreo son iterativos, lo que significa que este proceso se repite varias veces. El diagrama en <a href="#fig-resampling-scheme" class="quarto-xref">Figura&nbsp;<span>10.1</span></a> ilustra cómo funcionan generalmente los métodos de remuestreo.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-resampling-scheme" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un diagrama del esquema de división de datos desde la división de datos inicial hasta el remuestreo. El primer nivel es la partición del conjunto de entrenamiento/prueba. El segundo nivel de división toma el conjunto de entrenamiento y lo divide en múltiples conjuntos de `análisis` y `evaluación` (que son análogos al entrenamiento y la prueba).">
+<div id="fig-resampling-scheme" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Un diagrama del esquema de división de datos desde la división de datos inicial hasta el remuestreo. El primer nivel es la partición del conjunto de entrenamiento/prueba. El segundo nivel de división toma el conjunto de entrenamiento y lo divide en múltiples conjuntos de `análisis` y `evaluación` (que son análogos al entrenamiento y la prueba)." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-resampling-scheme-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/resampling.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:85.0%" alt="Un diagrama del esquema de división de datos desde la división de datos inicial hasta el remuestreo. El primer nivel es la partición del conjunto de entrenamiento/prueba. El segundo nivel de división toma el conjunto de entrenamiento y lo divide en múltiples conjuntos de `análisis` y `evaluación` (que son análogos al entrenamiento y la prueba).">
 </div>
@@ -588,7 +588,7 @@ Figura&nbsp;10.1: Esquema de división de datos desde la división de datos inic
 <p>La validación cruzada es un método de remuestreo bien establecido. Si bien existen varias variaciones, el método de validación cruzada más común es la validación cruzada <em>V</em>. Los datos se dividen aleatoriamente en <em>V</em> conjuntos de tamaño aproximadamente igual (llamados pliegues). A modo de ilustración, <em>V</em> = 3 se muestra en <a href="#fig-cross-validation-allocation" class="quarto-xref">Figura&nbsp;<span>10.2</span></a> para un conjunto de datos de 30 puntos de configuración de entrenamiento con asignaciones de pliegues aleatorios. El número dentro de los símbolos es el número de muestra.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-cross-validation-allocation" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un diagrama de cómo la validación cruzada de pliegues en V asigna aleatoriamente datos a los pliegues (donde V es igual a tres). Se asigna un conjunto de treinta puntos de datos a tres grupos de aproximadamente el mismo tamaño.">
+<div id="fig-cross-validation-allocation" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Un diagrama de cómo la validación cruzada de pliegues en V asigna aleatoriamente datos a los pliegues (donde V es igual a tres). Se asigna un conjunto de treinta puntos de datos a tres grupos de aproximadamente el mismo tamaño." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-cross-validation-allocation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/three-CV.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%" alt="Un diagrama de cómo la validación cruzada de pliegues en V asigna aleatoriamente datos a los pliegues (donde V es igual a tres). Se asigna un conjunto de treinta puntos de datos a tres grupos de aproximadamente el mismo tamaño.">
 </div>
@@ -602,7 +602,7 @@ Figura&nbsp;10.2: La validación cruzada de pliegues en V asigna aleatoriamente 
 <p>Para una validación cruzada triple, las tres iteraciones de remuestreo se ilustran en <a href="#fig-cross-validation" class="quarto-xref">Figura&nbsp;<span>10.3</span></a>. Para cada iteración, se reserva un pliegue para las estadísticas de evaluación y los pliegues restantes son sustrato para el modelo. Este proceso continúa en cada pliegue, de modo que tres modelos producen tres conjuntos de estadísticas de rendimiento.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-cross-validation" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un diagrama del uso de datos de validación cruzada multiplicado por V (donde V es igual a tres). Para cada uno de los tres grupos, los datos del pliegue se reservan para el rendimiento, mientras que los otros dos se utilizan para modelar.">
+<div id="fig-cross-validation" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Un diagrama del uso de datos de validación cruzada multiplicado por V (donde V es igual a tres). Para cada uno de los tres grupos, los datos del pliegue se reservan para el rendimiento, mientras que los otros dos se utilizan para modelar." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-cross-validation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/three-CV-iter.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:70.0%" alt="Un diagrama del uso de datos de validación cruzada multiplicado por V (donde V es igual a tres). Para cada uno de los tres grupos, los datos del pliegue se reservan para el rendimiento, mientras que los otros dos se utilizan para modelar.">
 </div>
@@ -650,7 +650,7 @@ Figura&nbsp;10.3: Uso de datos de validación cruzada V-fold
 <p>Consideremos los datos de Ames. En promedio, la validación cruzada 10 veces utiliza conjuntos de evaluación que contienen aproximadamente propiedades 234. Si RMSE es la estadística elegida, podemos denotar la desviación estándar de esa estimación como <span class="math inline">\(\sigma\)</span>. Con una validación cruzada simple de 10 veces, el error estándar del RMSE medio es <span class="math inline">\(\sigma/\sqrt{10}\)</span>. Si esto es demasiado ruidoso, las repeticiones reducen el error estándar a <span class="math inline">\(\sigma/\sqrt{10R}\)</span>. Para una validación cruzada de 10 veces con réplicas de <span class="math inline">\(R\)</span>, el gráfico en <a href="#fig-variance-reduction" class="quarto-xref">Figura&nbsp;<span>10.4</span></a> muestra qué tan rápido disminuye el error estándar<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> con las réplicas.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-variance-reduction" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="La relación entre la varianza relativa en las estimaciones de rendimiento versus el número de repeticiones de validación cruzada. A medida que aumentan las repeticiones, la varianza se reduce en un patrón armónicamente decreciente con rendimientos decrecientes para un gran número de repeticiones.">
+<div id="fig-variance-reduction" class="quarto-float quarto-figure quarto-figure-center anchored" alt="La relación entre la varianza relativa en las estimaciones de rendimiento versus el número de repeticiones de validación cruzada. A medida que aumentan las repeticiones, la varianza se reduce en un patrón armónicamente decreciente con rendimientos decrecientes para un gran número de repeticiones." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-variance-reduction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="figures/fig-variance-reduction-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" alt="La relación entre la varianza relativa en las estimaciones de rendimiento versus el número de repeticiones de validación cruzada. A medida que aumentan las repeticiones, la varianza se reduce en un patrón armónicamente decreciente con rendimientos decrecientes para un gran número de repeticiones." width="672">
 </div>
@@ -700,7 +700,7 @@ Figura&nbsp;10.4: Relación entre la varianza relativa en las estimaciones de de
 <p>En <a href="05-data-spending.html#sec-what-about-a-validation-set" class="quarto-xref"><span>Sección 5.2</span></a>, analizamos brevemente el uso de un conjunto de validación, una única partición que se reserva para estimar el rendimiento separada del conjunto de prueba. Cuando se utiliza un conjunto de validación, el conjunto de datos inicial disponible se divide en un conjunto de entrenamiento, un conjunto de validación y un conjunto de prueba (consulte <a href="#fig-three-way-split" class="quarto-xref">Figura&nbsp;<span>10.5</span></a>).</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-three-way-split" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Una división inicial de tres vías en conjuntos de entrenamiento, pruebas y validación.">
+<div id="fig-three-way-split" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Una división inicial de tres vías en conjuntos de entrenamiento, pruebas y validación." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-three-way-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/validation.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%" alt="Una división inicial de tres vías en conjuntos de entrenamiento, pruebas y validación.">
 </div>
@@ -714,7 +714,7 @@ Figura&nbsp;10.5: Una división inicial de tres vías en conjuntos de entrenamie
 <p>Con el paquete <span class="pkg">rsample</span>, un conjunto de validación es como cualquier otro objeto de remuestreo; este tipo se diferencia únicamente en que tiene una única iteración.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> <a href="#fig-validation-split" class="quarto-xref">Figura&nbsp;<span>10.6</span></a> muestra este esquema.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-validation-split" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Una división inicial bidireccional en entrenamiento y prueba con un conjunto de validación adicional dividido en el conjunto de entrenamiento.">
+<div id="fig-validation-split" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Una división inicial bidireccional en entrenamiento y prueba con un conjunto de validación adicional dividido en el conjunto de entrenamiento." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-validation-split-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/validation-alt.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:45.0%" alt="Una división inicial bidireccional en entrenamiento y prueba con un conjunto de validación adicional dividido en el conjunto de entrenamiento.">
 </div>
@@ -751,7 +751,7 @@ Figura&nbsp;10.6: Una división inicial bidireccional en entrenamiento y pruebas
 <p>Para un conjunto de entrenamiento de 30 muestras, en la siguiente figura se muestra un esquema de tres muestras bootstrap <a href="#fig-bootstrapping" class="quarto-xref">Figura&nbsp;<span>10.7</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-bootstrapping" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="Un diagrama del uso de datos en bootstrapping. Para cada remuestreo de bootstrap, el conjunto de análisis es del mismo tamaño que el conjunto de entrenamiento (debido al muestreo con reemplazo) y el conjunto de evaluación consta de muestras que no están en el conjunto de análisis.">
+<div id="fig-bootstrapping" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Un diagrama del uso de datos en bootstrapping. Para cada remuestreo de bootstrap, el conjunto de análisis es del mismo tamaño que el conjunto de entrenamiento (debido al muestreo con reemplazo) y el conjunto de evaluación consta de muestras que no están en el conjunto de análisis." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-bootstrapping-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/bootstraps.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="Un diagrama del uso de datos en bootstrapping. Para cada remuestreo de bootstrap, el conjunto de análisis es del mismo tamaño que el conjunto de entrenamiento (debido al muestreo con reemplazo) y el conjunto de evaluación consta de muestras que no están en el conjunto de análisis.">
 </div>
@@ -784,7 +784,7 @@ Figura&nbsp;10.7: Uso de datos Bootstraping
 <p>A modo de ilustración, se volvió a muestrear un conjunto de entrenamiento de quince muestras con un tamaño de análisis de ocho muestras y un tamaño de conjunto de evaluación de tres. La segunda iteración descarta la primera muestra del conjunto de entrenamiento y ambos conjuntos de datos avanzan uno. Esta configuración da como resultado cinco remuestreos, como se muestra en <a href="#fig-rolling" class="quarto-xref">Figura&nbsp;<span>10.8</span></a>.</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div id="fig-rolling" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-align="center" alt="El uso de datos para el remuestreo continuo del origen de la previsión. Para cada división, se utilizan datos anteriores para modelar y algunas instancias posteriores se utilizan para medir el desempeño.">
+<div id="fig-rolling" class="quarto-float quarto-figure quarto-figure-center anchored" alt="El uso de datos para el remuestreo continuo del origen de la previsión. Para cada división, se utilizan datos anteriores para modelar y algunas instancias posteriores se utilizan para medir el desempeño." data-fig-align="center">
 <figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-rolling-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="premade/rolling.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:65.0%" alt="El uso de datos para el remuestreo continuo del origen de la previsión. Para cada división, se utilizan datos anteriores para modelar y algunas instancias posteriores se utilizan para medir el desempeño.">
 </div>
@@ -1312,18 +1312,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -1355,7 +1344,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -1363,7 +1374,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
