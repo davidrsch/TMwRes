@@ -82,6 +82,7 @@ format:
     cache: true
     author-meta: "Max Kuhn, y Julia Silge"
     callout-appearance: simple
+    include-in-header: [ddrsch_script_header.html]
     include-after-body: [ddrsch_script.html]
 
 editor: visual
