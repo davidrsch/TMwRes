@@ -16,17 +16,19 @@ jobs:
         
       - name: Insatall OS packages
         run: |
-          sudo apt-get install libssl-dev 
-          sudo apt-get install libcurl4-openssl-dev
-          sudo apt-get install libxml2-dev
-          sudo apt-get install libglpk-dev
-          sudo apt-get install libavfilter-dev
-          sudo apt-get install libgdal-dev
-          sudo apt-get install libgeos-dev
-          sudo apt-get install libproj-dev
-          sudo apt-get install libgl1-mesa-dev
-          sudo apt-get install libglu1-mesa-dev
-          sudo apt-get install libudunits2-dev
+          sudo apt-get update
+          sudo apt-get install -y \
+            libssl-dev \
+            libcurl4-openssl-dev \
+            libxml2-dev \
+            libglpk-dev \
+            libavfilter-dev \
+            libgdal-dev \
+            libgeos-dev \
+            libproj-dev \
+            libgl1-mesa-dev \
+            libglu1-mesa-dev \
+            libudunits2-dev
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
